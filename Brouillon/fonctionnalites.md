@@ -8,7 +8,7 @@
 
 - Le labyrinthe est généré à partir d'un fichier texte (1)
 - Le labyrinthe est généré aléatoirement (2)
-- La labyrinthe est affiché à l'écran en vue isométrique (1)
+- Le labyrinthe est affiché à l'écran en vue isométrique (1)
 - Le labyrinthe contient des cases spéciales: pièges, eau, point de départ, point d'arrivée, etc. (2)
 
 ### Joueur
@@ -49,7 +49,7 @@
 
 ### Score
 
-- Les monstres ont un gain de score différent: (3)
+- Les monstres donnent un gain de score différent: (3)
     - Spectres: 40 points
     - Zombies: 20 points
     - Bosses: 200 points
