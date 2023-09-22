@@ -13,7 +13,7 @@
 - Le jeu peut être joué à la manette
 
 ## Paul:
-- Le labyrinth est affiché à l'écran en vue isométrique
+- Le labyrinthe est affiché à l'écran en vue isométrique
 
 ## Clément:
 - Le joueur se déplace dans le labyrinthe, sans traverser les murs
