@@ -1,0 +1,146 @@
+@startuml
+
+package UI {
+    class Event {
+        ---
+        # Event(type: EventType)
+        + getType(): EventType
+    }
+
+    enum EventType {
+        KEY_PRESSED
+        KEY_RELEASED
+        MOUSE_MOVED
+        MOUSE_PRESSED
+        MOUSE_RELEASED
+        GAMEPAD_BUTTON_PRESSED
+        GAMEPAD_BUTTON_RELEASED
+        GAMEPAD_AXIS_MOVED
+    }
+
+    class EventKeyPressed {
+        - keyCode: KeyCode
+        ---
+        + EventKeyPressed(keyCode: KeyCode)
+        + getKeyCode(): KeyCode
+    }
+    class EventKeyReleased {
+        - keyCode: KeyCode
+        ---
+        + EventKeyPressed(keyCode: KeyCode)
+        + getKeyCode(): KeyCode
+    }
+    class EventMouseMoved {
+        - x: float
+        - y: float
+        ---
+        + EventMouseMoved(x: float, y: float)
+        + getX(): float
+        + getY(): float
+    }
+    class EventMousePressed {
+        - button: MouseButton
+        ---
+        + EventMousePressed(button: MouseButton)
+        + getButton(): MouseButton
+    }
+    class EventMouseReleased {
+        - button: MouseButton
+        ---
+        + EventMousePressed(button: MouseButton)
+        + getButton(): MouseButton
+    }
+    class EventGamepadButtonPressed {
+        - button: GamepadButton
+        ---
+        + EventGamepadButtonPressed(button: GamepadButton)
+        + getButton(): GamepadButton
+    }
+    class EventGamepadButtonReleased {
+        - button: GamepadButton
+        ---
+        + EventGamepadButtonPressed(button: GamepadButton)
+        + getButton(): GamepadButton
+    }
+    class EventGamepadAxisMoved {
+        - axis: GamepadAxis 
+        - x: float
+        - y: float
+        ---
+        + EventGamepadAxisMoved(axis: GamepadAxis, value: float)
+        + getAxis(): GamepadAxis
+        + getX(): float
+        + getY(): float
+    }
+
+    enum GamepadAxis {
+        LEFT
+        RIGHT
+    }
+    
+    enum MouseButton {
+        LEFT
+        RIGHT
+        MIDDLE
+    }
+
+    enum KeyCode {
+        KEY_A
+        KEY_B
+        ...
+        KEY_Y
+        KEY_Z
+        KEY_0
+        KEY_1
+        ...
+        KEY_8
+        KEY_9
+        KEY_SPACE
+        KEY_ENTER
+        KEY_ESCAPE
+        KEY_UP
+        KEY_DOWN
+        KEY_LEFT
+        KEY_RIGHT
+        KEY_SHIFT
+        KEY_CTRL
+        KEY_ALT
+        KEY_TAB
+        KEY_BACKSPACE
+        KEY_DELETE
+        KEY_INSERT
+        KEY_HOME
+        KEY_END
+    }
+
+    enum GamepadButton {
+        BUTTON_A
+        BUTTON_B
+        BUTTON_X
+        BUTTON_Y
+        BUTTON_L1
+        BUTTON_R1
+        BUTTON_L2
+        BUTTON_R2
+        BUTTON_BACK
+        BUTTON_START
+        BUTTON_LSTICK
+        BUTTON_RSTICK
+        BUTTON_DPAD_UP
+        BUTTON_DPAD_RIGHT
+        BUTTON_DPAD_DOWN
+        BUTTON_DPAD_LEFT
+    }
+}
+
+Event "*" -left- "1" EventType: - type
+EventKeyPressed -up-|> Event
+EventKeyReleased -up-|> Event
+EventMouseMoved -up-|> Event
+EventMousePressed -up-|> Event
+EventMouseReleased -up-|> Event
+EventGamepadButtonPressed -up-|> Event
+EventGamepadButtonReleased -up-|> Event
+EventGamepadAxisMoved -up-|> Event
+
+@enduml
