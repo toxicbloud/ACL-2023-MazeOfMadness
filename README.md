@@ -12,7 +12,7 @@ Il s'adresse donc aux joueurs occasionnelle voulant battre la campagne mais auss
 
 - **Gameplay Isométrique :** L'utilisation de la perspective isométrique permet de surplomber l'environnement afin d'appréhender le danger.
 
-- **Variété de Monstres avec Comportements Uniques :** Les monstres du jeu ont des comportements distincts. Par exemple, les fantômes peuvent traverser les murs pour surprendre les joueurs qui ne les regardent pas, tandis que les zombies avance vers le joueur une fois qu'il l'a détécté.
+- **Variété de Monstres avec Comportements Uniques :** Les monstres du jeu ont des comportements distincts. Par exemple, les fantômes peuvent traverser les murs pour surprendre les joueurs qui ne les regardent pas, tandis que les zombies avancent vers le joueur une fois qu'il l'ont détécté.
 
 - **Éditeur de Niveaux Communautaires :** Les joueurs peuvent créer et partager leurs propres labyrinthes avec la communauté, ajoutant ainsi une dimension de rejouabilité infinie.
 
@@ -21,7 +21,7 @@ Il s'adresse donc aux joueurs occasionnelle voulant battre la campagne mais auss
 - **Prise en Charge de la Manette :** Le jeu est conçu pour être accessible aux joueurs qui préfèrent jouer avec une manette, offrant une expérience de jeu fluide et intuitive mais surtout accessible.
 
 ## Objectif du Projet
-L'objectif ultime de ce projet est de créer une expérience de jeu isométrique captivante qui défie les joueurs avec des labyrinthes complexes, une variété de monstres. Le jeu vise à offrir une rejouabilité infinie grâce à ses labyrinthes générés aléatoirement et à son éditeur de niveaux communautaires.
+L'objectif ultime de ce projet est de créer une expérience de jeu isométrique captivante qui défie les joueurs avec des labyrinthes complexes ainsi qu'une variété de monstres. Le jeu vise à offrir une rejouabilité infinie grâce à ses labyrinthes générés aléatoirement et à son éditeur de niveaux communautaires.
 
 ## Valeurs Clés
 L'exploration, la survie, la créativité communautaire et l'accessibilité sont les valeurs clés de ce jeu. Nous visons à créer une communauté de joueurs passionnés qui partagent leurs propres créations et défient constamment leurs compétences.

@@ -6,7 +6,7 @@
 
 - Le labyrinthe est généré à partir d'un fichier texte
 - Le labyrinthe est généré aléatoirement
-- La labyrinth est affiché à l'écran en vue isométrique
+- La labyrinthe est affiché à l'écran en vue isométrique
 - Le labyrinthe contient des cases spéciales: pièges, eau, point de départ, point d'arrivée, etc.
 
 ### Joueur
@@ -14,34 +14,36 @@
 - Le joueur se déplace dans le labyrinthe, sans traverser les murs
 - Le joueur a plusieurs points de vie: 100 points de vie (affichés en permanence)
 - Le joueur peut attaquer les monstres
-- Le joueur peut passer au labyrinth suivant s'il a atteint le point d'arrivée
-- Le joueur a finir la partie lorsqu'il a atteint le point d'arrivée du dernier labyrinthe (écran de réussite)
+- Le joueur peut passer au labyrinthe suivant s'il a atteint le point d'arrivée
+- Le joueur a fini la partie lorsqu'il a atteint le point d'arrivée du dernier labyrinthe (écran de réussite)
 - Le joueur perd la partie s'il n'a plus de points de vie (écran de fin de partie)
 - Le joueur peut ramasser des potions: vie, force, vitesse (effets directs)
 
 ### Monstres
 
 - Les monstres sont généres aléatoirement dans le labyrinthe:
-    - Spectres: Traversent les murs mais peu de vie
-    - Zombies: Ne traversent pas les murs et peu de vie
-    - Bosses: Ne traversent pas les murs et beaucoup de vie
+    - Spectres: Traversent les murs mais peu de points de vie
+    - Zombies: Ne traversent pas les murs et peu de points de vie
+    - Bosses: Ne traversent pas les murs et beaucoup de points de vie
 - Les monstres se déplacent aléatoirement dans le labyrinthe
     - Spectres: vitesse soutenue ( 100% vitesse normale )
     - Zombies: vitesse réduite ( 70% vitesse normale )
     - Bosses: vitesse normale ( 90% vitesse normale )
-- Les monstres se déplacent intelligement dans le labyrinthe
+- Les monstres se déplacent intelligement dans le labyrinthe. Ils cherchent à rejoindre la position du joueur.
 - Les monstres attaquent le joueur lorsqu'ils sont à proximité
-    - Spectres: degats normaux (20pts)
-    - Zombies: peu de degats (10pts)
-    - Bosses: beaucoup de degats (50pts)
-- Les spectres se déplacent que si le joueur ne les regarde pas
-- Les bosses peuvent faire des degats de zone
-- Les bosses peuvent faire des degats à distance
+    - Spectres: degats normaux (20pts/s)
+    - Zombies: peu de degats (10pts/s)
+    - Bosses: beaucoup de degats (50pts/s)
+- Les spectres ne se déplacent que si le joueur ne les regarde pas
+- Les bosses peuvent faire des dégâts de zone
+- Les bosses peuvent faire des dégâts à distance
 
 ### Potions
 
 - Les potions sont générées aléatoirement dans le labyrinthe
-    - Vie: 
+    - Vie : Restaure une quantité de points de vie au joueur **Usage unique**
+    - Vitesse : Augmente la vitesse de déplacement du joueur dans le labyrinthe pendant un temps limité **Usage unique**
+    - Force : Augmente le nombre de points de dégâts du joueur contre les monstres pendant un temps limité **Usage unique**
 
 ### Score
 
