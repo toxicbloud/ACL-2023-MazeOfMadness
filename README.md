@@ -12,7 +12,7 @@ Il s'adresse donc aux joueurs occasionnels voulant battre la campagne mais aussi
 
 - **Gameplay Isométrique :** L'utilisation de la perspective isométrique permet de surplomber l'environnement afin d'appréhender le danger.
 
-- **Variété de Monstres avec Comportements Uniques :** Les monstres du jeu ont des comportements distincts. Par exemple, les fantômes peuvent traverser les murs pour surprendre les joueurs qui ne les regardent pas, tandis que les zombies avancent vers le joueur une fois qu'il l'ont détectés.
+- **Variété de Monstres avec Comportements Uniques :** Les monstres du jeu ont des comportements distincts. Par exemple, les fantômes peuvent traverser les murs pour surprendre les joueurs qui ne les regardent pas, tandis que les zombies avancent vers le joueur une fois qu'ils l'ont détectés.
 
 - **Éditeur de Niveaux Communautaires :** Les joueurs peuvent créer et partager leurs propres labyrinthes avec la communauté, ajoutant ainsi une dimension de rejouabilité infinie.
 
@@ -26,7 +26,7 @@ L'objectif ultime de ce projet est de créer une expérience de jeu isométrique
 ## Valeurs Clés
 L'exploration, la survie, la créativité communautaire et l'accessibilité sont les valeurs clés de ce jeu. Nous visons à créer une communauté de joueurs passionnés qui partagent leurs propres créations et défient constamment leurs compétences.
 
-# Autheurs
+# Auteurs
 
 Antonin Rousseau |                                                                             | Paul Loisil |                                                         |
 ---------------- | --------------------------------------------------------------------------- | ----------- | ------------------------------------------------------- |
