@@ -27,8 +27,15 @@ L'objectif ultime de ce projet est de créer une expérience de jeu isométrique
 L'exploration, la survie, la créativité communautaire et l'accessibilité sont les valeurs clés de ce jeu. Nous visons à créer une communauté de joueurs passionnés qui partagent leurs propres créations et défient constamment leurs compétences.
 
 # Autheurs
-| Antonin Rousseau |                                                                             | Paul Loisil |                                                         | Maxime Marcelin |                                                                           | Clément Joly |     |
-| ---------------- | --------------------------------------------------------------------------- | ----------- | ------------------------------------------------------- | --------------- | ------------------------------------------------------------------------- | ------------ | --- |
-| Site web         | [antoninrousseau.fr](https://antoninrousseau.fr)                            | Site web    | [furwaz.fr](https://furwaz.fr)                          | Site web        |                                                                           | Site web     |     |
-| GitHub           | [@toxicbloud](https://github.com/toxicbloud)                                | GitHub      | [@furwaz](https://github.com/furwaz)                    | GitHub          | [@Maximelego](https://github.com/Maximelego)                              | GitHub       |     |
-| LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousseau-571280159/) | LinkedIn    | [Paul LOISIL](https://www.linkedin.com/in/loisil-paul/) | LinkedIn        | [Maxime Marcelin](https://www.linkedin.com/in/maxime-marcelin-a7b53225a/) | LinkedIn     |     |
+
+Antonin Rousseau |                                                                             | Paul Loisil |                                                         |
+---------------- | --------------------------------------------------------------------------- | ----------- | ------------------------------------------------------- |
+Site web         | [antoninrousseau.fr](https://antoninrousseau.fr)                            | Site web    | [furwaz.fr](https://furwaz.fr)                          |
+GitHub           | [@toxicbloud](https://github.com/toxicbloud)                                | GitHub      | [@furwaz](https://github.com/furwaz)                    |
+LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousseau-571280159/) | LinkedIn    | [Paul LOISIL](https://www.linkedin.com/in/loisil-paul/) |
+
+| Maxime Marcelin |                                                                           | Clément Joly |     |
+| --------------- | ------------------------------------------------------------------------- | ------------ | --- |
+| Site web        |                                                                           | Site web     |     |
+| GitHub          | [@Maximelego](https://github.com/Maximelego)                              | GitHub       |     |
+| LinkedIn        | [Maxime Marcelin](https://www.linkedin.com/in/maxime-marcelin-a7b53225a/) | LinkedIn     |     |
