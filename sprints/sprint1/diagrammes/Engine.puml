@@ -56,6 +56,33 @@ package Engine {
         + getDeltaTime()
         + update()
     }
+
+    class Vector2 {
+        - x: float
+        - y: float
+        ---
+        + Vector2()
+        + Vector2(x: float, y: float)
+        + getX(): float
+        + getY(): float
+        + setX(x: float): void
+        + setY(y: float): void
+    }
+
+    class Vector3 {
+        - x: float
+        - y: float
+        - z: float
+        ---
+        + Vector3()
+        + Vector3(x: float, y: float, z: float)
+        + getX(): float
+        + getY(): float
+        + getZ(): float
+        + setX(x: float): void
+        + setY(y: float): void
+        + setZ(z: float): void
+    }
 }
 
 package Game {
