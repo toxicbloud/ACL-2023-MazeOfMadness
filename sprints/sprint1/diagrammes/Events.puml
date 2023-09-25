@@ -1,7 +1,7 @@
 @startuml
 
 package UI {
-    class Event {
+    abstract Event {
         ---
         # Event(type: EventType)
         + getType(): EventType

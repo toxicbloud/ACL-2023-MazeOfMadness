@@ -1,24 +1,23 @@
 @startuml
 title Diagramme de classe - Dessin du labyrinthe
 
-package UI {
-    class Scene
+package Engine {
+    abstract Scene
+}
+
+package Game {
 
     class GameScene {
-        - instance : GameScene
+        
         ---
-        + GetInstance(): GameScene
-
         + GameScene()
+        + update()
+        + render()
         + getCamera(): Camera
         + getMaze(): Maze
     }
 
     GameScene -up-|> Scene
-}
-
-package Mom {
-    class Maze
 
     class Camera {
         - position: Vector3
@@ -31,6 +30,8 @@ package Mom {
         + setPosition(position: Vector3): void
         + setZoom(zoom: float): void
     }
+    
+    class Maze
 }
 
 GameScene "1" -- "1" Camera: - camera
