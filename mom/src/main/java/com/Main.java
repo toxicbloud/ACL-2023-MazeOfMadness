@@ -2,7 +2,7 @@ package com;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.ui.Window;
+import com.engine.Window;
 
 /**
  * Main class.
