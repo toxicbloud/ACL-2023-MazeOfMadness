@@ -1,0 +1,40 @@
+@startuml
+title Diagramme de classe - Dessin du labyrinthe
+
+package Engine {
+    abstract Scene
+}
+
+package Renderer {
+
+    class GameScene {
+        
+        ---
+        + GameScene()
+        + update()
+        + render()
+        + getCamera(): Camera
+        + getMaze(): Maze
+    }
+
+    GameScene -up-|> Scene
+
+    class Camera {
+        - position: Vector3
+        - zoom: float
+        ---
+        + Camera()
+        + Camera(position: Vector3, zoom: float)
+        + getPosition(): Vector3
+        + getZoom(): float
+        + setPosition(position: Vector3): void
+        + setZoom(zoom: float): void
+    }
+    
+    class Maze
+}
+
+GameScene "1" -- "1" Camera: - camera
+GameScene "1" -- "1" Maze: - maze
+
+@enduml
