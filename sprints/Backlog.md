@@ -4,7 +4,7 @@
 
 ## Labyrinthe
 
-- Le labyrinthe est généré à partir d'un fichier texte ``(1)``
+- Le labyrinthe est généré à partir d'un fichier texte `(1)`
 - Le labyrinthe est généré aléatoirement `(2)`
 - Le labyrinthe est affiché à l'écran en vue isométrique `(1)`
 - Le labyrinthe contient des cases spéciales: pièges, eau, point de départ, point d'arrivée, etc. `(2)`
@@ -19,6 +19,9 @@
 - Le joueur a fini la partie lorsqu'il a atteint le point d'arrivée du dernier labyrinthe (écran de réussite) `(2)`
 - Le joueur perd la partie s'il n'a plus de points de vie (écran de fin de partie) `(1)`
 - Le joueur peut ramasser des potions: vie, force, vitesse (effets directs) `(3)`
+- Le joueur fais un bruit en es déplaçant `(3)`
+- le joueur fais un bruit en attaquant `(3)`
+- Le joueur fais un bruit lorsqu'il est attaqué `(3)`
 
 ## Monstres
 
@@ -39,6 +42,9 @@
 - Les bosses peuvent faire des dégâts de zone `(2)`
 - Les bosses peuvent faire des dégâts à distance `(2)`
 - Les monstres augmentent de difficulté a chaque labyrinthe `(3)`
+- Les monstres font un bruit lorsqu'ils se déplacent `(3)`
+- Les monstres font un bruit lorsqu'ils attaquent `(3)`
+- Les monstres font un bruit lorsqu'ils sont attaqués `(3)`
 
 ## Potions
 
@@ -46,6 +52,7 @@
     - Vie : Restaure une quantité de points de vie au joueur **Usage unique** `(2)`
     - Vitesse : Augmente la vitesse de déplacement du joueur dans le labyrinthe pendant un temps limité **Usage unique** `(3)`
     - Force : Augmente le nombre de points de dégâts du joueur contre les monstres pendant un temps limité **Usage unique** `(3)`
+- Les potions font un bruit lorsqu'elles sont ramassées `(3)`
 
 ## Score
 
@@ -73,3 +80,4 @@
     - Retour
 - Le jeu peut être joué au clavier/souris `(1)`
 - Le jeu peut être joué à la manette `(3)`
+- Les interactions avec les elements graphiques font un bruit `(3)`
