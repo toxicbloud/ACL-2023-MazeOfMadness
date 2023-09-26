@@ -1,0 +1,97 @@
+@startuml
+title UI system class diagram
+
+package UI {
+    class MenuScene
+}
+
+package Engine {
+    class Window {
+        - title: String
+        - width: int
+        - height: int
+        - instance: Window
+        ---
+        + GetInstance(): Window
+
+        + Window()
+        + Window(title: String)
+        + Window(title: String, width: int, height: int)
+        + setTitle(title: String): void
+        + setWidth(width: int): void
+        + setHeight(height: int): void
+        + setScene(scene: Scene): void
+        + getTitle(): String
+        + getWidth(): int
+        + getHeight(): int
+        + getScene(): Scene
+        + open(): void
+        + close(): void
+    }
+
+    abstract Scene {
+        # Scene()
+        + update(): void
+        + render(): void
+        + onEvent(event: Event): void
+    }
+
+    class EventManager {
+        
+        ---
+        + EventManager()
+        + getEvents(): Event[]
+    }
+
+    class Time {
+        - instance: Time
+        - launchTime: float
+        - currentTime: float
+        - lastTime: float
+        ---
+        + GetInstance(): Time
+
+        - Time()
+        + getAbsTime()
+        + getDeltaTime()
+        + update()
+    }
+
+    class Vector2 {
+        - x: float
+        - y: float
+        ---
+        + Vector2()
+        + Vector2(x: float, y: float)
+        + getX(): float
+        + getY(): float
+        + setX(x: float): void
+        + setY(y: float): void
+    }
+
+    class Vector3 {
+        - x: float
+        - y: float
+        - z: float
+        ---
+        + Vector3()
+        + Vector3(x: float, y: float, z: float)
+        + getX(): float
+        + getY(): float
+        + getZ(): float
+        + setX(x: float): void
+        + setY(y: float): void
+        + setZ(z: float): void
+    }
+}
+
+package Game {
+    class GameScene
+}
+
+Window "1" -down- "1" Scene: scene
+Window "1" -right- "1" EventManager: eventManager
+MenuScene -up-|> Scene
+GameScene -up-|> Scene
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+title UI system class diagram
+
+package UI {
+    class Element {
+        - shouldRender: boolean
+        ---
+        # Element()
+        # Element(position: Vector2, size: Vector2)
+        + setPosition(position: Vector2): void
+        + setSize(size: Vector2): void
+        + getPosition(): Vector2
+        + getSize(): Vector2
+        + needsRender(): boolean
+        + update(): void
+        + render(): void
+        + onHovered(state: boolean): void
+        + onPressed(state: boolean): void
+    }
+    Element "1" -- "1" Vector2: position
+    Element "1" -- "1" Vector2: size
+
+    class MenuScene {
+        - selectedElementIndex: int
+        ---
+        render()
+        update()
+        onEvent(event: Event)
+    }
+    note right: selectedElementIndex = -1 if no element is selected (using mouse)
+}
+
+package Engine {
+    abstract Scene
+    class Vector2
+}
+
+MenuScene -up-|> Scene
+Element "*" -right- "1" MenuScene: elements
+
+@enduml
