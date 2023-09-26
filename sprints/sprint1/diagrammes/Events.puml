@@ -13,6 +13,7 @@ package Engine.Events {
         MOUSE_MOVED
         MOUSE_PRESSED
         MOUSE_RELEASED
+        MOUSE_SCROLLED
         GAMEPAD_PRESSED
         GAMEPAD_RELEASED
         GAMEPAD_MOVED
@@ -49,6 +50,12 @@ package Engine.Events {
         ---
         + EventMousePressed(btn: MouseButton)
         + getButton(): MouseButton
+    }
+    class EventMouseScrolled {
+        - delta: float
+        ---
+        + EventMouseScrolled(delta: float)
+        + getDelta(): float
     }
     class EventGamepadPressed {
         - btn: GamepadBtn
@@ -138,6 +145,7 @@ EventKeyReleased -up-|> Event
 EventMouseMoved -up-|> Event
 EventMousePressed -up-|> Event
 EventMouseReleased -up-|> Event
+EventMouseScrolled -up-|> Event
 EventGamepadPressed -up-|> Event
 EventGamepadReleased -up-|> Event
 EventGamepadMoved -up-|> Event
