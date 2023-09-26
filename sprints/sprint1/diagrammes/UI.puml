@@ -35,7 +35,9 @@ package UI {
         update()
         onEvent(event: Event)
     }
-    note right: selectedElementIndex = -1 if no element is selected (using mouse)
+    note left of MenuScene::selectedElementIndex
+        -1 if no element is selected (using mouse)
+    end note
 }
 
 package Engine {
@@ -48,6 +50,6 @@ package Engine {
 }
 
 MenuScene -up-|> Scene
-Element "*" -right- "1" MenuScene: elements
+Element "*" -down- "1" MenuScene: elements
 
 @enduml

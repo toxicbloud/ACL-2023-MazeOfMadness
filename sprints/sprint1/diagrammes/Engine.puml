@@ -42,6 +42,31 @@ package Engine {
         + getEvents(): Event[]
     }
 
+    class Texture {
+        - path: String
+        ---
+        + Texture(path: String)
+        + getPath(): String
+    }
+
+    class Sprite {
+        - width: int
+        - height: int
+        - xShift: int
+        - yShift: int
+        ---
+        + Sprite(texture: Texture, width: int, height: int)
+        + getWidth(): int
+        + getHeight(): int
+        + getSpriteTexture(): Texture
+        + setXshift(x: int)
+        + setYshift(y: int)
+        + getXshift(): int
+        + getYshift(): int
+        + getTexture(): Texture
+    }
+    Sprite "1" -- "1" Texture : texture
+
     package utils {
         class Time {
             - instance: Time

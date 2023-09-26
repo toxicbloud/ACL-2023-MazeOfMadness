@@ -4,6 +4,7 @@ title Game models class diagram
 package Engine {
     interface Evolvable
     class Vector3
+    class Sprite
 }
 
 package Game {
@@ -27,9 +28,14 @@ package Game {
         ---
         + Maze()
         + Maze(width: int, height: int)
+        + Maze(tiles: Tile[][])
         + getWidth(): int
         + getHeight(): int
         + getTile(x: int, y: int): Tile
+        + getMonsters(): Monster[]
+        + setMonsters(monsters: Monster[])
+        + getItems(): Item[]
+        + setItems(items: Item[])
     }
     Maze "1" -- "*" Tile: - tiles: Tile[][]
     Maze "1" -- "*" Monster: - monsters: Monster[]
@@ -194,31 +200,6 @@ package Game {
         ---
         + Boss()
     }
-
-    class Texture {
-        - path: String
-        ---
-        + Texture(path: String)
-        + getPath(): String
-    }
-
-    class Sprite {
-        - width: int
-        - height: int
-        - xShift: int
-        - yShift: int
-        ---
-        + Sprite(texture: Texture, width: int, height: int)
-        + getWidth(): int
-        + getHeight(): int
-        + getSpriteTexture(): Texture
-        + setXshift(x: int)
-        + setYshift(y: int)
-        + getXshift(): int
-        + getYshift(): int
-        + getTexture(): Texture
-    }
-    Sprite "1" -- "1" Texture : texture
 
     abstract Tile {
         - solid: boolean
