@@ -39,3 +39,35 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousse
 | Site web        |                                                                           | Site web     |     |
 | GitHub          | [@Maximelego](https://github.com/Maximelego)                              | GitHub       |     |
 | LinkedIn        | [Maxime Marcelin](https://www.linkedin.com/in/maxime-marcelin-a7b53225a/) | LinkedIn     |     |
+
+# Installation
+
+## Prérequis
+<div align="center">
+
+![JDK 17](https://img.shields.io/badge/JDK-17-red.svg) &nbsp;&nbsp;&nbsp;&nbsp; ![Apache Maven](https://badgen.net/badge/icon/Maven/red?icon=maven&label) &nbsp;&nbsp;&nbsp;&nbsp; ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
+
+</div>
+
+## Étapes d'Installation
+
+1. **Cloner le Projet (Si vous utilisez Git)**
+
+   ```bash
+   git clone https://github.com/toxicbloud/ACL-2023-MazeOfMadness
+    ```
+2. **Déplacer vous dans le dossier du projet**
+    > le projet Maze Of Madness est abrégé en mom
+   ```bash
+   cd ACL-2023-MazeOfMadness/mom
+   ```
+3. **Compiler le projet**
+   ```bash
+   mvn clean package
+   ```
+   > Cela téléchargera les dépendances, compilera le code source et générera des fichier JAR dans le répertoire target du projet.
+4. **Lancer le jeu**
+   ```bash
+    java -jar target/<nom_du_jar>.jar
+    ```
+    > Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
