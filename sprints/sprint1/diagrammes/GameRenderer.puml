@@ -14,7 +14,6 @@ package Renderer {
         + update()
         + render()
         + getCamera(): Camera
-        + getMaze(): Maze
     }
 
     GameScene -up-|> Scene
@@ -30,11 +29,8 @@ package Renderer {
         + setPosition(position: Vector3): void
         + setZoom(zoom: float): void
     }
-    
-    class Maze
 }
 
 GameScene "1" -- "1" Camera: - camera
-GameScene "1" -- "1" Maze: - maze
 
 @enduml

@@ -3,8 +3,6 @@ title UI system class diagram
 
 package UI {
     class Element {
-        - position: Vector2
-        - size: Vector2
         - shouldRender: boolean
         - active : boolean
         ---
@@ -25,6 +23,8 @@ package UI {
     note left of Element::shouldRender
         shouldRender is a dirtyflag to avoid rendering when element have not changed
     end note
+    Element "1" -- "1" Vector2: position
+    Element "1" -- "1" Vector2: size
 
     class MenuScene {
         - selectedElementIndex: int
@@ -38,6 +38,7 @@ package UI {
 
 package Engine {
     abstract Scene
+    class Vector2
 }
 
 MenuScene -up-|> Scene
