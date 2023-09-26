@@ -17,8 +17,6 @@ package UI {
         + onHovered(state: boolean): void
         + onPressed(state: boolean): void
     }
-    Element "1" -- "1" Vector2: position
-    Element "1" -- "1" Vector2: size
 
     class MenuScene {
         - selectedElementIndex: int
@@ -32,7 +30,11 @@ package UI {
 
 package Engine {
     abstract Scene
-    class Vector2
+    package utils {
+        class Vector2
+        Element "1" -- "1" Vector2: position
+        Element "1" -- "1" Vector2: size
+    }
 }
 
 MenuScene -up-|> Scene
