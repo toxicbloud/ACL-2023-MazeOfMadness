@@ -25,7 +25,6 @@ package Engine {
         + getWidth(): int
         + getHeight(): int
         + getScene(): Scene
-        + open(): void
         + close(): void
     }
 
