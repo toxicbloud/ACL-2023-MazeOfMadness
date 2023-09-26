@@ -58,99 +58,101 @@ package Game {
     Entity "1" -- "1" Sprite : sprite
     Entity <|-- Item
     Entity <|-- Living
-    Entity <|-- Tile
 
     abstract Item {
 
     }
 
-    Item <|-- Weapon
-    Item <|-- Potion
+    package Potions {
+        abstract Potion {
+            - health: int
+            - strength: int
+            - speed: int
+            - timeToLive: float
+            ---
+            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+            + getHealth(): int
+            + setHealth(health: int)
+            + getStrength(): int
+            + setStrength(strength: int)
+            + getSpeed(): int
+            + setSpeed(speed: int)
+        }
+        Item <|-- Potion
+        Potion <|-- HealthPotion
+        Potion <|-- StrengthPotion
+        Potion <|-- SpeedPotion
 
-    abstract Potion {
-        - health: int
-        - strength: int
-        - speed: int
-        - timeToLive: float
-        ---
-        # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
-        + getHealth(): int
-        + setHealth(health: int)
-        + getStrength(): int
-        + setStrength(strength: int)
-        + getSpeed(): int
-        + setSpeed(speed: int)
-    }
-    Potion <|-- HealthPotion
-    Potion <|-- StrengthPotion
-    Potion <|-- SpeedPotion
+        class HealthPotion {
+            ---
+            + HealthPotion()
+        }
 
-    class HealthPotion {
-        ---
-        + HealthPotion()
-    }
+        class StrengthPotion {
+            ---
+            + StrengthPotion()
+        }
 
-    class StrengthPotion {
-        ---
-        + StrengthPotion()
-    }
-
-    class SpeedPotion {
-        ---
-        + SpeedPotion()
-    }
-
-    abstract Weapon {
-        - attack: int
-        # Weapon(int attack)
-    }
-    Weapon <|-- WeaponFist
-    Weapon <|-- WeaponSword
-    Weapon <|-- WeaponAxe
-    Weapon <|-- WeaponBow
-
-    abstract WeaponFist {
-
+        class SpeedPotion {
+            ---
+            + SpeedPotion()
+        }
     }
 
-    WeaponFist <|-- PlayerFist
-    WeaponFist <|-- ZombieFist
-    WeaponFist <|-- GhostFist
-    WeaponFist <|-- BossFist
+    package Weapons {
+        abstract Weapon {
+            - attack: int
+            # Weapon(int attack)
+        }
+        Item <|-- Weapon
+        Weapon <|-- WeaponFist
+        Weapon <|-- WeaponSword
+        Weapon <|-- WeaponAxe
+        Weapon <|-- WeaponBow
 
-    class PlayerFist {
-        ---
-        + PlayerFist()
-    }
+        abstract WeaponFist {
 
-    class ZombieFist {
-        ---
-        + ZombieFist()
-    }
+        }
 
-    class GhostFist {
-        ---
-        + GhostFist()
-    }
+        WeaponFist <|-- PlayerFist
+        WeaponFist <|-- ZombieFist
+        WeaponFist <|-- GhostFist
+        WeaponFist <|-- BossFist
 
-    class BossFist {
-        ---
-        + BossFist()
-    }
+        class PlayerFist {
+            ---
+            + PlayerFist()
+        }
 
-    class WeaponSword {
-        ---
-        + WeaponSword()
-    }
+        class ZombieFist {
+            ---
+            + ZombieFist()
+        }
 
-    class WeaponAxe {
-        ---
-        + WeaponAxe()
-    }
+        class GhostFist {
+            ---
+            + GhostFist()
+        }
 
-    class WeaponBow {
-        ---
-        + WeaponBow()
+        class BossFist {
+            ---
+            + BossFist()
+        }
+
+        class WeaponSword {
+            ---
+            + WeaponSword()
+        }
+
+        class WeaponAxe {
+            ---
+            + WeaponAxe()
+        }
+
+        class WeaponBow {
+            ---
+            + WeaponBow()
+        }
     }
 
     abstract Living {
@@ -179,57 +181,62 @@ package Game {
         
     }
 
-    abstract Monster {
+    package Monsters {
+        abstract Monster {
 
-    }
-    Monster <|-- Zombie
-    Monster <|-- Ghost
-    Monster <|-- Boss
+        }
+        Monster <|-- Zombie
+        Monster <|-- Ghost
+        Monster <|-- Boss
 
-    class Zombie {
-        ---
-        + Zombie()
-    }
+        class Zombie {
+            ---
+            + Zombie()
+        }
 
-    class Ghost {
-        ---
-        + Ghost()
-    }
+        class Ghost {
+            ---
+            + Ghost()
+        }
 
-    class Boss {
-        ---
-        + Boss()
-    }
-
-    abstract Tile {
-        - solid: boolean
-        ---
-        + Tile(sprite: Sprite, solid: boolean)
-        + isSolid(): boolean
-    }
-    Tile <|-- Wall
-    Tile <|-- Ground
-    Ground <|-- GroundWater
-    Ground <|-- GroundRock
-
-    class Wall {
-        ---
-        + Wall()
+        class Boss {
+            ---
+            + Boss()
+        }
     }
 
-    abstract Ground {
-        ---
-        + Ground()
-    }
+    package Tiles {
+        abstract Tile {
+            - solid: boolean
+            ---
+            + Tile(sprite: Sprite, solid: boolean)
+            + isSolid(): boolean
+        }
+        Entity <|-- Tile
+        Tile <|-- Wall
+        Tile <|-- Ground
+        Ground <|-- GroundWater
+        Ground <|-- GroundRock
 
-    class GroundRock {
-        ---
-        + GroundRock()
-    }
+        class Wall {
+            ---
+            + Wall()
+        }
 
-    class GroundWater {
-        ---
-        + GroundWater()
+        abstract Ground {
+            ---
+            + Ground()
+        }
+
+        class GroundRock {
+            ---
+            + GroundRock()
+        }
+
+        class GroundWater {
+            ---
+            + GroundWater()
+        }
     }
 }
 
