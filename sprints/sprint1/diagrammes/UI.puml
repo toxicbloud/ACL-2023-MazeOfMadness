@@ -2,14 +2,18 @@
 title UI system class diagram
 
 package UI {
-    class Element {
+    abstract Element {
         - shouldRender: boolean
         - active : boolean
+        - hovered : boolean
+        - pressed : boolean
         ---
         # Element()
         # Element(position: Vector2, size: Vector2)
         + setPosition(position: Vector2): void
         + setSize(size: Vector2): void
+        + getHovered(): boolean
+        + getPressed(): boolean
         + getPosition(): Vector2
         + getSize(): Vector2
         + needsRender(): boolean
