@@ -162,10 +162,6 @@ package Game {
         # Living(sprite: Sprite)
         + getHealth(): int
         + setHealth(health: int)
-        + getAttack(): int
-        + setAttack(attack: int)
-        + getDefense(): int
-        + setDefense(defense: int)
         + getSpeed(): int
         + setSpeed(speed: int)
         + attack(living: Living): boolean
