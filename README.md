@@ -43,11 +43,11 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousse
 # Installation
 
 ## Prérequis
-<center>
+<div align="center">
 
 ![JDK 17](https://img.shields.io/badge/JDK-17-red.svg) &nbsp;&nbsp;&nbsp;&nbsp; ![Apache Maven](https://badgen.net/badge/icon/Maven/red?icon=maven&label) &nbsp;&nbsp;&nbsp;&nbsp; ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
 
-</center>
+</div>
 
 ## Étapes d'Installation
 
