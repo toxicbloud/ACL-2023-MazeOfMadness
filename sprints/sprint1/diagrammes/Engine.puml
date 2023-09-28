@@ -25,7 +25,6 @@ package Engine {
         + getWidth(): int
         + getHeight(): int
         + getScene(): Scene
-        + open(): void
         + close(): void
     }
 
@@ -43,45 +42,72 @@ package Engine {
         + getEvents(): Event[]
     }
 
-    class Time {
-        - instance: Time
-        - launchTime: float
-        - currentTime: float
-        - lastTime: float
+    class Texture {
+        - path: String
         ---
-        + GetInstance(): Time
-
-        - Time()
-        + getAbsTime()
-        + getDeltaTime()
-        + update()
+        + Texture(path: String)
+        + getPath(): String
     }
 
-    class Vector2 {
-        - x: float
-        - y: float
+    class Sprite {
+        - width: int
+        - height: int
+        - xShift: int
+        - yShift: int
         ---
-        + Vector2()
-        + Vector2(x: float, y: float)
-        + getX(): float
-        + getY(): float
-        + setX(x: float): void
-        + setY(y: float): void
+        + Sprite(texture: Texture, width: int, height: int)
+        + getWidth(): int
+        + getHeight(): int
+        + getSpriteTexture(): Texture
+        + setXshift(x: int)
+        + setYshift(y: int)
+        + getXshift(): int
+        + getYshift(): int
+        + getTexture(): Texture
     }
+    Sprite "1" -- "1" Texture : texture
 
-    class Vector3 {
-        - x: float
-        - y: float
-        - z: float
-        ---
-        + Vector3()
-        + Vector3(x: float, y: float, z: float)
-        + getX(): float
-        + getY(): float
-        + getZ(): float
-        + setX(x: float): void
-        + setY(y: float): void
-        + setZ(z: float): void
+    package utils {
+        class Time {
+            - instance: Time
+            - launchTime: float
+            - currentTime: float
+            - lastTime: float
+            ---
+            + GetInstance(): Time
+
+            - Time()
+            + getAbsTime()
+            + getDeltaTime()
+            + update()
+        }
+
+        class Vector2 {
+            - x: float
+            - y: float
+            ---
+            + Vector2()
+            + Vector2(x: float, y: float)
+            + getX(): float
+            + getY(): float
+            + setX(x: float): void
+            + setY(y: float): void
+        }
+
+        class Vector3 {
+            - x: float
+            - y: float
+            - z: float
+            ---
+            + Vector3()
+            + Vector3(x: float, y: float, z: float)
+            + getX(): float
+            + getY(): float
+            + getZ(): float
+            + setX(x: float): void
+            + setY(y: float): void
+            + setZ(z: float): void
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 @startuml
 
-package UI {
+package Engine.Events {
     abstract Event {
         ---
         # Event(type: EventType)
@@ -13,9 +13,10 @@ package UI {
         MOUSE_MOVED
         MOUSE_PRESSED
         MOUSE_RELEASED
-        GAMEPAD_BUTTON_PRESSED
-        GAMEPAD_BUTTON_RELEASED
-        GAMEPAD_AXIS_MOVED
+        MOUSE_SCROLLED
+        GAMEPAD_PRESSED
+        GAMEPAD_RELEASED
+        GAMEPAD_MOVED
     }
 
     class EventKeyPressed {
@@ -39,49 +40,55 @@ package UI {
         + getY(): float
     }
     class EventMousePressed {
-        - button: MouseButton
+        - btn: MouseButton
         ---
-        + EventMousePressed(button: MouseButton)
+        + EventMousePressed(btn: MouseButton)
         + getButton(): MouseButton
     }
     class EventMouseReleased {
-        - button: MouseButton
+        - btn: MouseButton
         ---
-        + EventMousePressed(button: MouseButton)
+        + EventMousePressed(btn: MouseButton)
         + getButton(): MouseButton
     }
-    class EventGamepadButtonPressed {
-        - button: GamepadButton
+    class EventMouseScrolled {
+        - delta: float
         ---
-        + EventGamepadButtonPressed(button: GamepadButton)
-        + getButton(): GamepadButton
+        + EventMouseScrolled(delta: float)
+        + getDelta(): float
     }
-    class EventGamepadButtonReleased {
-        - button: GamepadButton
+    class EventGamepadPressed {
+        - btn: GamepadBtn
         ---
-        + EventGamepadButtonPressed(button: GamepadButton)
-        + getButton(): GamepadButton
+        + EventGamepadPressed(btn: GamepadBtn)
+        + getButton(): GamepadBtn
     }
-    class EventGamepadAxisMoved {
+    class EventGamepadReleased {
+        - btn: GamepadBtn
+        ---
+        + EventGamepadReleased(btn: GamepadBtn)
+        + getButton(): GamepadBtn
+    }
+    class EventGamepadMoved {
         - axis: GamepadAxis 
         - x: float
         - y: float
         ---
-        + EventGamepadAxisMoved(axis: GamepadAxis, value: float)
+        + EventGamepadMoved(axis: GamepadAxis, x: float, y: float)
         + getAxis(): GamepadAxis
         + getX(): float
         + getY(): float
     }
 
     enum GamepadAxis {
-        LEFT
-        RIGHT
+        AXIS_LEFT
+        AXIS_RIGHT
     }
     
-    enum MouseButton {
-        LEFT
-        RIGHT
-        MIDDLE
+    enum MouseBtn {
+        BTN_LEFT
+        BTN_RIGHT
+        BTN_MIDDLE
     }
 
     enum KeyCode {
@@ -108,28 +115,27 @@ package UI {
         KEY_TAB
         KEY_BACKSPACE
         KEY_DELETE
-        KEY_INSERT
         KEY_HOME
         KEY_END
     }
 
-    enum GamepadButton {
-        BUTTON_A
-        BUTTON_B
-        BUTTON_X
-        BUTTON_Y
-        BUTTON_L1
-        BUTTON_R1
-        BUTTON_L2
-        BUTTON_R2
-        BUTTON_BACK
-        BUTTON_START
-        BUTTON_LSTICK
-        BUTTON_RSTICK
-        BUTTON_DPAD_UP
-        BUTTON_DPAD_RIGHT
-        BUTTON_DPAD_DOWN
-        BUTTON_DPAD_LEFT
+    enum GamepadBtn {
+        BTN_A
+        BTN_B
+        BTN_X
+        BTN_Y
+        BTN_L1
+        BTN_R1
+        BTN_L2
+        BTN_R2
+        BTN_L3
+        BTN_R3
+        BTN_BACK
+        BTN_START
+        BTN_DPAD_UP
+        BTN_DPAD_RIGHT
+        BTN_DPAD_DOWN
+        BTN_DPAD_LEFT
     }
 }
 
@@ -139,8 +145,9 @@ EventKeyReleased -up-|> Event
 EventMouseMoved -up-|> Event
 EventMousePressed -up-|> Event
 EventMouseReleased -up-|> Event
-EventGamepadButtonPressed -up-|> Event
-EventGamepadButtonReleased -up-|> Event
-EventGamepadAxisMoved -up-|> Event
+EventMouseScrolled -up-|> Event
+EventGamepadPressed -up-|> Event
+EventGamepadReleased -up-|> Event
+EventGamepadMoved -up-|> Event
 
 @enduml

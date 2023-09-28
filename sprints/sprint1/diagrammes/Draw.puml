@@ -1,0 +1,28 @@
+@startuml Drawing sequence diagram
+title Drawing sequence diagram
+
+participant "Scene" as scene
+participant "Entity" as entity
+participant "Sprite" as sprite
+participant "Texture" as texture
+participant "Window" as window
+participant "canvas: SpriteBatch" as canvas
+
+scene -> entity: render()
+activate entity
+    entity -> sprite: getTexture()
+    activate sprite
+        entity <-- sprite: texture
+    deactivate sprite
+    entity -> window: getCanvas()
+    activate window
+        entity <-- window: canvas
+    deactivate window
+    entity -> canvas: draw(texture, x, y)
+    activate canvas
+        entity <-- canvas
+    deactivate canvas
+    scene <-- entity
+deactivate entity
+
+@enduml
