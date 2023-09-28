@@ -2,6 +2,7 @@ package com.renderer;
 
 import com.engine.Scene;
 import com.engine.events.Event;
+import com.game.Game;
 
 /**
  * GameScene class.
@@ -26,14 +27,14 @@ public class GameScene extends Scene {
      * Update the scene.
      */
     public void update() {
-        // TODO
+        Game.getInstance().getMaze().update();
     }
 
     /**
      * Render the scene.
      */
     public void render() {
-        // TODO
+        Game.getInstance().getMaze().update();
     }
 
     /**

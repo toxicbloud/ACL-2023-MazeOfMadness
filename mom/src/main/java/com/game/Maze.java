@@ -1,5 +1,6 @@
 package com.game;
 
+import com.engine.Evolvable;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 
@@ -7,7 +8,7 @@ import com.game.tiles.Tile;
  * Maze class.
  * This is the maze class.
  */
-public class Maze {
+public class Maze implements Evolvable {
     /** The width of the maze. */
     private int width;
     /** The height of the maze. */
@@ -55,6 +56,32 @@ public class Maze {
         this.width = w;
         this.height = h;
         this.tiles = t;
+    }
+
+    @Override
+    public void update() {
+        for (Monster m: this.monsters) {
+            m.update();
+        }
+        for (Tile t: this.tiles) {
+            t.update();
+        }
+        for (Item i: this.items) {
+            i.update();
+        }
+    }
+
+    @Override
+    public void render() {
+        for (Monster m: this.monsters) {
+            m.render();
+        }
+        for (Tile t: this.tiles) {
+            t.render();
+        }
+        for (Item i: this.items) {
+            i.render();
+        }
     }
 
     /**
