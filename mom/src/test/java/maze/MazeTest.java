@@ -4,10 +4,13 @@ import com.game.Maze;
 import com.game.generators.MazeFactory;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Maze test class.
+ */
 public class MazeTest {
 
     @Test
-    void testDefaultMazeGeneration(){
+    void testDefaultMazeGeneration() {
 
         MazeFactory mf = new MazeFactory();     // Will generate mazes 20 by 20
         Maze maze1 = mf.createMaze();
@@ -16,10 +19,11 @@ public class MazeTest {
     }
 
     @Test
-    void testCustomMazeGeneration(){
+    void testCustomMazeGeneration() {
 
         MazeFactory mf = new MazeFactory();     // Will generate mazes 150 by 150
-        Maze maze1 = mf.createMaze(150,150);
+        final int v = 150;
+        Maze maze1 = mf.createMaze(v, v);
 
         assert maze1 != null : "[ERROR] - Maze returned is null !";
     }
