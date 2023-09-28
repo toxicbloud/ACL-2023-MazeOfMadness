@@ -2,6 +2,7 @@ package com.game;
 
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
+import com.game.tiles.TileType;
 
 /**
  * Maze class.
@@ -9,9 +10,9 @@ import com.game.tiles.Tile;
  */
 public class Maze {
     /** The width of the maze. */
-    private int width;
+    private final int width;
     /** The height of the maze. */
-    private int height;
+    private final int height;
     /** The tiles of the maze. */
     private Tile[] tiles;
     /** The monsters of the maze. */
@@ -124,5 +125,21 @@ public class Maze {
      */
     public void setItems(Item[] items) {
         this.items = items;
+    }
+
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+
+        for (int i = 0; i < this.tiles.length; i++){
+            if(this.tiles[i].getType() == TileType.TYPE_WALL){
+                s.append("#  ");
+            }
+
+            if(i % this.width == 0) {
+                s.append('\n');
+            }
+        }
+
+        return s.toString();
     }
 }

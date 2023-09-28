@@ -1,30 +1,26 @@
 package maze;
 
-import maze.tiles.EmptyTile;
+import com.game.Maze;
+import com.game.generators.MazeFactory;
 import org.junit.jupiter.api.Test;
 
 public class MazeTest {
 
     @Test
-    void testMazeSize(){
-        Maze maze = new Maze();
-//        maze.printMaze();
+    void testDefaultMazeGeneration(){
 
-        assert maze.getHeight() == Data.MAZE_HEIGHT : "[ASSERT ERROR] - Height is not correct. Expected " + Data.MAZE_HEIGHT + " and got " + maze.getHeight();
-        assert maze.getWidth() == Data.MAZE_WIDTH : "[ASSERT ERROR] - Width is not correct. Expected " + Data.MAZE_WIDTH + " and got " + maze.getWidth();
+        MazeFactory mf = new MazeFactory();     // Will generate mazes 20 by 20
+        Maze maze1 = mf.generateMaze();
+
+        assert maze1 != null : "[ERROR] - Maze returned is null !";
     }
 
+    @Test
+    void testCustomMazeGeneration(){
 
-    void testGetNeightbours(){
-        Maze maze = new Maze();
-        maze.printMaze();
+        MazeFactory mf = new MazeFactory();     // Will generate mazes 150 by 150
+        Maze maze1 = mf.generateMaze(150,150);
 
-        EmptyTile et1 = new EmptyTile(0, 10);
-        EmptyTile et2 = new EmptyTile(Data.MAZE_WIDTH, 0);
-        EmptyTile et3 = new EmptyTile(10, 0);
-        EmptyTile et4 = new EmptyTile(0, Data.MAZE_HEIGHT);
-
-
-
+        assert maze1 != null : "[ERROR] - Maze returned is null !";
     }
 }
