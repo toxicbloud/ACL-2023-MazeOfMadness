@@ -1,19 +1,38 @@
 package com.engine.events;
 
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.Buttons;
-
+/**
+ * EventManager class.
+ * This is the event manager class.
+ */
 public class EventManager implements InputProcessor {
+    /**
+     * Events list
+     * This is the list of events.
+     */
     private List<Event> events = new ArrayList<Event>();
+    /**
+     * Key2Code map
+     * This is the map of keys to key codes.
+     */
     private Map<Integer, KeyCode> key2code = new HashMap<Integer, KeyCode>();
+    /**
+     * Btn2Code map
+     * This is the map of mouse buttons to mouse button codes.
+     */
     private Map<Integer, MouseBtn> btn2code = new HashMap<Integer, MouseBtn>();
 
+    /**
+     * EventManager constructor.
+     */
     public EventManager() {
         this.events.clear();
         key2code.put(Keys.A, KeyCode.KEY_A);
@@ -76,53 +95,112 @@ public class EventManager implements InputProcessor {
         btn2code.put(Buttons.MIDDLE, MouseBtn.BTN_MIDDLE);
     }
 
+    /**
+     * Get the events.
+     * @return The events.
+     */
     public Event[] getEvents() {
-        if (this.events.size() == 0)
+        if (this.events.size() == 0) {
             return new Event[0];
+        }
 
         Event[] result = (Event[]) (this.events.toArray(new Event[this.events.size()]));
         this.events.clear();
         return result;
     }
 
+    /**
+     * Add an event.
+     * @param ev The event.
+     */
     private void addEvent(Event ev) {
         this.events.add(ev);
     }
 
+    /**
+     * Key down event listener.
+     * @param keycode The key code.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean keyDown(int keycode) {
         addEvent(new EventKeyPressed(key2code.get(keycode)));
         return false;
     }
 
+    /**
+     * Key up event listener.
+     * @param keycode The key code.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean keyUp(int keycode) {
         addEvent(new EventKeyReleased(key2code.get(keycode)));
         return false;
     }
 
+    /**
+     * Key typed event listener.
+     * @param character The character.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean keyTyped(char character) {
         return false;
     }
 
+    /**
+     * Mouse button down event listener.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param pointer The pointer.
+     * @param button The mouse button.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean touchDown(int x, int y, int pointer, int button) {
         addEvent(new EventMousePressed(btn2code.get(button)));
         return false;
     }
 
+    /**
+     * Mouse button up event listener.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param pointer The pointer.
+     * @param button The mouse button.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean touchUp(int x, int y, int pointer, int button) {
         addEvent(new EventMouseReleased(btn2code.get(button)));
         return false;
     }
 
+    /**
+     * Mouse drag event listener.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param pointer The pointer.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean touchDragged(int x, int y, int pointer) {
         addEvent(new EventMouseMoved(x, y));
         return false;
     }
 
+    /**
+     * Mouse move event listener.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean mouseMoved(int x, int y) {
         addEvent(new EventMouseMoved(x, y));
         return false;
     }
 
+    /**
+     * Mouse scroll event listener.
+     * @param amountX The x amount.
+     * @param amountY The y amount.
+     * @return true if the event was handled, false otherwise.
+     */
     public boolean scrolled(float amountX, float amountY) {
         addEvent(new EventMouseScrolled(amountY));
         return false;
