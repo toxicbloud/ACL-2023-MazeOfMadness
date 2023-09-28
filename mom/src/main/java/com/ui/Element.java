@@ -7,24 +7,27 @@ import com.engine.Evolvable;
  * @author Antonin Rousseau
  */
 public abstract class Element implements Evolvable {
+    /** Element position. */
     private Vector2 position;
+    /** Element size. */
     private Vector2 size;
+    /** Should the element be rendered. */
     private boolean shouldRender;
+    /** Is the element active. */
     private boolean active;
+    /** Is the element hovered. */
     private boolean hovered;
+    /** Is the element pressed. */
     private boolean pressed;
 
     /**
-     * Default constructor.
+     * Default element constructor.
      */
-    protected Element() {
-    }
+    protected Element() {}
 
     /**
-     * Constructor.
-     *
+     * Element constructor.
      * @param position Position of the element.
-     *
      * @param size     Size of the element.
      */
     protected Element(Vector2 position, Vector2 size) {
@@ -38,11 +41,8 @@ public abstract class Element implements Evolvable {
 
     /**
      * Constructor.
-     *
      * @param position Position of the element.
-     *
      * @param size     Size of the element.
-     *
      * @param render   Should the element be rendered.
      */
     protected Element(Vector2 position, Vector2 size, boolean render) {
@@ -51,8 +51,7 @@ public abstract class Element implements Evolvable {
     }
 
     /**
-     * Constructor.
-     *
+     * Element constructor.
      * @param position Position of the element.
      * @param size     Size of the element.
      * @param render   Should the element be rendered.
@@ -65,7 +64,6 @@ public abstract class Element implements Evolvable {
 
     /**
      * hovered state setter.
-     *
      * @param hovered true if the element is hovered, false otherwise
      */
     protected void setHovered(boolean hovered) {
@@ -74,7 +72,6 @@ public abstract class Element implements Evolvable {
 
     /**
      * pressed state setter.
-     *
      * @param pressed true if the element is pressed, false otherwise
      */
     protected void setPressed(boolean pressed) {
@@ -82,7 +79,7 @@ public abstract class Element implements Evolvable {
     }
 
     /**
-     *
+     * Get the hovered state of the element.
      * @return true if the element was hovered, false otherwise
      */
     public boolean getHovered() {
@@ -90,7 +87,7 @@ public abstract class Element implements Evolvable {
     }
 
     /**
-     *
+     * Get the pressed state of the element.
      * @return true if the element was pressed, false otherwise
      */
     public boolean getPressed() {
@@ -99,6 +96,7 @@ public abstract class Element implements Evolvable {
 
     /**
      * Get the position of the element.
+     * @return The position of the element.
      */
     public Vector2 getPosition() {
         return this.position;
@@ -106,13 +104,15 @@ public abstract class Element implements Evolvable {
 
     /**
      * Get the size of the element.
+     * @return The size of the element.
      */
     public Vector2 getSize() {
         return this.size;
     }
 
     /**
-     * Does the element need to be re-rendered.
+     * Get if the element needs to be re-rendered.
+     * @return true if the element needs to be re-rendered, false otherwise
      */
     public boolean needsRender() {
         return this.shouldRender;
@@ -120,40 +120,42 @@ public abstract class Element implements Evolvable {
 
     /**
      * Is the element active.
+     * @return true if the element is active, false otherwise
      */
     public boolean isActive() {
         return this.active;
     }
 
     /**
-     * Set the position of the element.
+     * Set if the element is active.
+     * @param active true if the element is active, false otherwise
      */
     public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
-     * update the element : logic.
+     * Update the element.
+     * This method is called every frame, before any render() call.
      */
     @Override
     public abstract void update();
 
     /**
-     * render the element : graphics.
+     * Render the element.
+     * This method is called every frame, after all update() calls.
      */
     @Override
     public abstract void render();
 
     /**
      * Called by his scene when the element is hovered.
-     *
      * @param state true when entered, false when exited
      */
     public abstract void onHovered(boolean state);
 
     /**
      * Called by his scene when the element is clicked.
-     *
      * @param state true when pressed, false when released
      */
     public abstract void onPressed(boolean state);
