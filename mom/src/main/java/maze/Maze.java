@@ -1,46 +1,82 @@
 package maze;
 
-import java.util.Arrays;
+import maze.tiles.EmptyTile;
+import maze.tiles.Tile;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Stack;
 
 public class Maze {
 
-    private int[][] maze;
-    private int height;
-    private int width;
+    private final ArrayList<ArrayList<Tile>> maze;
+    private final int height;
+    private final int width;
 
     /**
      * Default constructor. Uses default Data class values.
      */
     public Maze(){
-        this.maze = new int[Data.MAZE_HEIGHT][Data.MAZE_WIDTH];
+        this.maze = new ArrayList<>();
+
         this.height = Data.MAZE_HEIGHT;
         this.width = Data.MAZE_WIDTH;
 
-        // Building Walls (Trump style)
-        // -> Lines
-        for(int i = 0; i < this.width; i++){
-            this.maze[0][i] = 1;
-            this.maze[this.height - 1][i] = 1;
+        for(int i = 0; i < this.height; i++) {
+            this.maze.add(new ArrayList<>());
+
         }
-        for(int i = 0; i < this.height; i++){
-            this.maze[i][0] = 1;
-            this.maze[i][this.width - 1] = 1;
+
+        this.generateMaze();
+    }
+
+
+
+    private void generateMaze(){
+        Random r = new Random();
+        int start_x, start_y;
+        Stack<Tile> stack = new Stack<>();
+
+        start_x = r.nextInt(this.width-1); // Int between 0 and width - 1
+        start_y = r.nextInt(this.height-1); // Int between 0 and width - 1
+
+        System.out.println("[DEBUG] - Start point : (" + start_x + " : " + start_y + ")");
+
+        this.maze[start_x][start_y] = new EmptyTile(start_x, start_y);
+        this.maze[start_x][start_y].visit();
+        stack.push(this.maze[start_x][start_y]);
+
+        while(!stack.isEmpty()) {
+            Tile currentCell = stack.pop();
+
+
+
+
+
         }
     }
 
 
     public void printMaze(){
-        System.out.println("# ---- MAZE ---- #");
+        System.out.println("# -------- MAZE Generated -------- #");
 
         for(int j = 0; j < this.height; j++) {
             for(int i = 0; i < this.width; i++) {
-                    if(this.maze[j][i] == 1) {
-                    System.out.print("\u001B[31m" + this.maze[j][i] + "   ");
+                if(this.maze[j][i].isWall()) {
+                    System.out.print(Data.RED_COLOR + this.maze[j][i] + "   ");
                 } else {
-                    System.out.print("\u001B[32m" + this.maze[j][i] + "   ");
+                    System.out.print(Data.GREEN_COLOR + this.maze[j][i] + "   ");
                 }
             }
             System.out.println();
         }
+        System.out.println(Data.WHITE_COLOR + "# -------- END OF MAZE -------- #");
+    }
+
+    public int getHeight() {
+        return this.maze.length;
+    }
+    public int getWidth() {
+        return this.maze[0].length;
     }
 }
