@@ -1,0 +1,36 @@
+@startuml Generators class diagram
+title Generators class diagram
+
+package Generators {
+    class MazeFactory {
+        + CreateMaze()
+    }
+
+    class MonsterFactory {
+        + CreateZombie()
+        + CreateGhost()
+        + CreateBoss()
+    }
+
+    class PotionFactory {
+        + CreateHealthPotion()
+        + CreateStrenghPotion()
+        + CreateSpeedPotion()
+    }
+
+    class WeaponFactory {
+        + CreateSword()
+        + CreateBow()
+        + CreateAxe()
+    }
+
+    class MonsterSpawner {
+        + SpawnMonsters(maze: Maze): Maze
+    }
+
+    class ItemSpawner {
+        + SpawnItems(maze: Maze): Maze
+    }
+}
+
+@enduml

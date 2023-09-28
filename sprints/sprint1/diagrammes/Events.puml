@@ -1,0 +1,153 @@
+@startuml
+
+package Engine.Events {
+    abstract Event {
+        ---
+        # Event(type: EventType)
+        + getType(): EventType
+    }
+
+    enum EventType {
+        KEY_PRESSED
+        KEY_RELEASED
+        MOUSE_MOVED
+        MOUSE_PRESSED
+        MOUSE_RELEASED
+        MOUSE_SCROLLED
+        GAMEPAD_PRESSED
+        GAMEPAD_RELEASED
+        GAMEPAD_MOVED
+    }
+
+    class EventKeyPressed {
+        - keyCode: KeyCode
+        ---
+        + EventKeyPressed(keyCode: KeyCode)
+        + getKeyCode(): KeyCode
+    }
+    class EventKeyReleased {
+        - keyCode: KeyCode
+        ---
+        + EventKeyPressed(keyCode: KeyCode)
+        + getKeyCode(): KeyCode
+    }
+    class EventMouseMoved {
+        - x: float
+        - y: float
+        ---
+        + EventMouseMoved(x: float, y: float)
+        + getX(): float
+        + getY(): float
+    }
+    class EventMousePressed {
+        - btn: MouseButton
+        ---
+        + EventMousePressed(btn: MouseButton)
+        + getButton(): MouseButton
+    }
+    class EventMouseReleased {
+        - btn: MouseButton
+        ---
+        + EventMousePressed(btn: MouseButton)
+        + getButton(): MouseButton
+    }
+    class EventMouseScrolled {
+        - delta: float
+        ---
+        + EventMouseScrolled(delta: float)
+        + getDelta(): float
+    }
+    class EventGamepadPressed {
+        - btn: GamepadBtn
+        ---
+        + EventGamepadPressed(btn: GamepadBtn)
+        + getButton(): GamepadBtn
+    }
+    class EventGamepadReleased {
+        - btn: GamepadBtn
+        ---
+        + EventGamepadReleased(btn: GamepadBtn)
+        + getButton(): GamepadBtn
+    }
+    class EventGamepadMoved {
+        - axis: GamepadAxis 
+        - x: float
+        - y: float
+        ---
+        + EventGamepadMoved(axis: GamepadAxis, x: float, y: float)
+        + getAxis(): GamepadAxis
+        + getX(): float
+        + getY(): float
+    }
+
+    enum GamepadAxis {
+        AXIS_LEFT
+        AXIS_RIGHT
+    }
+    
+    enum MouseBtn {
+        BTN_LEFT
+        BTN_RIGHT
+        BTN_MIDDLE
+    }
+
+    enum KeyCode {
+        KEY_A
+        KEY_B
+        ...
+        KEY_Y
+        KEY_Z
+        KEY_0
+        KEY_1
+        ...
+        KEY_8
+        KEY_9
+        KEY_SPACE
+        KEY_ENTER
+        KEY_ESCAPE
+        KEY_UP
+        KEY_DOWN
+        KEY_LEFT
+        KEY_RIGHT
+        KEY_SHIFT
+        KEY_CTRL
+        KEY_ALT
+        KEY_TAB
+        KEY_BACKSPACE
+        KEY_DELETE
+        KEY_HOME
+        KEY_END
+    }
+
+    enum GamepadBtn {
+        BTN_A
+        BTN_B
+        BTN_X
+        BTN_Y
+        BTN_L1
+        BTN_R1
+        BTN_L2
+        BTN_R2
+        BTN_L3
+        BTN_R3
+        BTN_BACK
+        BTN_START
+        BTN_DPAD_UP
+        BTN_DPAD_RIGHT
+        BTN_DPAD_DOWN
+        BTN_DPAD_LEFT
+    }
+}
+
+Event "*" -left- "1" EventType: - type
+EventKeyPressed -up-|> Event
+EventKeyReleased -up-|> Event
+EventMouseMoved -up-|> Event
+EventMousePressed -up-|> Event
+EventMouseReleased -up-|> Event
+EventMouseScrolled -up-|> Event
+EventGamepadPressed -up-|> Event
+EventGamepadReleased -up-|> Event
+EventGamepadMoved -up-|> Event
+
+@enduml
