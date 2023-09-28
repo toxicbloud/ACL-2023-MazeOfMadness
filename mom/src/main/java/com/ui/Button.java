@@ -25,6 +25,7 @@ public class Button extends Element {
 
     /**
      * Hovered handler.
+     * @param state The state.
      */
     @Override
     public void onHovered(boolean state) {
@@ -34,6 +35,7 @@ public class Button extends Element {
 
     /**
      * Pressed handler.
+     * @param state The state.
      */
     @Override
     public void onPressed(boolean state) {
