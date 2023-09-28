@@ -1,3 +1,12 @@
 {
-    "java.checkstyle.configuration": "${workspaceFolder}\\mom\\checkstyle.xml"
+    "java.checkstyle.configuration": "${workspaceFolder}\\mom\\checkstyle.xml",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "mom/target":true
+    }
 }
