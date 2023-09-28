@@ -13,13 +13,12 @@ public abstract class Tile {
         this.visited = false;
     }
 
-    public boolean isVisited() {
-        return visited;
-    }
+    public boolean isVisited() { return visited; }
 
-    public void visit(){
-        this.visited = true;
-    }
+    public void visit(){ this.visited = true; }
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+
 
     public abstract boolean isWall();
     public abstract boolean isEmpty();
