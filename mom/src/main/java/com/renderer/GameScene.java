@@ -1,6 +1,7 @@
 package com.renderer;
 
 import com.engine.Scene;
+import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
 
@@ -21,6 +22,15 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+    }
+
+    /**
+     * Main method.
+     * For testing purposes only.
+     * @param args The arguments.
+     */
+    public static void main(String[] args) {
+        Window win = new Window();
     }
 
     /**

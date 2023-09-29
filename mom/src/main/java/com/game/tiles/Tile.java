@@ -10,7 +10,7 @@ import com.game.Entity;
  */
 public abstract class Tile extends Entity {
     /** Tiles default sprite. */
-    protected static final Sprite TILE_SPRITE = new Sprite(new Texture("images/tiles.png"), SPRITE_SIZE, SPRITE_SIZE);
+    protected static final Texture TILE_TEXTURE = new Texture("images/tiles.png");
 
     /** The type of the tile. */
     private TileType type;

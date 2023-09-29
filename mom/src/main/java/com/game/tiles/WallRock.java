@@ -1,5 +1,7 @@
 package com.game.tiles;
 
+import com.engine.Sprite;
+
 /**
  * WallRock class.
  * This is the wall rock class.
@@ -11,7 +13,7 @@ public class WallRock extends Wall {
      * This is the default constructor for the wall rock class.
      */
     public WallRock() {
-        super(TileType.WALL_ROCK);
+        super(TileType.WALL_ROCK, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE));
     }
 
     @Override
