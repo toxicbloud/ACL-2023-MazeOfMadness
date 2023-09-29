@@ -4,6 +4,9 @@ import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
+import com.game.Maze;
+import com.game.tiles.GroundRock;
+import com.game.tiles.Tile;
 
 /**
  * GameScene class.
@@ -31,20 +34,38 @@ public class GameScene extends Scene {
      */
     public static void main(String[] args) {
         Window win = new Window();
+        win.setScene(new GameScene());
+        win.run();
+        Game.getInstance().setMaze(new Maze(1, 2, new Tile[]{new GroundRock()}));
+    }
+
+    /**
+     * Create the scene.
+     */
+    public void create() {
+
     }
 
     /**
      * Update the scene.
      */
     public void update() {
-        Game.getInstance().getMaze().update();
+        Maze maze = Game.getInstance().getMaze();
+        if (maze == null) {
+            return;
+        }
+        maze.update();
     }
 
     /**
      * Render the scene.
      */
     public void render() {
-        Game.getInstance().getMaze().update();
+        Maze maze = Game.getInstance().getMaze();
+        if (maze == null) {
+            return;
+        }
+        maze.render();
     }
 
     /**

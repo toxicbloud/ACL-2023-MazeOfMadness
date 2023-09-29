@@ -191,6 +191,9 @@ public class Window extends Game {
     public void create() {
         this.canvas = new SpriteBatch();
         Gdx.input.setInputProcessor(this.events);
+        if (this.scene != null) {
+            this.scene.create();
+        }
     }
 
     /**
