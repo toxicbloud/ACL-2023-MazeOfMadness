@@ -24,6 +24,8 @@ public class Window extends Game {
     private int height = 720;
     /** The window title. */
     private String title = "Maze Of Madness";
+    /** Is the window created. */
+    private boolean created;
     /** The current scene. */
     private Scene scene;
     /** The event manager. */
@@ -130,6 +132,9 @@ public class Window extends Game {
      */
     public void setScene(Scene scene) {
         this.scene = scene;
+        if (this.created) {
+            this.scene.create();
+        }
     }
 
     /**
@@ -194,6 +199,7 @@ public class Window extends Game {
         if (this.scene != null) {
             this.scene.create();
         }
+        this.created = true;
     }
 
     /**
