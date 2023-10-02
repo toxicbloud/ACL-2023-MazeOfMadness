@@ -5,10 +5,12 @@ package com.game.tiles;
  * This is the enum for the tile types.
  */
 public enum TileType {
-    /** Wall type tile. */
-    TYPE_WALL,
-    /** Water type tile. */
-    TYPE_WATER,
-    /** Rock type tile. */
-    TYPE_ROCK
+    /** void type. */
+    VOID,
+    /** Rock wall type. */
+    WALL_ROCK,
+    /** Rock ground type. */
+    GROUND_ROCK,
+    /** Water ground type. */
+    GROUND_WATER
 }

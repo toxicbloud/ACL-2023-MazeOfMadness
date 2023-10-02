@@ -1,5 +1,6 @@
 package com.renderer;
 
+import com.engine.utils.Time;
 import com.engine.utils.Vector3;
 
 /**
@@ -7,8 +8,15 @@ import com.engine.utils.Vector3;
  * This is the camera class.
  */
 public class Camera {
+    /** Default camera zoom. */
+    private static final float DEFAULT_CAMERA_ZOOM = 60.0f;
+    /** Default camera speed. */
+    private static final float CAMERA_SPEED = 4.0f;
+
     /** The position of the camera. */
     private Vector3 position;
+    /** The target position of the camera. */
+    private Vector3 targetPos;
     /** The zoom of the camera. */
     private float zoom;
 
@@ -17,7 +25,8 @@ public class Camera {
      */
     public Camera() {
         position = new Vector3();
-        zoom = 1.0f;
+        this.targetPos = this.position;
+        zoom = DEFAULT_CAMERA_ZOOM;
     }
 
     /**
@@ -27,7 +36,27 @@ public class Camera {
      */
     public Camera(Vector3 position, float zoom) {
         this.position = position;
+        this.targetPos = this.position;
         this.zoom = zoom;
+    }
+
+    /**
+     * Updates the camera.
+     */
+    public void update() {
+        this.position = new Vector3(
+            this.position.x + (this.targetPos.x - this.position.x) * Time.getInstance().getDeltaTime() * CAMERA_SPEED,
+            this.position.y + (this.targetPos.y - this.position.y) * Time.getInstance().getDeltaTime() * CAMERA_SPEED,
+            this.position.z + (this.targetPos.z - this.position.z) * Time.getInstance().getDeltaTime() * CAMERA_SPEED
+        );
+    }
+
+    /**
+     * Move camera of delta position.
+     * @param delta movement delta
+     */
+    public void move(Vector3 delta) {
+        this.targetPos = this.targetPos.add(delta);
     }
 
     /**
@@ -35,7 +64,7 @@ public class Camera {
      * @return The position of the camera.
      */
     public Vector3 getPosition() {
-        return position;
+        return this.position;
     }
 
     /**
@@ -51,7 +80,7 @@ public class Camera {
      * @param position The position of the camera.
      */
     public void setPosition(Vector3 position) {
-        this.position = position;
+        this.targetPos = position;
     }
 
     /**

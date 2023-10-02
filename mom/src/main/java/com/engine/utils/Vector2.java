@@ -58,4 +58,13 @@ public class Vector2 extends com.badlogic.gdx.math.Vector2 {
     public Vector2 sub(Vector2 v) {
         return new Vector2(x - v.x, y - v.y);
     }
+
+    /**
+     * Multiplies the vector by a float.
+     * @param f the float used to multiply
+     * @return a new vector corresponding to (this.x * float, this.y * float)
+     */
+    public Vector2 mul(float f) {
+        return new Vector2(x * f, y * f);
+    }
 }

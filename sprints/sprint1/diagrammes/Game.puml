@@ -211,10 +211,11 @@ package Game {
         Entity <|-- Tile
         Tile <|-- Wall
         Tile <|-- Ground
+        Wall <|-- WallRock
         Ground <|-- GroundWater
         Ground <|-- GroundRock
 
-        class Wall {
+        abstract Wall {
             ---
             + Wall()
         }
@@ -232,6 +233,11 @@ package Game {
         class GroundWater {
             ---
             + GroundWater()
+        }
+
+        class WallRock {
+            ---
+            + WallRock()
         }
     }
 }

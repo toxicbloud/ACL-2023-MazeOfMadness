@@ -11,22 +11,25 @@ public final class Time {
     private static Time instance;
 
     /** time at app launch. */
-    private float launchTime;
+    private long launchTime;
     /** current app time. */
-    private float currentTime;
+    private long currentTime;
     /** last frame app time. */
-    private float lastTime;
+    private long lastTime;
     /** delta time between now and last frame. */
     private float deltaTime;
+    /** delta time between now and game startup. */
+    private float absTime;
 
     /**
      * Time constructor.
      */
     private Time() {
-        launchTime = millis2seconds(System.currentTimeMillis());
+        launchTime = System.currentTimeMillis();
         currentTime = launchTime;
         lastTime = currentTime;
         deltaTime = 0.0f;
+        absTime = 0.0f;
     }
 
     /**
@@ -54,7 +57,7 @@ public final class Time {
      * @return The absolute time since app launch.
      */
     public float getAbsTime() {
-        return currentTime - launchTime;
+        return absTime;
     }
 
     /**
@@ -72,7 +75,8 @@ public final class Time {
      */
     public void update() {
         lastTime = currentTime;
-        currentTime = millis2seconds(System.currentTimeMillis());
-        deltaTime = currentTime - lastTime;
+        currentTime = System.currentTimeMillis();
+        deltaTime = millis2seconds(currentTime - lastTime);
+        absTime = millis2seconds(currentTime - launchTime);
     }
 }
