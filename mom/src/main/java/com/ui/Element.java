@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.engine.Evolvable;
+import com.engine.Window;
 import com.engine.utils.Vector2;
 
 /**
@@ -119,7 +120,10 @@ public abstract class Element implements Evolvable {
      * @return The size of the element.
      */
     public Vector2 getSize() {
-        return this.size;
+        Window window = Window.getInstance();
+        float windowHeight = window.getHeight() / 100;
+        float windowWidth = window.getWidth() / 100;
+        return new Vector2(this.size.x * windowWidth, this.size.y * windowHeight);
     }
 
     /**

@@ -29,6 +29,7 @@ public class Button extends Element {
      */
     public Button() {
         super();
+        listeners = new java.util.ArrayList<>();
     }
 
     /**
@@ -41,6 +42,7 @@ public class Button extends Element {
      */
     public Button(Vector2 position, Vector2 size, Color baseColor, Color hoverColor) {
         super(position, size);
+        this.listeners = new java.util.ArrayList<>();
         this.baseColor = baseColor;
         this.hoverColor = hoverColor;
     }
@@ -53,6 +55,7 @@ public class Button extends Element {
      */
     public Button(Vector2 position, Vector2 size) {
         super(position, size);
+        this.listeners = new java.util.ArrayList<>();
         this.baseColor = Color.WHITE;
         this.hoverColor = Color.GRAY;
     }
@@ -72,9 +75,7 @@ public class Button extends Element {
     @Override
     public void render() {
         ShapeRenderer renderer = new ShapeRenderer();
-        // renderer.setProjectionMatrix(new OrthographicCamera().combined);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        // renderer.setColor(1, 1, 1, 1);
         if (this.getHovered()) {
             renderer.setColor(hoverColor);
         } else {
@@ -83,10 +84,7 @@ public class Button extends Element {
         Window window = Window.getInstance();
         float windowHeight = window.getHeight();
         float windowWidth = window.getWidth();
-        // renderer.rect(this.getPosition().x * windowWidth, this.getPosition().y *
-        // windowHeight,
-        // this.getSize().x, this.getSize().y);
-        renderer.rect(getPosition().x * windowWidth - getSize().x / 2, windowHeight - getPosition().y,
+        renderer.rect(getPosition().x * windowWidth - getSize().x / 2, windowHeight - getPosition().y * windowHeight,
                 getSize().x, -getSize().y);
         renderer.end();
     }
@@ -99,7 +97,9 @@ public class Button extends Element {
     @Override
     public void onHovered(boolean state) {
         this.setHovered(state);
-        // TODO
+        if (state) {
+            listeners.forEach(ButtonListener::onHovered);
+        }
     }
 
     /**
@@ -164,7 +164,5 @@ public class Button extends Element {
 
     @Override
     void create() {
-        // TODO Auto-generated method stub
-
     }
 }
