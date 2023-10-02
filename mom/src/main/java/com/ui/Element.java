@@ -26,6 +26,8 @@ public abstract class Element implements Evolvable {
     protected Element() {
     }
 
+    abstract void create();
+
     /**
      * Element constructor.
      *

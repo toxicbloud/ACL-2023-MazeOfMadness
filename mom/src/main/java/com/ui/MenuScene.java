@@ -1,6 +1,9 @@
 package com.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
@@ -41,13 +44,18 @@ public class MenuScene extends Scene {
     private Element hoveredElement;
 
     /**
+     * The background texture.
+     */
+    private Texture background;
+
+    private Batch batch;
+
+    /**
      * Default constructor.
      */
     public MenuScene() {
         super();
         this.elements = new ArrayList<>();
-        addElement(new Button(new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y),
-                new Vector2(BUTTON_WIDTH, BUTTON_HEIGHT)));
     }
 
     @Override
@@ -58,6 +66,10 @@ public class MenuScene extends Scene {
 
     @Override
     public void render() {
+        // render background
+        batch.begin();
+        batch.draw(background, 0, 0, Window.getInstance().getWidth(), Window.getInstance().getHeight());
+        batch.end();
         elements.forEach(Element::render);
     }
 
@@ -116,6 +128,15 @@ public class MenuScene extends Scene {
      */
     public void addElement(Element element) {
         elements.add(element);
+    }
+
+    @Override
+    public void create() {
+        System.out.println("MenuScene created");
+        batch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("images/menus/background.png"));
+        addElement(new Button(new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y),
+                new Vector2(BUTTON_WIDTH, BUTTON_HEIGHT)));
     }
 
 }
