@@ -65,11 +65,6 @@ public class MenuScene extends Scene {
     }
 
     @Override
-    public void create() {
-
-    }
-
-    @Override
     public void render() {
         // render background
         batch.begin();
