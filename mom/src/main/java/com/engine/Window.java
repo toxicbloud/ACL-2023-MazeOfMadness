@@ -219,17 +219,10 @@ public class Window extends Game {
                 this.scene.onEvent(ev);
             }
             this.scene.update();
+            this.canvas.begin();
             this.scene.render();
+            this.canvas.end();
         }
-
-        // Batch batch = new SpriteBatch();
-        // Texture tex = new Texture(Gdx.files.internal("images/robin.png"));
-        // Sprite spr = new Sprite(tex);
-        // spr.setPosition(0, 0);
-        // spr.setSize(100, 200);
-        // batch.begin();
-        // spr.draw(batch);
-        // batch.end();
     }
 
     /**

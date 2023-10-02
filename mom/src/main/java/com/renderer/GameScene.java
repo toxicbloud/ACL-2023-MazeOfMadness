@@ -3,16 +3,33 @@ package com.renderer;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.engine.events.EventKeyPressed;
+import com.engine.events.EventMouseScrolled;
+import com.engine.events.KeyCode;
+import com.engine.utils.Time;
+import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
+import com.game.tiles.VoidTile;
+import com.game.tiles.WallRock;
 
 /**
  * GameScene class.
  * This is the game scene class.
  */
 public class GameScene extends Scene {
+    /** TEST_MAZE_WIDTH. */
+    private static final int TEST_MAZE_WIDTH = 5;
+    /** TEST_MAZE_HEIGHT. */
+    private static final int TEST_MAZE_HEIGHT = 5;
+    /** TEST_MAZE_DEPTH. */
+    private static final int TEST_MAZE_DEPTH = 2;
+    /** Mouse delta to camera zoom conversion. */
+    private static final float DELTA_2_ZOOM = 0.1f;
+    /** Camera zoom multiplier. */
+    private static final float ZOOM_MULTIPLIER = 1.0f;
     /**
      * Camera object.
      * This is the scene camera.
@@ -36,14 +53,25 @@ public class GameScene extends Scene {
         Window win = new Window();
         win.setScene(new GameScene());
         win.run();
-        Game.getInstance().setMaze(new Maze(1, 2, new Tile[]{new GroundRock()}));
     }
 
     /**
      * Create the scene.
      */
     public void create() {
+        Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT, TEST_MAZE_DEPTH, new Tile[]{
+            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
 
+            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
+        }));
     }
 
     /**
@@ -54,6 +82,7 @@ public class GameScene extends Scene {
         if (maze == null) {
             return;
         }
+        this.camera.update();
         maze.update();
     }
 
@@ -73,7 +102,21 @@ public class GameScene extends Scene {
      * @param event The event.
      */
     public void onEvent(Event event) {
-        // TODO
+        switch (event.getType()) {
+            case MOUSE_SCROLLED:
+                float delta = ((EventMouseScrolled) event).getDelta();
+                this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
+                break;
+            case KEY_PRESSED:
+                KeyCode key = ((EventKeyPressed) event).getKeyCode();
+                camera.move(new Vector3(
+                    (key == KeyCode.KEY_RIGHT ? 1 : 0) - (key == KeyCode.KEY_LEFT ? 1 : 0),
+                    (key == KeyCode.KEY_UP ? 1 : 0) - (key == KeyCode.KEY_DOWN ? 1 : 0),
+                    0
+                ));
+                break;
+            default: break;
+        }
     }
 
     /**

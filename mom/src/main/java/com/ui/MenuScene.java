@@ -57,6 +57,11 @@ public class MenuScene extends Scene {
     }
 
     @Override
+    public void create() {
+
+    }
+
+    @Override
     public void render() {
         elements.forEach(Element::render);
     }
