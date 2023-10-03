@@ -1,9 +1,11 @@
 package com.game.generators;
 
 import com.game.Maze;
+import com.game.generators.tree.Leaf;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -51,6 +53,36 @@ public class MazeFactory {
      * @param maze Maze to split.
      */
     private void generateRooms(Tile[] maze, int width, int height) {
+        ArrayList<Leaf> leaf_array = new ArrayList<>();
+        Leaf root = new Leaf(0,0, width, height);
+        leaf_array.add(root);
+
+        boolean did_split = true;
+        // We loop through the Leaf array, until we can split no more.
+        while(did_split) {
+            did_split = false;
+
+            for(int i = 0; i < leaf_array.size(); i++) {
+                Leaf leaf = leaf_array.get(i);
+                if (leaf.getLeft() == null && leaf.getRight() == null) {
+
+                    // If this Leaf is too big, or 75% chance...
+                    if (leaf.getWidth() > MazeFactory.min_room_size ||
+                        leaf.getHeight() > MazeFactory.min_room_size ||
+                        MazeFactory.RNG.nextFloat() > 0.25) {
+
+                        if (leaf.split()) { // split the Leaf!
+                            // If we did split, push the child leafs to the Vector os we can loop into them next iteration.
+                            leaf_array.add(leaf.getLeft());
+                            leaf_array.add(leaf.getRight());
+                            did_split = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // We now have an array full of leaves. We can populate it with rooms.
 
 
 

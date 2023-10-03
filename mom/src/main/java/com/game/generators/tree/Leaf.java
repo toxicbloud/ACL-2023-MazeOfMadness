@@ -1,6 +1,5 @@
 package com.game.generators.tree;
 
-import com.game.Maze;
 import com.game.generators.MazeFactory;
 
 public class Leaf {
@@ -14,6 +13,7 @@ public class Leaf {
     private Leaf right;
 
     private String halls;
+    private Rectangle rectangle;
 
 
     public Leaf(int x, int y, int width, int height) {
@@ -38,7 +38,7 @@ public class Leaf {
         // If the width is >25% larger than height, we split vertically
         // If the height is >25% larger than the width, we split horizontally
         // Otherwise we split randomly
-        boolean splitH = MazeFactory.RNG.nextFloat(1) > 0.5;
+        boolean splitH = MazeFactory.RNG.nextFloat() > 0.5;
         if (width > height && (double) width / height >= 1.25) {
             splitH = false;
         } else if (height > width && (double) height / width >= 1.25) {
@@ -70,4 +70,34 @@ public class Leaf {
 
         return true;    // Split successful!
     }
+
+    public void createRooms(){
+        // this function generates all the rooms and hallways for this Leaf and all of its children.
+
+        if (this.left != null || this.right != null) {
+            // this leaf has been split, so go into the children leafs
+            if (this.left != null) {
+                this.left.createRooms();
+            }
+
+            if (this.right != null) {
+                this.right.createRooms();
+            }
+        } else {
+            // This Leaf is the ready to make a room
+            Point roomSize = new Point(MazeFactory.RNG.nextInt(3, width - 2), MazeFactory.RNG.nextInt(3, height - 2));
+            Point roomPos = new Point(MazeFactory.RNG.nextInt(1, width - roomSize.x - 1), MazeFactory.RNG.nextInt(1, height - roomSize.y - 1));
+            // The room can be between 3 x 3 tiles to the size of the leaf - 2.
+
+            // Places the room within the Leaf, but don't put it right
+            // against the side of the Leaf (that would merge rooms together)
+            this.rectangle = new Rectangle(x + roomPos.x,  roomSize.x,y + roomPos.y, roomSize.y);
+        }
+    }
+
+    public Leaf getLeft() {return this.left;}
+    public Leaf getRight() {return this.right;}
+    public int getWidth() {return this.width;}
+    public int getHeight() {return this.height;}
+
 }
