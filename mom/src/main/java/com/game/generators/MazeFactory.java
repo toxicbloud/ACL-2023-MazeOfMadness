@@ -82,10 +82,15 @@ public class MazeFactory {
             }
         }
 
+        System.out.println("[DEBUG] - Done generating maze.");
+
         // We now have an array full of leaves. We can populate it with rooms.
         for(Leaf l : leaf_array) {
             l.createRooms();
         }
+
+        System.out.println("[DEBUG] - Done generating Halls.");
+        System.out.println(leaf_array);
     }
 
     /**
