@@ -3,24 +3,21 @@ package com.game.generators;
 import com.game.Maze;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
-import com.game.tiles.WallRock;
 
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * Factory for mazes.
  */
 public class MazeFactory {
 
-    private final Random RNG;
+    public static final Random RNG = new Random();
+    public static final int min_room_size = 5;
 
     /**
      * Default constructor.
      */
-    public MazeFactory() {
-        this.RNG = new Random();
-    }
+    public MazeFactory() {}
 
     /**
      * This function generates an initialized Maze Object that has been generated randomly.
@@ -36,15 +33,28 @@ public class MazeFactory {
 
         Tile[] maze = new Tile[height * width * depth];
 
-        // Getting a starting tile :
-        int start = this.RNG.nextInt(height * width * depth);
-        System.out.println("[DEBUG] - Starting Tile : " + start);
-
-        for (int i = 0; i < height*width*depth; i++) {
-            maze[i] = new WallRock();
+        // We fill the array using WALL_ROCK
+        for (int i = 0; i< height * width * depth; i++) {
+            maze[i] = new GroundRock();
         }
 
+        // We call the room-splitting method on the array
+        this.generateRooms(maze, width, height);
+
+
         return new Maze(height, width, 1, maze);
+    }
+
+    /**
+     * Recursive Method, calls itself to split the maze in rooms.
+     * It uses a tree-like structure to generate the rooms.
+     * @param maze Maze to split.
+     */
+    private void generateRooms(Tile[] maze, int width, int height) {
+
+
+
+
     }
 
     /**
