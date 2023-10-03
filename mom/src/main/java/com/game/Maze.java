@@ -187,10 +187,6 @@ public class Maze implements Evolvable {
         StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < this.tiles.length; i++){
-            if(this.tiles[i].getType() == TileType.TYPE_WALL){
-                s.append("#  ");
-            }
-
             if(i % this.width == 0) {
                 s.append('\n');
             }
