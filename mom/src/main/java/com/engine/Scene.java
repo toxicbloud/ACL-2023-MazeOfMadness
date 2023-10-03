@@ -13,6 +13,12 @@ public abstract class Scene implements Evolvable {
     protected Scene() {}
 
     /**
+     * Create the scene.
+     * This method is before any update(), once.
+     */
+    public abstract void create();
+
+    /**
      * Update the scene.
      * This method is called every frame, before any render() call.
      */

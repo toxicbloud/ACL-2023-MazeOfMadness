@@ -69,9 +69,6 @@
     <module name="MissingSwitchDefault" />
     <module name="ModifiedControlVariable" />
     <module name="MultipleVariableDeclarations" />
-    <module name="NestedForDepth" />
-    <module name="NestedIfDepth" />
-    <module name="NestedTryDepth" />
     <module name="NoClone" />
     <module name="NoFinalizer" />
     <module name="OneStatementPerLine" />

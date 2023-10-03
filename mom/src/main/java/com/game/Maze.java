@@ -1,5 +1,7 @@
 package com.game;
 
+import com.engine.Evolvable;
+import com.engine.utils.Vector3;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 
@@ -7,11 +9,13 @@ import com.game.tiles.Tile;
  * Maze class.
  * This is the maze class.
  */
-public class Maze {
+public class Maze implements Evolvable {
     /** The width of the maze. */
     private int width;
     /** The height of the maze. */
     private int height;
+    /** The depth of the maze. */
+    private int depth;
     /** The tiles of the maze. */
     private Tile[] tiles;
     /** The monsters of the maze. */
@@ -32,29 +36,72 @@ public class Maze {
     /**
      * Maze constructor.
      * This is the constructor for the maze class.
-     * @param w The width of the maze.
-     * @param h The height of the maze.
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
      */
-    public Maze(int w, int h) {
+    public Maze(int w, int h, int d) {
         this.width = w;
         this.height = h;
-        this.tiles = new Tile[w * h];
+        this.depth = d;
+        this.tiles = new Tile[w * h * d];
     }
 
     /**
      * Maze constructor.
      * This is the constructor for the maze class.
-     * @param w The width of the maze.
-     * @param h The height of the maze.
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
      * @param t The tiles of the maze.
      */
-    public Maze(int w, int h, Tile[] t) {
-        if (t.length != w * h) {
-            throw new IllegalArgumentException("The number of tiles must be equal to the width times the height.");
+    public Maze(int w, int h, int d, Tile[] t) {
+        if (t.length != w * h * d) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
         }
         this.width = w;
         this.height = h;
+        this.depth = d;
         this.tiles = t;
+        this.monsters = new Monster[0];
+        this.items = new Item[0];
+        this.setTilesDefaultPositions();
+    }
+
+    private void setTilesDefaultPositions() {
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                for (int z = 0; z < this.depth; z++) {
+                    this.getTile(x, y, z).setPosition(new Vector3(x, y, z));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void update() {
+        for (Monster m: this.monsters) {
+            m.update();
+        }
+        for (Tile t: this.tiles) {
+            t.update();
+        }
+        for (Item i: this.items) {
+            i.update();
+        }
+    }
+
+    @Override
+    public void render() {
+        for (Monster m: this.monsters) {
+            m.render();
+        }
+        for (Tile t: this.tiles) {
+            t.render();
+        }
+        for (Item i: this.items) {
+            i.render();
+        }
     }
 
     /**
@@ -74,6 +121,14 @@ public class Maze {
     }
 
     /**
+     * Get the depth of the maze.
+     * @return The depth of the maze.
+     */
+    public int getDepth() {
+        return this.depth;
+    }
+
+    /**
      * Get the tiles of the maze.
      * @return The tiles of the maze.
      */
@@ -85,13 +140,14 @@ public class Maze {
      * Get the tile at the given coordinates.
      * @param x The x coordinate.
      * @param y The y coordinate.
+     * @param z The z coordinate.
      * @return The tile at the given coordinates.
      */
-    public Tile getTile(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
+    public Tile getTile(int x, int y, int z) {
+        if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
             throw new IllegalArgumentException("The coordinates must be within the maze.");
         }
-        return tiles[x + y * width];
+        return tiles[x + y * width + z * (width * height)];
     }
 
     /**

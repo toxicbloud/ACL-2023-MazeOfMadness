@@ -52,7 +52,17 @@ public abstract class Entity implements Evolvable {
      * This method is called every frame, after all update() calls.
      */
     public void render() {
-        sprite.render(position, size);
+        if (this.sprite != null) {
+            sprite.render(position, size);
+        }
+    }
+
+    /**
+     * Move entity of delta position.
+     * @param delta movement delta
+     */
+    public void move(Vector3 delta) {
+        this.position = this.position.add(delta);
     }
 
     /**

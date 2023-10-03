@@ -2,6 +2,7 @@ package com.game.tiles;
 
 import com.engine.Sprite;
 import com.engine.Texture;
+import com.engine.utils.Vector3;
 import com.game.Entity;
 
 /**
@@ -10,7 +11,7 @@ import com.game.Entity;
  */
 public abstract class Tile extends Entity {
     /** Tiles default sprite. */
-    protected static final Sprite TILE_SPRITE = new Sprite(new Texture("images/tiles.png"), SPRITE_SIZE, SPRITE_SIZE);
+    protected static final Texture TILE_TEXTURE = new Texture("images/tiles.png");
 
     /** The type of the tile. */
     private TileType type;
@@ -22,11 +23,40 @@ public abstract class Tile extends Entity {
      * Tile constructor.
      * This is the default constructor for the tile class.
      * It sets the solid to false.
+     * And the position to (0, 0, 0).
      * @param t The type of the tile.
      * @param s The sprite of the tile.
      */
     public Tile(TileType t, Sprite s) {
-        super(s);
+        super(s, new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+        this.type = t;
+        this.solid = false;
+    }
+
+    /**
+     * Tile constructor.
+     * This is the constructor for the tile class.
+     * And the position to (0, 0, 0).
+     * @param t The type of the tile.
+     * @param s The sprite of the tile.
+     * @param solid If the tile is solid.
+     */
+    public Tile(TileType t, Sprite s, boolean solid) {
+        super(s, new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+        this.type = t;
+        this.solid = solid;
+    }
+
+    /**
+     * Tile constructor.
+     * This is the constructor for the tile class.
+     * It sets the solid to false.
+     * @param t The type of the tile.
+     * @param s The sprite of the tile.
+     * @param p The position of the tile.
+     */
+    public Tile(TileType t, Sprite s, Vector3 p) {
+        super(s, p, new Vector3(1, 1, 1));
         this.type = t;
         this.solid = false;
     }
@@ -36,10 +66,11 @@ public abstract class Tile extends Entity {
      * This is the constructor for the tile class.
      * @param t The type of the tile.
      * @param s The sprite of the tile.
+     * @param p The position of the tile.
      * @param solid If the tile is solid.
      */
-    public Tile(TileType t, Sprite s, boolean solid) {
-        super(s);
+    public Tile(TileType t, Sprite s, Vector3 p, boolean solid) {
+        super(s, p, new Vector3(1, 1, 1));
         this.type = t;
         this.solid = solid;
     }
