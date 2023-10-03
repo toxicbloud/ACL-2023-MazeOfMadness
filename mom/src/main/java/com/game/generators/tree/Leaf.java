@@ -2,17 +2,19 @@ package com.game.generators.tree;
 
 import com.game.generators.MazeFactory;
 
+import java.util.ArrayList;
+
 public class Leaf {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
 
     private Leaf left;
     private Leaf right;
 
-    private String halls;
+    private ArrayList<Rectangle> halls;
     private Rectangle rectangle;
 
 
@@ -72,10 +74,8 @@ public class Leaf {
     }
 
     public void createRooms(){
-        // this function generates all the rooms and hallways for this Leaf and all of its children.
-
         if (this.left != null || this.right != null) {
-            // this leaf has been split, so go into the children leafs
+            // This leaf has been split, so go into the children leafs
             if (this.left != null) {
                 this.left.createRooms();
             }
@@ -83,6 +83,13 @@ public class Leaf {
             if (this.right != null) {
                 this.right.createRooms();
             }
+
+            // if there are both left and right children in this Leaf, create a hallway between them
+
+            if (this.left != null && this.right != null) {
+                createHall(this.left.getRoom(), this.right.getRoom());
+            }
+
         } else {
             // This Leaf is the ready to make a room
             Point roomSize = new Point(MazeFactory.RNG.nextInt(3, width - 2), MazeFactory.RNG.nextInt(3, height - 2));
@@ -91,7 +98,87 @@ public class Leaf {
 
             // Places the room within the Leaf, but don't put it right
             // against the side of the Leaf (that would merge rooms together)
-            this.rectangle = new Rectangle(x + roomPos.x,  roomSize.x,y + roomPos.y, roomSize.y);
+            this.rectangle = new Rectangle(x + roomPos.x, y + roomPos.y, roomSize.x, roomSize.y);
+        }
+    }
+
+
+    public Rectangle getRoom() {
+        // Iterates all the way through these leafs to find a room, if one exists.
+        if (this.rectangle != null) {
+            return this.rectangle;
+        } else {
+            Rectangle lRoom = null;
+            Rectangle rRoom = null;
+
+            if (this.left != null) {lRoom = this.left.getRoom();}
+            if (this.right != null) {rRoom = this.right.getRoom();}
+
+            if (lRoom == null && rRoom == null) {return null;}
+            else if (rRoom == null) {return lRoom;}
+            else if (lRoom == null) {return rRoom;}
+            else if (MazeFactory.RNG.nextFloat() > 0.5) {return lRoom;}
+            else {return rRoom;}
+        }
+    }
+
+
+    private void createHall(Rectangle l, Rectangle r) {
+        // Now we connect these two rooms together with hallways.
+        this.halls = new ArrayList<>();
+
+        Point point1 = new Point(MazeFactory.RNG.nextInt(l.left + 1, l.right - 2), MazeFactory.RNG.nextInt(l.top + 1, l.bottom - 2));
+        Point point2 = new Point(MazeFactory.RNG.nextInt(r.left + 1, r.right - 2), MazeFactory.RNG.nextInt(r.top + 1, r.bottom - 2));
+
+        int w = point2.x - point1.x;
+        int h = point2.y - point1.y;
+
+        if (w < 0) {
+            if (h < 0) {
+                if (MazeFactory.RNG.nextFloat() < 0.5) {
+                    this.halls.add(new Rectangle(point2.x, point1.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+                } else {
+                    this.halls.add(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point1.x, point2.y, 1, Math.abs(h)));
+                }
+            } else if (h > 0) {
+                if (MazeFactory.RNG.nextFloat() < 0.5) {
+                    this.halls.add(new Rectangle(point2.x, point1.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point2.x, point1.y, 1, Math.abs(h)));
+                } else {
+                    this.halls.add(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+                }
+            } else { // if (h == 0)
+                this.halls.add(new Rectangle(point2.x, point2.y, Math.abs(w), 1));
+            }
+        } else if (w > 0) {
+            if (h < 0) {
+                if (MazeFactory.RNG.nextFloat() < 0.5) {
+                    this.halls.add(new Rectangle(point1.x, point2.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point1.x, point2.y, 1, Math.abs(h)));
+                } else {
+                    this.halls.add(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+                }
+            } else if (h > 0) {
+                if (MazeFactory.RNG.nextFloat() < 0.5) {
+                    this.halls.add(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point2.x, point1.y, 1, Math.abs(h)));
+                } else {
+                    this.halls.add(new Rectangle(point1.x, point2.y, Math.abs(w), 1));
+                    this.halls.add(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+                }
+            } else {  // if (h == 0)
+                this.halls.add(new Rectangle(point1.x, point1.y, Math.abs(w), 1));
+            }
+        } else {    // if (w == 0)
+            if (h < 0) {
+                this.halls.add(new Rectangle(point2.x, point2.y, 1, Math.abs(h)));
+            } else if (h > 0) {
+                this.halls.add(new Rectangle(point1.x, point1.y, 1, Math.abs(h)));
+            }
         }
     }
 

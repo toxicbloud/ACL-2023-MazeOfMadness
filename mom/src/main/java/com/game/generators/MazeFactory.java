@@ -83,10 +83,9 @@ public class MazeFactory {
         }
 
         // We now have an array full of leaves. We can populate it with rooms.
-
-
-
-
+        for(Leaf l : leaf_array) {
+            l.createRooms();
+        }
     }
 
     /**
