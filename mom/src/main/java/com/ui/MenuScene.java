@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
-import com.engine.events.EventType;
 import com.engine.utils.Vector2;
 import com.game.Game;
 import com.game.Maze;
@@ -50,20 +49,33 @@ public class MenuScene extends Scene {
     /** TEST_MAZE_DEPTH. */
     private static final int TEST_MAZE_DEPTH = 2;
     /**
+     * Music volume.
+     */
+    private static final float MUSIC_VOLUME = 0.1f;
+    /**
+     * Logo vertical offset.
+     */
+    private static final int LOGO_VERTICAL_OFFSET = 50;
+    /**
+     *
+     */
+    private static final float TEXT_BUTTON_VERTICAL_OFFSET = 0.2f;
+    /**
      * The menu elements to update and render.
      */
     private List<Element> elements;
+
     /**
      * The current hovered element.
      * used to check if the mouse is still hovering the same element
      */
     private Element hoveredElement;
+
     /**
      * The current pressed element.
      * used to check if the mouse is still pressed on the same element
      */
     private Element pressedElement;
-
     /**
      * The logo sprite.
      */
@@ -78,7 +90,9 @@ public class MenuScene extends Scene {
      * punch sound
      */
     private Sound buttonClick;
-
+    /**
+     * The batch used to render.
+     */
     private Batch batch;
 
     /**
@@ -91,8 +105,7 @@ public class MenuScene extends Scene {
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'update'");
+        elements.forEach(Element::update);
     }
 
     @Override
@@ -101,12 +114,19 @@ public class MenuScene extends Scene {
         batch.begin();
         // draw logo center x
         batch.draw(logo, Window.getInstance().getWidth() / 2 - logo.getWidth() / 2,
-                Window.getInstance().getHeight() - logo.getHeight() - 50);
+                Window.getInstance().getHeight() - logo.getHeight() - LOGO_VERTICAL_OFFSET);
         batch.end();
         elements.forEach(Element::render);
     }
 
-    private boolean isInside(Vector2 point, Element element) {
+    /**
+     * Check if a point is inside an element.
+     *
+     * @param point   Vector2 point to check
+     * @param element Element to check
+     * @return true if the point is inside the element, false otherwise
+     */
+    public boolean isInside(Vector2 point, Element element) {
         Vector2 size = new Vector2(element.getSize());
         Vector2 position = new Vector2(element.getPosition());
         position.x *= Window.getInstance().getWidth();
@@ -118,38 +138,8 @@ public class MenuScene extends Scene {
 
     @Override
     public void onEvent(Event ev) {
-        int x = Gdx.input.getX();
-        int y = Gdx.input.getY();
-        if (ev.getType() == EventType.MOUSE_PRESSED) {
-            elements.forEach(t -> {
-                Button button = (Button) t;
-                if (isInside(new Vector2(x, y), button)) {
-                    button.onPressed(true);
-                    pressedElement = button;
-                }
-            });
-        }
-        if (ev.getType() == EventType.MOUSE_RELEASED) {
-            if (pressedElement != null && isInside(new Vector2(x, y), pressedElement)) {
-                pressedElement.onPressed(false);
-                pressedElement = null;
-            }
-        }
-        if (ev.getType() == EventType.MOUSE_MOVED) {
-            if (hoveredElement != null && !(isInside(new Vector2(x, y), hoveredElement))) {
-                hoveredElement.onHovered(false);
-                hoveredElement = null;
-            }
-            elements.forEach(t -> {
-                Button button = (Button) t;
-                if (isInside(new Vector2(x, y), t)
-                        && hoveredElement != button) {
-                    hoveredElement = button;
-                    button.onHovered(true);
-                }
-            });
-        }
-
+        UIEventVisitor visitor = new UIEventVisitor(this);
+        ev.accept(visitor);
     }
 
     /**
@@ -174,46 +164,34 @@ public class MenuScene extends Scene {
             public void onPressed() {
                 buttonClick.play();
                 Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT,
-                TEST_MAZE_DEPTH, new Tile[] {
-                new WallRock(), new WallRock(), new WallRock(), new WallRock(), new
-                WallRock(),
-                new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new
-                WallRock(),
-                new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new
-                WallRock(),
-                new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new
-                WallRock(),
-                new WallRock(), new WallRock(), new WallRock(), new WallRock(), new
-                WallRock(),
+                        TEST_MAZE_DEPTH, new Tile[] {
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
 
-                new WallRock(), new WallRock(), new WallRock(), new WallRock(), new
-                WallRock(),
-                new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new
-                WallRock(),
-                new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new
-                WallRock(),
-                new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new
-                WallRock(),
-                new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new
-                WallRock()
-                }));
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
+                        }));
                 Window.getInstance().setScene(new GameScene());
             }
 
             @Override
             public void onReleased() {
-                // TODO Auto-generated method stub
-                System.out.println("Button released");
             }
 
             @Override
             public void onHovered() {
-                // TODO Auto-generated method stub
                 long id = buttonHover.play();
                 buttonHover.setVolume(id, 1.0f);
             }
         });
-        TextButton test = new TextButton(new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y - 0.2f),
+        TextButton test = new TextButton(
+                new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y - TEXT_BUTTON_VERTICAL_OFFSET),
                 new Vector2(BUTTON_WIDTH, BUTTON_HEIGHT), "Test");
         test.create();
         addElement(start);
@@ -221,11 +199,45 @@ public class MenuScene extends Scene {
         Thread thread = new Thread(() -> {
             Sound sound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
             long id = sound.play();
-            sound.setVolume(id, 0.1f);
+            sound.setVolume(id, MUSIC_VOLUME);
         });
 
         // load sound asynchronously
         thread.start();
     }
 
+    /**
+     * @return the current hovered element
+     */
+    public Element getPressedElement() {
+        return pressedElement;
+    }
+
+    /**
+     * @param pressedElement the current pressed element to set
+     */
+    public void setPressedElement(Element pressedElement) {
+        this.pressedElement = pressedElement;
+    }
+
+    /**
+     * @return the current hovered element
+     */
+    public Element getHoveredElement() {
+        return hoveredElement;
+    }
+
+    /**
+     * @param hoveredElement the current hovered element to set
+     */
+    public void setHoveredElement(Element hoveredElement) {
+        this.hoveredElement = hoveredElement;
+    }
+
+    /**
+     * @return the elements of the menu like : Button, TextButton, ...
+     */
+    public List<Element> getElements() {
+        return elements;
+    }
 }

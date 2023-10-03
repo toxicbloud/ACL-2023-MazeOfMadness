@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventMouseMoved class.
  * This is the mouse moved event class.
@@ -18,6 +20,7 @@ public class EventMouseMoved extends Event {
 
     /**
      * EventMouseMoved constructor.
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      */
@@ -29,6 +32,7 @@ public class EventMouseMoved extends Event {
 
     /**
      * Get the x coordinate.
+     *
      * @return The x coordinate.
      */
     public int getX() {
@@ -37,9 +41,15 @@ public class EventMouseMoved extends Event {
 
     /**
      * Get the y coordinate.
+     *
      * @return The y coordinate.
      */
     public int getY() {
         return this.y;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

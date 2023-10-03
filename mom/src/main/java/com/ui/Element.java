@@ -27,8 +27,6 @@ public abstract class Element implements Evolvable {
     protected Element() {
     }
 
-    abstract void create();
-
     /**
      * Element constructor.
      *
@@ -121,8 +119,8 @@ public abstract class Element implements Evolvable {
      */
     public Vector2 getSize() {
         Window window = Window.getInstance();
-        float windowHeight = window.getHeight() / 100;
-        float windowWidth = window.getWidth() / 100;
+        final float windowHeight = window.getHeight() / 100;
+        final float windowWidth = window.getWidth() / 100;
         return new Vector2(this.size.x * windowWidth, this.size.y * windowHeight);
     }
 
@@ -180,4 +178,6 @@ public abstract class Element implements Evolvable {
      * @param state true when pressed, false when released
      */
     public abstract void onPressed(boolean state);
+
+    abstract void create();
 }

@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventMousePressed class.
  * This is the mouse pressed event class.
@@ -26,5 +28,10 @@ public class EventMousePressed extends Event {
      */
     public MouseBtn getBtn() {
         return this.btn;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

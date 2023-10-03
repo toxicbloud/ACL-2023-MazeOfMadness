@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventKeyReleased class.
  * This is the key released event class.
@@ -13,6 +15,7 @@ public class EventKeyReleased extends Event {
 
     /**
      * EventKeyReleased constructor.
+     *
      * @param keyCode The key code.
      */
     public EventKeyReleased(KeyCode keyCode) {
@@ -22,9 +25,15 @@ public class EventKeyReleased extends Event {
 
     /**
      * Get the key code.
+     *
      * @return The key code.
      */
     public KeyCode getKeyCode() {
         return this.keyCode;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

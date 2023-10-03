@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventGamepadReleased class.
  * This is the gamepad released event class.
@@ -13,6 +15,7 @@ public class EventGamepadReleased extends Event {
 
     /**
      * EventGamepadReleased constructor.
+     *
      * @param btn The gamepad button.
      */
     public EventGamepadReleased(GamepadBtn btn) {
@@ -22,9 +25,15 @@ public class EventGamepadReleased extends Event {
 
     /**
      * Get the gamepad button.
+     *
      * @return The gamepad button.
      */
     public GamepadBtn getBtn() {
         return this.btn;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * Event class.
  * This is the base class for all events.
@@ -13,6 +15,7 @@ public abstract class Event {
 
     /**
      * Event constructor.
+     *
      * @param type The type of event.
      */
     protected Event(EventType type) {
@@ -21,9 +24,17 @@ public abstract class Event {
 
     /**
      * Get the type of event.
+     *
      * @return The type of event.
      */
     public EventType getType() {
         return this.type;
     }
+
+    /**
+     * Accept a UIEventVisitor.
+     *
+     * @param visitor The visitor to accept.
+     */
+    public abstract void accept(UIEventVisitor visitor);
 }

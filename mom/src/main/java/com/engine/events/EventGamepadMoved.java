@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventGamepadMoved class.
  * This is the gamepad moved event class.
@@ -23,9 +25,10 @@ public class EventGamepadMoved extends Event {
 
     /**
      * EventGamepadMoved constructor.
+     *
      * @param axis The gamepad axis.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
+     * @param x    The x coordinate.
+     * @param y    The y coordinate.
      */
     public EventGamepadMoved(GamepadAxis axis, float x, float y) {
         super(EventType.GAMEPAD_MOVED);
@@ -34,6 +37,7 @@ public class EventGamepadMoved extends Event {
 
     /**
      * Get the gamepad axis.
+     *
      * @return The gamepad axis.
      */
     public GamepadAxis getAxis() {
@@ -42,6 +46,7 @@ public class EventGamepadMoved extends Event {
 
     /**
      * Get the x coordinate.
+     *
      * @return The x coordinate.
      */
     public float getX() {
@@ -50,9 +55,15 @@ public class EventGamepadMoved extends Event {
 
     /**
      * Get the y coordinate.
+     *
      * @return The y coordinate.
      */
     public float getY() {
         return this.y;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }

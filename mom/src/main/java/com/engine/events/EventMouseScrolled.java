@@ -1,5 +1,7 @@
 package com.engine.events;
 
+import com.ui.UIEventVisitor;
+
 /**
  * EventMouseScrolled class.
  * This is the mouse scrolled event class.
@@ -26,5 +28,10 @@ public class EventMouseScrolled extends Event {
      */
     public float getDelta() {
         return delta;
+    }
+
+    @Override
+    public void accept(UIEventVisitor visitor) {
+        visitor.visit(this);
     }
 }
