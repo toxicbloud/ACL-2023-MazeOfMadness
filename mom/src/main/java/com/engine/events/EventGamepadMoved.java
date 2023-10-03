@@ -1,7 +1,5 @@
 package com.engine.events;
 
-import com.ui.UIEventVisitor;
-
 /**
  * EventGamepadMoved class.
  * This is the gamepad moved event class.
@@ -63,7 +61,7 @@ public class EventGamepadMoved extends Event {
     }
 
     @Override
-    public void accept(UIEventVisitor visitor) {
+    public void accept(EventVisitor visitor) {
         visitor.visit(this);
     }
 }

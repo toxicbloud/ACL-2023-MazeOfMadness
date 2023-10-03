@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.engine.events.EventVisitor;
 import com.engine.utils.Vector2;
 import com.game.Game;
 import com.game.Maze;
@@ -138,7 +139,7 @@ public class MenuScene extends Scene {
 
     @Override
     public void onEvent(Event ev) {
-        UIEventVisitor visitor = new UIEventVisitor(this);
+        EventVisitor visitor = new UIEventVisitor(this);
         ev.accept(visitor);
     }
 

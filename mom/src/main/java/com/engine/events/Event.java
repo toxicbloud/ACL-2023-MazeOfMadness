@@ -1,7 +1,5 @@
 package com.engine.events;
 
-import com.ui.UIEventVisitor;
-
 /**
  * Event class.
  * This is the base class for all events.
@@ -36,5 +34,5 @@ public abstract class Event {
      *
      * @param visitor The visitor to accept.
      */
-    public abstract void accept(UIEventVisitor visitor);
+    public abstract void accept(EventVisitor visitor);
 }

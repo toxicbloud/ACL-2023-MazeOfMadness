@@ -10,12 +10,13 @@ import com.engine.events.EventMouseMoved;
 import com.engine.events.EventMousePressed;
 import com.engine.events.EventMouseReleased;
 import com.engine.events.EventMouseScrolled;
+import com.engine.events.EventVisitor;
 import com.engine.utils.Vector2;
 
 /**
  * UI event visitor to dispatch events to the UI elements.
  */
-public class UIEventVisitor {
+public class UIEventVisitor implements EventVisitor {
     /**
      * The scene that contains the UI elements to dispatch the events to.
      */

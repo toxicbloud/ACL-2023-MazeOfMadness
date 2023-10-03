@@ -1,7 +1,5 @@
 package com.engine.events;
 
-import com.ui.UIEventVisitor;
-
 /**
  * EventMouseReleased class.
  * This is the mouse released event class.
@@ -31,7 +29,7 @@ public class EventMouseReleased extends Event {
     }
 
     @Override
-    public void accept(UIEventVisitor visitor) {
+    public void accept(EventVisitor visitor) {
         visitor.visit(this);
     }
 }

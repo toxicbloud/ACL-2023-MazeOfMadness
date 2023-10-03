@@ -1,7 +1,5 @@
 package com.engine.events;
 
-import com.ui.UIEventVisitor;
-
 /**
  * EventKeyPressed class.
  * This is the key pressed event class.
@@ -33,7 +31,7 @@ public class EventKeyPressed extends Event {
     }
 
     @Override
-    public void accept(UIEventVisitor visitor) {
+    public void accept(EventVisitor visitor) {
         visitor.visit(this);
     }
 }
