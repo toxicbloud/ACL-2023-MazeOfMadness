@@ -27,4 +27,9 @@ public class EventMouseScrolled extends Event {
     public float getDelta() {
         return delta;
     }
+
+    @Override
+    public void accept(EventVisitor visitor) {
+        visitor.visit(this);
+    }
 }

@@ -13,6 +13,7 @@ public class EventKeyPressed extends Event {
 
     /**
      * EventKeyPressed constructor.
+     *
      * @param keyCode The key code.
      */
     public EventKeyPressed(KeyCode keyCode) {
@@ -22,9 +23,15 @@ public class EventKeyPressed extends Event {
 
     /**
      * Get the key code.
+     *
      * @return The key code.
      */
     public KeyCode getKeyCode() {
         return this.keyCode;
+    }
+
+    @Override
+    public void accept(EventVisitor visitor) {
+        visitor.visit(this);
     }
 }
