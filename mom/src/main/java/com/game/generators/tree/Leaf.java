@@ -1,7 +1,6 @@
 package com.game.generators.tree;
 
 import com.game.generators.MazeFactory;
-
 import java.util.ArrayList;
 
 public class Leaf {
@@ -59,7 +58,7 @@ public class Leaf {
         }
 
         // Determine where we're going to split
-        int split = this.randomInt( MazeFactory.min_room_size, max);
+        int split = this.randomInt(MazeFactory.min_room_size, max);
 
         // Create our left and right children based on the direction of the split
         if (splitH) {
@@ -76,16 +75,10 @@ public class Leaf {
     public void createRooms(){
         if (this.left != null || this.right != null) {
             // This leaf has been split, so go into the children leafs
-            if (this.left != null) {
-                this.left.createRooms();
-            }
+            if (this.left != null) {this.left.createRooms();}
+            if (this.right != null) {this.right.createRooms();}
 
-            if (this.right != null) {
-                this.right.createRooms();
-            }
-
-            // if there are both left and right children in this Leaf, create a hallway between them
-
+            // If there are both left and right children in this Leaf, create a hallway between them
             if (this.left != null && this.right != null) {
                 createHall(this.left.getRoom(), this.right.getRoom());
             }
@@ -94,6 +87,7 @@ public class Leaf {
             // This Leaf is the ready to make a room
             Point roomSize = new Point(this.randomInt(3, width - 2), this.randomInt(3, height - 2));
             Point roomPos = new Point(this.randomInt(1, width - roomSize.x - 1), this.randomInt(1, height - roomSize.y - 1));
+
             // The room can be between 3 x 3 tiles to the size of the leaf - 2.
 
             // Places the room within the Leaf, but don't put it right
@@ -187,7 +181,9 @@ public class Leaf {
     public int getWidth() {return this.width;}
     public int getHeight() {return this.height;}
     public int randomInt(int min, int max){
-        if (min >= max) {throw new IllegalArgumentException("max parameter must be greater than min parameter");}
+        if (min > max) {
+            throw new IllegalArgumentException("max parameter must be greater than min parameter");
+        }
         return MazeFactory.RNG.nextInt((max - min) + 1) + min;
     }
 

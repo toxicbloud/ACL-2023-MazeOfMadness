@@ -43,7 +43,6 @@ public class MazeFactory {
         // We call the room-splitting method on the array
         this.generateRooms(maze, width, height);
 
-
         return new Maze(height, width, 1, maze);
     }
 
@@ -84,13 +83,15 @@ public class MazeFactory {
 
         System.out.println("[DEBUG] - Done generating maze.");
 
-        // We now have an array full of leaves. We can populate it with rooms.
+        // We now have an array full of leaves. We can populate it with rooms and generate halls.
         for(Leaf l : leaf_array) {
             l.createRooms();
         }
 
         System.out.println("[DEBUG] - Done generating Halls.");
-        System.out.println(leaf_array);
+        System.out.println("[DEBUG] - Converting the Tree into array object ...");
+
+
     }
 
     /**

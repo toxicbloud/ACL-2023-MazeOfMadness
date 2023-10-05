@@ -2,14 +2,23 @@ package com.game.generators.tree;
 
 public class Rectangle {
 
-    public int right, left, top, bottom;
+    public int x, y, width, height;
+    public int top, bottom, left, right;
 
-    public Rectangle(int top, int bottom, int right, int left){
-        this.right = right;
-        this.left = left;
-        this.top = top;
-        this.bottom = bottom;
+    public Rectangle(int x, int y, int width, int height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.bottom = y + height;
+        this.top = y;
+        this.left = x;
+        this.right = x + width;
+
     }
+
+
 
 
 }
