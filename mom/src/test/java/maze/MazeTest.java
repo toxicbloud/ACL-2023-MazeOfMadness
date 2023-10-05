@@ -23,7 +23,7 @@ public class MazeTest {
 
         MazeFactory mf = new MazeFactory();     // Will generate mazes 150 by 150
         final int v = 150;
-        Maze maze1 = mf.createMaze(v, v);
+        Maze maze1 = mf.createMaze(v, v, 1);
 
         assert maze1 != null : "[ERROR] - Maze returned is null !";
     }
