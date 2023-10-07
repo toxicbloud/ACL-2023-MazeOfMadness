@@ -10,7 +10,7 @@ import com.engine.utils.Vector3;
  */
 public abstract class Entity implements Evolvable {
     /** Default sprite size. */
-    protected static final int SPRITE_SIZE = 16;
+    protected static final int SPRITE_SIZE = 64;
 
     /** Entity position. */
     private Vector3 position;

@@ -9,7 +9,13 @@ import com.engine.events.KeyCode;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
+import com.game.tiles.GroundGrass;
+import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
+import com.game.tiles.GroundWater;
+import com.game.tiles.Stair;
+import com.game.tiles.StairGrass;
+import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
@@ -24,7 +30,7 @@ public class GameScene extends Scene {
     /** TEST_MAZE_HEIGHT. */
     private static final int TEST_MAZE_HEIGHT = 5;
     /** TEST_MAZE_DEPTH. */
-    private static final int TEST_MAZE_DEPTH = 2;
+    private static final int TEST_MAZE_DEPTH = 3;
     /** Mouse delta to camera zoom conversion. */
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
@@ -61,15 +67,21 @@ public class GameScene extends Scene {
         Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT, TEST_MAZE_DEPTH, new Tile[]{
             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
             new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundWater(), new GroundRock(), new WallRock(),
             new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
 
             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+            new WallRock(), new GroundRock(), new GroundRock(), new GroundLava(), new WallRock(),
+            new WallRock(), new StairRock(Stair.DIRECTION_Y), new VoidTile(), new VoidTile(), new WallRock(),
             new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
             new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
+
+            new GroundGrass(), new StairGrass(Stair.DIRECTION_X), new VoidTile(), new VoidTile(), new VoidTile(),
+            new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(),
+            new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(),
+            new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(),
+            new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile()
         }));
     }
 

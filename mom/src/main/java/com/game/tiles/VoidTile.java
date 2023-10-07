@@ -1,6 +1,5 @@
 package com.game.tiles;
 
-import com.engine.Sprite;
 import com.engine.utils.Vector3;
 
 /**
