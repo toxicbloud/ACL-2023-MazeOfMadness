@@ -90,7 +90,6 @@ public class Sprite {
             screenPos.x + window.getWidth() / 2 - zoom / 2,
             screenPos.y + window.getHeight() / 2 - zoom / 2
         );
-        System.out.println("width: " + window.getWidth() + " height: " + window.getHeight());
         sprite.setSize(screenSize.x, screenSize.y);
         sprite.draw(canvas);
     }
