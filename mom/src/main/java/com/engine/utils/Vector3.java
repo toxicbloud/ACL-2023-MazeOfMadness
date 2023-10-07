@@ -62,6 +62,15 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     }
 
     /**
+     * Multiply this vector by a float.
+     * @param f The float to multiply by.
+     * @return The product of the vector and the float.
+     */
+    public Vector3 mul(float f) {
+        return new Vector3(x * f, y * f, z * f);
+    }
+
+    /**
      * Get the x coordinate.
      * @return The x coordinate.
      */

@@ -80,11 +80,7 @@ public class Sprite {
         Camera cam = gscene.getCamera();
         float zoom = cam.getZoom();
 
-        Vector2 screenPos = orthoCoord2Screen(new Vector3(
-            position.x - cam.getPosition().x,
-            position.y + cam.getPosition().y,
-            position.z - cam.getPosition().z
-        )).mul(zoom);
+        Vector2 screenPos = orthoCoord2Screen(position.sub(cam.getPosition())).mul(zoom);
         Vector2 screenSize = orthoSize2Screen(size).mul(zoom / 2);
         sprite.setPosition(
             screenPos.x + window.getWidth() / 2 - zoom / 2,

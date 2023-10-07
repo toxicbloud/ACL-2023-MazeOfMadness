@@ -103,7 +103,7 @@ public class Maze implements Evolvable {
         entities.addAll(List.of(this.tiles));
         entities.addAll(List.of(this.items));
         if (Game.getInstance().getPlayer() != null) {
-            entities.add(Game.getInstance().getPlayer());
+            entities.add(0, Game.getInstance().getPlayer());
         }
 
         entities.sort(new Comparator<Entity>() {

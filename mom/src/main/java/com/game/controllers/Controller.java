@@ -24,4 +24,12 @@ public abstract class Controller {
      * This method is called every frame, before any render() call.
      */
     public abstract void update();
+
+    /**
+     * Get the target of the controller.
+     * @return The target.
+     */
+    public Entity getTarget() {
+        return target;
+    }
 }

@@ -6,6 +6,7 @@ import com.engine.events.Event;
 import com.engine.events.EventKeyPressed;
 import com.engine.events.EventMouseScrolled;
 import com.engine.events.KeyCode;
+import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
@@ -63,8 +64,8 @@ public class GameScene extends Scene {
     public static int getObjectDrawingOrder(Vector3 position) {
         return (int) (
               position.getX()
-            + position.getY() * MAX_MAZE_SIZE
-            + position.getZ() * MAX_MAZE_SIZE * MAX_MAZE_SIZE
+            + position.getY()
+            + position.getZ() * MAX_MAZE_SIZE
             ) * BLOC_SUBDIVISION;
     }
 
@@ -116,10 +117,16 @@ public class GameScene extends Scene {
         if (maze == null) {
             return;
         }
+
+        if (this.playerController != null) {
+            playerController.update();
+        }
+
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             this.camera.setTargetPosition(p.getPosition());
         }
+
         this.camera.update();
         maze.update();
     }
@@ -147,6 +154,7 @@ public class GameScene extends Scene {
                 break;
             default: break;
         }
+        event.accept(playerController);
     }
 
     /**

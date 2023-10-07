@@ -10,6 +10,8 @@ import com.game.weapons.PlayerFist;
  * This is the player class.
  */
 public class Player extends Living {
+    /** Player default speed. */
+    public static final float PLAYER_SPEED = 4.0f;
     /** Default player size. */
     private static final Vector3 PLAYER_SIZE = new Vector3(1, 1, 1);
 
