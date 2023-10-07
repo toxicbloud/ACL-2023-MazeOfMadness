@@ -2,6 +2,7 @@ package com.game;
 
 import com.engine.Evolvable;
 import com.engine.Sprite;
+import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 
@@ -73,8 +74,16 @@ public abstract class Entity implements Evolvable {
      * Move entity of delta position.
      * @param delta movement delta
      */
-    public void move(Vector3 delta) {
+    public void moveBy(Vector3 delta) {
         this.position = this.position.add(delta);
+    }
+
+    /**
+     * Move entity of delta position.
+     * @param delta movement delta
+     */
+    public void moveBy(Vector2 delta) {
+        this.position = this.position.add(new Vector3(delta.x, delta.y, 0));
     }
 
     /**

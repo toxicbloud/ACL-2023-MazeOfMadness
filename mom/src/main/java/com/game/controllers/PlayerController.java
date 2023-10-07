@@ -38,12 +38,9 @@ public class PlayerController extends Controller implements EventVisitor {
     public void update() {
         Entity target = getTarget();
         Vector2 normalized = direction.normalize();
-        target.setPosition(
-            target.getPosition()
-            .add(
-                new Vector3(normalized.x, normalized.y, 0)
-                .mul(Time.getInstance().getDeltaTime() * Player.PLAYER_SPEED)
-            )
+        target.moveBy(
+            new Vector3(normalized.x, normalized.y, 0)
+            .mul(Time.getInstance().getDeltaTime() * Player.PLAYER_SPEED)
         );
     }
 
