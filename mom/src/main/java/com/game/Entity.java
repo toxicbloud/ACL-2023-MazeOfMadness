@@ -3,6 +3,7 @@ package com.game;
 import com.engine.Evolvable;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
+import com.game.controllers.Controller;
 
 /***
  * Entity class.
@@ -18,6 +19,9 @@ public abstract class Entity implements Evolvable {
     private Vector3 size;
     /** Entity sprite. */
     private Sprite sprite;
+
+    /** Entity's controller. */
+    private Controller controller;
 
     /**
      * Entity constructor.
@@ -39,6 +43,14 @@ public abstract class Entity implements Evolvable {
         this.sprite = sprite;
         this.position = position;
         this.size = size;
+    }
+
+    /**
+     * Register a controller to the entity.
+     * @param c The controller to register.
+     */
+    public void registerController(Controller c) {
+        this.controller = c;
     }
 
     /**

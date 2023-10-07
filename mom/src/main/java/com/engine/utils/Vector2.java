@@ -67,4 +67,20 @@ public class Vector2 extends com.badlogic.gdx.math.Vector2 {
     public Vector2 mul(float f) {
         return new Vector2(x * f, y * f);
     }
+
+    /**
+     * Get the x coordinate.
+     * @return The x coordinate.
+     */
+    public float getX() {
+        return x;
+    }
+
+    /**
+     * Get the y coordinate.
+     * @return The y coordinate.
+     */
+    public float getY() {
+        return y;
+    }
 }

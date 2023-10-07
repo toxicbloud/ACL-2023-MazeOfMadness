@@ -60,4 +60,28 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     public Vector3 sub(Vector3 v) {
         return new Vector3(x - v.x, y - v.y, z - v.z);
     }
+
+    /**
+     * Get the x coordinate.
+     * @return The x coordinate.
+     */
+    public float getX() {
+        return x;
+    }
+
+    /**
+     * Get the y coordinate.
+     * @return The y coordinate.
+     */
+    public float getY() {
+        return y;
+    }
+
+    /**
+     * Get the z coordinate.
+     * @return The z coordinate.
+     */
+    public float getZ() {
+        return z;
+    }
 }

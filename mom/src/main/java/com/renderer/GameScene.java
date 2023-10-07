@@ -9,6 +9,8 @@ import com.engine.events.KeyCode;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
+import com.game.Player;
+import com.game.controllers.PlayerController;
 import com.game.tiles.GroundGrass;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
@@ -35,11 +37,15 @@ public class GameScene extends Scene {
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
     private static final float ZOOM_MULTIPLIER = 1.0f;
-    /**
-     * Camera object.
-     * This is the scene camera.
-     */
+    /** Maximum theorical maze size. */
+    private static final int MAX_MAZE_SIZE = 1000;
+    /** Theorical subdivision in one bloc for entity rendering. */
+    private static final int BLOC_SUBDIVISION = 100;
+
+    /** Scene camera. */
     private Camera camera;
+    /** Player controller. */
+    private PlayerController playerController;
 
     /**
      * GameScene constructor.
@@ -47,6 +53,19 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+    }
+
+    /**
+     * Get the drawing order of an object.
+     * @param position The position of the object.
+     * @return The drawing order of the object.
+     */
+    public static int getObjectDrawingOrder(Vector3 position) {
+        return (int) (
+              position.getX()
+            + position.getY() * MAX_MAZE_SIZE
+            + position.getZ() * MAX_MAZE_SIZE * MAX_MAZE_SIZE
+            ) * BLOC_SUBDIVISION;
     }
 
     /**
@@ -83,6 +102,10 @@ public class GameScene extends Scene {
             new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(),
             new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile(), new VoidTile()
         }));
+        if (Game.getInstance().getPlayer() == null) {
+            Game.getInstance().setPlayer(new Player(new Vector3(2, 2, 1)));
+        }
+        this.playerController = new PlayerController(Game.getInstance().getPlayer());
     }
 
     /**
@@ -92,6 +115,10 @@ public class GameScene extends Scene {
         Maze maze = Game.getInstance().getMaze();
         if (maze == null) {
             return;
+        }
+        Player p = Game.getInstance().getPlayer();
+        if (p != null) {
+            this.camera.setTargetPosition(p.getPosition());
         }
         this.camera.update();
         maze.update();
@@ -117,14 +144,6 @@ public class GameScene extends Scene {
             case MOUSE_SCROLLED:
                 float delta = ((EventMouseScrolled) event).getDelta();
                 this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
-                break;
-            case KEY_PRESSED:
-                KeyCode key = ((EventKeyPressed) event).getKeyCode();
-                camera.move(new Vector3(
-                    (key == KeyCode.KEY_RIGHT ? 1 : 0) - (key == KeyCode.KEY_LEFT ? 1 : 0),
-                    (key == KeyCode.KEY_UP ? 1 : 0) - (key == KeyCode.KEY_DOWN ? 1 : 0),
-                    0
-                ));
                 break;
             default: break;
         }

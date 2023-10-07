@@ -4,6 +4,11 @@ import com.engine.Evolvable;
 import com.engine.utils.Vector3;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
+import com.renderer.GameScene;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Maze class.
@@ -93,14 +98,24 @@ public class Maze implements Evolvable {
 
     @Override
     public void render() {
-        for (Monster m: this.monsters) {
-            m.render();
+        List<Entity> entities = new ArrayList<>();
+        entities.addAll(List.of(this.monsters));
+        entities.addAll(List.of(this.tiles));
+        entities.addAll(List.of(this.items));
+        if (Game.getInstance().getPlayer() != null) {
+            entities.add(Game.getInstance().getPlayer());
         }
-        for (Tile t: this.tiles) {
-            t.render();
-        }
-        for (Item i: this.items) {
-            i.render();
+
+        entities.sort(new Comparator<Entity>() {
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                return GameScene.getObjectDrawingOrder(o1.getPosition())
+                    - GameScene.getObjectDrawingOrder(o2.getPosition());
+            }
+        });
+
+        for (Entity e: entities) {
+            e.render();
         }
     }
 
