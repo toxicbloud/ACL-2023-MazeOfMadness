@@ -11,6 +11,7 @@ import com.engine.events.EventMouseReleased;
 import com.engine.events.EventMouseScrolled;
 import com.engine.events.EventVisitor;
 import com.engine.events.GamepadAxis;
+import com.engine.events.KeyCode;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
@@ -94,7 +95,12 @@ public class PlayerController extends Controller implements EventVisitor {
 
     @Override
     public void visit(EventKeyPressed ev) {
-        switch (ev.getKeyCode()) {
+        KeyCode code = ev.getKeyCode();
+        if (code == null) {
+            return;
+        }
+
+        switch (code) {
             case KEY_LEFT:
             case KEY_Q:
                 direction = direction.add(new Vector2(-1, 0));
@@ -117,7 +123,12 @@ public class PlayerController extends Controller implements EventVisitor {
 
     @Override
     public void visit(EventKeyReleased ev) {
-        switch (ev.getKeyCode()) {
+        KeyCode code = ev.getKeyCode();
+        if (code == null) {
+            return;
+        }
+
+        switch (code) {
             case KEY_LEFT:
             case KEY_Q:
                 direction = direction.sub(new Vector2(-1, 0));
