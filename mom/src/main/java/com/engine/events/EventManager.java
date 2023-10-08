@@ -3,6 +3,10 @@ package com.engine.events;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +17,7 @@ import java.util.Map;
  * EventManager class.
  * This is the event manager class.
  */
-public class EventManager implements InputProcessor {
+public class EventManager implements InputProcessor, ControllerListener {
     /**
      * Events list
      * This is the list of events.
@@ -29,6 +33,18 @@ public class EventManager implements InputProcessor {
      * This is the map of mouse buttons to mouse button codes.
      */
     private Map<Integer, MouseBtn> btn2code = new HashMap<Integer, MouseBtn>();
+
+    /**
+     * ControllerInput2Code map
+     * This is the map of controller inputs to controller input codes.
+     */
+    private Map<Integer, GamepadBtn> controllerInput2Code = new HashMap<Integer, GamepadBtn>();
+
+    /**
+     * GamepadBtn use to emulate dpad release
+     * because dpad is not a button but a pov.
+     */
+    private GamepadBtn[] pressedDpadBtns = new GamepadBtn[2];
 
     /**
      * EventManager constructor.
@@ -93,6 +109,17 @@ public class EventManager implements InputProcessor {
         btn2code.put(Buttons.LEFT, MouseBtn.BTN_LEFT);
         btn2code.put(Buttons.RIGHT, MouseBtn.BTN_RIGHT);
         btn2code.put(Buttons.MIDDLE, MouseBtn.BTN_MIDDLE);
+        controllerInput2Code.put(0, GamepadBtn.BTN_A);
+        controllerInput2Code.put(1, GamepadBtn.BTN_B);
+        controllerInput2Code.put(2, GamepadBtn.BTN_X);
+        controllerInput2Code.put(3, GamepadBtn.BTN_Y);
+        controllerInput2Code.put(4, GamepadBtn.BTN_LB);
+        controllerInput2Code.put(5, GamepadBtn.BTN_RB);
+        controllerInput2Code.put(6, GamepadBtn.BTN_VIEW);
+        controllerInput2Code.put(7, GamepadBtn.BTN_MENU);
+        controllerInput2Code.put(8, GamepadBtn.BTN_LS);
+        controllerInput2Code.put(9, GamepadBtn.BTN_RS);
+        controllerInput2Code.put(10, GamepadBtn.BTN_RB);
     }
 
     /**
@@ -218,6 +245,111 @@ public class EventManager implements InputProcessor {
 
     @Override
     public boolean touchCancelled(int arg0, int arg1, int arg2, int arg3) {
+        return false;
+    }
+
+    @Override
+    public void connected(Controller controller) {
+    }
+
+    @Override
+    public void disconnected(Controller controller) {
+
+    }
+
+    @Override
+    public boolean buttonDown(Controller controller, int buttonCode) {
+        addEvent(new EventGamepadPressed(controllerInput2Code.get(buttonCode)));
+        return false;
+    }
+
+    @Override
+    public boolean buttonUp(Controller controller, int buttonCode) {
+        addEvent(new EventGamepadReleased(controllerInput2Code.get(buttonCode)));
+        return false;
+    }
+
+    @Override
+    public boolean axisMoved(Controller controller, int axisCode, float value) {
+        System.out.println("axis moved: " + axisCode + " " + value);
+        return false;
+    }
+
+    @Override
+    public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        System.out.println("pov moved: " + povCode + " " + value);
+        pressedDpadBtns[0] = null;
+        pressedDpadBtns[1] = null;
+        switch (value) {
+            case center:
+                // addEvent(new EventGamepadReleased());
+                break;
+            case east:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_RIGHT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                break;
+            case north:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_UP;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                break;
+            case northEast:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_UP;
+                pressedDpadBtns[1] = GamepadBtn.BTN_DPAD_RIGHT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                addEvent(new EventGamepadPressed(pressedDpadBtns[1]));
+                break;
+            case northWest:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_UP;
+                pressedDpadBtns[1] = GamepadBtn.BTN_DPAD_LEFT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                addEvent(new EventGamepadPressed(pressedDpadBtns[1]));
+                break;
+            case south:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_DOWN;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                break;
+            case southEast:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_DOWN;
+                pressedDpadBtns[1] = GamepadBtn.BTN_DPAD_RIGHT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                addEvent(new EventGamepadPressed(pressedDpadBtns[1]));
+                break;
+            case southWest:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_DOWN;
+                pressedDpadBtns[1] = GamepadBtn.BTN_DPAD_LEFT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                addEvent(new EventGamepadPressed(pressedDpadBtns[1]));
+                break;
+            case west:
+                pressedDpadBtns[0] = GamepadBtn.BTN_DPAD_LEFT;
+                addEvent(new EventGamepadPressed(pressedDpadBtns[0]));
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean xSliderMoved(Controller controller, int sliderCode, boolean value) {
+        return false;
+    }
+
+    @Override
+    public boolean ySliderMoved(Controller controller, int sliderCode, boolean value) {
+        return false;
+    }
+
+    /**
+     * Controller accelerometer moved event listener.
+     *
+     * @param controller        The controller.
+     * @param accelerometerCode The accelerometer code.
+     * @param value             The value.
+     * @return true if the event was handled, false otherwise.
+     */
+    @Override
+    public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
         return false;
     }
 }
