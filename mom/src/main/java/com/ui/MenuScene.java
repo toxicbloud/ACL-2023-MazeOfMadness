@@ -73,10 +73,8 @@ public class MenuScene extends Scene {
      * punch sound
      */
     private Sound buttonClick;
-    /**
-     * The sound id of the music played throught OpenAL.
-     */
-    private long soundId;
+
+    private Music music;
 
     /**
      * Default constructor.
@@ -136,9 +134,8 @@ public class MenuScene extends Scene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
-                // stop the music
-                Sound sound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
-                sound.stop(soundId);
+                music.stop();
+                music.dispose();
                 Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT,
                         TEST_MAZE_DEPTH, new Tile[] {
                             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
@@ -161,6 +158,8 @@ public class MenuScene extends Scene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
+                music.stop();
+                music.dispose();
                 currenStage = campaignMenu;
                 Gdx.input.setInputProcessor(campaignMenu);
             }
@@ -185,9 +184,9 @@ public class MenuScene extends Scene {
         levelSelectionTable.add(level2).center().padBottom(50).row();
 
         Thread thread = new Thread(() -> {
-            Sound sound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
-            long id = sound.play();
-            sound.setVolume(id, MUSIC_VOLUME);
+            music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
+            music.play();
+            music.setVolume(MUSIC_VOLUME);
         });
 
         // load sound asynchronously
