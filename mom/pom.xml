@@ -63,6 +63,18 @@
             <artifactId>gdx-box2d</artifactId>
             <version>${gdx.version}</version>
         </dependency>
+        <!-- manette -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-controllers-desktop</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+        <!-- controller lwjgl backend -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-controllers-lwjgl3</artifactId>
+            <version>1.9.13</version>
+        </dependency>
         <dependency>
             <groupId>com.badlogicgames.box2dlights</groupId>
             <artifactId>box2dlights</artifactId>
