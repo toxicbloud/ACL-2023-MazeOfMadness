@@ -9,7 +9,7 @@ import com.engine.utils.Vector3;
  */
 public class GroundRock extends Ground {
     /** Ground rock sprite shift from texture top. */
-    private static final int GROUND_ROCK_SPRITE_SHIFT = SPRITE_SIZE * 0;
+    private static final int GROUND_ROCK_SPRITE_SHIFT = SPRITE_SIZE * 60;
 
     /**
      * GroundRock default constructor.

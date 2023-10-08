@@ -13,6 +13,7 @@ public class EventGamepadPressed extends Event {
 
     /**
      * EventGamepadPressed constructor.
+     *
      * @param btn The gamepad button.
      */
     public EventGamepadPressed(GamepadBtn btn) {
@@ -22,9 +23,15 @@ public class EventGamepadPressed extends Event {
 
     /**
      * Get the gamepad button.
+     *
      * @return The gamepad button.
      */
     public GamepadBtn getBtn() {
         return this.btn;
+    }
+
+    @Override
+    public void accept(EventVisitor visitor) {
+        visitor.visit(this);
     }
 }

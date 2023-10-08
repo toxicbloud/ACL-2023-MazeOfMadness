@@ -35,7 +35,7 @@ public class EventManager implements InputProcessor {
      */
     public EventManager() {
         this.events.clear();
-        key2code.put(Keys.A, KeyCode.KEY_A);
+        key2code.put(Keys.A, KeyCode.KEY_Q);
         key2code.put(Keys.B, KeyCode.KEY_B);
         key2code.put(Keys.C, KeyCode.KEY_C);
         key2code.put(Keys.D, KeyCode.KEY_D);
@@ -51,16 +51,16 @@ public class EventManager implements InputProcessor {
         key2code.put(Keys.N, KeyCode.KEY_N);
         key2code.put(Keys.O, KeyCode.KEY_O);
         key2code.put(Keys.P, KeyCode.KEY_P);
-        key2code.put(Keys.Q, KeyCode.KEY_Q);
+        key2code.put(Keys.Q, KeyCode.KEY_A);
         key2code.put(Keys.R, KeyCode.KEY_R);
         key2code.put(Keys.S, KeyCode.KEY_S);
         key2code.put(Keys.T, KeyCode.KEY_T);
         key2code.put(Keys.U, KeyCode.KEY_U);
         key2code.put(Keys.V, KeyCode.KEY_V);
-        key2code.put(Keys.W, KeyCode.KEY_W);
+        key2code.put(Keys.W, KeyCode.KEY_Z);
         key2code.put(Keys.X, KeyCode.KEY_X);
         key2code.put(Keys.Y, KeyCode.KEY_Y);
-        key2code.put(Keys.Z, KeyCode.KEY_Z);
+        key2code.put(Keys.Z, KeyCode.KEY_W);
         key2code.put(Keys.NUM_0, KeyCode.KEY_0);
         key2code.put(Keys.NUM_1, KeyCode.KEY_1);
         key2code.put(Keys.NUM_2, KeyCode.KEY_2);
@@ -97,6 +97,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Get the events.
+     *
      * @return The events.
      */
     public Event[] getEvents() {
@@ -111,6 +112,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Add an event.
+     *
      * @param ev The event.
      */
     private void addEvent(Event ev) {
@@ -119,6 +121,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Key down event listener.
+     *
      * @param keycode The key code.
      * @return true if the event was handled, false otherwise.
      */
@@ -129,6 +132,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Key up event listener.
+     *
      * @param keycode The key code.
      * @return true if the event was handled, false otherwise.
      */
@@ -139,6 +143,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Key typed event listener.
+     *
      * @param character The character.
      * @return true if the event was handled, false otherwise.
      */
@@ -148,10 +153,11 @@ public class EventManager implements InputProcessor {
 
     /**
      * Mouse button down event listener.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
+     *
+     * @param x       The x coordinate.
+     * @param y       The y coordinate.
      * @param pointer The pointer.
-     * @param button The mouse button.
+     * @param button  The mouse button.
      * @return true if the event was handled, false otherwise.
      */
     public boolean touchDown(int x, int y, int pointer, int button) {
@@ -161,10 +167,11 @@ public class EventManager implements InputProcessor {
 
     /**
      * Mouse button up event listener.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
+     *
+     * @param x       The x coordinate.
+     * @param y       The y coordinate.
      * @param pointer The pointer.
-     * @param button The mouse button.
+     * @param button  The mouse button.
      * @return true if the event was handled, false otherwise.
      */
     public boolean touchUp(int x, int y, int pointer, int button) {
@@ -174,8 +181,9 @@ public class EventManager implements InputProcessor {
 
     /**
      * Mouse drag event listener.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
+     *
+     * @param x       The x coordinate.
+     * @param y       The y coordinate.
      * @param pointer The pointer.
      * @return true if the event was handled, false otherwise.
      */
@@ -186,6 +194,7 @@ public class EventManager implements InputProcessor {
 
     /**
      * Mouse move event listener.
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @return true if the event was handled, false otherwise.
@@ -197,12 +206,18 @@ public class EventManager implements InputProcessor {
 
     /**
      * Mouse scroll event listener.
+     *
      * @param amountX The x amount.
      * @param amountY The y amount.
      * @return true if the event was handled, false otherwise.
      */
     public boolean scrolled(float amountX, float amountY) {
         addEvent(new EventMouseScrolled(amountY));
+        return false;
+    }
+
+    @Override
+    public boolean touchCancelled(int arg0, int arg1, int arg2, int arg3) {
         return false;
     }
 }

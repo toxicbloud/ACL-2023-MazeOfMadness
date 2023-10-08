@@ -2,7 +2,6 @@ package com.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.renderer.Camera;
@@ -13,6 +12,10 @@ import com.renderer.GameScene;
  * This is a sprite.
  */
 public class Sprite {
+    /** Amount of shift in x (screen) direction for block upper others.  */
+    private static final float TILE_X_SHIFT = 0.25f;
+    /** Amount of shift in y (screen) direction for block upper others.  */
+    private static final float TILE_Y_SHIFT = 0.5f;
     /** The width of the sprite. */
     private int width;
     /** The height of the sprite. */
@@ -77,11 +80,7 @@ public class Sprite {
         Camera cam = gscene.getCamera();
         float zoom = cam.getZoom();
 
-        Vector2 screenPos = orthoCoord2Screen(new Vector3(
-            position.x - cam.getPosition().x,
-            position.y + cam.getPosition().y,
-            position.z - cam.getPosition().z
-        )).mul(zoom);
+        Vector2 screenPos = orthoCoord2Screen(position.sub(cam.getPosition())).mul(zoom);
         Vector2 screenSize = orthoSize2Screen(size).mul(zoom / 2);
         sprite.setPosition(
             screenPos.x + window.getWidth() / 2 - zoom / 2,
@@ -101,7 +100,7 @@ public class Sprite {
             // coord.x - coord.z / 2,
             // coord.y - coord.z / 2
             (coord.x - coord.y) / 2.0f,
-            coord.z - (coord.x + coord.y) / 2.0f
+            coord.z * TILE_Y_SHIFT - (coord.x + coord.y) * TILE_X_SHIFT
         );
     }
 
