@@ -51,7 +51,7 @@ public class EventManager implements InputProcessor, ControllerListener {
      */
     public EventManager() {
         this.events.clear();
-        key2code.put(Keys.A, KeyCode.KEY_A);
+        key2code.put(Keys.A, KeyCode.KEY_Q);
         key2code.put(Keys.B, KeyCode.KEY_B);
         key2code.put(Keys.C, KeyCode.KEY_C);
         key2code.put(Keys.D, KeyCode.KEY_D);
@@ -67,16 +67,16 @@ public class EventManager implements InputProcessor, ControllerListener {
         key2code.put(Keys.N, KeyCode.KEY_N);
         key2code.put(Keys.O, KeyCode.KEY_O);
         key2code.put(Keys.P, KeyCode.KEY_P);
-        key2code.put(Keys.Q, KeyCode.KEY_Q);
+        key2code.put(Keys.Q, KeyCode.KEY_A);
         key2code.put(Keys.R, KeyCode.KEY_R);
         key2code.put(Keys.S, KeyCode.KEY_S);
         key2code.put(Keys.T, KeyCode.KEY_T);
         key2code.put(Keys.U, KeyCode.KEY_U);
         key2code.put(Keys.V, KeyCode.KEY_V);
-        key2code.put(Keys.W, KeyCode.KEY_W);
+        key2code.put(Keys.W, KeyCode.KEY_Z);
         key2code.put(Keys.X, KeyCode.KEY_X);
         key2code.put(Keys.Y, KeyCode.KEY_Y);
-        key2code.put(Keys.Z, KeyCode.KEY_Z);
+        key2code.put(Keys.Z, KeyCode.KEY_W);
         key2code.put(Keys.NUM_0, KeyCode.KEY_0);
         key2code.put(Keys.NUM_1, KeyCode.KEY_1);
         key2code.put(Keys.NUM_2, KeyCode.KEY_2);

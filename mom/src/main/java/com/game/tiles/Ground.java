@@ -15,7 +15,7 @@ public abstract class Ground extends Tile {
      * @param s The sprite of the ground.
      */
     public Ground(TileType type, Sprite s) {
-        super(type, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE), false);
+        super(type, s, false);
     }
 
     /**
@@ -26,6 +26,6 @@ public abstract class Ground extends Tile {
      * @param p The position of the ground.
      */
     public Ground(TileType type, Sprite s, Vector3 p) {
-        super(type, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE), p, false);
+        super(type, s, p, false);
     }
 }

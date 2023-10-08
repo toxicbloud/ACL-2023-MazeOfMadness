@@ -239,6 +239,7 @@ public class Window extends Game {
     public void resize(int w, int h) {
         this.width = w;
         this.height = h;
+        this.canvas.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
     }
 
     /**

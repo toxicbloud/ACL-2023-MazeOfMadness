@@ -60,4 +60,37 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     public Vector3 sub(Vector3 v) {
         return new Vector3(x - v.x, y - v.y, z - v.z);
     }
+
+    /**
+     * Multiply this vector by a float.
+     * @param f The float to multiply by.
+     * @return The product of the vector and the float.
+     */
+    public Vector3 mul(float f) {
+        return new Vector3(x * f, y * f, z * f);
+    }
+
+    /**
+     * Get the x coordinate.
+     * @return The x coordinate.
+     */
+    public float getX() {
+        return x;
+    }
+
+    /**
+     * Get the y coordinate.
+     * @return The y coordinate.
+     */
+    public float getY() {
+        return y;
+    }
+
+    /**
+     * Get the z coordinate.
+     * @return The z coordinate.
+     */
+    public float getZ() {
+        return z;
+    }
 }
