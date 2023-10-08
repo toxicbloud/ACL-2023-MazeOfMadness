@@ -1,16 +1,21 @@
 package com.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Music;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
-import com.engine.events.EventVisitor;
-import com.engine.utils.Vector2;
 import com.game.Game;
 import com.game.Maze;
 import com.game.tiles.GroundRock;
@@ -19,30 +24,10 @@ import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Menu scene.
  */
 public class MenuScene extends Scene {
-    /**
-     * Button width.
-     */
-    public static final int BUTTON_WIDTH = 20;
-
-    /**
-     * Button height.
-     */
-    public static final int BUTTON_HEIGHT = 10;
-    /**
-     * Button position x.
-     */
-    public static final float BUTTON_POSITION_X = 0.5f;
-    /**
-     * Button position y.
-     */
-    public static final float BUTTON_POSITION_Y = 0.45f;
     /** TEST_MAZE_WIDTH. */
     private static final int TEST_MAZE_WIDTH = 5;
     /** TEST_MAZE_HEIGHT. */
@@ -50,120 +35,110 @@ public class MenuScene extends Scene {
     /** TEST_MAZE_DEPTH. */
     private static final int TEST_MAZE_DEPTH = 2;
     /**
+     * Minimum world height used in the viewport.
+     */
+    private static final int MIN_WORLD_HEIGHT = 800;
+    /**
+     * Minimum world width used in the viewport.
+     */
+    private static final int MIN_WORLD_WIDTH = 800;
+    /**
      * Music volume.
      */
     private static final float MUSIC_VOLUME = 0.1f;
     /**
-     * Logo vertical offset.
+     * Maze of Madness logo
+     * Copyright : Antonin Rousseau.
      */
-    private static final int LOGO_VERTICAL_OFFSET = 50;
+    private Image logo;
     /**
-     *
+     * Stage used to draw the main menu.
      */
-    private static final float TEXT_BUTTON_VERTICAL_OFFSET = 0.2f;
+    private Stage mainMenu;
     /**
-     * The menu elements to update and render.
+     * Stage used to draw the campaign menu.
      */
-    private List<Element> elements;
+    private Stage campaignMenu;
+    /**
+     * current displayed stage.
+     */
+    private Stage currenStage;
+    /**
+     * UI skin style.
+     */
+    private Skin skin;
 
-    /**
-     * The current hovered element.
-     * used to check if the mouse is still hovering the same element
-     */
-    private Element hoveredElement;
-
-    /**
-     * The current pressed element.
-     * used to check if the mouse is still pressed on the same element
-     */
-    private Element pressedElement;
-    /**
-     * The logo sprite.
-     */
-    private Sprite logo;
-    /**
-     * The button hover sound.
-     * beep sound
-     */
-    private Sound buttonHover;
     /**
      * The button click sound.
      * punch sound
      */
     private Sound buttonClick;
     /**
-     * The batch used to render.
+     * The sound id of the music played throught OpenAL.
      */
-    private Batch batch;
+    private long soundId;
 
     /**
      * Default constructor.
      */
     public MenuScene() {
         super();
-        this.elements = new ArrayList<>();
     }
 
     @Override
     public void update() {
-        elements.forEach(Element::update);
+        currenStage.act();
     }
 
     @Override
     public void render() {
-        // render background
-        batch.begin();
-        // draw logo center x
-        batch.draw(logo, Window.getInstance().getWidth() / 2 - logo.getWidth() / 2,
-                Window.getInstance().getHeight() - logo.getHeight() - LOGO_VERTICAL_OFFSET);
-        batch.end();
-        elements.forEach(Element::render);
-    }
-
-    /**
-     * Check if a point is inside an element.
-     *
-     * @param point   Vector2 point to check
-     * @param element Element to check
-     * @return true if the point is inside the element, false otherwise
-     */
-    public boolean isInside(Vector2 point, Element element) {
-        Vector2 size = new Vector2(element.getSize());
-        Vector2 position = new Vector2(element.getPosition());
-        position.x *= Window.getInstance().getWidth();
-        position.x -= size.x / 2;
-        position.y *= Window.getInstance().getHeight();
-        return point.x >= position.x && point.x <= position.x + size.x
-                && point.y >= position.y && point.y <= position.y + size.y;
+        currenStage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        currenStage.getViewport().apply(true);
+        currenStage.draw();
     }
 
     @Override
     public void onEvent(Event ev) {
-        EventVisitor visitor = new UIEventVisitor(this);
-        ev.accept(visitor);
-    }
-
-    /**
-     *
-     * @param element
-     */
-    public void addElement(Element element) {
-        elements.add(element);
+        // EventVisitor visitor = new UIEventVisitor(this);
+        // ev.accept(visitor);
     }
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        logo = new Sprite(new Texture(Gdx.files.internal("images/menus/logo.png")));
+        mainMenu = new Stage(new ExtendViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT));
+        campaignMenu = new Stage(new ExtendViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT));
+        currenStage = mainMenu;
+        skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        logo = new Image(new Sprite(new Texture(Gdx.files.internal("images/menus/logo.png"))));
         buttonClick = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
-        buttonHover = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/beep.mp3"));
-        Button start = new Button(new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y),
-                new Vector2(BUTTON_WIDTH, BUTTON_HEIGHT));
-        start.create();
-        start.addListener(new ButtonListener() {
+        Gdx.input.setInputProcessor(mainMenu);
+
+        Table root = new Table();
+        root.setFillParent(true);
+        mainMenu.addActor(root);
+
+        // Table pour centrer le logo
+        Table logoTable = new Table();
+        logoTable.add(logo).center().padBottom(50).row();
+        root.add(logoTable).expandX().top().row();
+
+        // Table pour les boutons
+        Table buttonTable = new Table();
+
+        TextButton campaign = new TextButton(
+                "Campaign", skin);
+        buttonTable.add(campaign).center().padBottom(50).row();
+        TextButton free = new TextButton(
+                "Free", skin);
+        buttonTable.add(free).center().padBottom(50).row();
+        root.add(buttonTable).center().row();
+        free.addListener(new ClickListener() {
             @Override
-            public void onPressed() {
+            public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
+                // stop the music
+                Sound sound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
+                sound.stop(soundId);
                 Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT,
                         TEST_MAZE_DEPTH, new Tile[] {
                             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
@@ -180,23 +155,35 @@ public class MenuScene extends Scene {
                         }));
                 Window.getInstance().setScene(new GameScene());
             }
-
+        });
+        /* CAMPAIGN MENU SECTION */
+        campaign.addListener(new ClickListener() {
             @Override
-            public void onReleased() {
-            }
-
-            @Override
-            public void onHovered() {
-                long id = buttonHover.play();
-                buttonHover.setVolume(id, 1.0f);
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                currenStage = campaignMenu;
+                Gdx.input.setInputProcessor(campaignMenu);
             }
         });
-        TextButton test = new TextButton(
-                new Vector2(BUTTON_POSITION_X, BUTTON_POSITION_Y - TEXT_BUTTON_VERTICAL_OFFSET),
-                new Vector2(BUTTON_WIDTH, BUTTON_HEIGHT), "Test");
-        test.create();
-        addElement(start);
-        addElement(test);
+        Table rootCampaign = new Table();
+        rootCampaign.setFillParent(true);
+        campaignMenu.addActor(rootCampaign);
+
+        // text : Level selection
+        Table levelSelectionTable = new Table(skin);
+        levelSelectionTable.add("Level selection").center().padBottom(50).row();
+        rootCampaign.add(levelSelectionTable).center().row();
+
+        // TextButton : level 1
+        TextButton level1 = new TextButton(
+                "Level 1", skin);
+        levelSelectionTable.add(level1).center().padBottom(50).row();
+
+        // TextButton : level 2
+        TextButton level2 = new TextButton(
+                "Level 2", skin);
+        levelSelectionTable.add(level2).center().padBottom(50).row();
+
         Thread thread = new Thread(() -> {
             Sound sound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
             long id = sound.play();
@@ -205,40 +192,5 @@ public class MenuScene extends Scene {
 
         // load sound asynchronously
         thread.start();
-    }
-
-    /**
-     * @return the current hovered element
-     */
-    public Element getPressedElement() {
-        return pressedElement;
-    }
-
-    /**
-     * @param pressedElement the current pressed element to set
-     */
-    public void setPressedElement(Element pressedElement) {
-        this.pressedElement = pressedElement;
-    }
-
-    /**
-     * @return the current hovered element
-     */
-    public Element getHoveredElement() {
-        return hoveredElement;
-    }
-
-    /**
-     * @param hoveredElement the current hovered element to set
-     */
-    public void setHoveredElement(Element hoveredElement) {
-        this.hoveredElement = hoveredElement;
-    }
-
-    /**
-     * @return the elements of the menu like : Button, TextButton, ...
-     */
-    public List<Element> getElements() {
-        return elements;
     }
 }
