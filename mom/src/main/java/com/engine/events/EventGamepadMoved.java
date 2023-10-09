@@ -31,6 +31,8 @@ public class EventGamepadMoved extends Event {
     public EventGamepadMoved(GamepadAxis axis, float x, float y) {
         super(EventType.GAMEPAD_MOVED);
         this.axis = axis;
+        this.x = x;
+        this.y = y;
     }
 
     /**
