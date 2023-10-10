@@ -38,7 +38,7 @@ public class MazeFactory {
      */
     public Maze createMaze() {
         final int heightWidth = 20;
-        return this.createMaze(heightWidth, heightWidth, 1);
+        return this.createMaze(heightWidth, heightWidth, 2);
     }
 
     /**
@@ -52,13 +52,9 @@ public class MazeFactory {
     public Maze createMaze(int height, int width, int depth) {
         // We call the room-splitting method on the array
         Tile[] maze = this.generateRooms(width, height, depth);
-
-        // We add some water in the rooms.
-
         // Returning the maze.
         return new Maze(height, width, depth, maze);
     }
-
 
     /**
      * Recursive Method, calls itself to split the maze in rooms.

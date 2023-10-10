@@ -142,7 +142,9 @@ public class Rectangle {
                 // We fill the ground layer
                 maze[i + j] = new GroundRockTiled();
                 // We unfill the above layers.
-                maze[i + (maze.length / mazeDepth) + j] = new VoidTile();
+                for (int k = 1; k < mazeDepth; k++) {
+                    maze[i + (mazeHeight * mazeWidth * k) + j] = new VoidTile();
+                }
             }
         }
     }
