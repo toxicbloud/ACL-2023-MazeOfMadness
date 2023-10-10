@@ -17,7 +17,9 @@ import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
+import com.game.LevelLoader;
 import com.game.Maze;
+import com.game.Player;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
@@ -181,12 +183,36 @@ public class MenuScene extends Scene {
 
         // TextButton : level 1
         TextButton level1 = new TextButton(
-                "Level 1", skin);
+                LevelLoader.getLevelName(Gdx.files.internal("maps/level1.json")), skin);
+        level1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                var level1 = LevelLoader.load(Gdx.files.internal("maps/level1.json"));
+                Game.getInstance().setMaze(level1.getMaze());
+                Game.getInstance().setPlayer(new Player(level1.getPlayerData().getPosition()));
+                Window.getInstance().setScene(new GameScene());
+            }
+        });
         levelSelectionTable.add(level1).center().padBottom(PAD_BOTTOM).row();
 
         // TextButton : level 2
         TextButton level2 = new TextButton(
-                "Level 2", skin);
+                LevelLoader.getLevelName(Gdx.files.internal("maps/level2.json")), skin);
+        level2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                var level2 = LevelLoader.load(Gdx.files.internal("maps/level2.json"));
+                Game.getInstance().setMaze(level2.getMaze());
+                Game.getInstance().setPlayer(new Player(level2.getPlayerData().getPosition()));
+                Window.getInstance().setScene(new GameScene());
+            }
+        });
         levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
 
         Thread thread = new Thread(() -> {

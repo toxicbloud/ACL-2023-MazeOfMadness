@@ -1,0 +1,282 @@
+{
+  "name": "Charlemagne first floor",
+  "description": "Charlemagne first floor is a strange place to be.",
+  "author": "Antonin Rousseau",
+  "version": "1.4.2",
+  "maze": {
+    "width": 5,
+    "height": 5,
+    "depth": 3,
+    "tiles": [
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundWater"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundLava"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "StairRock",
+        "direction": 1
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "StairGrass",
+        "direction": 0
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      },
+      {
+        "type": "VoidTile"
+      }
+    ],
+    "monsters": [
+      {
+        "type": "zombie",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "type": "ghost",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ],
+    "items": [
+      {
+        "type": "sword",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "player": {
+    "health": 100,
+    "maxHealth": 100,
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 2
+    },
+    "items": [
+      {
+        "type": "sword"
+      }
+    ]
+  }
+}
