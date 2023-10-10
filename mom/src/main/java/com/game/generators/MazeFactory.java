@@ -50,9 +50,6 @@ public class MazeFactory {
      * @return Maze object initialized with a random maze
      */
     public Maze createMaze(int height, int width, int depth) {
-        System.out.println("[DEBUG] - Generating maze.");
-        System.out.println("[DEBUG] - Maze size : " + height + " x " + width + " x " + depth);
-
         // We call the room-splitting method on the array
         return new Maze(height, width, 1, this.generateRooms(width, height));
     }
@@ -95,21 +92,17 @@ public class MazeFactory {
             }
         }
 
-        System.out.println("[DEBUG] - Done generating maze.");
-
         // We now have an array full of leaves. We can populate it with rooms and generate halls.
         for (Leaf l : leafArray) {
             l.createRooms();
         }
 
-        System.out.println("[DEBUG] - Done generating Halls.");
-        System.out.println("[DEBUG] - Converting the Tree into array object ...");
         Tile[] maze = new Tile[height * width];
         for (int i = 0; i < height * width; i++) {
             maze[i] = new WallRock();
         }
         for (Leaf l : leafArray) {
-            l.exportToArray(maze);
+            l.exportToArray(maze, height, width);
         }
 
         return maze;

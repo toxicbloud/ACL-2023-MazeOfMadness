@@ -183,24 +183,27 @@ public class Maze implements Evolvable {
         this.items = items;
     }
 
-    public String toString(){
+    /**
+     * ToString method. Displays the maze into grid-like String.
+     * @return Maze turned into a String.
+     */
+    public String toString() {
         StringBuilder s = new StringBuilder();
 
-        for (int i = 0; i < this.tiles.length; i++){
-            if(i % this.width == 0) {
+        for (int i = 0; i < this.tiles.length; i++) {
+            if (i % this.width == 0) {
                 s.append('\n');
             }
-
-            if(this.tiles[i].getType() == TileType.WALL_ROCK) {
+            if (this.tiles[i].getType() == TileType.WALL_ROCK) {
                 s.append("#  ");
             }
-            if(this.tiles[i].getType() == TileType.GROUND_ROCK) {
-                s.append("o  ");
+            if (this.tiles[i].getType() == TileType.GROUND_ROCK) {
+                s.append("<  ");
             }
-            if(this.tiles[i].getType() == TileType.VOID) {
+            if (this.tiles[i].getType() == TileType.VOID) {
                 s.append("   ");
             }
-            if(this.tiles[i].getType() == TileType.GROUND_WATER) {
+            if (this.tiles[i].getType() == TileType.GROUND_WATER) {
                 s.append("w  ");
             }
         }

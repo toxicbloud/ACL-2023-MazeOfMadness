@@ -256,19 +256,19 @@ public class Leaf {
     /**
      * This method exports the leaf into a Tile array. Usable for the Maze constructor and game.
      * @param maze Maze to populate.
+     * @param mazeHeight Height of the maze to fill.
+     * @param mazeWidth Width of the maze to fill.
      */
-    public void exportToArray(Tile[] maze) {
+    public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth) {
 
         if (this.halls != null) {
             for (Rectangle r : this.halls) {
-                System.out.println("[DEBUG] - Halls found ! (x;y) : (" + r.getX() + ";" + r.getY() + ")");
-
-
+                r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth);
             }
         }
 
         if (this.room != null) {
-            System.out.println("[DEBUG] - Room found ! (x;y) : (" + this.room.getX() + ";" + this.room.getY() + ")");
+            this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth);
         }
     }
 
@@ -302,14 +302,6 @@ public class Leaf {
      */
     public int getHeight() {
         return this.height;
-    }
-
-    /**
-     * Returns the halls of the current leaf.
-     * @return the halls of the current leaf.
-     */
-    public ArrayList<Rectangle> getHalls() {
-        return halls;
     }
 
     /**
