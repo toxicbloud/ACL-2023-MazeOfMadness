@@ -286,7 +286,6 @@ public class EventManager implements InputProcessor, ControllerListener {
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-        System.out.println("pov moved: " + povCode + " " + value);
         pressedDpadBtns[0] = null;
         pressedDpadBtns[1] = null;
         switch (value) {
