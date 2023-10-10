@@ -1,4 +1,20 @@
 # Maze Of Madness
+
+## Sommaire
+- [Elevator Speech](#elevator-speech)
+- [Présentation détaillée du Jeu](#description-du-jeu)
+  - [Description du Jeu](#description-du-jeu)
+  - [Caractéristiques Principales](#caractéristiques-principales)
+  - [Objectif du Projet](#objectif-du-projet)
+  - [Valeurs Clés](#valeurs-clés)
+- [Auteurs](#auteurs)
+- [Installation](#installation)
+  - [Prérequis](#prérequis)
+  - [Étapes d'Installation](#étapes-dinstallation)
+
+## Elevator speech
+Plongez dans un monde isométrique plein de mystère et de danger avec **Maze of Madness**. Explorez des labyrinthes complexes et survivez à des monstres aux comportements uniques. En mode campagne, découvrez une histoire épique à travers une série de labyrinthes intrigants, créés par les développeurs ou la communauté via l'éditeur de carte. Défiez l'infini en mode libre avec des labyrinthes générés aléatoirement. Collectez des objets, découvrez des armes et affrontez l'inconnu. **Maze of Madness** offre une expérience isométrique, une rejouabilité infinie et une communauté passionnée. Êtes-vous prêt à relever le défi ?
+
 ## Description du Jeu
 MoM est un jeu vidéo isométrique immersif qui propose aux joueurs une expérience captivante de labyrinthes complexes, d'exploration et de survie. Le jeu offre deux modes de jeu distincts :
 
@@ -28,17 +44,17 @@ L'exploration, la survie, la créativité communautaire et l'accessibilité sont
 
 # Auteurs
 
-Antonin Rousseau |                                                                             | Paul Loisil |                                                         |
+Antonin Rousseau |                                                                             | Paul Loisil |                                                         |
 ---------------- | --------------------------------------------------------------------------- | ----------- | ------------------------------------------------------- |
-Site web         | [antoninrousseau.fr](https://antoninrousseau.fr)                            | Site web    | [furwaz.fr](https://furwaz.fr)                          |
-GitHub           | [@toxicbloud](https://github.com/toxicbloud)                                | GitHub      | [@furwaz](https://github.com/furwaz)                    |
-LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousseau-571280159/) | LinkedIn    | [Paul LOISIL](https://www.linkedin.com/in/loisil-paul/) |
+Site web         | [antoninrousseau.fr](https://antoninrousseau.fr)                            | Site web    | [furwaz.fr](https://furwaz.fr)                          |
+GitHub           | [@toxicbloud](https://github.com/toxicbloud)                                | GitHub      | [@furwaz](https://github.com/furwaz)                    |
+LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousseau-571280159/) | LinkedIn    | [Paul LOISIL](https://www.linkedin.com/in/loisil-paul/) |
 
-| Maxime Marcelin |                                                                           | Clément Joly |     |
+| Maxime Marcelin |                                                                           | Clément Joly |     |
 | --------------- | ------------------------------------------------------------------------- | ------------ | --- |
-| Site web        |                                                                           | Site web     |     |
-| GitHub          | [@Maximelego](https://github.com/Maximelego)                              | GitHub       |     |
-| LinkedIn        | [Maxime Marcelin](https://www.linkedin.com/in/maxime-marcelin-a7b53225a/) | LinkedIn     |     |
+| Site web        |                                                                           | Site web     |     |
+| GitHub          | [@Maximelego](https://github.com/Maximelego)                              | GitHub       |     |
+| LinkedIn        | [Maxime Marcelin](https://www.linkedin.com/in/maxime-marcelin-a7b53225a/) | LinkedIn     |     |
 
 # Installation
 
@@ -52,22 +68,25 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-rousse
 ## Étapes d'Installation
 
 1. **Cloner le Projet (Si vous utilisez Git)**
-
-   ```bash
-   git clone https://github.com/toxicbloud/ACL-2023-MazeOfMadness
-    ```
+```bash
+   git clone https://github.com/toxicbloud/ACL-2023-MazeOfMadness
+```
 2. **Déplacer vous dans le dossier du projet**
-    > le projet Maze Of Madness est abrégé en mom
-   ```bash
-   cd ACL-2023-MazeOfMadness/mom
-   ```
+> le projet Maze Of Madness est abrégé en mom
+```bash
+   cd ACL-2023-MazeOfMadness/mom
+```
 3. **Compiler le projet**
-   ```bash
-   mvn clean package
-   ```
-   > Cela téléchargera les dépendances, compilera le code source et générera des fichier JAR dans le répertoire target du projet.
+```bash
+   mvn clean package
+```
+> Cela téléchargera les dépendances, compilera le code source et générera des fichier JAR dans le répertoire target du projet.
 4. **Lancer le jeu**
-   ```bash
-    java -jar target/<nom_du_jar>.jar
-    ```
-    > Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
+```bash
+    java -jar target/<nom_du_jar>.jar
+```
+> Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
+
+    
+> Pour MacOS il faut ajouter l'option `-XstartOnFirstThread` pour lancer le jeu
+    
