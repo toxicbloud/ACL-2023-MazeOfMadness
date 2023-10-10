@@ -75,7 +75,7 @@ public class PlayerController extends Controller implements EventVisitor {
     @Override
     public void visit(EventGamepadMoved ev) {
         GamepadAxis axis = ev.getAxis();
-        if (axis == GamepadAxis.AXIS_RIGHT) {
+        if (axis == GamepadAxis.AXIS_LEFT) {
             direction = new Vector2(ev.getX(), ev.getY());
         }
     }
