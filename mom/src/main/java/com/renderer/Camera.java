@@ -12,6 +12,8 @@ public class Camera {
     private static final float DEFAULT_CAMERA_ZOOM = 60.0f;
     /** Default camera speed. */
     private static final float CAMERA_SPEED = 4.0f;
+    /** Camera shift from target point. */
+    private static final Vector3 CAMERA_SHIFT = new Vector3(0.0f, 0.0f, 0.0f);
 
     /** The position of the camera. */
     private Vector3 position;
@@ -81,6 +83,14 @@ public class Camera {
      */
     public void setPosition(Vector3 position) {
         this.targetPos = position;
+    }
+
+    /**
+     * Set the target position of the camera.
+     * @param pos The target position of the camera.
+     */
+    public void setTargetPosition(Vector3 pos) {
+        this.targetPos = pos.add(CAMERA_SHIFT);
     }
 
     /**

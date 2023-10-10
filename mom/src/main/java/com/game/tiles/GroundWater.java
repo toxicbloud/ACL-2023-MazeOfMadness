@@ -9,7 +9,7 @@ import com.engine.utils.Vector3;
  */
 public class GroundWater extends Ground {
     /** Ground water sprite shift from texture top. */
-    private static final int GROUND_WATER_SPRITE_SHIFT = SPRITE_SIZE * 0;
+    private static final int GROUND_WATER_SPRITE_SHIFT = SPRITE_SIZE * 66;
 
     /**
      * GroundWater constructor.

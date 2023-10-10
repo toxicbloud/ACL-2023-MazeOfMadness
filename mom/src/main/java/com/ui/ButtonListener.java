@@ -13,4 +13,9 @@ public interface ButtonListener {
      * Called when the button is released.
      */
     void onReleased();
+
+    /**
+     * Called when the button is hovered.
+     */
+    void onHovered();
 }

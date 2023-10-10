@@ -8,7 +8,7 @@ import com.engine.Sprite;
  */
 public class WallRock extends Wall {
     /** Wall rock sprite shift from texture top. */
-    private static final int WALL_ROCK_SPRITE_SHIFT = SPRITE_SIZE * 1;
+    private static final int WALL_ROCK_SPRITE_SHIFT = SPRITE_SIZE * 53;
 
     /**
      * WallRock constructor.

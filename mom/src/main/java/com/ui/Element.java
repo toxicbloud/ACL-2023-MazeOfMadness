@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.engine.Evolvable;
+import com.engine.Window;
 import com.engine.utils.Vector2;
 
 /**
@@ -117,7 +118,10 @@ public abstract class Element implements Evolvable {
      * @return The size of the element.
      */
     public Vector2 getSize() {
-        return this.size;
+        Window window = Window.getInstance();
+        final float windowHeight = window.getHeight() / 100;
+        final float windowWidth = window.getWidth() / 100;
+        return new Vector2(this.size.x * windowWidth, this.size.y * windowHeight);
     }
 
     /**
@@ -174,4 +178,6 @@ public abstract class Element implements Evolvable {
      * @param state true when pressed, false when released
      */
     public abstract void onPressed(boolean state);
+
+    abstract void create();
 }
