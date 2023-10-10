@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.engine.events.Event;
 import com.engine.events.EventManager;
@@ -40,6 +41,7 @@ public class Window extends Game {
      * Initialize the window.
      */
     public Window() {
+        this.events = new EventManager();
     }
 
     /**
@@ -49,6 +51,7 @@ public class Window extends Game {
      * @param title The window title.
      */
     public Window(String title) {
+        this();
         this.title = title;
     }
 
@@ -61,7 +64,7 @@ public class Window extends Game {
      * @param height The window height.
      */
     public Window(String title, int width, int height) {
-        this.title = title;
+        this(title);
         this.width = width;
         this.height = height;
     }
@@ -91,7 +94,6 @@ public class Window extends Game {
         config.useVsync(true);
         config.setResizable(true);
 
-        this.events = new EventManager();
         this.app = new Lwjgl3Application(this, config);
     }
 
@@ -134,6 +136,7 @@ public class Window extends Game {
         this.scene = scene;
         if (this.created) {
             this.scene.create();
+            Gdx.input.setInputProcessor(this.events);
         }
     }
 
@@ -196,6 +199,7 @@ public class Window extends Game {
     public void create() {
         this.canvas = new SpriteBatch();
         Gdx.input.setInputProcessor(this.events);
+        Controllers.addListener(this.events);
         if (this.scene != null) {
             this.scene.create();
         }
