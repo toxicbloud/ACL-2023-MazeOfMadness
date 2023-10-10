@@ -94,16 +94,6 @@
             <artifactId>gdx-controllers-lwjgl3</artifactId>
             <version>1.9.13</version>
         </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.box2dlights</groupId>
-            <artifactId>box2dlights</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-openal</artifactId>
-            <version>0.9.9</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>MazeOfMadness</finalName>
