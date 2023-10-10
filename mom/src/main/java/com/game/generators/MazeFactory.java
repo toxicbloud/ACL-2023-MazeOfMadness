@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Factory for mazes.
  */
-public class MazeFactory {
+public final class MazeFactory {
 
     /**
      * RNG : Attribut permettant de faire appel à la classe Random.
@@ -27,18 +27,18 @@ public class MazeFactory {
     private static final float RNG_THRESHOLD = 0.25F;
 
     /**
-     * Default constructor.
+     * Private default constructor.
      */
-    public MazeFactory() {}
+    private MazeFactory() { }
 
     /**
      * This function generates an initialized Maze Object that has been generated randomly with predetermined height
      * and width values.
      * @return Maze object initialized with a random 20 by 20 maze
      */
-    public Maze createMaze() {
+    public static Maze createMaze() {
         final int heightWidth = 20;
-        return this.createMaze(heightWidth, heightWidth, 2);
+        return MazeFactory.createMaze(heightWidth, heightWidth, 2);
     }
 
     /**
@@ -49,9 +49,9 @@ public class MazeFactory {
      * @param depth Depth of the maze
      * @return Maze object initialized with a random maze
      */
-    public Maze createMaze(int height, int width, int depth) {
+    public static Maze createMaze(int height, int width, int depth) {
         // We call the room-splitting method on the array
-        Tile[] maze = this.generateRooms(width, height, depth);
+        Tile[] maze = MazeFactory.generateRooms(width, height, depth);
         // Returning the maze.
         return new Maze(height, width, depth, maze);
     }
@@ -64,7 +64,7 @@ public class MazeFactory {
      * @param depth desired depth of the maze.
      * @return Tableau de Tiles du labyrinthe.
      */
-    private Tile[] generateRooms(int width, int height, int depth) {
+    private static Tile[] generateRooms(int width, int height, int depth) {
         ArrayList<Leaf> leafArray = new ArrayList<>();
         Leaf root = new Leaf(0, 0, width, height);
         leafArray.add(root);
