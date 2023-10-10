@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.engine.events.Event;
 import com.engine.events.EventManager;
@@ -24,6 +25,8 @@ public class Window extends Game {
     private int height = 720;
     /** The window title. */
     private String title = "Maze Of Madness";
+    /** Is the window created. */
+    private boolean created;
     /** The current scene. */
     private Scene scene;
     /** The event manager. */
@@ -38,35 +41,37 @@ public class Window extends Game {
      * Initialize the window.
      */
     public Window() {
-        init();
+        this.events = new EventManager();
     }
 
     /**
      * Window constructor.
      * Initialize the window.
+     *
      * @param title The window title.
      */
     public Window(String title) {
+        this();
         this.title = title;
-        init();
     }
 
     /**
      * Window constructor.
      * Initialize the window.
-     * @param title The window title.
-     * @param width The window width.
+     *
+     * @param title  The window title.
+     * @param width  The window width.
      * @param height The window height.
      */
     public Window(String title, int width, int height) {
-        this.title = title;
+        this(title);
         this.width = width;
         this.height = height;
-        init();
     }
 
     /**
      * Window instance getter.
+     *
      * @return The window instance.
      */
     public static Window getInstance() {
@@ -89,12 +94,12 @@ public class Window extends Game {
         config.useVsync(true);
         config.setResizable(true);
 
-        this.events = new EventManager();
         this.app = new Lwjgl3Application(this, config);
     }
 
     /**
      * Set the window title.
+     *
      * @param title The window title.
      */
     public void setTitle(String title) {
@@ -104,6 +109,7 @@ public class Window extends Game {
 
     /**
      * Set the window width.
+     *
      * @param width The window width.
      */
     public void setWidth(int width) {
@@ -113,6 +119,7 @@ public class Window extends Game {
 
     /**
      * Set the window height.
+     *
      * @param height The window height.
      */
     public void setHeight(int height) {
@@ -122,14 +129,20 @@ public class Window extends Game {
 
     /**
      * Set the window scene.
+     *
      * @param scene The window scene.
      */
     public void setScene(Scene scene) {
         this.scene = scene;
+        if (this.created) {
+            this.scene.create();
+            Gdx.input.setInputProcessor(this.events);
+        }
     }
 
     /**
      * Get the window title.
+     *
      * @return The window title.
      */
     public String getTitle() {
@@ -138,6 +151,7 @@ public class Window extends Game {
 
     /**
      * Get the window width.
+     *
      * @return The window width.
      */
     public int getWidth() {
@@ -146,6 +160,7 @@ public class Window extends Game {
 
     /**
      * Get the window height.
+     *
      * @return The window height.
      */
     public int getHeight() {
@@ -154,6 +169,7 @@ public class Window extends Game {
 
     /**
      * Get the window scene.
+     *
      * @return The window scene.
      */
     public Scene getScene() {
@@ -162,6 +178,7 @@ public class Window extends Game {
 
     /**
      * Get the window canvas.
+     *
      * @return The window canvas.
      */
     public SpriteBatch getCanvas() {
@@ -182,6 +199,11 @@ public class Window extends Game {
     public void create() {
         this.canvas = new SpriteBatch();
         Gdx.input.setInputProcessor(this.events);
+        Controllers.addListener(this.events);
+        if (this.scene != null) {
+            this.scene.create();
+        }
+        this.created = true;
     }
 
     /**
@@ -201,28 +223,23 @@ public class Window extends Game {
                 this.scene.onEvent(ev);
             }
             this.scene.update();
+            this.canvas.begin();
             this.scene.render();
+            this.canvas.end();
         }
-
-        // Batch batch = new SpriteBatch();
-        // Texture tex = new Texture(Gdx.files.internal("images/robin.png"));
-        // Sprite spr = new Sprite(tex);
-        // spr.setPosition(0, 0);
-        // spr.setSize(100, 200);
-        // batch.begin();
-        // spr.draw(batch);
-        // batch.end();
     }
 
     /**
      * Resize the game.
      * This is called once on startup and every time the window is resized.
+     *
      * @param w The new window width.
      * @param h The new window height.
      */
     public void resize(int w, int h) {
         this.width = w;
         this.height = h;
+        this.canvas.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
     }
 
     /**
@@ -231,5 +248,12 @@ public class Window extends Game {
      */
     public void dispose() {
         super.dispose();
+    }
+
+    /**
+     * Run the main application.
+     */
+    public void run() {
+        init();
     }
 }

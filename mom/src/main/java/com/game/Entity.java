@@ -2,7 +2,9 @@ package com.game;
 
 import com.engine.Evolvable;
 import com.engine.Sprite;
+import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
+import com.game.controllers.Controller;
 
 /***
  * Entity class.
@@ -10,7 +12,7 @@ import com.engine.utils.Vector3;
  */
 public abstract class Entity implements Evolvable {
     /** Default sprite size. */
-    protected static final int SPRITE_SIZE = 16;
+    protected static final int SPRITE_SIZE = 64;
 
     /** Entity position. */
     private Vector3 position;
@@ -18,6 +20,9 @@ public abstract class Entity implements Evolvable {
     private Vector3 size;
     /** Entity sprite. */
     private Sprite sprite;
+
+    /** Entity's controller. */
+    private Controller controller;
 
     /**
      * Entity constructor.
@@ -42,6 +47,14 @@ public abstract class Entity implements Evolvable {
     }
 
     /**
+     * Register a controller to the entity.
+     * @param c The controller to register.
+     */
+    public void registerController(Controller c) {
+        this.controller = c;
+    }
+
+    /**
      * Update the entity.
      * This method is called every frame, before any render() call.
      */
@@ -52,7 +65,25 @@ public abstract class Entity implements Evolvable {
      * This method is called every frame, after all update() calls.
      */
     public void render() {
-        sprite.render(position, size);
+        if (this.sprite != null) {
+            sprite.render(position, size);
+        }
+    }
+
+    /**
+     * Move entity of delta position.
+     * @param delta movement delta
+     */
+    public void moveBy(Vector3 delta) {
+        this.position = this.position.add(delta);
+    }
+
+    /**
+     * Move entity of delta position.
+     * @param delta movement delta
+     */
+    public void moveBy(Vector2 delta) {
+        this.position = this.position.add(new Vector3(delta.x, delta.y, 0));
     }
 
     /**

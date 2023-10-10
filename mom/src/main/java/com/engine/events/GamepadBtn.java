@@ -14,21 +14,21 @@ public enum GamepadBtn {
     /** Y gamepad button. */
     BTN_Y,
     /** Left bumper gamepad button. */
-    BTN_L1,
+    BTN_LB,
     /** Right bumper gamepad button. */
-    BTN_R1,
+    BTN_RB,
     /** Left trigger gamepad button. */
-    BTN_L2,
+    BTN_LT,
     /** Right trigger gamepad button. */
-    BTN_R2,
+    BTN_RT,
     /** Left joystick gamepad button. */
-    BTN_L3,
+    BTN_LS,
     /** Right joystick gamepad button. */
-    BTN_R3,
-    /** Back gamepad button. */
-    BTN_BACK,
-    /** Start gamepad button. */
-    BTN_START,
+    BTN_RS,
+    /** View gamepad button. Select on Sony Gamepad */
+    BTN_VIEW,
+    /** Menu gamepad button. Start on Sony Gamepad */
+    BTN_MENU,
     /** D-pad up gamepad button. */
     BTN_DPAD_UP,
     /** D-pad down gamepad button. */

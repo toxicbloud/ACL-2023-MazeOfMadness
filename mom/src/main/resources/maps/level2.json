@@ -1,0 +1,559 @@
+{
+  "name": "New Maze",
+  "description": "A mysterious new maze",
+  "author": "Your Name",
+  "version": "1.0",
+  "maze": {
+    "width": 6,
+    "height": 7,
+    "depth": 4,
+    "tiles": [
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundLava"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundRock"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      },
+      {
+        "type": "GroundGrass"
+      }
+    ],
+    "monsters": [
+      {
+        "type": "zombie",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "type": "ghost",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ],
+    "items": [
+      {
+        "type": "sword",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "player": {
+    "health": 100,
+    "maxHealth": 100,
+    "position": {
+      "x": 3,
+      "y": 4,
+      "z": 4
+    },
+    "items": [
+      {
+        "type": "sword"
+      }
+    ]
+  }
+}

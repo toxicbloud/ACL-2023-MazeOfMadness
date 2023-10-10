@@ -7,10 +7,10 @@
     <packaging>jar</packaging>
 
     <properties>
-        <gdx.version>1.9.13</gdx.version>
+        <gdx.version>1.12.0</gdx.version>
         <java.version>17</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.6.0</junit.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
@@ -33,6 +33,18 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>5.3.1</version>
+          <scope>test</scope>
+      </dependency>
+        <!-- org JSON -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230618</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
@@ -58,20 +70,29 @@
             <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>${gdx.version}</version>
         </dependency>
+        <!-- headless backend for unit test -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d-platform</artifactId>
+            <artifactId>gdx-backend-headless</artifactId>
+            <version>${gdx.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d</artifactId>
             <version>${gdx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.box2dlights</groupId>
-            <artifactId>box2dlights</artifactId>
-            <version>1.5</version>
-        </dependency>
+        <!-- manette -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-openal</artifactId>
-            <version>0.9.9</version>
+            <artifactId>gdx-controllers-desktop</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+        <!-- controller lwjgl backend -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-controllers-lwjgl3</artifactId>
+            <version>1.9.13</version>
         </dependency>
     </dependencies>
     <build>
@@ -132,6 +153,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                  <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>

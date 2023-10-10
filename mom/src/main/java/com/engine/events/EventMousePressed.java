@@ -27,4 +27,9 @@ public class EventMousePressed extends Event {
     public MouseBtn getBtn() {
         return this.btn;
     }
+
+    @Override
+    public void accept(EventVisitor visitor) {
+        visitor.visit(this);
+    }
 }
