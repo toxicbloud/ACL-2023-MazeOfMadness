@@ -258,17 +258,18 @@ public class Leaf {
      * @param maze Maze to populate.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeWidth Width of the maze to fill.
+     * @param mazeDepth Depth of the maze to fill.
      */
-    public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth) {
+    public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
 
         if (this.halls != null) {
             for (Rectangle r : this.halls) {
-                r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth);
+                r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
             }
         }
 
         if (this.room != null) {
-            this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth);
+            this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
     }
 

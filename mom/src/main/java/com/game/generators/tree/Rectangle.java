@@ -1,7 +1,8 @@
 package com.game.generators.tree;
 
-import com.game.tiles.GroundRock;
+import com.game.tiles.GroundRockTiled;
 import com.game.tiles.Tile;
+import com.game.tiles.VoidTile;
 
 /**
  * Rectangle class. Used to define rooms.
@@ -127,8 +128,9 @@ public class Rectangle {
      * @param maze Maze to fill.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeWidth Width of the maze to fill.
+     * @param mazeDepth Height of the maze to fill.
      */
-    public void populateMazeWithRectangle(Tile[] maze, int mazeHeight, int mazeWidth) {
+    public void populateMazeWithRectangle(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         // Computing starting tile to fill.
         int startingTileIndex = this.x + this.y * mazeHeight;
 
@@ -137,9 +139,11 @@ public class Rectangle {
              i < startingTileIndex + mazeWidth * this.height;
              i += mazeWidth) {
             for (int j = 0; j < this.width; j++) {
-                maze[i + j] = new GroundRock();
+                // We fill the ground layer
+                maze[i + j] = new GroundRockTiled();
+                // We unfill the above layers.
+                maze[i + (maze.length / mazeDepth) + j] = new VoidTile();
             }
         }
-
     }
 }

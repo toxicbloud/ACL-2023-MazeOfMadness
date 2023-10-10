@@ -51,17 +51,24 @@ public class MazeFactory {
      */
     public Maze createMaze(int height, int width, int depth) {
         // We call the room-splitting method on the array
-        return new Maze(height, width, 1, this.generateRooms(width, height));
+        Tile[] maze = this.generateRooms(width, height, depth);
+
+        // We add some water in the rooms.
+
+        // Returning the maze.
+        return new Maze(height, width, depth, maze);
     }
+
 
     /**
      * Recursive Method, calls itself to split the maze in rooms.
      * It uses a tree-like structure to generate the rooms.
      * @param width desired width of the maze.
      * @param height desired height of the maze.
+     * @param depth desired depth of the maze.
      * @return Tableau de Tiles du labyrinthe.
      */
-    private Tile[] generateRooms(int width, int height) {
+    private Tile[] generateRooms(int width, int height, int depth) {
         ArrayList<Leaf> leafArray = new ArrayList<>();
         Leaf root = new Leaf(0, 0, width, height);
         leafArray.add(root);
@@ -97,12 +104,12 @@ public class MazeFactory {
             l.createRooms();
         }
 
-        Tile[] maze = new Tile[height * width];
-        for (int i = 0; i < height * width; i++) {
+        Tile[] maze = new Tile[height * width * depth];
+        for (int i = 0; i < height * width * depth; i++) {
             maze[i] = new WallRock();
         }
         for (Leaf l : leafArray) {
-            l.exportToArray(maze, height, width);
+            l.exportToArray(maze, height, width, depth);
         }
 
         return maze;
