@@ -3,6 +3,7 @@ package com.game.generators;
 import com.game.Maze;
 import com.game.generators.tree.Leaf;
 import com.game.tiles.Tile;
+import com.game.tiles.WallRock;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -103,6 +104,14 @@ public class MazeFactory {
 
         System.out.println("[DEBUG] - Done generating Halls.");
         System.out.println("[DEBUG] - Converting the Tree into array object ...");
-        return leafArray.get(0).exportToArray();
+        Tile[] maze = new Tile[height * width];
+        for (int i = 0; i < height * width; i++) {
+            maze[i] = new WallRock();
+        }
+        for (Leaf l : leafArray) {
+            l.exportToArray(maze);
+        }
+
+        return maze;
     }
 }

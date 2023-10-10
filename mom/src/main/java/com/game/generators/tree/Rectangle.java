@@ -4,6 +4,10 @@ package com.game.generators.tree;
  * Rectangle class. Used to define rooms.
  */
 public class Rectangle {
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
     /**
      * top value.
      */
@@ -29,6 +33,10 @@ public class Rectangle {
      * @param height height coord.
      */
     public Rectangle(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.bottom = y + height;
         this.top = y;
         this.left = x;
@@ -65,5 +73,37 @@ public class Rectangle {
      */
     public int getRight() {
         return right;
+    }
+
+    /**
+     * Returns X value.
+     * @return X value.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Returns Y value.
+     * @return Y value.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Returns width value.
+     * @return width value.
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Returns height value.
+     * @return height value.
+     */
+    public int getHeight() {
+        return height;
     }
 }

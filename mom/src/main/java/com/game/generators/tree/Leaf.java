@@ -2,7 +2,6 @@ package com.game.generators.tree;
 
 import com.game.generators.MazeFactory;
 import com.game.tiles.Tile;
-import com.game.tiles.WallRock;
 
 import java.util.ArrayList;
 
@@ -136,8 +135,7 @@ public class Leaf {
 
         } else {
             // This Leaf is the ready to make a room
-            // The room can be between MIN_ROOM_SIZE x MIN_ROOM_SIZE tiles to the size of the leaf - 2.
-            System.out.println("[DEBUG] - Creating a room !");
+            // The room can be between REAL_MIN_ROOM_SIZE x REAL_MIN_ROOM_SIZE tiles to the size of the leaf - 2.
             Point roomSize = new Point(
                 this.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
                 this.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
@@ -146,9 +144,6 @@ public class Leaf {
                 this.randomInt(1, width - roomSize.getX() - 1),
                 this.randomInt(1, height - roomSize.getY() - 1)
             );
-
-            System.out.println("[DEBUG] - Point roomSize : (" + roomSize.getX() + "," + roomSize.getY() + ")");
-            System.out.println("[DEBUG] - Point roomPos  : (" + roomPos.getX() + "," + roomPos.getY() + ")");
 
             // Places the room within the Leaf, but don't put it right
             // against the side of the Leaf (that would merge rooms together)
@@ -260,16 +255,21 @@ public class Leaf {
 
     /**
      * This method exports the leaf into a Tile array. Usable for the Maze constructor and game.
-     * @return Array that corresponds to the tiles of the generated maze.
+     * @param maze Maze to populate.
      */
-    public Tile[] exportToArray() {
-        Tile[] maze = new Tile[this.height * this.width];
+    public void exportToArray(Tile[] maze) {
 
-        for (int i = 0; i < this.width * this.height; i++) {
-            maze[i] = new WallRock();
+        if (this.halls != null) {
+            for (Rectangle r : this.halls) {
+                System.out.println("[DEBUG] - Halls found ! (x;y) : (" + r.getX() + ";" + r.getY() + ")");
+
+
+            }
         }
 
-        return maze;
+        if (this.room != null) {
+            System.out.println("[DEBUG] - Room found ! (x;y) : (" + this.room.getX() + ";" + this.room.getY() + ")");
+        }
     }
 
     /**
@@ -319,7 +319,6 @@ public class Leaf {
      * @return Random int between min and max parameters.
      */
     public int randomInt(int min, int max) {
-        System.out.println("[DEBUG] - RandInt values (min, max) : (" + min + "," + max + ")");
         if (min > max) {
             throw new IllegalArgumentException("max parameter must be greater than min parameter");
         }
