@@ -35,6 +35,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>5.3.1</version>
+          <scope>test</scope>
+      </dependency>
+        <!-- org JSON -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230618</version>
+        </dependency>
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-box2d-platform</artifactId>
             <classifier>natives-desktop</classifier>
@@ -57,6 +69,13 @@
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>${gdx.version}</version>
+        </dependency>
+        <!-- headless backend for unit test -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-headless</artifactId>
+            <version>${gdx.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
@@ -144,6 +163,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                  <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
