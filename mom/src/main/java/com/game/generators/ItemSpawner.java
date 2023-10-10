@@ -1,4 +1,6 @@
 package com.game.generators;
 
-public class ItemSpawner {
-}
+/**
+ * Item spawner class.
+ */
+public class ItemSpawner {}
