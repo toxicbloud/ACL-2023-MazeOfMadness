@@ -3,14 +3,14 @@
 ## Sommaire
 - [Elevator Speech](#elevator-speech)
 - [Présentation détaillée du Jeu](#description-du-jeu)
-   - [Description du Jeu](#description-du-jeu)
-   - [Caractéristiques Principales](#caractéristiques-principales)
-   - [Objectif du Projet](#objectif-du-projet)
-   - [Valeurs Clés](#valeurs-clés)
+  - [Description du Jeu](#description-du-jeu)
+  - [Caractéristiques Principales](#caractéristiques-principales)
+  - [Objectif du Projet](#objectif-du-projet)
+  - [Valeurs Clés](#valeurs-clés)
 - [Auteurs](#auteurs)
 - [Installation](#installation)
-   - [Prérequis](#prérequis)
-   - [Étapes d'Installation](#étapes-dinstallation)
+  - [Prérequis](#prérequis)
+  - [Étapes d'Installation](#étapes-dinstallation)
 
 ## Elevator speech
 Plongez dans un monde isométrique plein de mystère et de danger avec **Maze of Madness**. Explorez des labyrinthes complexes et survivez à des monstres aux comportements uniques. En mode campagne, découvrez une histoire épique à travers une série de labyrinthes intrigants, créés par les développeurs ou la communauté via l'éditeur de carte. Défiez l'infini en mode libre avec des labyrinthes générés aléatoirement. Collectez des objets, découvrez des armes et affrontez l'inconnu. **Maze of Madness** offre une expérience isométrique, une rejouabilité infinie et une communauté passionnée. Êtes-vous prêt à relever le défi ?
