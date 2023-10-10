@@ -68,25 +68,25 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-ro
 ## Étapes d'Installation
 
 1. **Cloner le Projet (Si vous utilisez Git)**
-
-   ```bash
+```bash
    git clone https://github.com/toxicbloud/ACL-2023-MazeOfMadness
-    ```
+```
 2. **Déplacer vous dans le dossier du projet**
-    > le projet Maze Of Madness est abrégé en mom
-   ```bash
+> le projet Maze Of Madness est abrégé en mom
+```bash
    cd ACL-2023-MazeOfMadness/mom
-   ```
+```
 3. **Compiler le projet**
-   ```bash
+```bash
    mvn clean package
-   ```
-   > Cela téléchargera les dépendances, compilera le code source et générera des fichier JAR dans le répertoire target du projet.
+```
+> Cela téléchargera les dépendances, compilera le code source et générera des fichier JAR dans le répertoire target du projet.
 4. **Lancer le jeu**
-   ```bash
+```bash
     java -jar target/<nom_du_jar>.jar
-    ```
-    > Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
+```
+> Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
+
     
-    > Pour MacOS il faut ajouter l'option `-XstartOnFirstThread` pour lancer le jeu
+> Pour MacOS il faut ajouter l'option `-XstartOnFirstThread` pour lancer le jeu
     
