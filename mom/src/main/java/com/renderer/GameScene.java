@@ -45,7 +45,7 @@ public class GameScene extends Scene {
         return (int) (
               position.getX()
             + position.getY()
-            + position.getZ() * 2
+            + position.getZ() * 4
             ) * BLOC_SUBDIVISION;
     }
 

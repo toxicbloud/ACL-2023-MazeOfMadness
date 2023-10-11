@@ -16,7 +16,7 @@ public abstract class Entity implements Evolvable {
     protected static final int SPRITE_SIZE = 64;
 
     /** Collisions border with. */
-    protected static final float COLLISIONS_BORDER_WIDTH = 0.02f;
+    protected static final float COLLISIONS_BORDER_WIDTH = 0.08f;
 
     /** Entity position. */
     private Vector3 position;
