@@ -5,7 +5,7 @@
 - La conception
 ## Ce qui a moins fonctionné
 - Concevoir avant d'avoir exploré les possibilités de la librairie graphique
-> Nous avons implémenté des classes qui ont été remplacé par la suite par des composants LibGDX , elles pourront être réutilisées plus tard pour l'éditeur de niveaux par exemple
+> Nous avons implémenté des classes qui ont été remplacées par la suite par des composants LibGDX , elles pourront être réutilisées plus tard pour l'éditeur de niveaux par exemple
 ## Ce qui pourrait être amélioré
 - La répartition des tâches
 > Certains membres ( @Maximelego , @aildontknow ) ont eu du mal à implémenter les fonctionnalités qu'ils avaient choisi
@@ -15,7 +15,7 @@
 
 ## Ce que nous nous engageons à faire pour le prochain sprint
 
-- Détailler plus les tâches voir les découper en sous-tâches
+- Détailler plus les tâches voire les découper en sous-tâches
 - Faire plus de tests unitaires maintenant que la base du projet est posée
 - Corriger les bugs signalés dans les issues
     - [#7](https://github.com/toxicbloud/ACL-2023-MazeOfMadness/issues/7)
