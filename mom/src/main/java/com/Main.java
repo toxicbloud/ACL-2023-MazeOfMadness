@@ -1,7 +1,6 @@
 package com;
 
 import com.engine.Window;
-import com.ui.EndScene;
 import com.ui.MenuScene;
 
 /**
