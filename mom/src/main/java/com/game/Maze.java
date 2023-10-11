@@ -179,7 +179,7 @@ public class Maze implements Evolvable {
         return getTile(
             (int) Math.floor(pos.x),
             (int) Math.floor(pos.y),
-            (int) Math.floor(pos.z)
+            (int) Math.round(pos.z)
         );
     }
 

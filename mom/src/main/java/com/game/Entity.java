@@ -6,7 +6,6 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 import com.game.tiles.Tile;
-import com.game.tiles.TileType;
 
 /***
  * Entity class.
@@ -17,7 +16,7 @@ public abstract class Entity implements Evolvable {
     protected static final int SPRITE_SIZE = 64;
 
     /** Collisions border with. */
-    protected static final float COLLISIONS_BORDER_WIDTH = 0.1f;
+    protected static final float COLLISIONS_BORDER_WIDTH = 0.02f;
 
     /** Entity position. */
     private Vector3 position;
@@ -80,7 +79,8 @@ public abstract class Entity implements Evolvable {
      * @param delta movement delta
      */
     public void moveBy(Vector2 delta) {
-        if (this.position.z == (int) this.position.z) {
+        float floorDiff = Math.abs(this.position.z - (int) this.position.z);
+        if (floorDiff < COLLISIONS_BORDER_WIDTH || floorDiff > (1 - COLLISIONS_BORDER_WIDTH)) {
             Vector2 collideMovement = getCollideMovement(delta);
             this.position = this.position.add(new Vector3(
                 collideMovement.x,
@@ -145,11 +145,11 @@ public abstract class Entity implements Evolvable {
         Vector2 p1;
         Vector2 p2;
         if (moveX > 0) {
-            p1 = new Vector2(origin.x + size.x + COLLISIONS_BORDER_WIDTH, origin.y);
-            p2 = new Vector2(origin.x + size.x + COLLISIONS_BORDER_WIDTH, origin.y + size.y);
+            p1 = new Vector2(origin.x + size.x + COLLISIONS_BORDER_WIDTH, origin.y + COLLISIONS_BORDER_WIDTH);
+            p2 = new Vector2(origin.x + size.x + COLLISIONS_BORDER_WIDTH, origin.y + size.y - COLLISIONS_BORDER_WIDTH);
         } else {
-            p1 = new Vector2(origin.x - COLLISIONS_BORDER_WIDTH, origin.y);
-            p2 = new Vector2(origin.x - COLLISIONS_BORDER_WIDTH, origin.y + size.y);
+            p1 = new Vector2(origin.x - COLLISIONS_BORDER_WIDTH, origin.y + COLLISIONS_BORDER_WIDTH);
+            p2 = new Vector2(origin.x - COLLISIONS_BORDER_WIDTH, origin.y + size.y - COLLISIONS_BORDER_WIDTH);
         }
 
         boolean collidesP1 = tileCollides(Game.getInstance().getMaze().getTile(new Vector3(p1.x, p1.y, origin.z)));
@@ -175,11 +175,11 @@ public abstract class Entity implements Evolvable {
         Vector2 p1;
         Vector2 p2;
         if (moveY > 0) {
-            p1 = new Vector2(origin.x, origin.y + size.y + COLLISIONS_BORDER_WIDTH);
-            p2 = new Vector2(origin.x + size.x, origin.y + size.y + COLLISIONS_BORDER_WIDTH);
+            p1 = new Vector2(origin.x + COLLISIONS_BORDER_WIDTH, origin.y + size.y + COLLISIONS_BORDER_WIDTH);
+            p2 = new Vector2(origin.x + size.x - COLLISIONS_BORDER_WIDTH, origin.y + size.y + COLLISIONS_BORDER_WIDTH);
         } else {
-            p1 = new Vector2(origin.x, origin.y - COLLISIONS_BORDER_WIDTH);
-            p2 = new Vector2(origin.x + size.x, origin.y - COLLISIONS_BORDER_WIDTH);
+            p1 = new Vector2(origin.x + COLLISIONS_BORDER_WIDTH, origin.y - COLLISIONS_BORDER_WIDTH);
+            p2 = new Vector2(origin.x + size.x - COLLISIONS_BORDER_WIDTH, origin.y - COLLISIONS_BORDER_WIDTH);
         }
 
         boolean collidesP1 = tileCollides(Game.getInstance().getMaze().getTile(new Vector3(p1.x, p1.y, origin.z)));

@@ -46,7 +46,7 @@ public class GameScene extends Scene {
         return (int) (
               position.getX()
             + position.getY()
-            + position.getZ() * MAX_MAZE_SIZE
+            + position.getZ() * 2
             ) * BLOC_SUBDIVISION;
     }
 
