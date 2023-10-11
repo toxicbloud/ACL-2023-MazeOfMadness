@@ -1,7 +1,6 @@
 package com.renderer;
 
 import com.engine.Scene;
-import com.engine.Window;
 import com.engine.events.Event;
 import com.engine.events.EventMouseScrolled;
 import com.engine.utils.Vector3;
