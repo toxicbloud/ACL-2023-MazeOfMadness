@@ -37,7 +37,7 @@ public final class MazeFactory {
      * @return Maze object initialized with a random 20 by 20 maze
      */
     public static Maze createMaze() {
-        final int heightWidth = 20;
+        final int heightWidth = 30;
         return MazeFactory.createMaze(heightWidth, heightWidth, 2);
     }
 
