@@ -63,9 +63,4 @@ public class StairGrass extends Stair {
             direction
         );
     }
-
-    @Override
-    public void update() {
-
-    }
 }

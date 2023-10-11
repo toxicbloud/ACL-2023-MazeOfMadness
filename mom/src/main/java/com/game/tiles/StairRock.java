@@ -63,9 +63,4 @@ public class StairRock extends Stair {
             direction
         );
     }
-
-    @Override
-    public void update() {
-
-    }
 }
