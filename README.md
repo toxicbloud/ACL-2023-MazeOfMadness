@@ -89,4 +89,6 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-ro
 
     
 > Pour MacOS il faut ajouter l'option `-XstartOnFirstThread` pour lancer le jeu
-    
+ 
+
+Merci à @Nicoooooo pour cette astuce sur MacOS
