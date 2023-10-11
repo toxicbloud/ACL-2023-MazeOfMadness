@@ -164,7 +164,6 @@ public class Maze implements Evolvable {
      * @return The tile at the given coordinates.
      */
     public Tile getTile(int x, int y, int z) {
-        System.out.println(x + " " + y);
         if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
             return new VoidTile(new Vector3(x, y, z));
         }

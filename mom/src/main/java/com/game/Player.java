@@ -36,9 +36,6 @@ public class Player extends Living {
      * Update the player.
      */
     public void update() {
-        // Tile tile = Game.getInstance().getMaze().getTile(this.getPosition());
-        // System.out.println(
-        //     "Tile at " + this.getPosition().x + ", " + this.getPosition().y + " = " + tile.getType().toString()
-        // );
+
     }
 }
