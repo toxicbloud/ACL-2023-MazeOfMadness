@@ -1,7 +1,6 @@
 package com.renderer;
 
 import com.engine.Scene;
-import com.engine.Window;
 import com.engine.events.Event;
 import com.engine.events.EventMouseScrolled;
 import com.engine.utils.Vector3;
@@ -23,6 +22,8 @@ public class GameScene extends Scene {
     private static final int MAX_MAZE_SIZE = 1000;
     /** Theorical subdivision in one bloc for entity rendering. */
     private static final int BLOC_SUBDIVISION = 100;
+    /** Z order multiplier. */
+    private static final float Z_ORDER_MULTIPLIER = 4.0f;
 
     /** Scene camera. */
     private Camera camera;
@@ -46,19 +47,8 @@ public class GameScene extends Scene {
         return (int) (
               position.getX()
             + position.getY()
-            + position.getZ() * MAX_MAZE_SIZE
+            + position.getZ() * Z_ORDER_MULTIPLIER
             ) * BLOC_SUBDIVISION;
-    }
-
-    /**
-     * Main method.
-     * For testing purposes only.
-     * @param args The arguments.
-     */
-    public static void main(String[] args) {
-        Window win = new Window();
-        win.setScene(new GameScene());
-        win.run();
     }
 
     /**

@@ -5,6 +5,7 @@ import com.engine.utils.Vector3;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
+import com.game.tiles.VoidTile;
 import com.renderer.GameScene;
 
 import java.util.ArrayList;
@@ -95,6 +96,9 @@ public class Maze implements Evolvable {
         for (Item i: this.items) {
             i.update();
         }
+        if (Game.getInstance().getPlayer() != null) {
+            Game.getInstance().getPlayer().update();
+        }
     }
 
     @Override
@@ -161,9 +165,22 @@ public class Maze implements Evolvable {
      */
     public Tile getTile(int x, int y, int z) {
         if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
-            throw new IllegalArgumentException("The coordinates must be within the maze.");
+            return new VoidTile(new Vector3(x, y, z));
         }
         return tiles[x + y * width + z * (width * height)];
+    }
+
+    /**
+     * Get the tile at the given position.
+     * @param pos The position.
+     * @return The tile at the given coordinates.
+     */
+    public Tile getTile(Vector3 pos) {
+        return getTile(
+            (int) Math.floor(pos.x),
+            (int) Math.floor(pos.y),
+            (int) Math.round(pos.z)
+        );
     }
 
     /**

@@ -39,7 +39,7 @@ public class PlayerController extends Controller implements EventVisitor {
         Entity target = getTarget();
         Vector2 normalized = direction.normalize();
         target.moveBy(
-            new Vector3(normalized.x, normalized.y, 0)
+            new Vector2(normalized.x, normalized.y)
             .mul(Time.getInstance().getDeltaTime() * Player.PLAYER_SPEED)
         );
     }

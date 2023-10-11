@@ -36,6 +36,6 @@ public class Player extends Living {
      * Update the player.
      */
     public void update() {
-        // TODO
+
     }
 }
