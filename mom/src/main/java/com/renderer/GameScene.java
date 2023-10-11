@@ -22,6 +22,8 @@ public class GameScene extends Scene {
     private static final int MAX_MAZE_SIZE = 1000;
     /** Theorical subdivision in one bloc for entity rendering. */
     private static final int BLOC_SUBDIVISION = 100;
+    /** Z order multiplier. */
+    private static final float Z_ORDER_MULTIPLIER = 4.0f;
 
     /** Scene camera. */
     private Camera camera;
@@ -45,7 +47,7 @@ public class GameScene extends Scene {
         return (int) (
               position.getX()
             + position.getY()
-            + position.getZ() * 4
+            + position.getZ() * Z_ORDER_MULTIPLIER
             ) * BLOC_SUBDIVISION;
     }
 
