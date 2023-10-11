@@ -23,6 +23,15 @@ import com.game.Player;
  * This is the player controller class.
  */
 public class PlayerController extends Controller implements EventVisitor {
+    /** DOWN direction movement vector. */
+    private static final Vector2 MOVE_VECTOR_DOWN = new Vector2(0.5f, 0.5f);
+    /** LEFT direction movement vector. */
+    private static final Vector2 MOVE_VECTOR_LEFT = new Vector2(-0.5f, 0.5f);
+    /** RIGHT direction movement vector. */
+    private static final Vector2 MOVE_VECTOR_RIGHT = new Vector2(0.5f, -0.5f);
+    /** UP direction movement vector. */
+    private static final Vector2 MOVE_VECTOR_UP = new Vector2(-0.5f, -0.5f);
+
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
 
@@ -100,19 +109,19 @@ public class PlayerController extends Controller implements EventVisitor {
         switch (code) {
             case KEY_LEFT:
             case KEY_Q:
-                direction = direction.add(new Vector2(-1, 0));
+                direction = direction.add(MOVE_VECTOR_LEFT);
                 break;
             case KEY_RIGHT:
             case KEY_D:
-                direction = direction.add(new Vector2(1, 0));
+                direction = direction.add(MOVE_VECTOR_RIGHT);
                 break;
             case KEY_UP:
             case KEY_Z:
-                direction = direction.add(new Vector2(0, -1));
+                direction = direction.add(MOVE_VECTOR_UP);
                 break;
             case KEY_DOWN:
             case KEY_S:
-                direction = direction.add(new Vector2(0, 1));
+                direction = direction.add(MOVE_VECTOR_DOWN);
                 break;
             default: break;
         }
@@ -128,19 +137,19 @@ public class PlayerController extends Controller implements EventVisitor {
         switch (code) {
             case KEY_LEFT:
             case KEY_Q:
-                direction = direction.sub(new Vector2(-1, 0));
+                direction = direction.sub(MOVE_VECTOR_LEFT);
                 break;
             case KEY_RIGHT:
             case KEY_D:
-                direction = direction.sub(new Vector2(1, 0));
+                direction = direction.sub(MOVE_VECTOR_RIGHT);
                 break;
             case KEY_UP:
             case KEY_Z:
-                direction = direction.sub(new Vector2(0, -1));
+                direction = direction.sub(MOVE_VECTOR_UP);
                 break;
             case KEY_DOWN:
             case KEY_S:
-                direction = direction.sub(new Vector2(0, 1));
+                direction = direction.sub(MOVE_VECTOR_DOWN);
                 break;
             default: break;
         }
