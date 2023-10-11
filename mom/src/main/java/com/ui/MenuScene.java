@@ -17,7 +17,9 @@ import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
+import com.game.LevelLoader;
 import com.game.Maze;
+import com.game.Player;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
@@ -28,6 +30,10 @@ import com.renderer.GameScene;
  * Menu scene.
  */
 public class MenuScene extends Scene {
+    /**
+     *
+     */
+    private static final int PAD_BOTTOM = 50;
     /** TEST_MAZE_WIDTH. */
     private static final int TEST_MAZE_WIDTH = 5;
     /** TEST_MAZE_HEIGHT. */
@@ -73,7 +79,9 @@ public class MenuScene extends Scene {
      * punch sound
      */
     private Sound buttonClick;
-
+    /**
+     * The music.
+     */
     private Music music;
 
     /**
@@ -117,7 +125,7 @@ public class MenuScene extends Scene {
 
         // Table pour centrer le logo
         Table logoTable = new Table();
-        logoTable.add(logo).center().padBottom(50).row();
+        logoTable.add(logo).center().padBottom(PAD_BOTTOM).row();
         root.add(logoTable).expandX().top().row();
 
         // Table pour les boutons
@@ -125,10 +133,10 @@ public class MenuScene extends Scene {
 
         TextButton campaign = new TextButton(
                 "Campaign", skin);
-        buttonTable.add(campaign).center().padBottom(50).row();
+        buttonTable.add(campaign).center().padBottom(PAD_BOTTOM).row();
         TextButton free = new TextButton(
                 "Free", skin);
-        buttonTable.add(free).center().padBottom(50).row();
+        buttonTable.add(free).center().padBottom(PAD_BOTTOM).row();
         root.add(buttonTable).center().row();
         free.addListener(new ClickListener() {
             @Override
@@ -170,18 +178,42 @@ public class MenuScene extends Scene {
 
         // text : Level selection
         Table levelSelectionTable = new Table(skin);
-        levelSelectionTable.add("Level selection").center().padBottom(50).row();
+        levelSelectionTable.add("Level selection").center().padBottom(PAD_BOTTOM).row();
         rootCampaign.add(levelSelectionTable).center().row();
 
         // TextButton : level 1
         TextButton level1 = new TextButton(
-                "Level 1", skin);
-        levelSelectionTable.add(level1).center().padBottom(50).row();
+                LevelLoader.getLevelName(Gdx.files.internal("maps/level1.json")), skin);
+        level1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                var level1 = LevelLoader.load(Gdx.files.internal("maps/level1.json"));
+                Game.getInstance().setMaze(level1.getMaze());
+                Game.getInstance().setPlayer(new Player(level1.getPlayerData().getPosition()));
+                Window.getInstance().setScene(new GameScene());
+            }
+        });
+        levelSelectionTable.add(level1).center().padBottom(PAD_BOTTOM).row();
 
         // TextButton : level 2
         TextButton level2 = new TextButton(
-                "Level 2", skin);
-        levelSelectionTable.add(level2).center().padBottom(50).row();
+                LevelLoader.getLevelName(Gdx.files.internal("maps/level2.json")), skin);
+        level2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                var level2 = LevelLoader.load(Gdx.files.internal("maps/level2.json"));
+                Game.getInstance().setMaze(level2.getMaze());
+                Game.getInstance().setPlayer(new Player(level2.getPlayerData().getPosition()));
+                Window.getInstance().setScene(new GameScene());
+            }
+        });
+        levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
 
         Thread thread = new Thread(() -> {
             music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));

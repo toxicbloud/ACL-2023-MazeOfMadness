@@ -49,6 +49,7 @@ public class EventManager implements InputProcessor, ControllerListener {
     /**
      * EventManager constructor.
      */
+    @SuppressWarnings("checkstyle:MagicNumber")
     public EventManager() {
         this.events.clear();
         key2code.put(Keys.A, KeyCode.KEY_Q);
@@ -269,15 +270,22 @@ public class EventManager implements InputProcessor, ControllerListener {
         return false;
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        System.out.println("axis moved: " + axisCode + " " + value);
+        if (axisCode < 2) {
+            addEvent(new EventGamepadMoved(GamepadAxis.AXIS_LEFT,
+                    controller.getAxis(0), controller.getAxis(1)));
+        } else {
+            addEvent(new EventGamepadMoved(GamepadAxis.AXIS_RIGHT,
+                    controller.getAxis(3), controller.getAxis(2)));
+        }
+
         return false;
     }
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-        System.out.println("pov moved: " + povCode + " " + value);
         pressedDpadBtns[0] = null;
         pressedDpadBtns[1] = null;
         switch (value) {

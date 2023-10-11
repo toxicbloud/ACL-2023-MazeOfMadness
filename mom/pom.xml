@@ -35,6 +35,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>5.3.1</version>
+          <scope>test</scope>
+      </dependency>
+        <!-- org JSON -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230618</version>
+        </dependency>
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-box2d-platform</artifactId>
             <classifier>natives-desktop</classifier>
@@ -58,6 +70,13 @@
             <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>${gdx.version}</version>
         </dependency>
+        <!-- headless backend for unit test -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-headless</artifactId>
+            <version>${gdx.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-box2d</artifactId>
@@ -74,16 +93,6 @@
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-controllers-lwjgl3</artifactId>
             <version>1.9.13</version>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.box2dlights</groupId>
-            <artifactId>box2dlights</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-openal</artifactId>
-            <version>0.9.9</version>
         </dependency>
     </dependencies>
     <build>
@@ -144,6 +153,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                  <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
