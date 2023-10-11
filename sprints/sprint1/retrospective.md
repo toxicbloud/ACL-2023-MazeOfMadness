@@ -17,3 +17,5 @@
 
 - Détailler plus les tâches voir les découper en sous-tâches
 - Faire plus de tests unitaires maintenant que la base du projet est posée
+- Corriger les bugs signalés dans les issues
+    - [#7](https://github.com/toxicbloud/ACL-2023-MazeOfMadness/issues/7)

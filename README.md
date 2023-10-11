@@ -87,7 +87,7 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-ro
 ```
 > Le nom du jar est normalement MazeOfMadness-jar-with-dependencies.jar
 
-    
+> [!IMPORTANT]
 > Pour MacOS il faut ajouter l'option `-XstartOnFirstThread` pour lancer le jeu
  
 
