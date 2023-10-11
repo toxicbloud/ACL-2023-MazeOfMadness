@@ -153,7 +153,7 @@ public class MenuScene extends Scene {
                             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
 
                             new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
                             new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
                             new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
                             new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()

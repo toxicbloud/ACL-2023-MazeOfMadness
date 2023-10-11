@@ -51,17 +51,6 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Main method.
-     * For testing purposes only.
-     * @param args The arguments.
-     */
-    public static void main(String[] args) {
-        Window win = new Window();
-        win.setScene(new GameScene());
-        win.run();
-    }
-
-    /**
      * Create the scene.
      */
     public void create() {
