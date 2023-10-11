@@ -21,7 +21,6 @@ import com.game.LevelLoader;
 import com.game.Maze;
 import com.game.Player;
 import com.game.tiles.GroundRock;
-import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
@@ -145,24 +144,20 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                Game.getInstance().setMaze(new Maze(
-                    TEST_MAZE_WIDTH,
-                    TEST_MAZE_HEIGHT,
-                    TEST_MAZE_DEPTH,
-                    new Tile[] {
-                        new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-                        new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                        new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                        new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                        new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+                Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT,
+                        TEST_MAZE_DEPTH, new Tile[] {
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
 
-                        new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-                        new WallRock(), new VoidTile(), new StairRock(2), new VoidTile(), new WallRock(),
-                        new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-                        new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-                        new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
-                    }
-                ));
+                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
+                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
+                        }));
                 Window.getInstance().setScene(new GameScene());
             }
         });
