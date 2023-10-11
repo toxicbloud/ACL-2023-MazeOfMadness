@@ -18,12 +18,8 @@ import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
 import com.game.LevelLoader;
-import com.game.Maze;
 import com.game.Player;
-import com.game.tiles.GroundRock;
-import com.game.tiles.Tile;
-import com.game.tiles.VoidTile;
-import com.game.tiles.WallRock;
+import com.game.generators.MazeFactory;
 import com.renderer.GameScene;
 
 /**
@@ -144,20 +140,8 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                Game.getInstance().setMaze(new Maze(TEST_MAZE_WIDTH, TEST_MAZE_HEIGHT,
-                        TEST_MAZE_DEPTH, new Tile[] {
-                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                            new WallRock(), new GroundRock(), new GroundRock(), new GroundRock(), new WallRock(),
-                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-
-                            new WallRock(), new WallRock(), new WallRock(), new WallRock(), new WallRock(),
-                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock(),
-                            new WallRock(), new VoidTile(), new VoidTile(), new VoidTile(), new WallRock()
-                        }));
+                var maze = MazeFactory.createMaze();
+                Game.getInstance().setMaze(maze);
                 Window.getInstance().setScene(new GameScene());
             }
         });
