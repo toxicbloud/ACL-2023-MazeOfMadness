@@ -4,6 +4,7 @@ import com.engine.Evolvable;
 import com.engine.utils.Vector3;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
+import com.game.tiles.TileType;
 import com.renderer.GameScene;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class Maze implements Evolvable {
     /** The width of the maze. */
-    private int width;
+    private final int width;
     /** The height of the maze. */
     private int height;
     /** The depth of the maze. */
@@ -195,5 +196,33 @@ public class Maze implements Evolvable {
      */
     public void setItems(Item[] items) {
         this.items = items;
+    }
+
+    /**
+     * ToString method. Displays the maze into grid-like String.
+     * @return Maze turned into a String.
+     */
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+
+        for (int i = 0; i < this.tiles.length; i++) {
+            if (i % this.width == 0) {
+                s.append('\n');
+            }
+            if (this.tiles[i].getType() == TileType.WALL_ROCK) {
+                s.append("#  ");
+            }
+            if (this.tiles[i].getType() == TileType.GROUND_ROCK) {
+                s.append("<  ");
+            }
+            if (this.tiles[i].getType() == TileType.VOID) {
+                s.append("   ");
+            }
+            if (this.tiles[i].getType() == TileType.GROUND_WATER) {
+                s.append("w  ");
+            }
+        }
+
+        return s.toString();
     }
 }

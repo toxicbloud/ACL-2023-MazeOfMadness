@@ -13,6 +13,9 @@ buildNumber.properties
 # Eclipse m2e generated files
 # Eclipse Core
 .project
+# IntelliJ generated files.
+.idea
+mom/.idea
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 *.log
