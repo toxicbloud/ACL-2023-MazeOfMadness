@@ -5,6 +5,7 @@ import com.game.generators.tree.Leaf;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ public final class MazeFactory {
     /**
      * RNG : Attribut permettant de faire appel à la classe Random.
      */
-    public static final Random RNG = new Random();
+    public static final Random RNG = new SecureRandom();
     /**
      * MIN_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
      */
