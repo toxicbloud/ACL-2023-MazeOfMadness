@@ -5,19 +5,12 @@ import com.game.generators.tree.Leaf;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Factory for mazes.
  */
 public final class MazeFactory {
-
-    /**
-     * RNG : Attribut permettant de faire appel à la classe Random.
-     */
-    public static final Random RNG = new SecureRandom();
     /**
      * MIN_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
      */
@@ -26,6 +19,11 @@ public final class MazeFactory {
      * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
      */
     private static final float RNG_THRESHOLD = 0.25F;
+
+    /**
+     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe.
+     */
+    private static final int MIN_SIZE = 25;
 
     /**
      * Private default constructor.
@@ -38,7 +36,7 @@ public final class MazeFactory {
      * @return Maze object initialized with a random 20 by 20 maze
      */
     public static Maze createMaze() {
-        final int heightWidth = 30;
+        final int heightWidth = MIN_SIZE;
         return MazeFactory.createMaze(heightWidth, heightWidth, 2);
     }
 
@@ -82,7 +80,7 @@ public final class MazeFactory {
                     // If this Leaf is too big, or 75% chance...
                     if (leaf.getWidth() > MazeFactory.MIN_ROOM_SIZE
                         || leaf.getHeight() > MazeFactory.MIN_ROOM_SIZE
-                        || MazeFactory.RNG.nextFloat() > MazeFactory.RNG_THRESHOLD) {
+                        || Utility.nextFloat() > MazeFactory.RNG_THRESHOLD) {
 
                         if (leaf.split()) { // split the Leaf!
                             // If we did split, push the child leafs to the Vector so we can loop
