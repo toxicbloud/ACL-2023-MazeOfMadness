@@ -140,10 +140,18 @@ public class Sprite {
         );
     }
 
+    /**
+     * Set the shift of the sprite.
+     * @param shift The shift of the sprite.
+     */
     public void setShift(int shift) {
         this.shiftY = shift;
     }
 
+    /**
+     * Get the shift of the sprite.
+     * @return The shift of the sprite.
+     */
     public int getShift() {
         return this.shiftY;
     }

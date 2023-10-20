@@ -10,6 +10,9 @@ import com.game.weapons.Weapon;
  * This is the base class for all living entities.
  */
 public abstract class Living extends Entity {
+    /** Number of possible directions. */
+    private static final int NB_DIRECTIONS = 4;
+
     /** Living health. */
     private int health;
     /** Living speed. */
@@ -19,10 +22,17 @@ public abstract class Living extends Entity {
     /** Living weapon. */
     private Weapon weapon;
 
-    public static enum Direction {
+    /**
+     * Living direction enum.
+     */
+    public enum Direction {
+        /** Right direction. */
         RIGHT,
+        /** Down direction. */
         DOWN,
+        /** Left direction. */
         LEFT,
+        /** Up direction. */
         UP
     }
 
@@ -57,17 +67,26 @@ public abstract class Living extends Entity {
         boolean movingOnX = Math.abs(delta.x) > Math.abs(delta.y);
 
         if (movingOnX) {
-            if (delta.x > 0) setDirection(Direction.RIGHT);
-            else setDirection(Direction.LEFT);
+            if (delta.x > 0) {
+                setDirection(Direction.RIGHT);
+            } else {
+                setDirection(Direction.LEFT);
+            }
         } else {
-            if (delta.y > 0) setDirection(Direction.UP);
-            else setDirection(Direction.DOWN);
+            if (delta.y > 0) {
+                setDirection(Direction.UP);
+            } else {
+                setDirection(Direction.DOWN);
+            }
         }
     }
 
     private void updateSprite(Vector2 delta) {
         boolean running = !delta.isZero();
-        this.getSprite().setShift(this.direction.ordinal() * this.getSprite().getHeight() + (running ? this.getSprite().getHeight() * 4 : 0));
+        this.getSprite().setShift(
+            this.direction.ordinal() * this.getSprite().getHeight()
+            + (running ? this.getSprite().getHeight() * NB_DIRECTIONS : 0)
+        );
     }
 
     private void setDirection(Direction dir) {
