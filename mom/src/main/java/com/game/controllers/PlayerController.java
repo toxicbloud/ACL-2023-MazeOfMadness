@@ -24,13 +24,13 @@ import com.game.Player;
  */
 public class PlayerController extends Controller implements EventVisitor {
     /** DOWN direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_DOWN = new Vector2(0.5f, 0.5f);
+    private static final Vector2 MOVE_VECTOR_DOWN = new Vector2(0.0f, 1.0f);
     /** LEFT direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_LEFT = new Vector2(-0.5f, 0.5f);
+    private static final Vector2 MOVE_VECTOR_LEFT = new Vector2(-1.0f, 0.0f);
     /** RIGHT direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_RIGHT = new Vector2(0.5f, -0.5f);
+    private static final Vector2 MOVE_VECTOR_RIGHT = new Vector2(1.0f, 0.0f);
     /** UP direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_UP = new Vector2(-0.5f, -0.5f);
+    private static final Vector2 MOVE_VECTOR_UP = new Vector2(0.0f, -1.0f);
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
