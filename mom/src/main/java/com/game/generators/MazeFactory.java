@@ -25,7 +25,7 @@ public final class MazeFactory {
     /**
      * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe.
      */
-    public static final int MAX_SIZE = 35;
+    public static final int MAX_SIZE = 45;
 
     /**
      * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
