@@ -44,8 +44,6 @@ public final class MazeFactory {
     public static Maze createMaze() {
         final int width = MIN_SIZE;
         final int height = MIN_SIZE;
-        System.out.println("[DEBUG] - Generating a maze " + height + " by " + width + " (height x width)");
-
         return MazeFactory.createMaze(width, height, 2);
     }
 
