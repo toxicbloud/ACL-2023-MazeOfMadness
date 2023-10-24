@@ -1,7 +1,9 @@
 package com.game.generators;
 
+import com.engine.utils.Vector3;
 import com.game.Maze;
 import com.game.generators.tree.Leaf;
+import com.game.generators.tree.Rectangle;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;
 
@@ -43,8 +45,8 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze.
      */
     public static Maze createMaze() {
-        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
-        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
+        final int width = MIN_SIZE;
+        final int height = MIN_SIZE;
         return MazeFactory.createMaze(width, height, 2);
     }
 
@@ -58,9 +60,12 @@ public final class MazeFactory {
      */
     public static Maze createMaze(int width, int height, int depth) {
         // We call the room-splitting method on the array
-        Tile[] maze = MazeFactory.generateRooms(width, height, depth);
+        Vector3 spawnpoint = new Vector3(0, 0, 0);
+        Tile[] maze = MazeFactory.generateRooms(width, height, depth, spawnpoint);
         // Returning the maze.
-        return new Maze(height, width, depth, maze);
+        Maze m = new Maze(height, width, depth, maze);
+        m.setSpawnPoint(spawnpoint);
+        return m;
     }
 
     /**
@@ -69,9 +74,10 @@ public final class MazeFactory {
      * @param width desired width of the maze.
      * @param height desired height of the maze.
      * @param depth desired depth of the maze.
+     * @param spawnpoint variable to store the spawnpoint for the maze.
      * @return Tableau de Tiles du labyrinthe.
      */
-    private static Tile[] generateRooms(int width, int height, int depth) {
+    private static Tile[] generateRooms(int width, int height, int depth, Vector3 spawnpoint) {
         ArrayList<Leaf> leafArray = new ArrayList<>();
         SecureRandom sr = new SecureRandom();
         Leaf root = new Leaf(0, 0, width, height);
@@ -104,8 +110,20 @@ public final class MazeFactory {
         }
 
         // We now have an array full of leaves. We can populate it with rooms and generate halls.
+        boolean spawnpointSet = false;
         for (Leaf l : leafArray) {
             l.createRooms();
+
+            // If the spawnpoint is not set, we find one to set.
+            if (!spawnpointSet) {
+                // Careful ! It returns a random room in the maze. not the first one that is encountered.
+                Rectangle room = l.getRoom();
+                spawnpoint.x = room.getX() + 1;
+                spawnpoint.y = room.getY() + 1;
+                spawnpoint.z = 1;
+                spawnpointSet = true;
+            }
+
         }
 
         // We first fill the maze with walls.
