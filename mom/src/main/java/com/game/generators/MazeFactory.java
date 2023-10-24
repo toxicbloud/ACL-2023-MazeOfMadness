@@ -16,20 +16,21 @@ public final class MazeFactory {
      * MIN_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
      */
     public static final int MIN_ROOM_SIZE = 5;
-    /**
-     * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
-     */
-    private static final float RNG_THRESHOLD = 0.25F;
 
     /**
      * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe.
      */
-    private static final int MIN_SIZE = 25;
+    public static final int MIN_SIZE = 25;
 
     /**
      * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe.
      */
-    private static final int MAX_SIZE = 35;
+    public static final int MAX_SIZE = 35;
+
+    /**
+     * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
+     */
+    private static final float RNG_THRESHOLD = 0.25F;
 
     /**
      * Private default constructor.
@@ -42,8 +43,8 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze.
      */
     public static Maze createMaze() {
-        final int width = MIN_SIZE;
-        final int height = MIN_SIZE;
+        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
+        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
         return MazeFactory.createMaze(width, height, 2);
     }
 
