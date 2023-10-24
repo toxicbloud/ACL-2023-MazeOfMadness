@@ -21,3 +21,4 @@ mom/mom.iml
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 *.log
+*.blend1

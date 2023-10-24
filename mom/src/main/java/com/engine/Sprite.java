@@ -2,6 +2,7 @@ package com.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.renderer.Camera;
@@ -16,12 +17,18 @@ public class Sprite {
     private static final float TILE_X_SHIFT = 0.25f;
     /** Amount of shift in y (screen) direction for block upper others.  */
     private static final float TILE_Y_SHIFT = 0.5f;
+    /** Animation frame displayed time in seconds.  */
+    private static final float ANIMATION_FRAME_DELAY = 1 / 30.0f;
     /** The width of the sprite. */
     private int width;
     /** The height of the sprite. */
     private int height;
-    /** The shift in pixels to get the sprite. */
-    private int shift;
+    /** The x shift in pixels to get the sprite (animation progress). */
+    private int shiftX;
+    /** The y shift in pixels to get the sprite (sprite index). */
+    private int shiftY;
+    /** The time counter for the current frame display time. */
+    private float frameTimeCounter;
     /** The texture of the sprite. */
     private Texture texture;
     /** The sprite base object. */
@@ -38,7 +45,9 @@ public class Sprite {
         this.texture = texture;
         this.width = width;
         this.height = height;
-        this.shift = 0;
+        this.shiftY = 0;
+        this.shiftX = 0;
+        this.frameTimeCounter = 0;
         this.generateSprite();
     }
 
@@ -54,14 +63,27 @@ public class Sprite {
         this.texture = texture;
         this.width = width;
         this.height = height;
-        this.shift = shift;
+        this.shiftY = shift;
+        this.shiftX = 0;
+        this.frameTimeCounter = 0;
         this.generateSprite();
     }
 
     private void generateSprite() {
         com.badlogic.gdx.graphics.Texture baseTex = texture.getTexture();
-        TextureRegion spriteTex = new TextureRegion(baseTex, 0, this.shift, this.width, this.height);
+        TextureRegion spriteTex = new TextureRegion(baseTex, this.shiftX, this.shiftY, this.width, this.height);
         this.sprite = new com.badlogic.gdx.graphics.g2d.Sprite(spriteTex);
+    }
+
+    private void updateSpriteAnimation() {
+        if (this.frameTimeCounter < ANIMATION_FRAME_DELAY) {
+            this.frameTimeCounter += Time.getInstance().getDeltaTime();
+            return;
+        } else {
+            this.frameTimeCounter -= ANIMATION_FRAME_DELAY;
+            this.shiftX = (this.shiftX + this.width) % texture.getTexture().getWidth();
+            generateSprite();
+        }
     }
 
     /**
@@ -70,6 +92,8 @@ public class Sprite {
      * @param size The size of the sprite. (world coordinates)
      */
     public void render(Vector3 position, Vector3 size) {
+        updateSpriteAnimation();
+
         Window window = Window.getInstance();
         GameScene gscene = (GameScene) window.getScene();
         if (gscene == null) {
@@ -114,6 +138,22 @@ public class Sprite {
             size.x + size.z,
             size.y + size.z
         );
+    }
+
+    /**
+     * Set the shift of the sprite.
+     * @param shift The shift of the sprite.
+     */
+    public void setShift(int shift) {
+        this.shiftY = shift;
+    }
+
+    /**
+     * Get the shift of the sprite.
+     * @return The shift of the sprite.
+     */
+    public int getShift() {
+        return this.shiftY;
     }
 
     /**

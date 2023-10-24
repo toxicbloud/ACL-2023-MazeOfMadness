@@ -45,8 +45,8 @@ public class GameScene extends Scene {
      */
     public static int getObjectDrawingOrder(Vector3 position) {
         return (int) (
-              position.getX()
-            + position.getY()
+              position.getX() * 2
+            + position.getY() * 2
             + position.getZ() * Z_ORDER_MULTIPLIER
             ) * BLOC_SUBDIVISION;
     }
