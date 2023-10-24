@@ -2,13 +2,16 @@ package com.game.generators.tree;
 
 import com.badlogic.gdx.math.Vector2;
 import com.game.generators.MazeFactory;
-import com.game.generators.Utility;
 import com.game.tiles.Tile;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 
 /**
  * Leaf Class. It is used to define a BSP tree to allow for a maze generation.
+ * @see <a href="https://gamedevelopment.tutsplus.com/how-to-use-bsp-trees-to-generate-game-maps--gamedev-12268t">
+ *     Méthode de génération de labyrinthe par BSP.
+ * </a>
  */
 public class Leaf {
     /**
@@ -42,7 +45,7 @@ public class Leaf {
     /**
      * halls : ArrayList of rectangles that joins rooms.
      */
-    private ArrayList<Rectangle> halls;
+    private final ArrayList<Rectangle> halls;
     /**
      * room : Room positioned into the current leaf.
      */
@@ -64,6 +67,7 @@ public class Leaf {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.halls = new ArrayList<>();
     }
 
     /**
@@ -75,25 +79,7 @@ public class Leaf {
         if (this.left != null || this.right != null) {
             return false;  // We're already split ! Abort !
         }
-
-        // We determine the direction of the split.
-        // If the width is >25% larger than height, we split vertically
-        // If the height is >25% larger than the width, we split horizontally
-        // Otherwise we split randomly
-
-        boolean splitH = Utility.nextFloat() > this.midThreshold;
-        final float superiorHalfThreshold = 1.25F;
-        if (width > height && (double) width / height >= superiorHalfThreshold) {
-            splitH = false;
-        } else if (height > width && (double) height / width >= superiorHalfThreshold) {
-            splitH = true;
-        }
-
-        if (width > height && (double) width / height >= superiorHalfThreshold) {
-            splitH = false;
-        } else if (height > width && (double) height / width >= superiorHalfThreshold) {
-            splitH = true;
-        }
+        boolean splitH = canSplitH();
 
         int max = (splitH ? height : width) - MazeFactory.MIN_ROOM_SIZE; // Determine the maximum height or width
         if (max <= MazeFactory.MIN_ROOM_SIZE) {
@@ -101,7 +87,7 @@ public class Leaf {
         }
 
         // Determine where we're going to split
-        int split = Utility.randomInt(MazeFactory.MIN_ROOM_SIZE, max);
+        int split = MazeFactory.randomInt(MazeFactory.MIN_ROOM_SIZE, max);
 
         // Create our left and right children based on the direction of the split
         if (splitH) {
@@ -113,6 +99,24 @@ public class Leaf {
         }
 
         return true;    // Split successful!
+    }
+
+    private boolean canSplitH() {
+        // We determine the direction of the split.
+        // If the width is >25% larger than height, we split vertically
+        // If the height is >25% larger than the width, we split horizontally
+        // Otherwise we split randomly
+
+        SecureRandom sr = new SecureRandom();
+        boolean splitH = sr.nextFloat() > this.midThreshold;
+        final float superiorHalfThreshold = 1.25F;
+
+        if (width > height && (double) width / height >= superiorHalfThreshold) {
+            splitH = false;
+        } else if (height > width && (double) height / width >= superiorHalfThreshold) {
+            splitH = true;
+        }
+        return splitH;
     }
 
     /**
@@ -139,12 +143,12 @@ public class Leaf {
             // This Leaf is the ready to make a room
             // The room can be between REAL_MIN_ROOM_SIZE x REAL_MIN_ROOM_SIZE tiles to the size of the leaf - 2.
             Vector2 roomSize = new Vector2(
-                Utility.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
-                Utility.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
+                MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
+                MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
             );
             Vector2 roomPos = new Vector2(
-                Utility.randomInt(1, (int) (width - roomSize.x - 1)),
-                Utility.randomInt(1, (int) (height - roomSize.y - 1))
+                MazeFactory.randomInt(1, (int) (width - roomSize.x - 1)),
+                MazeFactory.randomInt(1, (int) (height - roomSize.y - 1))
             );
 
             // Places the room within the Leaf, but don't put it right
@@ -171,13 +175,14 @@ public class Leaf {
                 rRoom = this.right.getRoom();
             }
 
+            SecureRandom sr = new SecureRandom();
             if (lRoom == null && rRoom == null) {
                 return null;
             } else if (rRoom == null) {
                 return lRoom;
             } else if (lRoom == null) {
                 return rRoom;
-            } else if (Utility.nextFloat() > this.midThreshold) {
+            } else if (sr.nextFloat() > this.midThreshold) {
                 return lRoom;
             } else {
                 return rRoom;
@@ -192,66 +197,53 @@ public class Leaf {
      */
     private void createHall(Rectangle l, Rectangle r) {
         // Now we connect these two rooms together with hallways.
-        this.halls = new ArrayList<>();
+        SecureRandom sr = new SecureRandom();
 
         Vector2 point1 = new Vector2(
-            Utility.randomInt(l.getLeft() + 1, l.getRight() - 2),
-            Utility.randomInt(l.getTop() + 1, l.getBottom() - 2)
+            MazeFactory.randomInt(l.getLeft(), l.getRight() - 2),
+            MazeFactory.randomInt(l.getTop(), l.getBottom() - 2)
         );
         Vector2 point2 = new Vector2(
-            Utility.randomInt(r.getLeft() + 1, r.getRight() - 2),
-            Utility.randomInt(r.getTop() + 1, r.getBottom() - 2)
+            MazeFactory.randomInt(r.getLeft(), r.getRight() - 2),
+            MazeFactory.randomInt(r.getTop(), r.getBottom() - 2)
         );
 
         int w = (int) (point2.x - point1.x);
         int h = (int) (point2.y - point1.y);
+        float randomFloat = sr.nextFloat();
 
-        if (w < 0) {
-            if (h < 0) {
-                if (Utility.nextFloat() < this.midThreshold) {
-                    this.halls.add(new Rectangle((int) point2.x, (int) point1.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
-                } else {
-                    this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point1.x, (int) point2.y, 1, Math.abs(h)));
-                }
-            } else if (h > 0) {
-                if (Utility.nextFloat() < this.midThreshold) {
-                    this.halls.add(new Rectangle((int) point2.x, (int) point1.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point2.x, (int) point1.y, 1, Math.abs(h)));
-                } else {
-                    this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
-                }
-            } else { // if (h == 0)
-                this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
-            }
-        } else if (w > 0) {
-            if (h < 0) {
-                if (Utility.nextFloat() < this.midThreshold) {
-                    this.halls.add(new Rectangle((int) point1.x, (int) point2.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point1.x, (int) point2.y, 1, Math.abs(h)));
-                } else {
-                    this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
-                }
-            } else if (h > 0) {
-                if (Utility.nextFloat() < this.midThreshold) {
-                    this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point2.x, (int) point1.y, 1, Math.abs(h)));
-                } else {
-                    this.halls.add(new Rectangle((int) point1.x, (int) point2.y, Math.abs(w), 1));
-                    this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
-                }
-            } else {  // if (h == 0)
-                this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
-            }
-        } else {    // if (w == 0)
-            if (h < 0) {
-                this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
-            } else if (h > 0) {
-                this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
-            }
+        if (w < 0 && h < 0 && randomFloat < this.midThreshold) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point1.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
+        } else if (w < 0 && h < 0 && randomFloat > this.midThreshold) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point1.x, (int) point2.y, 1, Math.abs(h)));
+        } else if (w < 0 && h > 0 && randomFloat < this.midThreshold) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point1.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point2.x, (int) point1.y, 1, Math.abs(h)));
+        } else if (w < 0 && h > 0 && randomFloat > this.midThreshold) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
+        } else if (w < 0 && h == 0) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, Math.abs(w), 1));
+        } else if (w > 0 && h < 0 && randomFloat < this.midThreshold) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point2.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point1.x, (int) point2.y, 1, Math.abs(h)));
+        } else if (w > 0 && h < 0 && randomFloat > this.midThreshold) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
+        } else if (w > 0 && h > 0 && randomFloat > this.midThreshold) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point2.x, (int) point1.y, 1, Math.abs(h)));
+        } else if (w > 0 && h > 0 && randomFloat < this.midThreshold) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point2.y, Math.abs(w), 1));
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
+        } else if (w > 0 && h == 0) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, Math.abs(w), 1));
+        } else if (w == 0 && h < 0) {
+            this.halls.add(new Rectangle((int) point2.x, (int) point2.y, 1, Math.abs(h)));
+        } else if (w == 0 && h > 0) {
+            this.halls.add(new Rectangle((int) point1.x, (int) point1.y, 1, Math.abs(h)));
         }
     }
 
@@ -263,13 +255,9 @@ public class Leaf {
      * @param mazeDepth Depth of the maze to fill.
      */
     public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
-
-        if (this.halls != null) {
-            for (Rectangle r : this.halls) {
-                r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
-            }
+        for (Rectangle r : this.halls) {
+            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
-
         if (this.room != null) {
             this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
