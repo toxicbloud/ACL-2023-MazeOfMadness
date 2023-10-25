@@ -20,6 +20,7 @@ import com.game.Game;
 import com.game.LevelLoader;
 import com.game.Player;
 import com.game.generators.MazeFactory;
+import com.game.generators.MonsterSpawner;
 import com.renderer.GameScene;
 
 /**
@@ -143,6 +144,7 @@ public class MenuScene extends Scene {
                 var maze = MazeFactory.createMaze();
                 Game.getInstance().setMaze(maze);
                 Window.getInstance().setScene(new GameScene());
+                MonsterSpawner.spawnMonsters(maze);
             }
         });
         /* CAMPAIGN MENU SECTION */

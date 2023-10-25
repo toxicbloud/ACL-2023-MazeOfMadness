@@ -14,7 +14,6 @@ import com.engine.events.GamepadAxis;
 import com.engine.events.KeyCode;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
-import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Player;
 
@@ -51,14 +50,6 @@ public class PlayerController extends Controller implements EventVisitor {
             new Vector2(normalized.x, normalized.y)
             .mul(Time.getInstance().getDeltaTime() * Player.PLAYER_SPEED)
         );
-    }
-
-    /**
-     * Move the target by a vector.
-     * @param v The vector.
-     */
-    public void moveBy(Vector2 v) {
-        getTarget().setPosition(getTarget().getPosition().add(new Vector3(v.x, v.y, 0)));
     }
 
     @Override

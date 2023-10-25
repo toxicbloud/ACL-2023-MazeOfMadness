@@ -22,3 +22,7 @@ mom/mom.iml
 .classpath
 *.log
 *.blend1
+
+Idle_*/
+Run_*/
+Death_*/

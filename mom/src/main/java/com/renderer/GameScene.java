@@ -103,7 +103,7 @@ public class GameScene extends Scene {
     public void onEvent(Event event) {
         switch (event.getType()) {
             case MOUSE_SCROLLED:
-                float delta = ((EventMouseScrolled) event).getDelta();
+                float delta = -((EventMouseScrolled) event).getDelta();
                 this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
                 break;
             default: break;
