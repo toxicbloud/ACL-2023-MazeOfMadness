@@ -9,9 +9,9 @@ import com.engine.utils.Vector3;
  */
 public class StairGrass extends Stair {
     /** Stair grass sprite shift from texture top. */
-    private static final int STAIR_GRASS_SPRITE_SHIFT_X = SPRITE_SIZE * 69;
+    private static final int STAIR_GRASS_SPRITE_SHIFT_X = SPRITE_SIZE * 0; // TODO : Make block texture
     /** Stair grass sprite shift from texture top. */
-    private static final int STAIR_GRASS_SPRITE_SHIFT_Y = SPRITE_SIZE * 97;
+    private static final int STAIR_GRASS_SPRITE_SHIFT_Y = SPRITE_SIZE * 0; // TODO : Make block texture
 
     /**
      * StairGrass default constructor.

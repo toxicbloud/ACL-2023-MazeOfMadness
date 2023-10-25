@@ -9,7 +9,7 @@ import com.engine.utils.Vector3;
  */
 public class GroundGrass extends Ground {
     /** Ground grass sprite shift from texture top. */
-    private static final int GROUND_GRASS_SPRITE_SHIFT = SPRITE_SIZE * 36;
+    private static final int GROUND_GRASS_SPRITE_SHIFT = SPRITE_SIZE * 0; // TODO : Make block texture
 
     /**
      * GroundGrass default constructor.

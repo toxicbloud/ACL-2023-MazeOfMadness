@@ -9,9 +9,9 @@ import com.engine.utils.Vector3;
  */
 public class StairRock extends Stair {
     /** Stair rock sprite shift from texture top. */
-    private static final int STAIR_ROCK_SPRITE_SHIFT_X = SPRITE_SIZE * 62;
+    private static final int STAIR_ROCK_SPRITE_SHIFT_X = SPRITE_SIZE * 0; // TODO : Make block texture
     /** Stair rock sprite shift from texture top. */
-    private static final int STAIR_ROCK_SPRITE_SHIFT_Y = SPRITE_SIZE * 61;
+    private static final int STAIR_ROCK_SPRITE_SHIFT_Y = SPRITE_SIZE * 0; // TODO : Make block texture
 
     /**
      * StairRock default constructor.
