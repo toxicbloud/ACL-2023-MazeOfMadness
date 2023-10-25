@@ -59,6 +59,11 @@ public abstract class Monster extends Entity {
         this.getSprite().setFrameCounter((int) (Math.random() * FRAMES_NUMBER));
     }
 
+    @Override
+    public void update() {
+        super.update();
+    }
+
     /**
      * Get the monster type.
      * @return The monster type.

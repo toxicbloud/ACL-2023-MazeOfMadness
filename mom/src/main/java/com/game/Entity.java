@@ -62,7 +62,11 @@ public abstract class Entity implements Evolvable {
      * Update the entity.
      * This method is called every frame, before any render() call.
      */
-    public abstract void update();
+    public void update() {
+        if (this.controller != null) {
+            this.controller.update();
+        }
+    }
 
     /**
      * Render the entity.

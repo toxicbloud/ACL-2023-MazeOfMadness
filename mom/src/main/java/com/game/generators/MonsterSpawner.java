@@ -4,6 +4,7 @@ import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.controllers.ZombieController;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
 
@@ -18,7 +19,7 @@ public final class MonsterSpawner {
     /**
      * Probability of spawning a zombie.
      */
-    public static final double PROBA_ZOMBIE = 0.1;
+    public static final double PROBA_ZOMBIE = 0.01;
 
     /**
      * Minimum distance between player and monster.
@@ -43,7 +44,9 @@ public final class MonsterSpawner {
                 }
 
                 if (Math.random() < PROBA_ZOMBIE) {
-                    monsters.add(new Zombie(new Vector3(x, y, 1)));
+                    Zombie zombie = new Zombie(new Vector3(x, y, 1));
+                    new ZombieController(zombie);
+                    monsters.add(zombie);
                 }
             }
         }

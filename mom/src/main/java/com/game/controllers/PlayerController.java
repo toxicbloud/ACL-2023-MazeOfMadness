@@ -53,14 +53,6 @@ public class PlayerController extends Controller implements EventVisitor {
         );
     }
 
-    /**
-     * Move the target by a vector.
-     * @param v The vector.
-     */
-    public void moveBy(Vector2 v) {
-        getTarget().setPosition(getTarget().getPosition().add(new Vector3(v.x, v.y, 0)));
-    }
-
     @Override
     public void visit(EventMousePressed ev) {
 

@@ -9,6 +9,12 @@ import com.engine.utils.Vector3;
  * This is the zombie class.
  */
 public class Zombie extends Monster {
+
+    /**
+     * Zombie speed.
+     */
+    public static final float ZOMBIE_SPEED = 1.0f;
+
     /**
      * Zombie constructor.
      * This is the default constructor for the zombie class.
@@ -35,6 +41,6 @@ public class Zombie extends Monster {
 
     @Override
     public void update() {
-
+        super.update();
     }
 }
