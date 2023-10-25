@@ -1,6 +1,6 @@
 package com.game.generators.tree;
 
-import com.game.tiles.GroundRockTiled;
+import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 
@@ -140,7 +140,7 @@ public class Rectangle {
              i += mazeWidth) {
             for (int j = 0; j < this.width; j++) {
                 // We fill the ground layer
-                maze[i + j] = new GroundRockTiled();
+                maze[i + j] = new GroundRock();
                 // We unfill the above layers.
                 for (int k = 1; k < mazeDepth; k++) {
                     maze[i + (mazeHeight * mazeWidth * k) + j] = new VoidTile();

@@ -9,7 +9,7 @@ import com.engine.utils.Vector3;
  */
 public class GroundLava extends Ground {
     /** Ground lava sprite shift from texture top. */
-    private static final int GROUND_LAVA_SPRITE_SHIFT = SPRITE_SIZE * 74;
+    private static final int GROUND_LAVA_SPRITE_SHIFT = SPRITE_SIZE * 0; // TODO : Make block texture
 
     /**
      * GroundLava constructor.
