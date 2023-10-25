@@ -1,0 +1,84 @@
+@startuml Generators class diagram
+title Generators class diagram
+
+package Generators {
+    class MazeFactory {
+        + randomInt(int min, int max): int
+        + static createMaze(): Maze
+        + static createMaze(int: width, int: height, int:width): Maze
+        - static generateRooms(): Tile[]
+    }
+
+    class MonsterFactory {
+        + createZombie()
+        + createGhost()
+        + createBoss()
+    }
+
+    class PotionFactory {
+        + createHealthPotion()
+        + createStrenghPotion()
+        + createSpeedPotion()
+    }
+
+    class WeaponFactory {
+        + createSword()
+        + createBow()
+        + createAxe()
+    }
+
+    class MonsterSpawner {
+        + spawnMonsters(maze: Maze): Maze
+    }
+
+    class ItemSpawner {
+        + spawnItems(maze: Maze): Maze
+    }
+
+    package tree {
+        class Leaf {
+            int x
+            int y
+            int height
+            int width
+            Leaf left
+            Leaf right
+            + Leaf(int: x, int: y, int: width, int: height)
+            + split(): boolean
+            - canSplitH(): boolean
+            + createRooms()
+            - createHall(Rectangle l, Rectangle r)
+            + exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth)
+            + getRoom(): Rectangle
+            + getLeft(): Leaf
+            + getRight(): Leaf
+            + getHeight(): int
+            + getWidth(): int
+            - addHallToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight)
+        }
+        class Rectangle {
+            int x
+            int y
+            int width
+            int height
+            int bottom
+            int top
+            int left
+            int right
+            + Rectangle(int: x, int: y, int: width, int: height)
+            + populateMazeWithRectangle(Tile[], int mazeHeight, int mazeWidth, int mazeDepth)
+            + getX(): int
+            + getY(): int
+            + getWidth(): int
+            + getHeight(): int       
+            + getTop(): int
+            + getBottom(): int          
+            + getLeft(): int
+            + getRight(): int
+        }
+
+        Leaf -- "*" Rectangle
+    }
+}
+
+@enduml

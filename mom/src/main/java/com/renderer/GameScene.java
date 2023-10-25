@@ -56,7 +56,9 @@ public class GameScene extends Scene {
      */
     public void create() {
         if (Game.getInstance().getPlayer() == null) {
-            Game.getInstance().setPlayer(new Player(new Vector3(2, 2, 1)));
+            Game.getInstance().setPlayer(
+                new Player(Game.getInstance().getMaze().getSpawnPoint())
+            );
         }
         this.playerController = new PlayerController(Game.getInstance().getPlayer());
     }
