@@ -13,7 +13,7 @@ public class Zombie extends Monster {
     /**
      * Zombie speed.
      */
-    public static final float ZOMBIE_SPEED = 1.0f;
+    public static final float ZOMBIE_SPEED = 1.5f;
 
     /**
      * Zombie constructor.

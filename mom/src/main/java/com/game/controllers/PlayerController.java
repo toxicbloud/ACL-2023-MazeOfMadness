@@ -14,7 +14,6 @@ import com.engine.events.GamepadAxis;
 import com.engine.events.KeyCode;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
-import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Player;
 

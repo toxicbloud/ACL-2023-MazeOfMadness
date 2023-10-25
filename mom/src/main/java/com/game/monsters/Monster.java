@@ -2,13 +2,13 @@ package com.game.monsters;
 
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
-import com.game.Entity;
+import com.game.Living;
 
 /**
  * Monster class.
  * This is the monster class.
  */
-public abstract class Monster extends Entity {
+public abstract class Monster extends Living {
     /**
      * Number of frames in the animation.
      */
