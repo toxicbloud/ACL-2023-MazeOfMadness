@@ -149,6 +149,14 @@ public class Sprite {
     }
 
     /**
+     * Sets the frame animation counter.
+     * @param counter The animation's frame number.
+     */
+    public void setFrameCounter(int counter) {
+        this.shiftX = this.width * counter % texture.getTexture().getWidth();
+    }
+
+    /**
      * Get the shift of the sprite.
      * @return The shift of the sprite.
      */
