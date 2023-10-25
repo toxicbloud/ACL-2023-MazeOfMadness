@@ -31,12 +31,6 @@ public class MenuScene extends Scene {
      *
      */
     private static final int PAD_BOTTOM = 50;
-    /** TEST_MAZE_WIDTH. */
-    private static final int TEST_MAZE_WIDTH = 5;
-    /** TEST_MAZE_HEIGHT. */
-    private static final int TEST_MAZE_HEIGHT = 5;
-    /** TEST_MAZE_DEPTH. */
-    private static final int TEST_MAZE_DEPTH = 2;
     /**
      * Minimum world height used in the viewport.
      */

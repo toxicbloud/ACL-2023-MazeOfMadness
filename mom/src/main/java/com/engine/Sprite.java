@@ -13,10 +13,6 @@ import com.renderer.GameScene;
  * This is a sprite.
  */
 public class Sprite {
-    /** Amount of shift in x (screen) direction for block upper others.  */
-    private static final float TILE_X_SHIFT = 0.25f;
-    /** Amount of shift in y (screen) direction for block upper others.  */
-    private static final float TILE_Y_SHIFT = 0.5f;
     /** Animation frame displayed time in seconds.  */
     private static final float ANIMATION_FRAME_DELAY = 1 / 30.0f;
     /** The width of the sprite. */
@@ -104,40 +100,14 @@ public class Sprite {
         Camera cam = gscene.getCamera();
         float zoom = cam.getZoom();
 
-        Vector2 screenPos = orthoCoord2Screen(position.sub(cam.getPosition())).mul(zoom);
-        Vector2 screenSize = orthoSize2Screen(size).mul(zoom / 2);
+        Vector2 screenPos = GameScene.getWorldToScreenCoordinates(position.sub(cam.getPosition())).mul(zoom);
+        Vector2 screenSize = GameScene.getWorldToScreenSize(size).mul(zoom / 2);
         sprite.setPosition(
             screenPos.x + window.getWidth() / 2 - zoom / 2,
             screenPos.y + window.getHeight() / 2 - zoom / 2
         );
         sprite.setSize(screenSize.x, screenSize.y);
         sprite.draw(canvas);
-    }
-
-    /**
-     * Convert a world coordinate to a screen coordinate.
-     * @param coord The world coordinate.
-     * @return The screen coordinate.
-     */
-    public Vector2 orthoCoord2Screen(Vector3 coord) {
-        return new Vector2(
-            // coord.x - coord.z / 2,
-            // coord.y - coord.z / 2
-            (coord.x - coord.y) / 2.0f,
-            coord.z * TILE_Y_SHIFT - (coord.x + coord.y) * TILE_X_SHIFT
-        );
-    }
-
-    /**
-     * Convert a world size to a screen size.
-     * @param size The world size.
-     * @return The screen size.
-     */
-    public Vector2 orthoSize2Screen(Vector3 size) {
-        return new Vector2(
-            size.x + size.z,
-            size.y + size.z
-        );
     }
 
     /**

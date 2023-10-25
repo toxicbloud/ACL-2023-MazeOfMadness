@@ -3,6 +3,7 @@ package com.renderer;
 import com.engine.Scene;
 import com.engine.events.Event;
 import com.engine.events.EventMouseScrolled;
+import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
@@ -18,12 +19,14 @@ public class GameScene extends Scene {
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
     private static final float ZOOM_MULTIPLIER = 1.0f;
-    /** Maximum theorical maze size. */
-    private static final int MAX_MAZE_SIZE = 1000;
     /** Theorical subdivision in one bloc for entity rendering. */
     private static final int BLOC_SUBDIVISION = 100;
     /** Z order multiplier. */
     private static final float Z_ORDER_MULTIPLIER = 4.0f;
+    /** Amount of shift in x (screen) direction for block on top of others.  */
+    private static final float TILE_X_SHIFT = 0.25f;
+    /** Amount of shift in y (screen) direction for block on top of others.  */
+    private static final float TILE_Y_SHIFT = 0.5f;
 
     /** Scene camera. */
     private Camera camera;
@@ -49,6 +52,32 @@ public class GameScene extends Scene {
             + position.getY() * 2
             + position.getZ() * Z_ORDER_MULTIPLIER
             ) * BLOC_SUBDIVISION;
+    }
+
+    /**
+     * Convert a world coordinate to a screen coordinate.
+     * @param coord The world coordinate.
+     * @return The screen coordinate.
+     */
+    public static Vector2 getWorldToScreenCoordinates(Vector3 coord) {
+        return new Vector2(
+            // coord.x - coord.z / 2,
+            // coord.y - coord.z / 2
+            (coord.x - coord.y) / 2.0f,
+            coord.z * TILE_Y_SHIFT - (coord.x + coord.y) * TILE_X_SHIFT
+        );
+    }
+
+    /**
+     * Convert a world size to a screen size.
+     * @param size The world size.
+     * @return The screen size.
+     */
+    public static Vector2 getWorldToScreenSize(Vector3 size) {
+        return new Vector2(
+            size.x + size.z,
+            size.y + size.z
+        );
     }
 
     /**
