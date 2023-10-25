@@ -11,6 +11,17 @@ import com.game.monsters.Zombie;
  */
 public class ZombieController extends Controller {
 
+    /** Maximum distance to walk before changing direction. */
+    public static final double TRIGGER_DISTANCE = 8.0;
+    /** Maximum time waiting without moving. */
+    public static final double TRIGGER_TIMEOUT = 8.0;
+    /** Percent of chance to idle instead of walking. */
+    public static final double PERCENT_IDLE = 0.4;
+    /** Percent of chance to move on the X axis (minus idle percent). */
+    public static final double PERCENT_MOVEX = 0.3;
+    /** One half constant. */
+    public static final double HALF = 0.5;
+
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
 
@@ -44,8 +55,8 @@ public class ZombieController extends Controller {
         timeCounter += Time.getInstance().getDeltaTime();
 
         boolean stuck = oldPosition.x == newPosition.x && oldPosition.y == newPosition.y;
-        boolean tooFar = newPosition.dst(lastPosition) > (Math.random() * 8.0 + 2.0);
-        boolean timeout = timeCounter > Math.random() * 6.0 + 2.0;
+        boolean tooFar = newPosition.dst(lastPosition) > (Math.random() * TRIGGER_DISTANCE + 2.0);
+        boolean timeout = timeCounter > Math.random() * TRIGGER_TIMEOUT + 2.0;
         if (stuck && !direction.isZero() || tooFar || timeout && direction.isZero()) {
             lastPosition = newPosition;
             this.determineDirectionPattern();
@@ -59,15 +70,15 @@ public class ZombieController extends Controller {
     private void determineDirectionPattern() {
         this.timeCounter = 0;
         double guess = Math.random();
-        if (guess < 0.4) {
+        if (guess < PERCENT_IDLE) {
             direction.x = 0;
             direction.y = 0;
-        } else if (guess < 0.3) {
-            direction.x = Math.random() > 0.5 ? 1 : -1;
+        } else if (guess < PERCENT_MOVEX) {
+            direction.x = Math.random() > HALF ? 1 : -1;
             direction.y = 0;
         } else {
             direction.x = 0;
-            direction.y = Math.random() > 0.5 ? 1 : -1;
+            direction.y = Math.random() > HALF ? 1 : -1;
         }
     }
 }
