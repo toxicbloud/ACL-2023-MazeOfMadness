@@ -9,7 +9,7 @@ import com.engine.utils.Vector3;
  */
 public class Camera {
     /** Default camera zoom. */
-    private static final float DEFAULT_CAMERA_ZOOM = 60.0f;
+    private static final float DEFAULT_CAMERA_ZOOM = 120.0f;
     /** Default camera speed. */
     private static final float CAMERA_SPEED = 4.0f;
     /** Camera shift from target point. */

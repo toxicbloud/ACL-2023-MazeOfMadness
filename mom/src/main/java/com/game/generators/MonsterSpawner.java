@@ -19,7 +19,7 @@ public final class MonsterSpawner {
     /**
      * Probability of spawning a zombie.
      */
-    public static final double PROBA_ZOMBIE = 0.01;
+    public static final double PROBA_ZOMBIE = 0.03;
 
     /**
      * Minimum distance between player and monster.
