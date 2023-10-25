@@ -20,7 +20,7 @@ public class Maze implements Evolvable {
     /** The width of the maze. */
     private final int width;
     /** The height of the maze. */
-    private int height;
+    private final int height;
     /** The depth of the maze. */
     private int depth;
     /** The tiles of the maze. */
@@ -29,6 +29,8 @@ public class Maze implements Evolvable {
     private Monster[] monsters;
     /** The items of the maze. */
     private Item[] items;
+    /** Spawnpoint for the player. */
+    private Vector3 spawnPoint;
 
     /**
      * Maze constructor.
@@ -241,5 +243,21 @@ public class Maze implements Evolvable {
         }
 
         return s.toString();
+    }
+
+    /**
+     * Classic setter for the spawnpoint.
+     * @param v spawnpoint to set.
+     */
+    public void setSpawnPoint(Vector3 v) {
+        this.spawnPoint = v;
+    }
+
+    /**
+     * Classic getter for the spawnpoint.
+     * @return spawnpoint in the maze.
+     */
+    public Vector3 getSpawnPoint() {
+        return this.spawnPoint;
     }
 }

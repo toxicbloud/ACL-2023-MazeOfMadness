@@ -1,0 +1,248 @@
+@startuml Game models class diagram
+title Game models class diagram
+
+package Engine {
+    interface Evolvable
+    class Vector3
+    class Sprite
+}
+
+package Game {
+    class Game {
+        - poins: int
+        - baseTime: float
+        ---
+        + GetCurrentMaze(): Maze
+        + GetPlayer(): Player
+        + GetScore(): int
+        + AddPoints(points: int)
+        + RemPoints(points: int)
+        + ResetScore()
+    }
+    Game "1" -- "1..0" Maze : currentMaze
+    Game "1" -- "1..0" Player : player
+
+    class Maze {
+        - width: int
+        - height: int
+        - spawnpoint: Vector3
+        ---
+        + Maze()
+        + Maze(width: int, height: int)
+        + Maze(tiles: Tile[][])
+        + getWidth(): int
+        + getHeight(): int
+        + getTile(x: int, y: int): Tile
+        + getMonsters(): Monster[]
+        + setMonsters(monsters: Monster[])
+        + getItems(): Item[]
+        + setItems(items: Item[])
+        + getSpawnPoint(): Vector3
+        + setItems(spawnpoint: Vector3)
+    }
+    Maze "1" -- "*" Tile: - tiles: Tile[][]
+    Maze "1" -- "*" Monster: - monsters: Monster[]
+    Maze "1" -- "*" Item: - items: Item[]
+
+    abstract Entity {
+        - position: Vector3
+        - size: Vector3
+        ---
+        # Entity(sprite: Sprite)
+        + getSprite(): Sprite
+        + getPosition(): Vector3
+        + getSize(): Vector3
+        + setPosition(position: Vector3)
+        + setSize(size: Vector3)
+    }
+    Evolvable <|-- Entity
+    Entity "1" -- "1" Vector3 : position
+    Entity "1" -- "1" Vector3 : size
+    Entity "1" -- "1" Sprite : sprite
+    Entity <|-- Item
+    Entity <|-- Living
+
+    abstract Item {
+
+    }
+
+    package Potions {
+        abstract Potion {
+            - health: int
+            - strength: int
+            - speed: int
+            - timeToLive: float
+            ---
+            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+            + getHealth(): int
+            + setHealth(health: int)
+            + getStrength(): int
+            + setStrength(strength: int)
+            + getSpeed(): int
+            + setSpeed(speed: int)
+        }
+        Item <|-- Potion
+        Potion <|-- HealthPotion
+        Potion <|-- StrengthPotion
+        Potion <|-- SpeedPotion
+
+        class HealthPotion {
+            ---
+            + HealthPotion()
+        }
+
+        class StrengthPotion {
+            ---
+            + StrengthPotion()
+        }
+
+        class SpeedPotion {
+            ---
+            + SpeedPotion()
+        }
+    }
+
+    package Weapons {
+        abstract Weapon {
+            - attack: int
+            # Weapon(int attack)
+        }
+        Item <|-- Weapon
+        Weapon <|-- WeaponFist
+        Weapon <|-- WeaponSword
+        Weapon <|-- WeaponAxe
+        Weapon <|-- WeaponBow
+
+        abstract WeaponFist {
+
+        }
+
+        WeaponFist <|-- PlayerFist
+        WeaponFist <|-- ZombieFist
+        WeaponFist <|-- GhostFist
+        WeaponFist <|-- BossFist
+
+        class PlayerFist {
+            ---
+            + PlayerFist()
+        }
+
+        class ZombieFist {
+            ---
+            + ZombieFist()
+        }
+
+        class GhostFist {
+            ---
+            + GhostFist()
+        }
+
+        class BossFist {
+            ---
+            + BossFist()
+        }
+
+        class WeaponSword {
+            ---
+            + WeaponSword()
+        }
+
+        class WeaponAxe {
+            ---
+            + WeaponAxe()
+        }
+
+        class WeaponBow {
+            ---
+            + WeaponBow()
+        }
+    }
+
+    abstract Living {
+        - health: int
+        - speed : int
+        ---
+        # Living(sprite: Sprite)
+        + getHealth(): int
+        + setHealth(health: int)
+        + getSpeed(): int
+        + setSpeed(speed: int)
+        + attack(living: Living): boolean
+        + takeDamage(damage: int) : boolean
+        + regen(health: int) : boolean
+        + isDead(): boolean
+    }
+    Living "1" -- "1" Weapon : weapon
+    Living <|-- Player
+    Living <|-- Monster
+
+    class Player {
+        
+    }
+
+    package Monsters {
+        abstract Monster {
+
+        }
+        Monster <|-- Zombie
+        Monster <|-- Ghost
+        Monster <|-- Boss
+
+        class Zombie {
+            ---
+            + Zombie()
+        }
+
+        class Ghost {
+            ---
+            + Ghost()
+        }
+
+        class Boss {
+            ---
+            + Boss()
+        }
+    }
+
+    package Tiles {
+        abstract Tile {
+            - solid: boolean
+            ---
+            + Tile(sprite: Sprite, solid: boolean)
+            + isSolid(): boolean
+        }
+        Entity <|-- Tile
+        Tile <|-- Wall
+        Tile <|-- Ground
+        Wall <|-- WallRock
+        Ground <|-- GroundWater
+        Ground <|-- GroundRock
+
+        abstract Wall {
+            ---
+            + Wall()
+        }
+
+        abstract Ground {
+            ---
+            + Ground()
+        }
+
+        class GroundRock {
+            ---
+            + GroundRock()
+        }
+
+        class GroundWater {
+            ---
+            + GroundWater()
+        }
+
+        class WallRock {
+            ---
+            + WallRock()
+        }
+    }
+}
+
+@enduml
