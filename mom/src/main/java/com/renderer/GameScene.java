@@ -1,6 +1,7 @@
 package com.renderer;
 
 import com.engine.Scene;
+import com.engine.Window;
 import com.engine.events.Event;
 import com.engine.events.EventMouseScrolled;
 import com.engine.utils.Vector2;
@@ -60,12 +61,22 @@ public class GameScene extends Scene {
      * @return The screen coordinate.
      */
     public static Vector2 getWorldToScreenCoordinates(Vector3 coord) {
+        Window window = Window.getInstance();
+        GameScene gscene = (GameScene) window.getScene();
+        Camera cam = gscene.getCamera();
+        float zoom = cam.getZoom();
+
+        Vector3 pos = coord.sub(cam.getPosition());
+
         return new Vector2(
             // coord.x - coord.z / 2,
             // coord.y - coord.z / 2
-            (coord.x - coord.y) / 2.0f,
-            coord.z * TILE_Y_SHIFT - (coord.x + coord.y) * TILE_X_SHIFT
-        );
+            (pos.x - pos.y) / 2.0f,
+            pos.z * TILE_Y_SHIFT - (pos.x + pos.y) * TILE_X_SHIFT
+        )
+            .mul(zoom)
+            .add(new Vector2(window.getWidth() / 2, window.getHeight() / 2))
+            .sub(zoom / 2);
     }
 
     /**
@@ -74,10 +85,13 @@ public class GameScene extends Scene {
      * @return The screen size.
      */
     public static Vector2 getWorldToScreenSize(Vector3 size) {
+        GameScene scene = (GameScene) Window.getInstance().getScene();
+        float zoom = scene.getCamera().getZoom();
+
         return new Vector2(
             size.x + size.z,
             size.y + size.z
-        );
+        ).mul(zoom / 2);
     }
 
     /**

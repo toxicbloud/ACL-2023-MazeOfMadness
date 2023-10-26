@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.engine.events.Event;
 import com.engine.events.EventManager;
 import com.engine.utils.Time;
@@ -35,6 +36,8 @@ public class Window extends Game {
     private Lwjgl3Application app;
     /** The canvas. */
     private SpriteBatch canvas;
+    /** The hud. */
+    private ShapeRenderer hud;
 
     /**
      * Window constructor.
@@ -186,6 +189,14 @@ public class Window extends Game {
     }
 
     /**
+     * Get the window HUD.
+     * @return The window HUD ShapeRenderer.
+     */
+    public ShapeRenderer getHUD() {
+        return this.hud;
+    }
+
+    /**
      * Close the window.
      */
     public void close() {
@@ -198,6 +209,9 @@ public class Window extends Game {
      */
     public void create() {
         this.canvas = new SpriteBatch();
+        this.hud = new ShapeRenderer();
+        this.hud.setAutoShapeType(true);
+
         Gdx.input.setInputProcessor(this.events);
         Controllers.addListener(this.events);
         if (this.scene != null) {
@@ -240,6 +254,7 @@ public class Window extends Game {
         this.width = w;
         this.height = h;
         this.canvas.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
+        this.hud.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
     }
 
     /**

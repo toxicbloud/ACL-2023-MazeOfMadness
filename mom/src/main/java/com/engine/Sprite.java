@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
-import com.renderer.Camera;
 import com.renderer.GameScene;
 
 /**
@@ -91,21 +90,11 @@ public class Sprite {
         updateSpriteAnimation();
 
         Window window = Window.getInstance();
-        GameScene gscene = (GameScene) window.getScene();
-        if (gscene == null) {
-            return; // Not a game scene, shouldn't happen
-        }
-
         SpriteBatch canvas = window.getCanvas();
-        Camera cam = gscene.getCamera();
-        float zoom = cam.getZoom();
 
-        Vector2 screenPos = GameScene.getWorldToScreenCoordinates(position.sub(cam.getPosition())).mul(zoom);
-        Vector2 screenSize = GameScene.getWorldToScreenSize(size).mul(zoom / 2);
-        sprite.setPosition(
-            screenPos.x + window.getWidth() / 2 - zoom / 2,
-            screenPos.y + window.getHeight() / 2 - zoom / 2
-        );
+        Vector2 screenPos = GameScene.getWorldToScreenCoordinates(position);
+        Vector2 screenSize = GameScene.getWorldToScreenSize(size);
+        sprite.setPosition(screenPos.x, screenPos.y);
         sprite.setSize(screenSize.x, screenSize.y);
         sprite.draw(canvas);
     }

@@ -60,6 +60,15 @@ public class Vector2 extends com.badlogic.gdx.math.Vector2 {
     }
 
     /**
+     * Subtract a float from this vector.
+     * @param v The float to subtract.
+     * @return The vector minus float on both axis.
+     */
+    public Vector2 sub(float v) {
+        return new Vector2(x - v, y - v);
+    }
+
+    /**
      * Multiplies the vector by a float.
      * @param f the float used to multiply
      * @return a new vector corresponding to (this.x * float, this.y * float)
