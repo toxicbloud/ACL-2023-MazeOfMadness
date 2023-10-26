@@ -1,13 +1,9 @@
 package com.game;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.engine.Sprite;
-import com.engine.Window;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
-import com.renderer.GameScene;
 
 /**
  * Living class.
@@ -46,7 +42,6 @@ public abstract class Living extends Entity {
      */
     protected Living(Sprite sprite) {
         super(sprite);
-        this.health = 50;
     }
 
     /**
