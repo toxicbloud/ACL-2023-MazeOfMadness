@@ -22,6 +22,8 @@ public class Sprite {
     private int shiftX;
     /** The y shift in pixels to get the sprite (sprite index). */
     private int shiftY;
+    /** The time for one frame display. */
+    private float frameTime;
     /** The time counter for the current frame display time. */
     private float frameTimeCounter;
     /** The texture of the sprite. */
@@ -43,6 +45,7 @@ public class Sprite {
         this.shiftY = 0;
         this.shiftX = 0;
         this.frameTimeCounter = 0;
+        this.frameTime = Sprite.ANIMATION_FRAME_DELAY;
         this.generateSprite();
     }
 
@@ -61,6 +64,27 @@ public class Sprite {
         this.shiftY = shift;
         this.shiftX = 0;
         this.frameTimeCounter = 0;
+        this.frameTime = Sprite.ANIMATION_FRAME_DELAY;
+        this.generateSprite();
+    }
+
+    /**
+     * Sprite constructor.
+     * This is the constructor with parameters.
+     * @param texture The texture of the sprite.
+     * @param width The width of the sprite.
+     * @param height The height of the sprite.
+     * @param shift The shift of texture applied to get the sprite (in the y down axis)
+     * @param frameTime The time for one frame display.
+     */
+    public Sprite(Texture texture, int width, int height, int shift, float frameTime) {
+        this.texture = texture;
+        this.width = width;
+        this.height = height;
+        this.shiftY = shift;
+        this.shiftX = 0;
+        this.frameTimeCounter = 0;
+        this.frameTime = frameTime;
         this.generateSprite();
     }
 
@@ -71,7 +95,7 @@ public class Sprite {
     }
 
     private void updateSpriteAnimation() {
-        if (this.frameTimeCounter < ANIMATION_FRAME_DELAY) {
+        if (this.frameTimeCounter < frameTime) {
             this.frameTimeCounter += Time.getInstance().getDeltaTime();
             return;
         } else {
@@ -105,6 +129,22 @@ public class Sprite {
      */
     public void setShift(int shift) {
         this.shiftY = shift;
+    }
+
+    /**
+     * Set the frame time of the sprite.
+     * @param frameTime The frame time of the sprite.
+     */
+    public void setFrameTime(float frameTime) {
+        this.frameTime = frameTime;
+    }
+
+    /**
+     * Get the frame time of the sprite.
+     * @return The frame time of the sprite.
+     */
+    public float getFrameTime() {
+        return this.frameTime;
     }
 
     /**
