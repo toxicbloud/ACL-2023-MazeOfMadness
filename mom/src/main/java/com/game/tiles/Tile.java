@@ -14,6 +14,9 @@ public abstract class Tile extends Entity {
     /** Tiles default sprite. */
     protected static final Texture TILE_TEXTURE = new Texture("images/tiles.png");
 
+    /** The default frame time for Tiles animations (15 fps). */
+    private static final float TILE_SPRITE_FRAME_TIME = 1 / 15.0f;
+
     /** The type of the tile. */
     private TileType type;
 
@@ -76,6 +79,7 @@ public abstract class Tile extends Entity {
      */
     public Tile(TileType t, Sprite s, Vector3 p, boolean solid) {
         super(s, p, new Vector3(1, 1, 1));
+        s.setFrameTime(TILE_SPRITE_FRAME_TIME);
         this.type = t;
         this.solid = solid;
     }
