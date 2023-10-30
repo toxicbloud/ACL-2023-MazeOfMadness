@@ -4,6 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Entity;
+import com.game.Player;
 
 /**
  * Tile class.
@@ -24,6 +25,7 @@ public abstract class Tile extends Entity {
      * This is the default constructor for the tile class.
      * It sets the solid to false.
      * And the position to (0, 0, 0).
+     *
      * @param t The type of the tile.
      * @param s The sprite of the tile.
      */
@@ -37,8 +39,9 @@ public abstract class Tile extends Entity {
      * Tile constructor.
      * This is the constructor for the tile class.
      * And the position to (0, 0, 0).
-     * @param t The type of the tile.
-     * @param s The sprite of the tile.
+     *
+     * @param t     The type of the tile.
+     * @param s     The sprite of the tile.
      * @param solid If the tile is solid.
      */
     public Tile(TileType t, Sprite s, boolean solid) {
@@ -51,6 +54,7 @@ public abstract class Tile extends Entity {
      * Tile constructor.
      * This is the constructor for the tile class.
      * It sets the solid to false.
+     *
      * @param t The type of the tile.
      * @param s The sprite of the tile.
      * @param p The position of the tile.
@@ -64,9 +68,10 @@ public abstract class Tile extends Entity {
     /**
      * Tile constructor.
      * This is the constructor for the tile class.
-     * @param t The type of the tile.
-     * @param s The sprite of the tile.
-     * @param p The position of the tile.
+     *
+     * @param t     The type of the tile.
+     * @param s     The sprite of the tile.
+     * @param p     The position of the tile.
      * @param solid If the tile is solid.
      */
     public Tile(TileType t, Sprite s, Vector3 p, boolean solid) {
@@ -77,6 +82,7 @@ public abstract class Tile extends Entity {
 
     /**
      * Getter to get if the tile is solid.
+     *
      * @return If the tile is solid.
      */
     public boolean isSolid() {
@@ -85,9 +91,29 @@ public abstract class Tile extends Entity {
 
     /**
      * Get the type of the tile.
+     *
      * @return The type of the tile.
      */
     public TileType getType() {
         return type;
     }
+
+    /**
+     * Call when the player enter the tile.
+     *
+     * @param p The player that enter the tile.
+     */
+    public void onPlayerEnter(Player p) {
+
+    }
+
+    /**
+     * Call when the player exit the tile.
+     *
+     * @param p The player that exit the tile.
+     */
+    public void onPlayerExit(Player p) {
+
+    }
+
 }
