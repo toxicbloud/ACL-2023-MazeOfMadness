@@ -45,8 +45,8 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze.
      */
     public static Maze createMaze() {
-        final int width = MIN_SIZE;
-        final int height = MIN_SIZE;
+        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
+        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
         return MazeFactory.createMaze(width, height, 2);
     }
 
