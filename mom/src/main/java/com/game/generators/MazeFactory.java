@@ -119,8 +119,8 @@ public final class MazeFactory {
             if (!spawnpointSet) {
                 // Careful ! It returns a random room in the maze. not the first one that is encountered.
                 Rectangle room = l.getRoom();
-                spawnpoint.x = room.getX();
-                spawnpoint.y = room.getY();
+                spawnpoint.x = room.getY();
+                spawnpoint.y = room.getX();
                 spawnpoint.z = 1;
                 System.out.println("[INFO] - Spawnpoint found ! (x,y) = (" + spawnpoint.x + "," + spawnpoint.y + ")");
                 spawnpointSet = true;
