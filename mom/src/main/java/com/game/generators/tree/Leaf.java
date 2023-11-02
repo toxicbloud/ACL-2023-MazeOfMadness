@@ -81,13 +81,13 @@ public class Leaf {
         }
         boolean splitH = canSplitH();
 
-        int max = (splitH ? height : width) - MazeFactory.MIN_ROOM_SIZE; // Determine the maximum height or width
-        if (max <= MazeFactory.MIN_ROOM_SIZE) {
+        int max = (splitH ? height : width) - MazeFactory.BASE_ROOM_SIZE; // Determine the maximum height or width
+        if (max <= MazeFactory.BASE_ROOM_SIZE) {
             return false;       // The area is too small to split anymore...
         }
 
         // Determine where we're going to split
-        int split = MazeFactory.randomInt(MazeFactory.MIN_ROOM_SIZE, max);
+        int split = MazeFactory.randomInt(MazeFactory.BASE_ROOM_SIZE, max);
 
         // Create our left and right children based on the direction of the split
         if (splitH) {

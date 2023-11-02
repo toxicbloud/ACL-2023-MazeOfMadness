@@ -131,41 +131,19 @@ public class Rectangle {
      * @param mazeDepth Height of the maze to fill.
      */
     public void populateMazeWithRectangle(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
+        // Computing starting tile to fill.
+        int startingTileIndex = this.x * mazeHeight + this.y;
 
-        int startingTileIndex;
-
-        if (mazeHeight >= mazeWidth) {
-            // Computing starting tile to fill.
-            startingTileIndex = this.x + this.y * mazeHeight;
-
-            // We fill each Tile that is inside the current rectangle with a GroundRock.
-            for (int i = startingTileIndex;
-                 i < startingTileIndex + mazeWidth * this.height;
-                 i += mazeWidth) {
-                for (int j = 0; j < this.width; j++) {
-                    // We fill the ground layer
-                    maze[i + j] = new GroundRock();
-                    // We unfill the above layers.
-                    for (int k = 1; k < mazeDepth; k++) {
-                        maze[i + j + (mazeHeight * mazeWidth * k)] = new VoidTile();
-                    }
-                }
-            }
-        } else {
-            // Computing starting tile to fill.
-            startingTileIndex = this.x * mazeWidth + this.y;
-
-            // We fill each Tile that is inside the current rectangle with a GroundRock.
-            for (int i = startingTileIndex;
-                 i < startingTileIndex + mazeHeight * this.width;
-                 i += mazeHeight) {
-                for (int j = 0; j < this.height; j++) {
-                    // We fill the ground layer
-                    maze[i + j] = new GroundRock();
-                    // We unfill the above layers.
-                    for (int k = 1; k < mazeDepth; k++) {
-                        maze[i + j + (mazeHeight * mazeWidth * k)] = new VoidTile();
-                    }
+        // We fill each Tile that is inside the current rectangle with a GroundRock.
+        for (int i = startingTileIndex;
+             i < startingTileIndex + (mazeHeight * this.width);
+             i += mazeHeight) {
+            for (int j = 0; j < this.height; j++) {
+                // We fill the ground layer
+                maze[i + j] = new GroundRock();
+                // We unfill the above layers.
+                for (int k = 1; k < mazeDepth; k++) {
+                    maze[i + j + (mazeHeight * mazeWidth * k)] = new VoidTile();
                 }
             }
         }

@@ -17,17 +17,17 @@ public final class MazeFactory {
     /**
      * MIN_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
      */
-    public static final int MIN_ROOM_SIZE = 5;
+    public static final int BASE_ROOM_SIZE = 5;
 
     /**
-     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe.
+     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe divisée par 5.
      */
-    public static final int MIN_SIZE = 25;
+    public static final int MIN_SIZE = 5;
 
     /**
-     * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe.
+     * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe divisée par 5.
      */
-    public static final int MAX_SIZE = 45;
+    public static final int MAX_SIZE = 9;
 
     /**
      * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
@@ -45,8 +45,9 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze.
      */
     public static Maze createMaze() {
-        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
-        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
+        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
+        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
+        System.out.println("[INFO] - height * width => " + height + " x " + width);
         return MazeFactory.createMaze(width, height, 2);
     }
 
@@ -93,8 +94,8 @@ public final class MazeFactory {
                 if (leaf.getLeft() == null && leaf.getRight() == null) {
 
                     // If this Leaf is too big, or 75% chance...
-                    if (leaf.getWidth() > MazeFactory.MIN_ROOM_SIZE
-                        && leaf.getHeight() > MazeFactory.MIN_ROOM_SIZE
+                    if (leaf.getWidth() > MazeFactory.BASE_ROOM_SIZE
+                        && leaf.getHeight() > MazeFactory.BASE_ROOM_SIZE
                         || sr.nextFloat() > MazeFactory.RNG_THRESHOLD) {
 
                         if (leaf.split()) { // split the Leaf!
@@ -132,7 +133,7 @@ public final class MazeFactory {
         }
         // Then, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
-            l.exportToArray(maze, height, width, depth);
+            l.exportToArray(maze, width, height, depth);
         }
 
         return maze;
