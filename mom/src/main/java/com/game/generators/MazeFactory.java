@@ -123,7 +123,6 @@ public final class MazeFactory {
                 spawnpoint.z = 1;
                 spawnpointSet = true;
             }
-
         }
 
         // We first fill the maze with walls.
