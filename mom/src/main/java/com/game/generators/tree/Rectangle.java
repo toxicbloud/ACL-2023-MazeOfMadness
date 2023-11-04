@@ -43,6 +43,7 @@ public class Rectangle {
 
     /**
      * Constructor. Used to create a rectangle.
+     *
      * @param x x coord.
      * @param y y coord.
      * @param width width coord.
@@ -61,6 +62,7 @@ public class Rectangle {
 
     /**
      * Returns top value.
+     *
      * @return top value.
      */
     public int getTop() {
@@ -69,6 +71,7 @@ public class Rectangle {
 
     /**
      * Returns bottom value.
+     *
      * @return bottom value.
      */
     public int getBottom() {
@@ -77,6 +80,7 @@ public class Rectangle {
 
     /**
      * Returns left value.
+     *
      * @return left value.
      */
     public int getLeft() {
@@ -85,6 +89,7 @@ public class Rectangle {
 
     /**
      * Returns right value.
+     *
      * @return right value.
      */
     public int getRight() {
@@ -93,6 +98,7 @@ public class Rectangle {
 
     /**
      * Returns X value.
+     *
      * @return X value.
      */
     public int getX() {
@@ -101,6 +107,7 @@ public class Rectangle {
 
     /**
      * Returns Y value.
+     *
      * @return Y value.
      */
     public int getY() {
@@ -109,6 +116,7 @@ public class Rectangle {
 
     /**
      * Returns width value.
+     *
      * @return width value.
      */
     public int getWidth() {
@@ -117,6 +125,7 @@ public class Rectangle {
 
     /**
      * Returns height value.
+     *
      * @return height value.
      */
     public int getHeight() {
@@ -125,6 +134,7 @@ public class Rectangle {
 
     /**
      * Fills the maze array with ground tiles.
+     *
      * @param maze Maze to fill.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeWidth Width of the maze to fill.

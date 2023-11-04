@@ -57,6 +57,7 @@ public class Leaf {
 
     /**
      * Main constructor. Builds a Leaf.
+     *
      * @param x x starting coordinate.
      * @param y y starting coordinate.
      * @param width maximum witdh that the leaf can take.
@@ -72,6 +73,7 @@ public class Leaf {
 
     /**
      * Splitting Method. It is used to generate the mazes and split them.
+     *
      * @return If the leaf was separated or not.
      */
     public boolean split() {
@@ -159,6 +161,7 @@ public class Leaf {
 
     /**
      * Iterates all the way through these leafs to find a room, if one exists.
+     *
      * @return A room found in children leaves or current leaf.
      */
     public Rectangle getRoom() {
@@ -192,6 +195,7 @@ public class Leaf {
 
     /**
      * This function creates a hall between 2 rooms.
+     *
      * @param l room 1
      * @param r room 2
      */
@@ -254,6 +258,7 @@ public class Leaf {
 
     /**
      * Method to add a hall inside the leaf.
+     *
      * @param pointForX X starting point for the rectangle to add to the halls array.
      * @param pointForY Y starting point for the rectangle to add to the halls array.
      * @param rectangleWidth width of the hall to add.
@@ -269,6 +274,7 @@ public class Leaf {
 
     /**
      * This method exports the leaf into a Tile array. Usable for the Maze constructor and game.
+     *
      * @param maze Maze to populate.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeWidth Width of the maze to fill.
@@ -285,6 +291,7 @@ public class Leaf {
 
     /**
      * Returns the left child of the current leaf.
+     *
      * @return the left child of the current leaf.
      */
     public Leaf getLeft() {
@@ -293,6 +300,7 @@ public class Leaf {
 
     /**
      * Returns the right child of the current leaf.
+     *
      * @return the right child of the current leaf.
      */
     public Leaf getRight() {
@@ -301,6 +309,7 @@ public class Leaf {
 
     /**
      * Returns the width of the current leaf.
+     *
      * @return width of the current leaf.
      */
     public int getWidth() {
@@ -309,6 +318,7 @@ public class Leaf {
 
     /**
      * Returns the height of the current leaf.
+     *
      * @return height of the current leaf.
      */
     public int getHeight() {

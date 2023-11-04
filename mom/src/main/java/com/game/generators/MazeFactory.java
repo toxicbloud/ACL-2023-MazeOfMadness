@@ -15,19 +15,19 @@ import java.util.ArrayList;
  */
 public final class MazeFactory {
     /**
-     * MIN_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
+     * BASE_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
      */
     public static final int BASE_ROOM_SIZE = 5;
 
     /**
-     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe divisée par 5.
+     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe.
      */
-    public static final int MIN_SIZE = 5;
+    public static final int MIN_SIZE = 25;
 
     /**
-     * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe divisée par 5.
+     * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe.
      */
-    public static final int MAX_SIZE = 9;
+    public static final int MAX_SIZE = 45;
 
     /**
      * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
@@ -42,17 +42,20 @@ public final class MazeFactory {
     /**
      * This function generates an initialized Maze Object that has been generated randomly with predetermined height
      * and width values. These are randomly generated inside the function.
+     *
      * @return Maze object initialized with a random maze.
      */
     public static Maze createMaze() {
-        final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
-        final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
+        // We pick randomily dimensions between MIN_SIZE and MAX_SIZE values.
+        int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
+        int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
         return MazeFactory.createMaze(width, height, 2);
     }
 
     /**
      * This function generates an initialized Maze Object that has been generated randomly.
-     * WARNING - This method is made to generate mazes that are 1 block high
+     * WARNING - This method is made to generate mazes that are 1 block high.
+     *
      * @param height Height of the maze
      * @param width Width of the maze
      * @param depth Depth of the maze
@@ -61,9 +64,16 @@ public final class MazeFactory {
     public static Maze createMaze(int width, int height, int depth) {
         // We call the room-splitting method on the array
         Vector3 spawnpoint = new Vector3(0, 0, 0);
-        Tile[] maze = MazeFactory.generateRooms(width, height, depth, spawnpoint);
+
+        // We ensure that the values picked are modulo 5.
+        // Otherwise, generation does not work.
+        final int mod = 5;
+        int w = width + width % mod;
+        int h = height + height % mod;
+        Tile[] maze = MazeFactory.generateRooms(w, h, depth, spawnpoint);
+
         // Returning the maze.
-        Maze m = new Maze(height, width, depth, maze);
+        Maze m = new Maze(h, w, depth, maze);
         m.setSpawnPoint(spawnpoint);
         return m;
     }
@@ -71,6 +81,7 @@ public final class MazeFactory {
     /**
      * Recursive Method, calls itself to split the maze in rooms.
      * It uses a tree-like structure to generate the rooms.
+     *
      * @param width desired width of the maze.
      * @param height desired height of the maze.
      * @param depth desired depth of the maze.
@@ -118,8 +129,8 @@ public final class MazeFactory {
             if (!spawnpointSet) {
                 // Careful ! It returns a random room in the maze. not the first one that is encountered.
                 Rectangle room = l.getRoom();
-                spawnpoint.x = room.getY();
-                spawnpoint.y = room.getX();
+                spawnpoint.x = room.getX();
+                spawnpoint.y = room.getY();
                 spawnpoint.z = 1;
                 spawnpointSet = true;
             }
@@ -130,6 +141,7 @@ public final class MazeFactory {
         for (int i = 0; i < height * width * depth; i++) {
             maze[i] = new WallRock();
         }
+
         // Then, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
             l.exportToArray(maze, width, height, depth);
@@ -140,6 +152,7 @@ public final class MazeFactory {
 
     /**
      * Superset of the RNG method that allows to provide a random int between 2 numbers.
+     *
      * @param min Lower bound.
      * @param max Upper bound.
      * @return Random int between min and max parameters.
