@@ -17,18 +17,12 @@ public class End extends Ground {
     private static final int END_SPRITE_SHIFT = SPRITE_SIZE * 3;
 
     /**
-     * Ground below the chest.
-     */
-    private final Sprite ground;
-
-    /**
      * End constructor.
      *
      *
      */
     public End() {
         super(TileType.GROUND_END, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, END_SPRITE_SHIFT));
-        ground = new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, 1);
     }
 
     @Override
