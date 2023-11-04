@@ -47,7 +47,6 @@ public final class MazeFactory {
     public static Maze createMaze() {
         final int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
         final int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE) * 5;
-        System.out.println("[INFO] - height * width => " + height + " x " + width);
         return MazeFactory.createMaze(width, height, 2);
     }
 
@@ -122,7 +121,6 @@ public final class MazeFactory {
                 spawnpoint.x = room.getY();
                 spawnpoint.y = room.getX();
                 spawnpoint.z = 1;
-                System.out.println("[INFO] - Spawnpoint found ! (x,y) = (" + spawnpoint.x + "," + spawnpoint.y + ")");
                 spawnpointSet = true;
             }
         }
