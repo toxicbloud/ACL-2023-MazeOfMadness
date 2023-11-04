@@ -15,6 +15,7 @@ import com.engine.events.KeyCode;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.Entity;
+import com.game.Living;
 import com.game.Player;
 
 /**
@@ -48,7 +49,7 @@ public class PlayerController extends Controller implements EventVisitor {
         Vector2 normalized = direction.normalize();
         target.moveBy(
             new Vector2(normalized.x, normalized.y)
-            .mul(Time.getInstance().getDeltaTime() * Player.PLAYER_SPEED)
+            .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed())
         );
     }
 

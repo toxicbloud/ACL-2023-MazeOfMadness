@@ -34,7 +34,7 @@ public class GameScene extends Scene {
     private Camera camera;
     /** Player controller. */
     private PlayerController playerController;
-
+    /** Last entered tile by the player. */
     private Tile enteredTile;
 
     /**

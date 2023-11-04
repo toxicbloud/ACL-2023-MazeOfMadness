@@ -16,7 +16,7 @@ public abstract class Living extends Entity {
     /** Living health. */
     private int health;
     /** Living speed. */
-    private int speed;
+    private float speed;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
@@ -38,6 +38,7 @@ public abstract class Living extends Entity {
 
     /**
      * Living constructor.
+     *
      * @param sprite The sprite to use.
      */
     protected Living(Sprite sprite) {
@@ -46,9 +47,10 @@ public abstract class Living extends Entity {
 
     /**
      * Living constructor.
-     * @param sprite The sprite to use.
+     *
+     * @param sprite   The sprite to use.
      * @param position The position of the living entity.
-     * @param size The size of the living entity.
+     * @param size     The size of the living entity.
      */
     protected Living(Sprite sprite, Vector3 position, Vector3 size) {
         super(sprite, position, size);
@@ -84,9 +86,8 @@ public abstract class Living extends Entity {
     private void updateSprite(Vector2 delta) {
         boolean running = !delta.isZero();
         this.getSprite().setShift(
-            this.direction.ordinal() * this.getSprite().getHeight()
-            + (running ? this.getSprite().getHeight() * NB_DIRECTIONS : 0)
-        );
+                this.direction.ordinal() * this.getSprite().getHeight()
+                        + (running ? this.getSprite().getHeight() * NB_DIRECTIONS : 0));
     }
 
     private void setDirection(Direction dir) {
@@ -97,6 +98,7 @@ public abstract class Living extends Entity {
 
     /**
      * Attack a living entity.
+     *
      * @param living The living entity to attack.
      * @return Whether the attack was successful.
      */
@@ -109,16 +111,21 @@ public abstract class Living extends Entity {
 
     /**
      * Take damage.
+     *
      * @param damage The damage amount.
      * @return Whether the living entity died.
      */
     public boolean takeDamage(int damage) {
         this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
         return this.health <= 0;
     }
 
     /**
      * Regenerate health.
+     *
      * @param h The health amount.
      */
     public void regen(int h) {
@@ -127,6 +134,7 @@ public abstract class Living extends Entity {
 
     /**
      * Check if the living entity is dead.
+     *
      * @return Whether the living entity is dead.
      */
     public boolean isDead() {
@@ -135,6 +143,7 @@ public abstract class Living extends Entity {
 
     /**
      * Get the health.
+     *
      * @return The health of the entity.
      */
     public int getHealth() {
@@ -143,14 +152,16 @@ public abstract class Living extends Entity {
 
     /**
      * Get the speed.
+     *
      * @return The speed of the entity.
      */
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
     /**
      * Get the weapon.
+     *
      * @return The weapon of the entity.
      */
     public Weapon getWeapon() {
@@ -159,6 +170,7 @@ public abstract class Living extends Entity {
 
     /**
      * Set the health.
+     *
      * @param health The health of the entity.
      */
     public void setHealth(int health) {
@@ -167,14 +179,16 @@ public abstract class Living extends Entity {
 
     /**
      * Set the speed.
+     *
      * @param speed The speed of the entity.
      */
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
     /**
      * Set the weapon.
+     *
      * @param weapon The weapon of the entity.
      */
     public void setWeapon(Weapon weapon) {
