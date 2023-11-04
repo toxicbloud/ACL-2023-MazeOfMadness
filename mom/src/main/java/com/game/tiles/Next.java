@@ -33,6 +33,7 @@ public class Next extends Ground {
     public void onPlayerEnter(Player p) {
         var maze = MazeFactory.createMaze();
         Game.getInstance().setMaze(maze);
+        Game.getInstance().getPlayer().setPosition(maze.getSpawnPoint());
         Window.getInstance().setScene(new GameScene());
         MonsterSpawner.spawnMonsters(maze);
     }
