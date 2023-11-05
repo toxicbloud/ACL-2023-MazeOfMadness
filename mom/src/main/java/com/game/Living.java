@@ -150,6 +150,31 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Create an health bar.
+     */
+    private void healthBar() {
+        float screenWidth = Window.getInstance().getWidth();
+        float screenHeight = Window.getInstance().getHeight();
+        float scaleX = screenWidth / WIDTH_SCALE_VALUE;
+        float scaleY = screenHeight / HEIGHT_SCALE_VALUE;
+
+        Vector2 pos = GameScene.getWorldToScreenCoordinates(getPosition().add(POSITION_HEALTHBAR_SCREEN));
+        Vector2 size = GameScene.getWorldToScreenSize(SIZE_HEALTHBAR_SCREEN);
+        Vector2 scaledPos = new Vector2(pos.x / scaleX, pos.y / scaleY);
+
+        float healthBarStatus = ((float) this.health / (float) this.maxHealth) * (size.x - 2);
+
+        ShapeRenderer renderer = Window.getInstance().getHUD();
+        renderer.begin(ShapeType.Line);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(scaledPos.x - (size.x / 2), scaledPos.y, size.x, size.y);
+        renderer.set(ShapeType.Filled);
+        renderer.setColor(Color.RED);
+        renderer.rect((scaledPos.x - (size.x / 2)) + 1, scaledPos.y + 1, healthBarStatus, size.y - 2);
+        renderer.end();
+    }
+
+    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
@@ -171,31 +196,6 @@ public abstract class Living extends Entity {
     public boolean takeDamage(int damage) {
         this.health -= damage;
         return this.health <= 0;
-    }
-
-    /**
-     * Create an health bar.
-     */
-    public void healthBar() {
-        float screenWidth = Window.getInstance().getWidth();
-        float screenHeight = Window.getInstance().getHeight();
-        float scaleX = screenWidth / WIDTH_SCALE_VALUE;
-        float scaleY = screenHeight / HEIGHT_SCALE_VALUE;
-
-        Vector2 pos = GameScene.getWorldToScreenCoordinates(getPosition().add(POSITION_HEALTHBAR_SCREEN));
-        Vector2 size = GameScene.getWorldToScreenSize(SIZE_HEALTHBAR_SCREEN);
-        Vector2 scaledPos = new Vector2(pos.x / scaleX, pos.y / scaleY);
-
-        float healthBarStatus = (50f / 100f) * (size.x - 2);
-
-        ShapeRenderer renderer = Window.getInstance().getHUD();
-        renderer.begin(ShapeType.Line);
-        renderer.setColor(Color.WHITE);
-        renderer.rect(scaledPos.x - (size.x / 2), scaledPos.y, size.x, size.y);
-        renderer.set(ShapeType.Filled);
-        renderer.setColor(Color.RED);
-        renderer.rect((scaledPos.x - (size.x / 2)) + 1, scaledPos.y + 1, healthBarStatus, size.y - 2);
-        renderer.end();
     }
 
     /**
