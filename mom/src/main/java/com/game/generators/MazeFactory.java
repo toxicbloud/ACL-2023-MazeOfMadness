@@ -14,24 +14,16 @@ import java.util.ArrayList;
  * Factory for mazes.
  */
 public final class MazeFactory {
-    /**
-     * BASE_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées.
-     */
+    /** BASE_ROOM_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées. */
     public static final int BASE_ROOM_SIZE = 5;
 
-    /**
-     * MIN_SIZE : Constante pour la taille minimale d'un labyrinthe.
-     */
+    /** MIN_SIZE : Constante pour la taille minimale d'un labyrinthe. */
     public static final int MIN_SIZE = 25;
 
-    /**
-     * MAX_SIZE : Constante pour la taille maximale d'un labyrinthe.
-     */
+    /** MAX_SIZE : Constante pour la taille maximale d'un labyrinthe. */
     public static final int MAX_SIZE = 45;
 
-    /**
-     * RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle.
-     */
+    /** RNG_THRESHOLD : Constante pour faire plaisir au Checkstyle. */
     private static final float RNG_THRESHOLD = 0.25F;
 
     /**
@@ -62,7 +54,7 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze
      */
     public static Maze createMaze(int height, int width, int depth) {
-        // We call the room-splitting method on the array
+        // We prepare the variable for the spawnpoint computed during maze generation.
         Vector3 spawnpoint = new Vector3(0, 0, 0);
 
         // We ensure that the values picked are modulo 5.
@@ -70,6 +62,8 @@ public final class MazeFactory {
         final int mod = 5;
         int w = width + width % mod;
         int h = height + height % mod;
+
+        // We call the room-splitting method on the array
         Tile[] maze = MazeFactory.generateRooms(h, w, depth, spawnpoint);
 
         // Returning the maze.
@@ -82,10 +76,10 @@ public final class MazeFactory {
      * Recursive Method, calls itself to split the maze in rooms.
      * It uses a tree-like structure to generate the rooms.
      *
-     * @param height     desired height of the maze.
-     * @param width      desired width of the maze.
-     * @param depth      desired depth of the maze.
-     * @param spawnpoint variable to store the spawnpoint for the maze.
+     * @param height     Desired height of the maze.
+     * @param width      Desired width of the maze.
+     * @param depth      Desired depth of the maze.
+     * @param spawnpoint Variable to store the spawnpoint for the maze.
      * @return Tile array for the Maze constructor.
      */
     private static Tile[] generateRooms(int height, int width, int depth, Vector3 spawnpoint) {
@@ -125,10 +119,10 @@ public final class MazeFactory {
 
             // If the spawnpoint is not set, we find one to set.
             if (!spawnpointSet) {
-                // Careful ! It returns a random room in the maze. not the first one that is encountered.
+                // Careful ! It returns a random room in the maze, not the first one that is encountered.
                 Rectangle room = l.getRoom();
-                spawnpoint.x = room.getX();
-                spawnpoint.y = room.getY();
+                spawnpoint.x = room.getX() + 1;
+                spawnpoint.y = room.getY() + 1;
                 spawnpoint.z = 1;
                 spawnpointSet = true;
             }

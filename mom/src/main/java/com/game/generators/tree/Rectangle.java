@@ -8,37 +8,21 @@ import com.game.tiles.VoidTile;
  * Rectangle class. Used to define rooms.
  */
 public class Rectangle {
-    /**
-     * X coordinate.
-     */
+    /** X coordinate. */
     private final int x;
-    /**
-     * Y coordinate.
-     */
+    /** Y coordinate. */
     private final int y;
-    /**
-     * width value.
-     */
+    /** width value. */
     private final int width;
-    /**
-     * height value.
-     */
+    /** height value. */
     private final int height;
-    /**
-     * top value.
-     */
+    /** top value. */
     private final int top;
-    /**
-     * bottom value.
-     */
+    /** bottom value. */
     private final int bottom;
-    /**
-     * left value.
-     */
+    /** left value. */
     private final int left;
-    /**
-     * right value.
-     */
+    /** right value. */
     private final int right;
 
     /**
@@ -133,7 +117,7 @@ public class Rectangle {
     }
 
     /**
-     * Fills the maze array with ground tiles.
+     * Fills the maze array with ground Tiles where the room is.
      *
      * @param maze       Maze to fill.
      * @param mazeHeight Height of the maze to fill.
