@@ -19,11 +19,14 @@ public abstract class Monster extends Living {
 
     /**
      * Monster constructor.
-     * @param sprite The monster sprite to use.
-     * @param t The monster type.
+     *
+     * @param sprite    The monster sprite to use.
+     * @param t         The monster type.
+     * @param health    The health of the monster.
+     * @param maxHealth The max health of the monster.
      */
-    protected Monster(Sprite sprite, MonsterType t) {
-        super(sprite, new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+    protected Monster(Sprite sprite, MonsterType t, int health, int maxHealth) {
+        super(sprite, new Vector3(0, 0, 0), new Vector3(1, 1, 1), health, maxHealth);
         this.type = t;
         this.setRandomAnimationShift();
     }
@@ -31,12 +34,15 @@ public abstract class Monster extends Living {
     /**
      * Monster constructor.
      * This is the constructor for the monster class.
-     * @param sprite The monster sprite to use.
-     * @param t The type of the monster.
-     * @param position The position of the monster.
+     *
+     * @param sprite    The monster sprite to use.
+     * @param t         The type of the monster.
+     * @param position  The position of the monster.
+     * @param health    The health of the monster.
+     * @param maxHealth The max health of the monster.
      */
-    protected Monster(Sprite sprite, MonsterType t, Vector3 position) {
-        super(sprite, position, new Vector3(1, 1, 1));
+    protected Monster(Sprite sprite, MonsterType t, Vector3 position, int health, int maxHealth) {
+        super(sprite, position, new Vector3(1, 1, 1), health, maxHealth);
         this.type = t;
         this.setRandomAnimationShift();
     }
@@ -44,13 +50,16 @@ public abstract class Monster extends Living {
     /**
      * Monster constructor.
      * This is the constructor for the monster class.
-     * @param sprite The monster sprite to use.
-     * @param t The type of the monster.
-     * @param position The position of the monster.
-     * @param size The size of the monster.
+     *
+     * @param sprite    The monster sprite to use.
+     * @param t         The type of the monster.
+     * @param position  The position of the monster.
+     * @param size      The size of the monster.
+     * @param health    The health of the monster.
+     * @param maxHealth The max health of the monster.
      */
-    protected Monster(Sprite sprite, MonsterType t, Vector3 position, Vector3 size) {
-        super(sprite, position, size);
+    protected Monster(Sprite sprite, MonsterType t, Vector3 position, Vector3 size, int health, int maxHealth) {
+        super(sprite, position, size, health, maxHealth);
         this.type = t;
         this.setRandomAnimationShift();
     }
@@ -66,6 +75,7 @@ public abstract class Monster extends Living {
 
     /**
      * Get the monster type.
+     *
      * @return The monster type.
      */
     public MonsterType getType() {
