@@ -44,12 +44,12 @@ public class Rectangle {
     /**
      * Constructor. Used to create a rectangle.
      *
-     * @param x x coord.
-     * @param y y coord.
-     * @param width width coord.
+     * @param x      x coord.
+     * @param y      y coord.
      * @param height height coord.
+     * @param width  width coord.
      */
-    public Rectangle(int x, int y, int width, int height) {
+    public Rectangle(int x, int y, int height, int width) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -135,12 +135,12 @@ public class Rectangle {
     /**
      * Fills the maze array with ground tiles.
      *
-     * @param maze Maze to fill.
+     * @param maze       Maze to fill.
      * @param mazeHeight Height of the maze to fill.
-     * @param mazeWidth Width of the maze to fill.
-     * @param mazeDepth Height of the maze to fill.
+     * @param mazeWidth  Width of the maze to fill.
+     * @param mazeDepth  Height of the maze to fill.
      */
-    public void populateMazeWithRectangle(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
+    public void populateMazeWithRectangle(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         // Computing starting tile to fill.
         int startingTileIndex = this.x * mazeHeight + this.y;
 

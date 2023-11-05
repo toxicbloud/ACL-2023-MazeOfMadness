@@ -49,7 +49,7 @@ public final class MazeFactory {
         // We pick randomily dimensions between MIN_SIZE and MAX_SIZE values.
         int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
         int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
-        return MazeFactory.createMaze(width, height, 2);
+        return MazeFactory.createMaze(height, width, 2);
     }
 
     /**
@@ -57,11 +57,11 @@ public final class MazeFactory {
      * WARNING - This method is made to generate mazes that are 1 block high.
      *
      * @param height Height of the maze
-     * @param width Width of the maze
-     * @param depth Depth of the maze
+     * @param width  Width of the maze
+     * @param depth  Depth of the maze
      * @return Maze object initialized with a random maze
      */
-    public static Maze createMaze(int width, int height, int depth) {
+    public static Maze createMaze(int height, int width, int depth) {
         // We call the room-splitting method on the array
         Vector3 spawnpoint = new Vector3(0, 0, 0);
 
@@ -70,7 +70,7 @@ public final class MazeFactory {
         final int mod = 5;
         int w = width + width % mod;
         int h = height + height % mod;
-        Tile[] maze = MazeFactory.generateRooms(w, h, depth, spawnpoint);
+        Tile[] maze = MazeFactory.generateRooms(h, w, depth, spawnpoint);
 
         // Returning the maze.
         Maze m = new Maze(h, w, depth, maze);
@@ -82,15 +82,15 @@ public final class MazeFactory {
      * Recursive Method, calls itself to split the maze in rooms.
      * It uses a tree-like structure to generate the rooms.
      *
-     * @param width desired width of the maze.
-     * @param height desired height of the maze.
-     * @param depth desired depth of the maze.
+     * @param height     desired height of the maze.
+     * @param width      desired width of the maze.
+     * @param depth      desired depth of the maze.
      * @param spawnpoint variable to store the spawnpoint for the maze.
-     * @return Tableau de Tiles du labyrinthe.
+     * @return Tile array for the Maze constructor.
      */
-    private static Tile[] generateRooms(int width, int height, int depth, Vector3 spawnpoint) {
+    private static Tile[] generateRooms(int height, int width, int depth, Vector3 spawnpoint) {
         ArrayList<Leaf> leafArray = new ArrayList<>();
-        Leaf root = new Leaf(0, 0, width, height);
+        Leaf root = new Leaf(0, 0, height, width);
         leafArray.add(root);
         boolean didSplit = true;
         boolean spawnpointSet = false;
@@ -142,7 +142,7 @@ public final class MazeFactory {
 
         // Then, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
-            l.exportToArray(maze, width, height, depth);
+            l.exportToArray(maze, height, width, depth);
         }
 
         return maze;
@@ -152,8 +152,8 @@ public final class MazeFactory {
      * Superset of the RNG method that allows to provide a random int between 2 numbers.
      * It's only purpose is to facilitate the RNG method call.
      *
-     * @param min Lower bound.
-     * @param max Upper bound.
+     * @param  min Lower bound.
+     * @param  max Upper bound.
      * @return Random int between min and max parameters.
      */
     public static int randomInt(int min, int max) {

@@ -38,12 +38,12 @@ public class Leaf {
     /**
      * Main constructor. Builds a Leaf.
      *
-     * @param x x starting coordinate.
-     * @param y y starting coordinate.
-     * @param width maximum width that the leaf can take.
+     * @param x      x starting coordinate.
+     * @param y      y starting coordinate.
      * @param height maximum height that the leaf can take.
+     * @param width  maximum width that the leaf can take.
      */
-    public Leaf(int x, int y, int width, int height) {
+    public Leaf(int x, int y, int height, int width) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -75,11 +75,11 @@ public class Leaf {
 
         // Create our left and right children based on the direction of the split
         if (splitH) {
-            left = new Leaf(x, y, width, split);
-            right = new Leaf(x, y + split, width, height - split);
+            left = new Leaf(x, y, split, width);
+            right = new Leaf(x, y + split, height - split, width);
         } else {
-            left = new Leaf(x, y, split, height);
-            right = new Leaf(x + split, y, width - split, height);
+            left = new Leaf(x, y, height, split);
+            right = new Leaf(x + split, y, height, width - split);
         }
 
         return true;    // Split successful!
@@ -137,7 +137,7 @@ public class Leaf {
 
             // Places the room within the Leaf, but don't put it right
             // against the side of the Leaf (that would merge rooms together)
-            this.room = new Rectangle((int) (x + roomPos.x), (int) (y + roomPos.y), (int) roomSize.x, (int) roomSize.y);
+            this.room = new Rectangle((int) (x + roomPos.x), (int) (y + roomPos.y), (int) roomSize.y, (int) roomSize.x);
         }
     }
 
@@ -203,71 +203,71 @@ public class Leaf {
 
         // We search an emplacement to add the halls.
         if (w < 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, Math.abs(w), 1);
-            this.addHallToLeaf(point2, point2, 1, Math.abs(h));
+            this.addHallToLeaf(point2, point1, 1, Math.abs(w));
+            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
         } else if (w < 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, Math.abs(w), 1);
-            this.addHallToLeaf(point1, point2, 1, Math.abs(h));
+            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
+            this.addHallToLeaf(point1, point2, Math.abs(h), 1);
         } else if (w < 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, Math.abs(w), 1);
-            this.addHallToLeaf(point2, point1, 1, Math.abs(h));
+            this.addHallToLeaf(point2, point1, 1, Math.abs(w));
+            this.addHallToLeaf(point2, point1, Math.abs(h), 1);
         } else if (w < 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, Math.abs(w), 1);
-            this.addHallToLeaf(point1, point1, 1, Math.abs(h));
+            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
+            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
         } else if (w > 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, Math.abs(w), 1);
-            this.addHallToLeaf(point1, point2, 1, Math.abs(h));
+            this.addHallToLeaf(point1, point2, 1, Math.abs(w));
+            this.addHallToLeaf(point1, point2, Math.abs(h), 1);
         } else if (w > 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, Math.abs(w), 1);
-            this.addHallToLeaf(point2, point2, 1, Math.abs(h));
+            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
+            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
         } else if (w > 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, Math.abs(w), 1);
-            this.addHallToLeaf(point1, point1, 1, Math.abs(h));
+            this.addHallToLeaf(point1, point2, 1, Math.abs(w));
+            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
         } else if (w > 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, Math.abs(w), 1);
-            this.addHallToLeaf(point2, point1, 1, Math.abs(h));
+            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
+            this.addHallToLeaf(point2, point1, Math.abs(h), 1);
         }
         if (w < 0 && h == 0) {
-            this.addHallToLeaf(point2, point2, Math.abs(w), 1);
+            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
         } else if (w > 0 && h == 0) {
-            this.addHallToLeaf(point1, point1, Math.abs(w), 1);
+            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
         } else if (w == 0 && h < 0) {
-            this.addHallToLeaf(point2, point2, 1, Math.abs(h));
+            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
         } else if (w == 0 && h > 0) {
-            this.addHallToLeaf(point1, point1, 1, Math.abs(h));
+            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
         }
     }
 
     /**
      * Method to add a hall inside the leaf.
      *
-     * @param pointForX X starting point for the rectangle to add to the halls array.
-     * @param pointForY Y starting point for the rectangle to add to the halls array.
-     * @param rectangleWidth width of the hall to add.
+     * @param pointForX       X starting point for the rectangle to add to the halls array.
+     * @param pointForY       Y starting point for the rectangle to add to the halls array.
      * @param rectangleHeight height of the hall to add.
+     * @param rectangleWidth  width of the hall to add.
      */
-    private void addHallToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight) {
+    private void addHallToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleHeight, int rectangleWidth) {
         this.halls.add(new Rectangle(
                         (int) pointForX.x,
                         (int) pointForY.y,
-                        rectangleWidth, rectangleHeight
-                    ));
+                rectangleHeight, rectangleWidth
+        ));
     }
 
     /**
      * This method exports the leaf into a Tile array. Usable for the Maze constructor and game.
      *
-     * @param maze Maze to populate.
+     * @param maze       Maze to populate.
      * @param mazeHeight Height of the maze to fill.
-     * @param mazeWidth Width of the maze to fill.
-     * @param mazeDepth Depth of the maze to fill.
+     * @param mazeWidth  Width of the maze to fill.
+     * @param mazeDepth  Depth of the maze to fill.
      */
-    public void exportToArray(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
+    public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         for (Rectangle r : this.halls) {
-            r.populateMazeWithRectangle(maze, mazeWidth, mazeHeight, mazeDepth);
+            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
         if (this.room != null) {
-            this.room.populateMazeWithRectangle(maze, mazeWidth, mazeHeight, mazeDepth);
+            this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
     }
 
