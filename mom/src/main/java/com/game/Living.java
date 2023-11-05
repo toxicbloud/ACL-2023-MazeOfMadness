@@ -28,6 +28,8 @@ public abstract class Living extends Entity {
 
     /** Living health. */
     private int health;
+    /** Living max health. */
+    private int maxHealth;
     /** Living speed. */
     private int speed;
     /** Living direction. */
@@ -193,6 +195,14 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Get the max health.
+     * @return The health of the entity.
+     */
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
      * Get the speed.
      * @return The speed of the entity.
      */
@@ -214,6 +224,14 @@ public abstract class Living extends Entity {
      */
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    /**
+     * Set the max health.
+     * @param maxHealth The max health of the entity.
+     */
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
