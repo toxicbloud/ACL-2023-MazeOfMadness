@@ -14,45 +14,25 @@ import java.util.ArrayList;
  * </a>
  */
 public class Leaf {
-    /**
-     * REAL_MIN_ROOM_SIZE : real min room size.
-     */
+    /** REAL_MIN_ROOM_SIZE : real min room size. */
     static final int REAL_MIN_ROOM_SIZE = 3;
-    /**
-     * x : x starting coordinate of the current leaf.
-     */
+    /** x : x starting coordinate of the current leaf. */
     private final int x;
-    /**
-     * y : y starting coordinate of the current leaf.
-     */
+    /** y : y starting coordinate of the current leaf. */
     private final int y;
-    /**
-     * width : Maximum span of the leaf in width.
-     */
+    /** width : Maximum span of the leaf in width. */
     private final int width;
-    /**
-     * height : Maximum span of the leaf in height.
-     */
+    /** height : Maximum span of the leaf in height. */
     private final int height;
-    /**
-     * left : left-child of the current leaf.
-     */
+    /** left : left-child of the current leaf. */
     private Leaf left;
-    /**
-     * right : right-child of the current leaf.
-     */
+    /** right : right-child of the current leaf. */
     private Leaf right;
-    /**
-     * halls : ArrayList of rectangles that joins rooms.
-     */
+    /** halls : ArrayList of rectangles that joins rooms. */
     private final ArrayList<Rectangle> halls;
-    /**
-     * room : Room positioned into the current leaf.
-     */
+    /** room : Room positioned into the current leaf. */
     private Rectangle room;
-    /**
-     * this.midThreshold : Mid-threshold.
-     */
+    /** this.midThreshold : Mid-threshold. */
     private final float midThreshold = 0.5F;
 
     /**
@@ -60,7 +40,7 @@ public class Leaf {
      *
      * @param x x starting coordinate.
      * @param y y starting coordinate.
-     * @param width maximum witdh that the leaf can take.
+     * @param width maximum width that the leaf can take.
      * @param height maximum height that the leaf can take.
      */
     public Leaf(int x, int y, int width, int height) {
@@ -81,14 +61,16 @@ public class Leaf {
         if (this.left != null || this.right != null) {
             return false;  // We're already split ! Abort !
         }
+        // We check if we can split the leaf horizontally.
         boolean splitH = canSplitH();
 
-        int max = (splitH ? height : width) - MazeFactory.BASE_ROOM_SIZE; // Determine the maximum height or width
+        // Determine the maximum height or width for the future room.
+        int max = (splitH ? height : width) - MazeFactory.BASE_ROOM_SIZE;
         if (max <= MazeFactory.BASE_ROOM_SIZE) {
-            return false;       // The area is too small to split anymore...
+            return false;       // The area is too small to split anymore. We abort the splitting.
         }
 
-        // Determine where we're going to split
+        // Determine the coordinate where we're going to split.
         int split = MazeFactory.randomInt(MazeFactory.BASE_ROOM_SIZE, max);
 
         // Create our left and right children based on the direction of the split
@@ -107,16 +89,16 @@ public class Leaf {
         // We determine the direction of the split.
         // If the width is >25% larger than height, we split vertically
         // If the height is >25% larger than the width, we split horizontally
-        // Otherwise we split randomly
+        // Otherwise we split on a 50/50 chance.
 
         SecureRandom sr = new SecureRandom();
         boolean splitH = sr.nextFloat() > this.midThreshold;
         final float superiorHalfThreshold = 1.25F;
 
         if (width > height && (double) width / height >= superiorHalfThreshold) {
-            splitH = false;
+            splitH = false;     // We can't split horizontally.
         } else if (height > width && (double) height / width >= superiorHalfThreshold) {
-            splitH = true;
+            splitH = true;      // We can split horizontally.
         }
         return splitH;
     }
@@ -128,7 +110,7 @@ public class Leaf {
      */
     public void createRooms() {
         if (this.left != null || this.right != null) {
-            // This leaf has been split, so go into the children leafs
+            // This leaf has been split, so go into the children leafs and try to create rooms inside them.
             if (this.left != null) {
                 this.left.createRooms();
             }
@@ -138,7 +120,7 @@ public class Leaf {
 
             // If there are both left and right children in this Leaf, create a hallway between them
             if (this.left != null && this.right != null) {
-                createHall(this.left.getRoom(), this.right.getRoom());
+                this.createHall(this.left.getRoom(), this.right.getRoom());
             }
 
         } else {

@@ -90,10 +90,10 @@ public final class MazeFactory {
      */
     private static Tile[] generateRooms(int width, int height, int depth, Vector3 spawnpoint) {
         ArrayList<Leaf> leafArray = new ArrayList<>();
-        SecureRandom sr = new SecureRandom();
         Leaf root = new Leaf(0, 0, width, height);
         leafArray.add(root);
         boolean didSplit = true;
+        boolean spawnpointSet = false;
 
         // We loop through the Leaf array, until we can split no more.
         while (didSplit) {
@@ -103,13 +103,12 @@ public final class MazeFactory {
                 Leaf leaf = leafArray.get(i);
                 if (leaf.getLeft() == null && leaf.getRight() == null) {
 
-                    // If this Leaf is too big, or 75% chance...
+                    // If this Leaf is too big (with the height and width), we try to split it.
                     if (leaf.getWidth() > MazeFactory.BASE_ROOM_SIZE
-                        && leaf.getHeight() > MazeFactory.BASE_ROOM_SIZE
-                        || sr.nextFloat() > MazeFactory.RNG_THRESHOLD) {
+                            && leaf.getHeight() > MazeFactory.BASE_ROOM_SIZE) {
 
-                        if (leaf.split()) { // split the Leaf!
-                            // If we did split, push the child leafs to the ArrayList, so we can loop
+                        if (leaf.split()) {     // Split the Leaf!
+                            // If we did split, we push the child leafs to the ArrayList, so we can loop
                             // into them next iteration.
                             leafArray.add(leaf.getLeft());
                             leafArray.add(leaf.getRight());
@@ -121,7 +120,6 @@ public final class MazeFactory {
         }
 
         // We now have an array full of leaves. We can populate it with rooms and generate halls.
-        boolean spawnpointSet = false;
         for (Leaf l : leafArray) {
             l.createRooms();
 
@@ -152,6 +150,7 @@ public final class MazeFactory {
 
     /**
      * Superset of the RNG method that allows to provide a random int between 2 numbers.
+     * It's only purpose is to facilitate the RNG method call.
      *
      * @param min Lower bound.
      * @param max Upper bound.
