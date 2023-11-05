@@ -67,6 +67,19 @@ public abstract class Living extends Entity {
         super(sprite, position, size);
     }
 
+    /**
+     * Render the living entity.
+     */
+    @Override
+    public void render() {
+        super.render();
+        Window.getInstance().getCanvas().end();
+
+        this.healthBar();
+
+        Window.getInstance().getCanvas().begin();
+    }
+
     @Override
     public void moveBy(Vector2 delta) {
         if (!delta.isZero()) {
