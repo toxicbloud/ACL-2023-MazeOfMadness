@@ -98,7 +98,7 @@ public class Leaf {
     }
 
     /**
-     * splitLeaves method : This method is the core of the BSP maze generation. It splits leaves until we get leaves
+     * This method is the core of the BSP maze generation. It splits leaves until we get leaves
      * that are on the desired size. It applies to the root leaf.
      *
      * @return An array of split leaves.
@@ -170,6 +170,11 @@ public class Leaf {
         return true;    // Split successful!
     }
 
+    /**
+     * Determines if the current leaf can be split Horizontally.
+     *
+     * @return If we can split the leaf horizontally.
+     */
     private boolean canSplitH() {
         // We determine the direction of the split.
         // If the width is >25% larger than height, we split vertically

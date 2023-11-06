@@ -11,13 +11,13 @@ import java.security.SecureRandom;
  * Factory for mazes.
  */
 public final class MazeFactory {
-    /** BASE_LEAF_SIZE : Attribut permettant de définir la taille minimale des salles des maps créées. */
+    /** BASE_LEAF_SIZE : Constant that allows us to define minimum Leaf size. */
     public static final int BASE_LEAF_SIZE = 5;
 
-    /** MIN_SIZE : Constante pour la taille minimale d'un labyrinthe. */
+    /** MIN_SIZE : Constant for the minimum size of randomly generated mazes. */
     public static final int MIN_SIZE = 25;
 
-    /** MAX_SIZE : Constante pour la taille maximale d'un labyrinthe. */
+    /** MAX_SIZE : Constant for the maximum size of randomly generated mazes. */
     public static final int MAX_SIZE = 45;
 
     /**
