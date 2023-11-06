@@ -98,11 +98,7 @@ public abstract class Living extends Entity {
     @Override
     public void render() {
         super.render();
-        Window.getInstance().getCanvas().end();
-
-        this.healthBar();
-
-        Window.getInstance().getCanvas().begin();
+        this.renderHealthBar();
     }
 
     @Override
@@ -148,7 +144,9 @@ public abstract class Living extends Entity {
     /**
      * Create an health bar.
      */
-    private void healthBar() {
+    private void renderHealthBar() {
+        Window.getInstance().getCanvas().end();
+
         Vector2 pos = GameScene.getWorldToScreenCoordinates(getPosition().add(POSITION_HEALTHBAR_SCREEN));
         Vector2 size = GameScene.getWorldToScreenSize(SIZE_HEALTHBAR_SCREEN);
 
@@ -162,6 +160,8 @@ public abstract class Living extends Entity {
         renderer.setColor(Color.RED);
         renderer.rect((pos.x - (size.x / 2)) + 1, pos.y + 1, healthBarStatus, size.y - 2);
         renderer.end();
+
+        Window.getInstance().getCanvas().begin();
     }
 
     /**
