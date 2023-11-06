@@ -255,6 +255,7 @@ public class Window extends Game {
         this.height = h;
         this.canvas.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
         this.hud.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
+        this.hud.updateMatrices();
     }
 
     /**
