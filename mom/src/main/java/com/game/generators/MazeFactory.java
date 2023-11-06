@@ -54,8 +54,8 @@ public final class MazeFactory {
         // We ensure that the values picked are modulo 5.
         // Otherwise, generation does not work properly.
         final int mod = 5;
-        int w = width + width % mod;
-        int h = height + height % mod;
+        int w = width - width % mod;
+        int h = height - height % mod;
 
         // We call the room generation to get the maze array
         Tile[] maze = Leaf.generateRooms(h, w, depth, spawnpoint);

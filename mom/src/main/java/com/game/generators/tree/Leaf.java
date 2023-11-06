@@ -89,10 +89,15 @@ public class Leaf {
         spawnpoint.y = room.getY();
         spawnpoint.z = 1;
 
+
         // Finally, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
             l.exportToArray(maze, height, width, depth);
         }
+        System.out.println("[INFO] - Maze dimensions : (" + height + "," + width + "," + depth + ")");
+        System.out.println("[INFO] - Spawnpoint found : (" + spawnpoint.x + "," + spawnpoint.y + ")");
+        System.out.println("[INFO] - Room used : (" + room.getX() + "," + room.getY() + ")");
+        System.out.println("[INFO] -             (" + room.getWidth() + "," + room.getHeight() + ")");
 
         return maze;
     }
@@ -358,9 +363,9 @@ public class Leaf {
      */
     public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         // We carve the halls if there is one inside the current leaf.
-        for (Rectangle r : this.halls) {
-            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
-        }
+//        for (Rectangle r : this.halls) {
+//            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
+//        }
         // We carve the room if there is one inside the current leaf.
         if (this.room != null) {
             this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
