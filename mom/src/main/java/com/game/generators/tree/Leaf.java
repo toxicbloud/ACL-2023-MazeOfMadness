@@ -1,8 +1,10 @@
 package com.game.generators.tree;
 
 import com.badlogic.gdx.math.Vector2;
+import com.engine.utils.Vector3;
 import com.game.generators.MazeFactory;
 import com.game.tiles.Tile;
+import com.game.tiles.WallRock;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -52,6 +54,89 @@ public class Leaf {
     }
 
     /**
+     * Recursive Method, calls itself to split the maze in rooms.
+     * It uses a tree-like structure to generate the rooms.
+     *
+     * @param height     Desired height of the maze.
+     * @param width      Desired width of the maze.
+     * @param depth      Desired depth of the maze.
+     * @param spawnpoint Variable to store the spawnpoint for the maze.
+     * @return Tile array for the Maze constructor.
+     */
+    public static Tile[] generateRooms(int height, int width, int depth, Vector3 spawnpoint) {
+
+        // We first fill the maze with walls.
+        Tile[] maze = new Tile[height * width * depth];
+        for (int i = 0; i < height * width * depth; i++) {
+            maze[i] = new WallRock();
+        }
+
+        // We initialize the root leaf.
+        Leaf root = new Leaf(0, 0, height, width);
+
+        // We split the base Leaf until we have an array of leaves.
+        ArrayList<Leaf> leafArray = root.splitLeaves();
+
+        // We now have an array full of leaves. We can populate it with rooms and generate halls.
+        for (Leaf l : leafArray) {
+            l.createRooms();
+        }
+
+        // Setting up the spawnpoint.
+        // Careful ! Leaf.getRoom() returns a random room in the maze, not the first one that is encountered.
+        Rectangle room = root.getRoom();
+        spawnpoint.x = room.getX();
+        spawnpoint.y = room.getY();
+        spawnpoint.z = 1;
+
+        // Finally, we carve the rooms inside the given maze.
+        for (Leaf l : leafArray) {
+            l.exportToArray(maze, height, width, depth);
+        }
+
+        return maze;
+    }
+
+    /**
+     * splitLeaves method : This method is the core of the BSP maze generation. It splits leaves until we get leaves
+     * that are on the desired size. It applies to the root leaf.
+     *
+     * @return An array of split leaves.
+     */
+    private ArrayList<Leaf> splitLeaves() {
+
+        // We initialize the array with the root leaf.
+        ArrayList<Leaf> leafArray = new ArrayList<>();
+        leafArray.add(this);
+
+        boolean didSplit = true;
+
+        // We loop through the Leaf array, until we can't split anymore leaves.
+        while (didSplit) {
+            didSplit = false;
+
+            for (int i = 0; i < leafArray.size(); i++) {
+                Leaf leaf = leafArray.get(i);
+                // Split the Leaf. Here are the conditions to verify before continuing :
+                // -> We can't split the leaf if there are already child leaves.
+                // -> We can't split the leaf if the leaf is smaller or equal to the BASE_ROOM_SIZE constant.
+                // -> We try to split the leaf and observe the result of the splitting (if it did work or not).
+                if (leaf.getLeft() == null && leaf.getRight() == null
+                        && leaf.getWidth() > MazeFactory.BASE_LEAF_SIZE
+                        && leaf.getHeight() > MazeFactory.BASE_LEAF_SIZE
+                        && leaf.split()) {
+                    // If we did split, we push the child leafs to the ArrayList, so we can loop into them next
+                    // iteration.
+                    leafArray.add(leaf.getLeft());
+                    leafArray.add(leaf.getRight());
+                    didSplit = true;        // We ensure that we continue to iterate on the leaves.
+                }
+            }
+        }
+        return leafArray;
+    }
+
+    /**
      * Splitting Method. It is used to generate the mazes and split them.
      *
      * @return If the leaf was separated or not.
@@ -65,13 +150,13 @@ public class Leaf {
         boolean splitH = canSplitH();
 
         // Determine the maximum height or width for the future room.
-        int max = (splitH ? height : width) - MazeFactory.BASE_ROOM_SIZE;
-        if (max <= MazeFactory.BASE_ROOM_SIZE) {
+        int max = (splitH ? height : width) - MazeFactory.BASE_LEAF_SIZE;
+        if (max <= MazeFactory.BASE_LEAF_SIZE) {
             return false;       // The area is too small to split anymore. We abort the splitting.
         }
 
         // Determine the coordinate where we're going to split.
-        int split = MazeFactory.randomInt(MazeFactory.BASE_ROOM_SIZE, max);
+        int split = MazeFactory.randomInt(MazeFactory.BASE_LEAF_SIZE, max);
 
         // Create our left and right children based on the direction of the split
         if (splitH) {
@@ -130,6 +215,7 @@ public class Leaf {
                 MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
                 MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
             );
+            // We find the room position inside the leaf.
             Vector2 roomPos = new Vector2(
                 MazeFactory.randomInt(1, (int) (width - roomSize.x - 1)),
                 MazeFactory.randomInt(1, (int) (height - roomSize.y - 1))
