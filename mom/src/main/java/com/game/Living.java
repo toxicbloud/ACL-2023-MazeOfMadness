@@ -17,10 +17,6 @@ import com.renderer.GameScene;
 public abstract class Living extends Entity {
     /** Number of possible directions. */
     private static final int NB_DIRECTIONS = 4;
-    /** Scale value for the health bar. */
-    private static final int WIDTH_SCALE_VALUE = 1280;
-    /** Scale value for the health bar. */
-    private static final int HEIGHT_SCALE_VALUE = 720;
     /**
      * Vector3 uses in the healthBar's function for the position of the healthbar.
      */
@@ -153,24 +149,18 @@ public abstract class Living extends Entity {
      * Create an health bar.
      */
     private void healthBar() {
-        float screenWidth = Window.getInstance().getWidth();
-        float screenHeight = Window.getInstance().getHeight();
-        float scaleX = screenWidth / WIDTH_SCALE_VALUE;
-        float scaleY = screenHeight / HEIGHT_SCALE_VALUE;
-
         Vector2 pos = GameScene.getWorldToScreenCoordinates(getPosition().add(POSITION_HEALTHBAR_SCREEN));
         Vector2 size = GameScene.getWorldToScreenSize(SIZE_HEALTHBAR_SCREEN);
-        Vector2 scaledPos = new Vector2(pos.x / scaleX, pos.y / scaleY);
 
         float healthBarStatus = ((float) this.health / (float) this.maxHealth) * (size.x - 2);
 
         ShapeRenderer renderer = Window.getInstance().getHUD();
         renderer.begin(ShapeType.Line);
         renderer.setColor(Color.WHITE);
-        renderer.rect(scaledPos.x - (size.x / 2), scaledPos.y, size.x, size.y);
+        renderer.rect(pos.x - (size.x / 2), pos.y, size.x, size.y);
         renderer.set(ShapeType.Filled);
         renderer.setColor(Color.RED);
-        renderer.rect((scaledPos.x - (size.x / 2)) + 1, scaledPos.y + 1, healthBarStatus, size.y - 2);
+        renderer.rect((pos.x - (size.x / 2)) + 1, pos.y + 1, healthBarStatus, size.y - 2);
         renderer.end();
     }
 
