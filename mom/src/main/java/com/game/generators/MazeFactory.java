@@ -51,17 +51,11 @@ public final class MazeFactory {
         // We prepare the variable for the spawnpoint computed during maze generation.
         Vector3 spawnpoint = new Vector3(0, 0, 0);
 
-        // We ensure that the values picked are modulo 5.
-        // Otherwise, generation does not work properly.
-        final int mod = 5;
-        int w = width - width % mod;
-        int h = height - height % mod;
-
         // We call the room generation to get the maze array
-        Tile[] maze = Leaf.generateRooms(h, w, depth, spawnpoint);
+        Tile[] maze = Leaf.generateRooms(height, width, depth, spawnpoint);
 
         // Returning the maze.
-        Maze m = new Maze(h, w, depth, maze);
+        Maze m = new Maze(height, width, depth, maze);
         m.setSpawnPoint(spawnpoint);
         return m;
     }
