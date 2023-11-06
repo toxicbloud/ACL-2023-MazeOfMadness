@@ -283,44 +283,44 @@ public class Leaf {
         );
 
         // We compute height and width with the two Vector2 found.
-        int w = (int) (point2.x - point1.x);
-        int h = (int) (point2.y - point1.y);
+        int w = Math.abs((int) (point2.x - point1.x));
+        int h = Math.abs((int) (point2.y - point1.y));
         float randomFloat = sr.nextFloat();
 
         // We search an emplacement to add the halls.
         if (w < 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, 1, Math.abs(w));
-            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
+            this.addHallToLeaf(point2, point1, 1, w);
+            this.addHallToLeaf(point2, point2, h, 1);
         } else if (w < 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
-            this.addHallToLeaf(point1, point2, Math.abs(h), 1);
+            this.addHallToLeaf(point2, point2, 1, w);
+            this.addHallToLeaf(point1, point2, h, 1);
         } else if (w < 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, 1, Math.abs(w));
-            this.addHallToLeaf(point2, point1, Math.abs(h), 1);
+            this.addHallToLeaf(point2, point1, 1, w);
+            this.addHallToLeaf(point2, point1, h, 1);
         } else if (w < 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
-            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
+            this.addHallToLeaf(point2, point2, 1, w);
+            this.addHallToLeaf(point1, point1, h, 1);
         } else if (w > 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, 1, Math.abs(w));
-            this.addHallToLeaf(point1, point2, Math.abs(h), 1);
+            this.addHallToLeaf(point1, point2, 1, w);
+            this.addHallToLeaf(point1, point2, h, 1);
         } else if (w > 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
-            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
+            this.addHallToLeaf(point1, point1, 1, w);
+            this.addHallToLeaf(point2, point2, h, 1);
         } else if (w > 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, 1, Math.abs(w));
-            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
+            this.addHallToLeaf(point1, point2, 1, w);
+            this.addHallToLeaf(point1, point1, h, 1);
         } else if (w > 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
-            this.addHallToLeaf(point2, point1, Math.abs(h), 1);
+            this.addHallToLeaf(point1, point1, 1, w);
+            this.addHallToLeaf(point2, point1, h, 1);
         }
         if (w < 0 && h == 0) {
-            this.addHallToLeaf(point2, point2, 1, Math.abs(w));
+            this.addHallToLeaf(point2, point2, 1, w);
         } else if (w > 0 && h == 0) {
-            this.addHallToLeaf(point1, point1, 1, Math.abs(w));
+            this.addHallToLeaf(point1, point1, 1, w);
         } else if (w == 0 && h < 0) {
-            this.addHallToLeaf(point2, point2, Math.abs(h), 1);
+            this.addHallToLeaf(point2, point2, h, 1);
         } else if (w == 0 && h > 0) {
-            this.addHallToLeaf(point1, point1, Math.abs(h), 1);
+            this.addHallToLeaf(point1, point1, h, 1);
         }
     }
 
@@ -349,9 +349,11 @@ public class Leaf {
      * @param mazeDepth  Depth of the maze to fill.
      */
     public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
+        // We carve the halls if there is one inside the current leaf.
         for (Rectangle r : this.halls) {
             r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }
+        // We carve the room if there is one inside the current leaf.
         if (this.room != null) {
             this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
         }

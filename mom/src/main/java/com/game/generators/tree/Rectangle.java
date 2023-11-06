@@ -124,6 +124,7 @@ public class Rectangle {
      * @param mazeWidth  Width of the maze to fill.
      * @param mazeDepth  Height of the maze to fill.
      */
+    // TODO : FIX THIS !!!!
     public void populateMazeWithRectangle(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         // Computing starting tile to fill.
         int startingTileIndex = this.x * mazeHeight + this.y;
