@@ -85,8 +85,9 @@ public class Leaf {
         // Setting up the spawnpoint.
         // Careful ! Leaf.getRoom() returns a random room in the maze, not the first one that is encountered.
         Rectangle room = root.getRoom();
-        spawnpoint.x = room.getX();
-        spawnpoint.y = room.getY();
+        // TODO : Switch X and Y back. The maze is transformed the wrong way !
+        spawnpoint.x = room.getY();
+        spawnpoint.y = room.getX();
         spawnpoint.z = 1;
 
 
@@ -165,11 +166,11 @@ public class Leaf {
 
         // Create our left and right children based on the direction of the split
         if (splitH) {
-            left = new Leaf(x, y, split, width);
-            right = new Leaf(x, y + split, height - split, width);
+            this.left = new Leaf(x, y, split, width);
+            this.right = new Leaf(x, y + split, height - split, width);
         } else {
-            left = new Leaf(x, y, height, split);
-            right = new Leaf(x + split, y, height, width - split);
+            this.left = new Leaf(x, y, height, split);
+            this.right = new Leaf(x + split, y, height, width - split);
         }
 
         return true;    // Split successful!
@@ -184,7 +185,7 @@ public class Leaf {
         // We determine the direction of the split.
         // If the width is >25% larger than height, we split vertically
         // If the height is >25% larger than the width, we split horizontally
-        // Otherwise we split on a 50/50 chance.
+        // Otherwise we do a split based on a 50/50 chance.
 
         SecureRandom sr = new SecureRandom();
         boolean splitH = sr.nextFloat() > this.midThreshold;
@@ -363,9 +364,9 @@ public class Leaf {
      */
     public void exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
         // We carve the halls if there is one inside the current leaf.
-//        for (Rectangle r : this.halls) {
-//            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
-//        }
+        for (Rectangle r : this.halls) {
+            r.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
+        }
         // We carve the room if there is one inside the current leaf.
         if (this.room != null) {
             this.room.populateMazeWithRectangle(maze, mazeHeight, mazeWidth, mazeDepth);
