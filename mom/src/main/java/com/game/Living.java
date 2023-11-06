@@ -218,7 +218,7 @@ public abstract class Living extends Entity {
     /**
      * Get the max health.
      *
-     * @return The health of the entity.
+     * @return The max health of the entity.
      */
     public int getMaxHealth() {
         return maxHealth;
