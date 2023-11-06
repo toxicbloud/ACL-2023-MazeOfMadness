@@ -11,8 +11,8 @@ import java.security.SecureRandom;
  * Factory for mazes.
  */
 public final class MazeFactory {
-    /** BASE_LEAF_SIZE : Constant that allows us to define minimum Leaf size. */
-    public static final int BASE_LEAF_SIZE = 5;
+    /** MAX_LEAF_SIZE : Constant that allows us to define maximum Leaf size. */
+    public static final int MAX_LEAF_SIZE = 5;
 
     /** MIN_SIZE : Constant for the minimum size of randomly generated mazes. */
     public static final int MIN_SIZE = 25;
@@ -35,27 +35,27 @@ public final class MazeFactory {
         // We pick randomly dimensions between MIN_SIZE and MAX_SIZE values.
         int width = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
         int height = MazeFactory.randomInt(MIN_SIZE, MAX_SIZE);
-        return MazeFactory.createMaze(height, width, 2);
+        return MazeFactory.createMaze(width, height, 2);
     }
 
     /**
      * This function generates an initialized Maze Object that has been generated randomly.
      * WARNING - This method is made to generate mazes that are 1 block high.
      *
-     * @param height Height of the maze
      * @param width  Width of the maze
+     * @param height Height of the maze
      * @param depth  Depth of the maze
      * @return Maze object initialized with a random maze
      */
-    public static Maze createMaze(int height, int width, int depth) {
+    public static Maze createMaze(int width, int height, int depth) {
         // We prepare the variable for the spawnpoint computed during maze generation.
         Vector3 spawnpoint = new Vector3(0, 0, 0);
 
         // We call the room generation to get the maze array
-        Tile[] maze = Leaf.generateRooms(height, width, depth, spawnpoint);
+        Tile[] maze = Leaf.generateMazeArray(width, height, depth, spawnpoint);
 
         // Returning the maze.
-        Maze m = new Maze(height, width, depth, maze);
+        Maze m = new Maze(width, height, depth, maze);
         m.setSpawnPoint(spawnpoint);
         return m;
     }

@@ -30,10 +30,10 @@ public class Rectangle {
      *
      * @param x      x coord.
      * @param y      y coord.
-     * @param height height coord.
      * @param width  width coord.
+     * @param height height coord.
      */
-    public Rectangle(int x, int y, int height, int width) {
+    public Rectangle(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -120,19 +120,19 @@ public class Rectangle {
      * Fills the maze array with ground Tiles where the room is.
      *
      * @param maze       Maze to fill.
-     * @param mazeHeight Height of the maze to fill.
      * @param mazeWidth  Width of the maze to fill.
+     * @param mazeHeight Height of the maze to fill.
      * @param mazeDepth  Height of the maze to fill.
      */
-    public void populateMazeWithRectangle(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth) {
+    public void populateMazeWithRectangle(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
         // Computing starting tile to fill.
-        int startingTileIndex = this.x * mazeHeight + this.y;
+        int startingTileIndex = this.x + this.y * mazeWidth;
 
         // We fill each Tile that is inside the current rectangle with a GroundRock.
         for (int i = startingTileIndex;
-             i < startingTileIndex + (mazeHeight * this.width);
-             i += mazeHeight) {
-            for (int j = 0; j < this.height; j++) {
+             i < startingTileIndex + (mazeWidth * this.height);
+             i += mazeWidth) {
+            for (int j = 0; j < this.width; j++) {
                 // We fill the ground layer
                 maze[i + j] = new GroundRock();
                 // We unfill the above layers.
