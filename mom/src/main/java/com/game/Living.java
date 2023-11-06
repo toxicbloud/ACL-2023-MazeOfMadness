@@ -1,14 +1,9 @@
 package com.game;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.engine.Sprite;
-import com.engine.Window;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
-import com.renderer.GameScene;
 
 /**
  * Living class.
@@ -17,23 +12,11 @@ import com.renderer.GameScene;
 public abstract class Living extends Entity {
     /** Number of possible directions. */
     private static final int NB_DIRECTIONS = 4;
-    /**
-     * Vector3 uses in the healthBar's function for the position of the healthbar.
-     */
-    private static final Vector3 POSITION_HEALTHBAR_SCREEN = new Vector3(1.0f, 0.0f, 2.4f);
-    /** Vector3 uses in the healthBar's function for the size of the healthbar. */
-    private static final Vector3 SIZE_HEALTHBAR_SCREEN = new Vector3(0.9f, 0.04f, 0.1f);
-    /**
-     * Default living health for the constructor.
-     */
-    private static final int DEFAULT_LIVING_HEALTH = 100;
 
     /** Living health. */
     private int health;
-    /** Living max health. */
-    private int maxHealth;
     /** Living speed. */
-    private int speed;
+    private float speed;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
@@ -60,12 +43,10 @@ public abstract class Living extends Entity {
      */
     protected Living(Sprite sprite) {
         super(sprite);
-        this.health = DEFAULT_LIVING_HEALTH;
-        this.maxHealth = DEFAULT_LIVING_HEALTH;
     }
 
     /**
-     * Living constructor with default health parameters.
+     * Living constructor.
      *
      * @param sprite   The sprite to use.
      * @param position The position of the living entity.
@@ -73,32 +54,6 @@ public abstract class Living extends Entity {
      */
     protected Living(Sprite sprite, Vector3 position, Vector3 size) {
         super(sprite, position, size);
-        this.health = DEFAULT_LIVING_HEALTH;
-        this.maxHealth = DEFAULT_LIVING_HEALTH;
-    }
-
-    /**
-     * Living constructor.
-     *
-     * @param sprite    The sprite to use.
-     * @param position  The position of the living entity.
-     * @param size      The size of the living entity.
-     * @param health    The health of the living entity.
-     * @param maxHealth The max health of the living entity.
-     */
-    protected Living(Sprite sprite, Vector3 position, Vector3 size, int health, int maxHealth) {
-        super(sprite, position, size);
-        this.health = health;
-        this.maxHealth = maxHealth;
-    }
-
-    /**
-     * Render the living entity.
-     */
-    @Override
-    public void render() {
-        super.render();
-        this.renderHealthBar();
     }
 
     @Override
@@ -142,29 +97,6 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Create an health bar.
-     */
-    private void renderHealthBar() {
-        Window.getInstance().getCanvas().end();
-
-        Vector2 pos = GameScene.getWorldToScreenCoordinates(getPosition().add(POSITION_HEALTHBAR_SCREEN));
-        Vector2 size = GameScene.getWorldToScreenSize(SIZE_HEALTHBAR_SCREEN);
-
-        float healthBarStatus = ((float) this.health / (float) this.maxHealth) * (size.x - 2);
-
-        ShapeRenderer renderer = Window.getInstance().getHUD();
-        renderer.begin(ShapeType.Line);
-        renderer.setColor(Color.WHITE);
-        renderer.rect(pos.x - (size.x / 2), pos.y, size.x, size.y);
-        renderer.set(ShapeType.Filled);
-        renderer.setColor(Color.RED);
-        renderer.rect((pos.x - (size.x / 2)) + 1, pos.y + 1, healthBarStatus, size.y - 2);
-        renderer.end();
-
-        Window.getInstance().getCanvas().begin();
-    }
-
-    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
@@ -185,6 +117,9 @@ public abstract class Living extends Entity {
      */
     public boolean takeDamage(int damage) {
         this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
         return this.health <= 0;
     }
 
@@ -216,20 +151,11 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Get the max health.
-     *
-     * @return The max health of the entity.
-     */
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    /**
      * Get the speed.
      *
      * @return The speed of the entity.
      */
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
@@ -256,7 +182,7 @@ public abstract class Living extends Entity {
      *
      * @param speed The speed of the entity.
      */
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 

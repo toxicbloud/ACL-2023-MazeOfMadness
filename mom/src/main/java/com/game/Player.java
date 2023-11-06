@@ -12,6 +12,8 @@ import com.game.weapons.PlayerFist;
 public class Player extends Living {
     /** Player default speed. */
     public static final float PLAYER_SPEED = 4.0f;
+    /** Player default health. */
+    public static final int PLAYER_HEALTH = 10;
     /** Default player width. */
     private static final float PLAYER_WIDTH = 1.0f;
     /** Default player size. */
@@ -28,6 +30,8 @@ public class Player extends Living {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), new Vector3(), PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new PlayerFist());
+        this.setHealth(PLAYER_HEALTH);
+        this.setSpeed(PLAYER_SPEED);
     }
 
     /**
@@ -39,6 +43,8 @@ public class Player extends Living {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), position, PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new PlayerFist());
+        this.setHealth(PLAYER_HEALTH);
+        this.setSpeed(PLAYER_SPEED);
     }
 
     /**
