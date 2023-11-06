@@ -10,7 +10,7 @@ import com.game.Player;
  */
 public class GroundWater extends Ground {
     /** Ground water sprite shift from texture top. */
-    private static final int GROUND_WATER_SPRITE_SHIFT = SPRITE_SIZE * 0; // TODO : Make block texture
+    private static final int GROUND_WATER_SPRITE_SHIFT = SPRITE_SIZE * 6;
 
     /** Speed factor by which the player is slowed. */
     private static final float SPEED_FACTOR = 1.5f;
