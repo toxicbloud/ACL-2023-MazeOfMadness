@@ -221,6 +221,7 @@ public class Leaf {
                 MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
             );
             // We find the room position inside the leaf.
+            // We subtract 1 to ensure the room does not stick to the leaf's edges.
             Vector2 roomPos = new Vector2(
                 MazeFactory.randomInt(1, (int) (width - roomSize.x - 1)),
                 MazeFactory.randomInt(1, (int) (height - roomSize.y - 1))
@@ -288,44 +289,46 @@ public class Leaf {
         );
 
         // We compute height and width with the two Vector2 found.
-        int w = Math.abs((int) (point2.x - point1.x));
-        int h = Math.abs((int) (point2.y - point1.y));
+        int w = (int) (point2.x - point1.x);
+        int h = (int) (point2.y - point1.y);
+        int absw = Math.abs(w);
+        int absh = Math.abs(h);
         float randomFloat = sr.nextFloat();
 
         // We search an emplacement to add the halls.
         if (w < 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, 1, w);
-            this.addHallToLeaf(point2, point2, h, 1);
+            this.addHallToLeaf(point2, point1, 1, absw);
+            this.addHallToLeaf(point2, point2, absh, 1);
         } else if (w < 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, 1, w);
-            this.addHallToLeaf(point1, point2, h, 1);
+            this.addHallToLeaf(point2, point2, 1, absw);
+            this.addHallToLeaf(point1, point2, absh, 1);
         } else if (w < 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point2, point1, 1, w);
-            this.addHallToLeaf(point2, point1, h, 1);
+            this.addHallToLeaf(point2, point1, 1, absw);
+            this.addHallToLeaf(point2, point1, absh, 1);
         } else if (w < 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point2, point2, 1, w);
-            this.addHallToLeaf(point1, point1, h, 1);
+            this.addHallToLeaf(point2, point2, 1, absw);
+            this.addHallToLeaf(point1, point1, absh, 1);
         } else if (w > 0 && h < 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, 1, w);
-            this.addHallToLeaf(point1, point2, h, 1);
+            this.addHallToLeaf(point1, point2, 1, absw);
+            this.addHallToLeaf(point1, point2, absh, 1);
         } else if (w > 0 && h < 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, 1, w);
-            this.addHallToLeaf(point2, point2, h, 1);
+            this.addHallToLeaf(point1, point1, 1, absw);
+            this.addHallToLeaf(point2, point2, absh, 1);
         } else if (w > 0 && h > 0 && randomFloat < this.midThreshold) {
-            this.addHallToLeaf(point1, point2, 1, w);
-            this.addHallToLeaf(point1, point1, h, 1);
+            this.addHallToLeaf(point1, point2, 1, absw);
+            this.addHallToLeaf(point1, point1, absh, 1);
         } else if (w > 0 && h > 0 && randomFloat > this.midThreshold) {
-            this.addHallToLeaf(point1, point1, 1, w);
-            this.addHallToLeaf(point2, point1, h, 1);
+            this.addHallToLeaf(point1, point1, 1, absw);
+            this.addHallToLeaf(point2, point1, absh, 1);
         }
         if (w < 0 && h == 0) {
-            this.addHallToLeaf(point2, point2, 1, w);
+            this.addHallToLeaf(point2, point2, 1, absw);
         } else if (w > 0 && h == 0) {
-            this.addHallToLeaf(point1, point1, 1, w);
+            this.addHallToLeaf(point1, point1, 1, absw);
         } else if (w == 0 && h < 0) {
-            this.addHallToLeaf(point2, point2, h, 1);
+            this.addHallToLeaf(point2, point2, absh, 1);
         } else if (w == 0 && h > 0) {
-            this.addHallToLeaf(point1, point1, h, 1);
+            this.addHallToLeaf(point1, point1, absh, 1);
         }
     }
 
