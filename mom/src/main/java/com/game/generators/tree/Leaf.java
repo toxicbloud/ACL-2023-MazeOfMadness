@@ -3,6 +3,7 @@ package com.game.generators.tree;
 import com.badlogic.gdx.math.Vector2;
 import com.engine.utils.Vector3;
 import com.game.generators.MazeFactory;
+import com.game.tiles.End;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;
 
@@ -318,15 +319,23 @@ public class Leaf {
 
         // Setting up the spawnpoint.
         // Careful ! root.getRoom() returns a random room in the maze, not the first one that is encountered.
-        Rectangle room = root.getRoom();
+        Rectangle room = root.getRight().getRoom();
         spawnpoint.x = room.getX();
         spawnpoint.y = room.getY();
         spawnpoint.z = 1;
+
+        System.out.println("[INFO] - starting point location : " + spawnpoint.x + " , " + spawnpoint.y);
 
         // Finally, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
             l.exportToArray(maze, width, height, depth);
         }
+
+        // Setting up the endpoint.
+        room = root.getLeft().getRoom();
+        // We change the tile at the x and y coordinate.
+        maze[room.getX() + room.getY() * height] = new End();
+        System.out.println("[INFO] - endpoint location : " + room.getX() + " , " + room.getY());
 
         return maze;
     }
