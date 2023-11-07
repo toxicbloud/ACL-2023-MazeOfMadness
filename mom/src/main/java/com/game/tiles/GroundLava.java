@@ -10,13 +10,13 @@ import com.game.Player;
  */
 public class GroundLava extends Ground {
     /** Ground lava sprite shift from texture top. */
-    private static final int GROUND_LAVA_SPRITE_SHIFT = SPRITE_SIZE * 0; // TODO : Make block texture
+    private static final int GROUND_LAVA_SPRITE_SHIFT = SPRITE_SIZE * 5;
     /** Speed factor by which the player is slowed. */
     private static final float SPEED_FACTOR = 3.0f;
     /** Time between each damage. */
     private static final int DAMAGE_DELAY = 1000;
     /** Damage amount. */
-    private static final int DAMAGE_AMOUNT = 1;
+    private static final int DAMAGE_AMOUNT = 3;
 
     /**
      * Player currently on the tile.
