@@ -204,6 +204,24 @@ package Game {
         }
     }
 
+    package controller {
+        class PlayerController {
+            - player: Player
+            ---
+            + PlayerController(player: Player)
+            + update(): void
+            + visit(EventMouseMoved ev): void
+            + visit(EventMousePressed ev): void
+            + visit(EventMouseReleased ev): void
+            + visit(EventMouseScrolled ev): void
+            + visit(EventKeyPressed ev): void
+            + visit(EventKeyReleased ev): void
+            + visit(EventGamepadMoved ev): void
+            + visit(EventGamepadPressed ev): void
+            + visit(EventGamepadReleased ev): void
+        }
+    }
+
     package Tiles {
         abstract Tile {
             - solid: boolean
