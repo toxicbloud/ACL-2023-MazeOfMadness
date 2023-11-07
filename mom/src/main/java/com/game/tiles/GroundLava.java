@@ -16,7 +16,7 @@ public class GroundLava extends Ground {
     /** Time between each damage. */
     private static final int DAMAGE_DELAY = 1000;
     /** Damage amount. */
-    private static final int DAMAGE_AMOUNT = 1;
+    private static final int DAMAGE_AMOUNT = 3;
 
     /**
      * Player currently on the tile.
