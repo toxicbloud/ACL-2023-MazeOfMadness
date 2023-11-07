@@ -266,8 +266,16 @@ package Game {
             {static} - DAMAGE_AMOUNT : int
             {static} - DAMAGE_DELAY : int 
             {static} - SPEED_FACTOR : int
+            - lastDamageTime : long
             ---
             + GroundLava()
+        }
+        class GroundSpikes {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            - lastDamageTime : long
+            ---
+            + GroundSpikes()
         }
 
         class WallRock {
