@@ -33,7 +33,7 @@ public abstract class Living extends Entity {
     /** Living max health. */
     private int maxHealth;
     /** Living speed. */
-    private int speed;
+    private float speed;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
@@ -185,6 +185,9 @@ public abstract class Living extends Entity {
      */
     public boolean takeDamage(int damage) {
         this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
         return this.health <= 0;
     }
 
@@ -229,7 +232,7 @@ public abstract class Living extends Entity {
      *
      * @return The speed of the entity.
      */
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
@@ -256,7 +259,7 @@ public abstract class Living extends Entity {
      *
      * @param speed The speed of the entity.
      */
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 

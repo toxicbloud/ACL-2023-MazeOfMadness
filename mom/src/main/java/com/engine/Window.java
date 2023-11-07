@@ -138,8 +138,8 @@ public class Window extends Game {
     public void setScene(Scene scene) {
         this.scene = scene;
         if (this.created) {
-            this.scene.create();
             Gdx.input.setInputProcessor(this.events);
+            this.scene.create();
         }
     }
 
@@ -190,6 +190,7 @@ public class Window extends Game {
 
     /**
      * Get the window HUD.
+     *
      * @return The window HUD ShapeRenderer.
      */
     public ShapeRenderer getHUD() {
