@@ -1,5 +1,6 @@
 package com.game;
 
+import com.game.tiles.End;
 import com.game.tiles.GroundGrass;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
@@ -82,6 +83,8 @@ public class Level {
                 return new WallRock();
             case "VoidTile":
                 return new VoidTile();
+            case "End":
+                return new End();
             default:
                 throw new IllegalArgumentException("Unknown tile type: " + type);
         }

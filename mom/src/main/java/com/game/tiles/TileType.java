@@ -17,6 +17,10 @@ public enum TileType {
     GROUND_LAVA,
     /** Grass ground type. */
     GROUND_GRASS,
+    /** End ground type. */
+    GROUND_END,
+    /** Next ground type. */
+    GROUND_NEXT,
     /** Stair rock type. */
     STAIR_ROCK,
     /** Stair grass type. */
