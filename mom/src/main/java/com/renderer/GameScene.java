@@ -11,6 +11,7 @@ import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
+import com.ui.EndScene;
 
 /**
  * GameScene class.
@@ -122,6 +123,12 @@ public class GameScene extends Scene {
 
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
+            if (p.isDead()) {
+                Game.getInstance().setPlayer(null);
+                Game.getInstance().setMaze(null);
+                Window.getInstance().setScene(new EndScene(false));
+                return;
+            }
             this.camera.setTargetPosition(p.getPosition());
             handleTileCollision(maze, p);
         }
