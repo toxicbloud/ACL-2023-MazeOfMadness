@@ -15,6 +15,8 @@ public enum TileType {
     GROUND_WATER,
     /** Lava ground type. */
     GROUND_LAVA,
+    /** Ground Spikes. */
+    GROUND_SPIKES,
     /** Grass ground type. */
     GROUND_GRASS,
     /** End ground type. */
