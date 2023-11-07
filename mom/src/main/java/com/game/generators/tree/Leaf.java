@@ -245,13 +245,13 @@ public class Leaf {
             this.addCorridorToLeaf(point2, point1, 1, absh);
         }
         if (w < 0 && h == 0) {
-            this.addCorridorToLeaf(point2, point2, absw, 1);
+            this.addCorridorToLeaf(point2, point2, absw + 1, 1);
         } else if (w > 0 && h == 0) {
-            this.addCorridorToLeaf(point1, point1, absw, 1);
+            this.addCorridorToLeaf(point1, point1, absw + 1, 1);
         } else if (w == 0 && h < 0) {
-            this.addCorridorToLeaf(point2, point2, 1, absh);
+            this.addCorridorToLeaf(point2, point2, 1, absh + 1);
         } else if (w == 0 && h > 0) {
-            this.addCorridorToLeaf(point1, point1, 1, absh);
+            this.addCorridorToLeaf(point1, point1, 1, absh + 1);
         }
     }
 
