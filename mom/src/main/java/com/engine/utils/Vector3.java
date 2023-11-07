@@ -71,6 +71,14 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     }
 
     /**
+     * Returns the normalized vector.
+     * @return The normalized vector.
+     */
+    public Vector3 nor() {
+        return new Vector3(super.nor());
+    }
+
+    /**
      * Get the x coordinate.
      * @return The x coordinate.
      */
