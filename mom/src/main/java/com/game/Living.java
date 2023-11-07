@@ -21,12 +21,18 @@ public abstract class Living extends Entity {
      * Vector3 uses in the healthBar's function for the position of the healthbar.
      */
     private static final Vector3 POSITION_HEALTHBAR_SCREEN = new Vector3(1.0f, 0.0f, 2.4f);
-    /** Vector3 uses in the healthBar's function for the size of the healthbar. */
+    /**
+     * Vector3 uses in the healthBar's function for the size of the healthbar.
+     */
     private static final Vector3 SIZE_HEALTHBAR_SCREEN = new Vector3(0.9f, 0.04f, 0.1f);
     /**
      * Default living health for the constructor.
      */
     private static final int DEFAULT_LIVING_HEALTH = 100;
+    /**
+     * Tolerance value for the player's vision field.
+     */
+    private static final float TOLERANCE = 0.5f;
 
     /** Living health. */
     private int health;
@@ -162,6 +168,46 @@ public abstract class Living extends Entity {
         renderer.end();
 
         Window.getInstance().getCanvas().begin();
+    }
+
+    private boolean isInVisionField(Vector3 playerPosition, Vector3 enemyPosition) {
+        switch (direction) {
+            case UP:
+                return Math.abs(playerPosition.x - enemyPosition.x) <= TOLERANCE && playerPosition.y < enemyPosition.y
+                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+            case DOWN:
+                return Math.abs(playerPosition.x - enemyPosition.x) <= TOLERANCE && playerPosition.y > enemyPosition.y
+                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+            case RIGHT:
+                return playerPosition.x < enemyPosition.x && Math.abs(playerPosition.y - enemyPosition.y) <= TOLERANCE
+                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+            case LEFT:
+                return playerPosition.x > enemyPosition.x && Math.abs(playerPosition.y - enemyPosition.y) <= TOLERANCE
+                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Detect whether an enemy is in the player's field of vision.
+     *
+     * @return The living entity in the range attack.
+     */
+    public Living findEnemyInVisionField() {
+        Living[] enemies = Game.getInstance().getMaze().getMonsters();
+
+        for (Living enemy : enemies) {
+            if (enemy != this && enemy.getHealth() > 0) {
+                Vector3 enemyPosition = enemy.getPosition();
+                Vector3 playerPosition = getPosition();
+
+                if (isInVisionField(playerPosition, enemyPosition)) {
+                    return enemy;
+                }
+            }
+        }
+        return null;
     }
 
     /**
