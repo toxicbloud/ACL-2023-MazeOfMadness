@@ -214,8 +214,8 @@ public class Leaf {
         // We compute height and width with the two Vector2 found.
         int w = (int) (point2.x - point1.x);
         int h = (int) (point2.y - point1.y);
-        int absw = Math.abs(w);
-        int absh = Math.abs(h);
+        int absw = Math.abs(w) + 1;
+        int absh = Math.abs(h) + 1;
         float randomFloat = sr.nextFloat();
 
         // We search an emplacement to add the corridors.
@@ -245,13 +245,13 @@ public class Leaf {
             this.addCorridorToLeaf(point2, point1, 1, absh);
         }
         if (w < 0 && h == 0) {
-            this.addCorridorToLeaf(point2, point2, absw + 1, 1);
+            this.addCorridorToLeaf(point2, point2, absw, 1);
         } else if (w > 0 && h == 0) {
-            this.addCorridorToLeaf(point1, point1, absw + 1, 1);
+            this.addCorridorToLeaf(point1, point1, absw, 1);
         } else if (w == 0 && h < 0) {
-            this.addCorridorToLeaf(point2, point2, 1, absh + 1);
+            this.addCorridorToLeaf(point2, point2, 1, absh);
         } else if (w == 0 && h > 0) {
-            this.addCorridorToLeaf(point1, point1, 1, absh + 1);
+            this.addCorridorToLeaf(point1, point1, 1, absh);
         }
     }
 
