@@ -11,8 +11,9 @@ public abstract class WeaponFist extends Weapon {
     /**
      * WeaponFist constructor.
      * @param damage The damage amount.
+     * @param cooldown The cooldown between two attacks.
      */
-    protected WeaponFist(int damage) {
-        super(damage, FIST_RANGE);
+    protected WeaponFist(int damage, int cooldown) {
+        super(damage, cooldown, FIST_RANGE);
     }
 }
