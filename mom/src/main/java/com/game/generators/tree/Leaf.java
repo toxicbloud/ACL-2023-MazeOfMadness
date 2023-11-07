@@ -317,6 +317,17 @@ public class Leaf {
         // We can populate the tree, starting from the root, with rooms and generate halls between them.
         root.createRooms();
 
+
+
+        // Finally, we carve the rooms inside the given maze.
+        for (Leaf l : leafArray) {
+            l.exportToArray(maze, width, height, depth);
+        }
+
+        // To ensure that we won't get the same room for both starting and ending points, we get the right and left
+        // Leaves from the root. Since it's a tree with only 2 child nodes per leaf, we won't get the same room if the
+        // base leaves are already separated.
+
         // Setting up the spawnpoint.
         // Careful ! root.getRoom() returns a random room in the maze, not the first one that is encountered.
         Rectangle room = root.getRight().getRoom();
@@ -324,18 +335,9 @@ public class Leaf {
         spawnpoint.y = room.getY();
         spawnpoint.z = 1;
 
-        System.out.println("[INFO] - starting point location : " + spawnpoint.x + " , " + spawnpoint.y);
-
-        // Finally, we carve the rooms inside the given maze.
-        for (Leaf l : leafArray) {
-            l.exportToArray(maze, width, height, depth);
-        }
-
         // Setting up the endpoint.
         room = root.getLeft().getRoom();
-        // We change the tile at the x and y coordinate.
-        maze[room.getX() + room.getY() * height] = new End();
-        System.out.println("[INFO] - endpoint location : " + room.getX() + " , " + room.getY());
+        maze[room.getX() + room.getY() * height] = new End();        // We change the tile at the x and y coordinate.
 
         return maze;
     }
