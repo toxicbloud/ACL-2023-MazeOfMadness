@@ -159,6 +159,19 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Set the tiles of the maze.
+     *
+     * @param tiles The tiles of the maze to set.
+     */
+    public void setTiles(Tile[] tiles) {
+        if (tiles.length != this.width * this.height * this.depth) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
+        }
+        this.tiles = tiles;
+        this.setTilesDefaultPositions();
+    }
+
+    /**
      * Get the tile at the given coordinates.
      * @param x The x coordinate.
      * @param y The y coordinate.
