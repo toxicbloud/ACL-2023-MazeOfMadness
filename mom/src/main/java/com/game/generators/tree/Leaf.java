@@ -215,8 +215,8 @@ public class Leaf {
         // We compute height and width with the two Vector2 found.
         int w = (int) (point2.x - point1.x);
         int h = (int) (point2.y - point1.y);
-        int absw = Math.abs(w);
-        int absh = Math.abs(h);
+        int absw = Math.abs(w) + 1;
+        int absh = Math.abs(h) + 1;
         float randomFloat = sr.nextFloat();
 
         // We search an emplacement to add the corridors.
