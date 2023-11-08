@@ -2,6 +2,7 @@ package com.game;
 
 import com.engine.Evolvable;
 import com.engine.utils.Vector3;
+import com.game.controllers.Controller;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
@@ -123,6 +124,12 @@ public class Maze implements Evolvable {
 
         for (Entity e: entities) {
             e.render();
+        }
+        for (Entity e: entities) {
+            Controller c = e.getController();
+            if (c != null) {
+                c.render();
+            }
         }
     }
 

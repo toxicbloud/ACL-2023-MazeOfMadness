@@ -238,6 +238,14 @@ public abstract class Entity implements Evolvable {
     }
 
     /**
+     * Get the controller of the entity.
+     * @return The controller of the entity.
+     */
+    public Controller getController() {
+        return controller;
+    }
+
+    /**
      * Set the position of the entity.
      * @param position The new position.
      */

@@ -1,12 +1,13 @@
 package com.game.controllers;
 
+import com.engine.Evolvable;
 import com.game.Entity;
 
 /**
  * Controller class.
  * This is the base class for all controllers.
  */
-public abstract class Controller {
+public abstract class Controller implements Evolvable {
     /** Controller's target. */
     private Entity target;
 
@@ -24,6 +25,9 @@ public abstract class Controller {
      * This method is called every frame, before any render() call.
      */
     public abstract void update();
+
+    @Override
+    public void render() {}
 
     /**
      * Get the target of the controller.
