@@ -6,6 +6,7 @@
 - Des zombies apparaissent dans le labyrinthe et poursuivent le joueur lorsqu'il est à proximité. @FurWaz
 - Le labyrinthe possède désormais un point de départ et d'arrivée lorsqu'il est généré aléatoirement. @Maximelego,  @toxicbloud
 - Le jeu dispose désormais d'un écran de victoire et de défaite.  @toxicbloud
+- Le jeu propose des animation pour le joueur (déplacement et statique), pour les zombies (déplacement et statiques), ainsi que pour certaines tiles (Lave, eau, coffre de fin, ...)
 
 ## Qu'est-ce qui n'a pas été fait durant ce sprint ?
 - Le joueur ne peut pas encore attaquer les mobs apparaissant dans le labyrinthe. @aildontknow
