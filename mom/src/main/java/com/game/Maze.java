@@ -161,6 +161,8 @@ public class Maze implements Evolvable {
      * @return The tiles of the maze.
      */
     public Tile[] getTiles() {
+        // TODO protect the tiles array from being modified, encapsulate it
+        // not difficult here but wee need to change generators
         return tiles;
     }
 
