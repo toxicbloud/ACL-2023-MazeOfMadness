@@ -107,7 +107,9 @@ package Game {
             - attack: int
             - cooldown: int
             - range: float
+            - lastAttackTime: long
             # Weapon(int attack, int attack, float range)
+            + attack(living: Living): boolean
         }
         Item <|-- Weapon
         Weapon <|-- WeaponFist
@@ -116,7 +118,7 @@ package Game {
         Weapon <|-- WeaponBow
 
         abstract WeaponFist {
-
+            # WeaponFist(damage: int, cooldown: int)
         }
 
         WeaponFist <|-- PlayerFist
