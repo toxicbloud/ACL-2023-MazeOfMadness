@@ -6,7 +6,6 @@ package Generators {
         + randomInt(int min, int max): int
         + static createMaze(): Maze
         + static createMaze(int: width, int: height, int:width): Maze
-        - static generateRooms(): Tile[]
     }
 
     class MonsterFactory {
@@ -35,6 +34,11 @@ package Generators {
         + spawnItems(maze: Maze): Maze
     }
 
+    class TrapSpawner {
+        + spawnTraps(maze: Maze)
+        - canSpawnTrap(maze: Maze, int x, int y) : boolean
+    }
+
     package tree {
         class Leaf {
             int x
@@ -44,17 +48,19 @@ package Generators {
             Leaf left
             Leaf right
             + Leaf(int: x, int: y, int: width, int: height)
-            + split(): boolean
+            - splitLeaves() : ArrayList<Leaves>
+            - split(): boolean
             - canSplitH(): boolean
-            + createRooms()
-            - createHall(Rectangle l, Rectangle r)
-            + exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth)
+            - createRooms()
+            - createCorridor(Rectangle l, Rectangle r)
+            - addCorridorToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight)
+            - exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth)
+            + generateMazeArray(int width, int height, int depth, Vector3 spawnpoint): Tile[]
             + getRoom(): Rectangle
             + getLeft(): Leaf
             + getRight(): Leaf
             + getHeight(): int
             + getWidth(): int
-            - addHallToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight)
         }
         class Rectangle {
             int x
