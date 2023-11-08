@@ -3,7 +3,7 @@ package com.game.generators.tree;
 import com.badlogic.gdx.math.Vector2;
 import com.engine.utils.Vector3;
 import com.game.generators.MazeFactory;
-import com.game.tiles.End;
+import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;
 
@@ -12,9 +12,11 @@ import java.util.ArrayList;
 
 /**
  * Leaf Class. It is used to define a BSP tree to allow for a maze generation.
- * @see <a href="https://gamedevelopment.tutsplus.com/how-to-use-bsp-trees-to-generate-game-maps--gamedev-12268t">
- *     Méthode de génération de labyrinthe par BSP.
- * </a>
+ *
+ * @see <a href=
+ *      "https://gamedevelopment.tutsplus.com/how-to-use-bsp-trees-to-generate-game-maps--gamedev-12268t">
+ *      Méthode de génération de labyrinthe par BSP.
+ *      </a>
  */
 public class Leaf {
     /** REAL_MIN_ROOM_SIZE : real min room size. */
@@ -55,7 +57,8 @@ public class Leaf {
     }
 
     /**
-     * This method is the core of the BSP maze generation. It splits leaves until we get leaves
+     * This method is the core of the BSP maze generation. It splits leaves until we
+     * get leaves
      * that are on the desired size. It applies to the root leaf.
      *
      * @return An array of split leaves.
@@ -76,17 +79,20 @@ public class Leaf {
                 Leaf leaf = leafArray.get(i);
                 // Split the Leaf. Here are the conditions to verify before continuing :
                 // -> We can't split the leaf if there are already child leaves.
-                // -> We can't split the leaf if the leaf is smaller or equal to the BASE_ROOM_SIZE constant.
-                // -> We try to split the leaf and observe the result of the splitting (if it did work or not).
+                // -> We can't split the leaf if the leaf is smaller or equal to the
+                // BASE_ROOM_SIZE constant.
+                // -> We try to split the leaf and observe the result of the splitting (if it
+                // did work or not).
                 if (leaf.getLeft() == null && leaf.getRight() == null
                         && leaf.getWidth() > MazeFactory.MAX_LEAF_SIZE
                         && leaf.getHeight() > MazeFactory.MAX_LEAF_SIZE
                         && leaf.split()) {
-                    // If we did split, we push the child leafs to the ArrayList, so we can loop into them next
+                    // If we did split, we push the child leafs to the ArrayList, so we can loop
+                    // into them next
                     // iteration.
                     leafArray.add(leaf.getLeft());
                     leafArray.add(leaf.getRight());
-                    didSplit = true;        // We ensure that we continue to iterate on the leaves.
+                    didSplit = true; // We ensure that we continue to iterate on the leaves.
                 }
             }
         }
@@ -101,7 +107,7 @@ public class Leaf {
     private boolean split() {
         // We start by splitting the leaf into two children
         if (this.left != null || this.right != null) {
-            return false;  // We're already split ! Abort !
+            return false; // We're already split ! Abort !
         }
         // We check if we can split the leaf horizontally.
         boolean splitH = canSplitH();
@@ -109,7 +115,7 @@ public class Leaf {
         // Determine the maximum height or width for the future room.
         int max = (splitH ? height : width) - MazeFactory.MAX_LEAF_SIZE;
         if (max <= MazeFactory.MAX_LEAF_SIZE) {
-            return false;       // The area is too small to split anymore. We abort the splitting.
+            return false; // The area is too small to split anymore. We abort the splitting.
         }
 
         // Determine the coordinate where we're going to split.
@@ -124,7 +130,7 @@ public class Leaf {
             this.right = new Leaf(x + split, y, width - split, height);
         }
 
-        return true;    // Split successful!
+        return true; // Split successful!
     }
 
     /**
@@ -143,9 +149,9 @@ public class Leaf {
         final float superiorHalfThreshold = 1.25F;
 
         if (width > height && (double) width / height >= superiorHalfThreshold) {
-            splitH = false;     // We can't split horizontally.
+            splitH = false; // We can't split horizontally.
         } else if (height > width && (double) height / width >= superiorHalfThreshold) {
-            splitH = true;      // We can split horizontally.
+            splitH = true; // We can split horizontally.
         }
         return splitH;
     }
@@ -157,7 +163,8 @@ public class Leaf {
      */
     private void createRooms() {
         if (this.left != null || this.right != null) {
-            // This leaf has been split, so go into the children leafs and try to create rooms inside them.
+            // This leaf has been split, so go into the children leafs and try to create
+            // rooms inside them.
             if (this.left != null) {
                 this.left.createRooms();
             }
@@ -165,26 +172,27 @@ public class Leaf {
                 this.right.createRooms();
             }
 
-            // If there are both left and right children in this Leaf, we create hallways between them
+            // If there are both left and right children in this Leaf, we create hallways
+            // between them
             if (this.left != null && this.right != null) {
                 this.createCorridor(this.left.getRoom(), this.right.getRoom());
             }
 
         } else {
             // This Leaf is the ready to make a room.
-            // The room can be between REAL_MIN_ROOM_SIZE x REAL_MIN_ROOM_SIZE tiles to the size of the leaf - 2.
-            // We subtract 2 from the maximum height or width to ensure that it cannot be forced to stick on the Leaf's
+            // The room can be between REAL_MIN_ROOM_SIZE x REAL_MIN_ROOM_SIZE tiles to the
+            // size of the leaf - 2.
+            // We subtract 2 from the maximum height or width to ensure that it cannot be
+            // forced to stick on the Leaf's
             // edge.
             Vector2 roomSize = new Vector2(
-                MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
-                MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2)
-            );
+                    MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, width - 2),
+                    MazeFactory.randomInt(Leaf.REAL_MIN_ROOM_SIZE, height - 2));
             // We find the room position inside the leaf.
             // We subtract 1 to ensure the room does not stick to the leaf's edges.
             Vector2 roomPos = new Vector2(
-                MazeFactory.randomInt(1, (int) (width - roomSize.x - 1)),
-                MazeFactory.randomInt(1, (int) (height - roomSize.y - 1))
-            );
+                    MazeFactory.randomInt(1, (int) (width - roomSize.x - 1)),
+                    MazeFactory.randomInt(1, (int) (height - roomSize.y - 1)));
 
             // Places the room within the Leaf.
             this.room = new Rectangle((int) (x + roomPos.x), (int) (y + roomPos.y), (int) roomSize.x, (int) roomSize.y);
@@ -203,14 +211,12 @@ public class Leaf {
 
         // We find a starting point for the corridor.
         Vector2 point1 = new Vector2(
-            MazeFactory.randomInt(l.getLeft(), l.getRight() - 2),
-            MazeFactory.randomInt(l.getTop(), l.getBottom() - 2)
-        );
+                MazeFactory.randomInt(l.getLeft(), l.getRight() - 2),
+                MazeFactory.randomInt(l.getTop(), l.getBottom() - 2));
         // We find an ending point for the corridor.
         Vector2 point2 = new Vector2(
-            MazeFactory.randomInt(r.getLeft(), r.getRight() - 2),
-            MazeFactory.randomInt(r.getTop(), r.getBottom() - 2)
-        );
+                MazeFactory.randomInt(r.getLeft(), r.getRight() - 2),
+                MazeFactory.randomInt(r.getTop(), r.getBottom() - 2));
 
         // We compute height and width with the two Vector2 found.
         int w = (int) (point2.x - point1.x);
@@ -259,21 +265,23 @@ public class Leaf {
     /**
      * Method to add a corridor inside the leaf.
      *
-     * @param pointForX       X starting point for the rectangle to add to the corridor's array.
-     * @param pointForY       Y starting point for the rectangle to add to the corridor's array.
+     * @param pointForX       X starting point for the rectangle to add to the
+     *                        corridor's array.
+     * @param pointForY       Y starting point for the rectangle to add to the
+     *                        corridor's array.
      * @param rectangleWidth  width of the corridor to add.
      * @param rectangleHeight height of the corridor to add.
      */
     private void addCorridorToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight) {
         this.corridors.add(new Rectangle(
-                        (int) pointForX.x,
-                        (int) pointForY.y,
-                rectangleWidth, rectangleHeight
-        ));
+                (int) pointForX.x,
+                (int) pointForY.y,
+                rectangleWidth, rectangleHeight));
     }
 
     /**
-     * This method exports the leaf into a Tile array. Usable for the Maze constructor and game.
+     * This method exports the leaf into a Tile array. Usable for the Maze
+     * constructor and game.
      *
      * @param maze       Maze to populate.
      * @param mazeWidth  Width of the maze to fill.
@@ -292,7 +300,8 @@ public class Leaf {
     }
 
     /**
-     * Base method. It will go through the process of creating the BSP-tree, converting the tree into an array and
+     * Base method. It will go through the process of creating the BSP-tree,
+     * converting the tree into an array and
      * finding the spawnpoint for the player.
      * It uses a tree-like structure to generate the Maze.
      *
@@ -314,22 +323,24 @@ public class Leaf {
         Leaf root = new Leaf(0, 0, width, height);
         // We split the base Leaf until we have an array of leaves.
         ArrayList<Leaf> leafArray = root.splitLeaves();
-        // We can populate the tree, starting from the root, with rooms and generate halls between them.
+        // We can populate the tree, starting from the root, with rooms and generate
+        // halls between them.
         root.createRooms();
-
-
 
         // Finally, we carve the rooms inside the given maze.
         for (Leaf l : leafArray) {
             l.exportToArray(maze, width, height, depth);
         }
 
-        // To ensure that we won't get the same room for both starting and ending points, we get the right and left
-        // Leaves from the root. Since it's a tree with only 2 child nodes per leaf, we won't get the same room if the
+        // To ensure that we won't get the same room for both starting and ending
+        // points, we get the right and left
+        // Leaves from the root. Since it's a tree with only 2 child nodes per leaf, we
+        // won't get the same room if the
         // base leaves are already separated.
 
         // Setting up the spawnpoint.
-        // Careful ! root.getRoom() returns a random room in the maze, not the first one that is encountered.
+        // Careful ! root.getRoom() returns a random room in the maze, not the first one
+        // that is encountered.
         Rectangle room = root.getRight().getRoom();
         spawnpoint.x = room.getX();
         spawnpoint.y = room.getY();
@@ -337,7 +348,7 @@ public class Leaf {
 
         // Setting up the endpoint.
         room = root.getLeft().getRoom();
-        maze[room.getX() + room.getY() * width] = new End();        // We change the tile at the x and y coordinate.
+        maze[room.getX() + room.getY() * width] = new Next(); // We change the tile at the x and y coordinate.
 
         return maze;
     }
