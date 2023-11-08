@@ -47,8 +47,6 @@ public final class MonsterSpawner {
                     Zombie zombie = new Zombie(new Vector3(x, y, 1));
                     new ZombieController(zombie);
                     monsters.add(zombie);
-                    maze.setMonsters(monsters.toArray(new Monster[monsters.size()]));
-                    return;
                 }
             }
         }
