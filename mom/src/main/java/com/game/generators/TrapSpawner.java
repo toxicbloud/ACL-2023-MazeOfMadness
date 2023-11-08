@@ -30,7 +30,7 @@ public final class TrapSpawner {
     public static void spawnTraps(Maze maze) {
         SecureRandom sr = new SecureRandom();
         Tile[] mazeTiles = maze.getTiles();
-        boolean spawnedATrap = false;
+        boolean spawnedATrap = false;           // This value allows us to not spawn a trap where there is already one.
 
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
