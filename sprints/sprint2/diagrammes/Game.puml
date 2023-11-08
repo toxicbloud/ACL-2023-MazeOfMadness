@@ -105,7 +105,9 @@ package Game {
     package Weapons {
         abstract Weapon {
             - attack: int
-            # Weapon(int attack)
+            - cooldown: int
+            - range: float
+            # Weapon(int attack, int attack, float range)
         }
         Item <|-- Weapon
         Weapon <|-- WeaponFist
@@ -160,17 +162,28 @@ package Game {
 
     abstract Living {
         - health: int
-        - speed : int
+        - maxHealth: int 
+        - speed : float
+        - direction: Direction
+        - weapon: Weapon
         ---
         # Living(sprite: Sprite)
-        + getHealth(): int
-        + setHealth(health: int)
-        + getSpeed(): int
-        + setSpeed(speed: int)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3, health: int, maxHealth: int)
+        - updateDirection(delta: Vector2): void
+        - updateSprite(delta: Vector2): void
+        - renderHealthBar(): void
+        - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
+        - setDirection(dir: Direction): void
+        + render(): void
+        + moveBy(delta: Vector2)
         + attack(living: Living): boolean
         + takeDamage(damage: int) : boolean
-        + regen(health: int) : boolean
+        + findEnemyInVisionField(): Living
+        + regen(health: int) : void
         + isDead(): boolean
+        + getWeapon(): Weapon
+        + setWeapon(weapon: Weapon)
     }
     Living "1" -- "1" Weapon : weapon
     Living <|-- Player
