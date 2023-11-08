@@ -10,10 +10,14 @@ import com.engine.utils.Vector3;
  */
 public class Zombie extends Monster {
 
-    /**
-     * Zombie speed.
-     */
+    /** Zombie speed. */
     public static final float ZOMBIE_SPEED = 1.5f;
+
+    /** Zombie view distance to chase player. */
+    public static final float VIEW_DISTANCE = 3f;
+
+    /** Zombie distance at which it will leave the player alone. */
+    public static final float LEAVE_DISTANCE = 6f;
 
     /** Default zombie health. */
     private static final int ZOMBIE_HEALTH = 100;

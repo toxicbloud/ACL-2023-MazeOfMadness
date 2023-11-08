@@ -2,6 +2,7 @@ package com.game;
 
 import com.engine.Evolvable;
 import com.engine.utils.Vector3;
+import com.game.controllers.Controller;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
@@ -45,6 +46,7 @@ public class Maze implements Evolvable {
     /**
      * Maze constructor.
      * This is the constructor for the maze class.
+     *
      * @param w The width of the maze (x axis).
      * @param h The height of the maze (y axis).
      * @param d The depth of the maze (z axis).
@@ -59,6 +61,7 @@ public class Maze implements Evolvable {
     /**
      * Maze constructor.
      * This is the constructor for the maze class.
+     *
      * @param w The width of the maze (x axis).
      * @param h The height of the maze (y axis).
      * @param d The depth of the maze (z axis).
@@ -89,13 +92,13 @@ public class Maze implements Evolvable {
 
     @Override
     public void update() {
-        for (Monster m: this.monsters) {
+        for (Monster m : this.monsters) {
             m.update();
         }
-        for (Tile t: this.tiles) {
+        for (Tile t : this.tiles) {
             t.update();
         }
-        for (Item i: this.items) {
+        for (Item i : this.items) {
             i.update();
         }
         if (Game.getInstance().getPlayer() != null) {
@@ -117,17 +120,24 @@ public class Maze implements Evolvable {
             @Override
             public int compare(Entity o1, Entity o2) {
                 return GameScene.getObjectDrawingOrder(o1.getPosition())
-                    - GameScene.getObjectDrawingOrder(o2.getPosition());
+                        - GameScene.getObjectDrawingOrder(o2.getPosition());
             }
         });
 
-        for (Entity e: entities) {
+        for (Entity e : entities) {
             e.render();
+        }
+        for (Entity e: entities) {
+            Controller c = e.getController();
+            if (c != null) {
+                c.render();
+            }
         }
     }
 
     /**
      * Get the width of the maze.
+     *
      * @return The width of the maze.
      */
     public int getWidth() {
@@ -136,6 +146,7 @@ public class Maze implements Evolvable {
 
     /**
      * Get the height of the maze.
+     *
      * @return The height of the maze.
      */
     public int getHeight() {
@@ -144,6 +155,7 @@ public class Maze implements Evolvable {
 
     /**
      * Get the depth of the maze.
+     *
      * @return The depth of the maze.
      */
     public int getDepth() {
@@ -152,14 +164,18 @@ public class Maze implements Evolvable {
 
     /**
      * Get the tiles of the maze.
+     *
      * @return The tiles of the maze.
      */
     public Tile[] getTiles() {
+        // TODO protect the tiles array from being modified, encapsulate it
+        // not difficult here but wee need to change generators
         return tiles;
     }
 
     /**
      * Get the tile at the given coordinates.
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param z The z coordinate.
@@ -174,19 +190,20 @@ public class Maze implements Evolvable {
 
     /**
      * Get the tile at the given position.
+     *
      * @param pos The position.
      * @return The tile at the given coordinates.
      */
     public Tile getTile(Vector3 pos) {
         return getTile(
-            (int) Math.floor(pos.x),
-            (int) Math.floor(pos.y),
-            (int) Math.round(pos.z)
-        );
+                (int) Math.floor(pos.x),
+                (int) Math.floor(pos.y),
+                (int) Math.round(pos.z));
     }
 
     /**
      * Get the monsters of the maze.
+     *
      * @return The monsters of the maze.
      */
     public Monster[] getMonsters() {
@@ -195,6 +212,7 @@ public class Maze implements Evolvable {
 
     /**
      * Set the monsters of the maze.
+     *
      * @param monsters The monsters of the maze.
      */
     public void setMonsters(Monster[] monsters) {
@@ -203,6 +221,7 @@ public class Maze implements Evolvable {
 
     /**
      * Get the items of the maze.
+     *
      * @return The items of the maze.
      */
     public Item[] getItems() {
@@ -211,6 +230,7 @@ public class Maze implements Evolvable {
 
     /**
      * Set the items of the maze.
+     *
      * @param items The items of the maze.
      */
     public void setItems(Item[] items) {
@@ -219,6 +239,7 @@ public class Maze implements Evolvable {
 
     /**
      * ToString method. Displays the maze into grid-like String.
+     *
      * @return Maze turned into a String.
      */
     public String toString() {
@@ -247,6 +268,7 @@ public class Maze implements Evolvable {
 
     /**
      * Classic setter for the spawnpoint.
+     *
      * @param v spawnpoint to set.
      */
     public void setSpawnPoint(Vector3 v) {
@@ -255,6 +277,7 @@ public class Maze implements Evolvable {
 
     /**
      * Classic getter for the spawnpoint.
+     *
      * @return spawnpoint in the maze.
      */
     public Vector3 getSpawnPoint() {
