@@ -1,0 +1,27 @@
+@startuml Attack sequence diagram
+title Attack sequence diagram
+
+participant "User" as user
+participant "p: Player" as player
+participant "a: Arme" as arme
+participant "m: Monster" as monstre
+
+user -> player : attack(m)
+activate player
+    player -> arme: attack(m)
+    activate arme
+        arme -> arme: getDistance(m)
+        arme <-- arme: distance
+        alt distance <= portee
+            arme -> monstre: takeDamage(degats)
+            activate monstre
+                arme <-- monstre
+            deactivate monstre
+            player <-- arme: true
+        end
+        player <-- arme: false
+    deactivate arme
+    user <-- player
+deactivate player
+
+@enduml
