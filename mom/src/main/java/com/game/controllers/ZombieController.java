@@ -88,11 +88,6 @@ public class ZombieController extends Controller {
             }
         } else {
             if (path == null) {
-                if (target.distance(player) > Zombie.LEAVE_DISTANCE) {
-                    this.mode = MODE_RANDOM;
-                    return;
-                }
-
                 PathFinder finder = PathFinder.fromMaze(target.getPosition(), player.getPosition());
                 if (finder == null || !finder.findPath()) {
                     this.mode = MODE_RANDOM;
@@ -112,6 +107,12 @@ public class ZombieController extends Controller {
                     // path = path.getNext();
 
                     // NEW : Each time we complete one step of a path, we check for new movements
+                    // (if player isn't too far)
+                    if (target.distance(player) > Zombie.LEAVE_DISTANCE) {
+                        this.mode = MODE_RANDOM;
+                        return;
+                    }
+
                     PathFinder finder = PathFinder.fromMaze(target.getPosition(), player.getPosition());
                     if (finder == null || !finder.findPath()) {
                         this.mode = MODE_RANDOM;
