@@ -33,8 +33,6 @@ public class PlayerController extends Controller implements EventVisitor {
     private static final Vector2 MOVE_VECTOR_UP = new Vector2(0.0f, -1.0f);
     /** To know if the player attacks or no. */
     private boolean attack;
-    /** A player. */
-    private Player player;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -46,7 +44,6 @@ public class PlayerController extends Controller implements EventVisitor {
      */
     public PlayerController(Player player) {
         super(player);
-        this.player = player;
     }
 
     @Override
@@ -57,9 +54,10 @@ public class PlayerController extends Controller implements EventVisitor {
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
         if (attack) {
-            Living enemy = player.findEnemyInVisionField();
+            Living enemy = ((Player) getTarget()).findEnemyInVisionField();
             if (enemy != null) {
-                player.getWeapon().attack(enemy);
+                ((Player) getTarget()).getWeapon().setPosition(target.getPosition());
+                ((Player) getTarget()).getWeapon().attack(enemy);
             }
         }
     }

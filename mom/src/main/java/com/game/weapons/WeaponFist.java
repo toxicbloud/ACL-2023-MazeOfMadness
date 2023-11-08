@@ -6,7 +6,7 @@ package com.game.weapons;
  */
 public abstract class WeaponFist extends Weapon {
     /** Default fist range. */
-    private static final float FIST_RANGE = 0.5f;
+    private static final float FIST_RANGE = 0.65f;
 
     /**
      * WeaponFist constructor.

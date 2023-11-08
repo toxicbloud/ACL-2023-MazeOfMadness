@@ -170,20 +170,20 @@ public abstract class Living extends Entity {
         Window.getInstance().getCanvas().begin();
     }
 
-    private boolean isInVisionField(Vector3 playerPosition, Vector3 enemyPosition) {
+    private boolean isInVisionField(Vector3 playerPos, Vector3 enemyPos) {
         switch (direction) {
             case UP:
-                return Math.abs(playerPosition.x - enemyPosition.x) <= TOLERANCE && playerPosition.y < enemyPosition.y
-                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+                return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y < enemyPos.y
+                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case DOWN:
-                return Math.abs(playerPosition.x - enemyPosition.x) <= TOLERANCE && playerPosition.y > enemyPosition.y
-                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+                return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y > enemyPos.y
+                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case RIGHT:
-                return playerPosition.x < enemyPosition.x && Math.abs(playerPosition.y - enemyPosition.y) <= TOLERANCE
-                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+                return playerPos.x < enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
+                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case LEFT:
-                return playerPosition.x > enemyPosition.x && Math.abs(playerPosition.y - enemyPosition.y) <= TOLERANCE
-                    && Math.abs(playerPosition.z - enemyPosition.z) <= TOLERANCE;
+                return playerPos.x > enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
+                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             default:
                 return false;
         }
