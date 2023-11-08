@@ -232,19 +232,43 @@ package Game {
         }
     }
 
+    package controller {
+        class PlayerController {
+            - player: Player
+            ---
+            + PlayerController(player: Player)
+            + update(): void
+            + visit(EventMouseMoved ev): void
+            + visit(EventMousePressed ev): void
+            + visit(EventMouseReleased ev): void
+            + visit(EventMouseScrolled ev): void
+            + visit(EventKeyPressed ev): void
+            + visit(EventKeyReleased ev): void
+            + visit(EventGamepadMoved ev): void
+            + visit(EventGamepadPressed ev): void
+            + visit(EventGamepadReleased ev): void
+        }
+    }
+
     package Tiles {
         abstract Tile {
             - solid: boolean
             ---
             + Tile(sprite: Sprite, solid: boolean)
             + isSolid(): boolean
+            + onPlayerEnter(player: Player): void
+            + onPlayerExit(player: Player): void
         }
         Entity <|-- Tile
         Tile <|-- Wall
         Tile <|-- Ground
+        Tile <|-- VoidTile
         Wall <|-- WallRock
         Ground <|-- GroundWater
+        Ground <|-- GroundLava
         Ground <|-- GroundRock
+        Ground <|-- End
+        Ground <|-- Next
 
         abstract Wall {
             ---
@@ -262,13 +286,41 @@ package Game {
         }
 
         class GroundWater {
+            {static} - SPEED_FACTOR : int
             ---
             + GroundWater()
+        }
+        class GroundLava {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            {static} - SPEED_FACTOR : int
+            - lastDamageTime : long
+            ---
+            + GroundLava()
+        }
+        class GroundSpikes {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            - lastDamageTime : long
+            ---
+            + GroundSpikes()
         }
 
         class WallRock {
             ---
             + WallRock()
+        }
+        class VoidTile {
+            ---
+            + VoidTile()
+        }
+        class End{
+            ---
+            + End()
+        }
+        class Next{
+            ---
+            + Next()
         }
     }
 }
