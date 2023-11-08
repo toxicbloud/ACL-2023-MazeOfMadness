@@ -9,7 +9,7 @@ package Engine {
 
 package Game {
     class Game {
-        - poins: int
+        - points: int
         - baseTime: float
         ---
         + GetCurrentMaze(): Maze
@@ -47,13 +47,26 @@ package Game {
     abstract Entity {
         - position: Vector3
         - size: Vector3
+        - sprite: Sprite
         ---
         # Entity(sprite: Sprite)
-        + getSprite(): Sprite
+        # Entity(sprite: Sprite, position: Vector3, size: Vector3)
+        # tileCollides(t: Tile): boolean
+        - getCollisionMovement(move: Vector2): Vector2
+        - getCollideMovement(move: Vector2, pos: Vector3): Vector2
+        - getCollideMovementX(moveX: float, origin: Vector3): float
+        - getCollideMovementY(moveY: float, origin Vector3): float
+        + registerController(c: Controller): void
+        + update(): void
+        + render(): void
+        + moveBy(delta: Vector2): void
+        + distance(entity: Entity): float
         + getPosition(): Vector3
         + getSize(): Vector3
+        + getSprite(): Sprite
         + setPosition(position: Vector3)
         + setSize(size: Vector3)
+        + setSprite(sprite: Sprite)
     }
     Evolvable <|-- Entity
     Entity "1" -- "1" Vector3 : position
