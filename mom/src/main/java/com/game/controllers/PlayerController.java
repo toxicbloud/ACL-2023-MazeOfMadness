@@ -31,12 +31,15 @@ public class PlayerController extends Controller implements EventVisitor {
     private static final Vector2 MOVE_VECTOR_RIGHT = new Vector2(1.0f, 0.0f);
     /** UP direction movement vector. */
     private static final Vector2 MOVE_VECTOR_UP = new Vector2(0.0f, -1.0f);
+    /** To know if the player attacks or no. */
+    private boolean attack;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
 
     /**
      * PlayerController constructor.
+     *
      * @param player The player to control.
      */
     public PlayerController(Player player) {
@@ -48,9 +51,15 @@ public class PlayerController extends Controller implements EventVisitor {
         Entity target = getTarget();
         Vector2 normalized = direction.normalize();
         target.moveBy(
-            new Vector2(normalized.x, normalized.y)
-            .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed())
-        );
+                new Vector2(normalized.x, normalized.y)
+                        .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
+        if (attack) {
+            Living enemy = ((Player) getTarget()).findEnemyInVisionField();
+            if (enemy != null) {
+                ((Player) getTarget()).getWeapon().setPosition(target.getPosition());
+                ((Player) getTarget()).getWeapon().attack(enemy);
+            }
+        }
     }
 
     @Override
@@ -115,7 +124,11 @@ public class PlayerController extends Controller implements EventVisitor {
             case KEY_S:
                 direction = direction.add(MOVE_VECTOR_DOWN);
                 break;
-            default: break;
+            case KEY_SPACE:
+                attack = true;
+                break;
+            default:
+                break;
         }
     }
 
@@ -143,7 +156,11 @@ public class PlayerController extends Controller implements EventVisitor {
             case KEY_S:
                 direction = direction.sub(MOVE_VECTOR_DOWN);
                 break;
-            default: break;
+            case KEY_SPACE:
+                attack = false;
+                break;
+            default:
+                break;
         }
     }
 }

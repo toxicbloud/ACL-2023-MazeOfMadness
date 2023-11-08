@@ -1,17 +1,17 @@
 @startuml Attack sequence diagram
 title Attack sequence diagram
 
-participant "User" as user
+actor "User" as user
 participant "p: Player" as player
 participant "a: Arme" as arme
 participant "m: Monster" as monstre
 
 user -> player : attack(m)
 activate player
+    player -> player : findEnemyInVisionField()
     player -> arme: attack(m)
     activate arme
-        arme -> arme: getDistance(m)
-        arme <-- arme: distance
+        arme -> arme: distance = getDistance(m)
         alt distance <= portee
             arme -> monstre: takeDamage(degats)
             activate monstre

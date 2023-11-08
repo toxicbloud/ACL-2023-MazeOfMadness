@@ -53,6 +53,15 @@ public final class Time {
     }
 
     /**
+     * Get the current time since app launch.
+     *
+     * @return The current time in milliseconds.
+     */
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    /**
      * Get the absolute time since app launch.
      * @return The absolute time since app launch.
      */
