@@ -59,8 +59,6 @@ package Generators {
             + getRoom(): Rectangle
             + getLeft(): Leaf
             + getRight(): Leaf
-            + getHeight(): int
-            + getWidth(): int
         }
         class Rectangle {
             int x
@@ -73,14 +71,6 @@ package Generators {
             int right
             + Rectangle(int: x, int: y, int: width, int: height)
             + populateMazeWithRectangle(Tile[], int mazeHeight, int mazeWidth, int mazeDepth)
-            + getX(): int
-            + getY(): int
-            + getWidth(): int
-            + getHeight(): int       
-            + getTop(): int
-            + getBottom(): int          
-            + getLeft(): int
-            + getRight(): int
         }
 
         Leaf -- "*" Rectangle
