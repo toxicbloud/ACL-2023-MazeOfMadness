@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.editor.EditorScene;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
@@ -166,6 +167,16 @@ public class MenuScene extends Scene {
         Table editorTable = new Table();
         editorTable.add(editor).left().bottom().padLeft(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
         root.add(editorTable).expandY().bottom().left();
+        // Editor button listener
+        editor.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                Window.getInstance().setScene(new EditorScene());
+            }
+        });
 
         Table rootCampaign = new Table();
         rootCampaign.setFillParent(true);
