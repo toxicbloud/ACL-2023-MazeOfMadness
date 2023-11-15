@@ -10,7 +10,6 @@ import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.PlayerController;
-import com.game.tiles.Tile;
 import com.ui.EndScene;
 
 /**
