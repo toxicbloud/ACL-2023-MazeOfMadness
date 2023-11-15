@@ -2,31 +2,41 @@ package com.editor;
 
 import com.engine.Scene;
 import com.engine.events.Event;
+import com.renderer.GameScene;
 
 /**
  * Editor scene.
  * This is the scene used to edit a game level.
  */
 public class EditorScene extends Scene {
+    /** GameScene used as preview window. */
+    private GameScene previewScene;
+
+    /**
+     * EditorScene constructor.
+     */
+    public EditorScene() {
+        previewScene = new GameScene();
+    }
 
     @Override
     public void create() {
-        System.out.println("Method 'create'");
+        previewScene.create();
     }
 
     @Override
     public void update() {
-        System.out.println("Method 'update'");
+        previewScene.update();
     }
 
     @Override
     public void render() {
-        System.out.println("Method 'render'");
+        previewScene.render();
     }
 
     @Override
     public void onEvent(Event ev) {
-        System.out.println("Method 'onEvent'");
+
     }
 
 }
