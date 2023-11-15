@@ -33,8 +33,6 @@ public class GameScene extends Scene {
 
     /** Scene camera. */
     private Camera camera;
-    /** Last entered tile by the player. */
-    private Tile enteredTile;
 
     /**
      * GameScene constructor.
@@ -180,29 +178,5 @@ public class GameScene extends Scene {
      */
     public void setCamera(Camera camera) {
         this.camera = camera;
-    }
-
-    /**
-     * Trigger the tile when the player enters it and trigger the
-     * tile when the player exits it.
-     *
-     * @param maze   The maze.
-     * @param player The player.
-     */
-    private void handleTileCollision(Maze maze, Player player) {
-        // find the tile under the player
-        Vector3 pos = player.getPosition();
-        int x = Math.round(pos.x);
-        int y = Math.round(pos.y);
-        int z = Math.round(pos.z);
-        Tile tile = maze.getTile(x, y, z - 1);
-
-        if (tile != null && tile != enteredTile) {
-            tile.onPlayerEnter(player);
-            if (enteredTile != null) {
-                enteredTile.onPlayerExit(player);
-            }
-            enteredTile = tile;
-        }
     }
 }
