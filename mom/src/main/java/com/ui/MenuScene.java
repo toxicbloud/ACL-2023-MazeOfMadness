@@ -44,6 +44,8 @@ public class MenuScene extends Scene {
      * Music volume.
      */
     private static final float MUSIC_VOLUME = 0.1f;
+    /** Editor button padding from screen border. */
+    private static final float PADDING_EDITOR_BUTTON = 16f;
     /**
      * Maze of Madness logo
      * Copyright : Antonin Rousseau.
@@ -115,10 +117,12 @@ public class MenuScene extends Scene {
         root.setFillParent(true);
         mainMenu.addActor(root);
 
+        root.add(new Table()).expandY().top().row();
+
         // Table pour centrer le logo
         Table logoTable = new Table();
         logoTable.add(logo).center().padBottom(PAD_BOTTOM).row();
-        root.add(logoTable).expandX().top().row();
+        root.add(logoTable).expandY().expandX().top().row();
 
         // Table pour les boutons
         Table buttonTable = new Table();
@@ -154,6 +158,15 @@ public class MenuScene extends Scene {
                 Gdx.input.setInputProcessor(campaignMenu);
             }
         });
+
+        // bouton editor
+        TextButton editor = new TextButton(
+                "Editor", skin);
+        // table pour mettre le logo dans le bas gauche
+        Table editorTable = new Table();
+        editorTable.add(editor).left().bottom().padLeft(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
+        root.add(editorTable).expandY().bottom().left();
+
         Table rootCampaign = new Table();
         rootCampaign.setFillParent(true);
         campaignMenu.addActor(rootCampaign);
