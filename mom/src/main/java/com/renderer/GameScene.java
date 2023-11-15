@@ -98,12 +98,14 @@ public class GameScene extends Scene {
      */
     public void create() {
         if (Game.getInstance().getPlayer() == null) {
-            Game.getInstance().setPlayer(
-                    new Player(Game.getInstance().getMaze().getSpawnPoint()));
-        }
-        PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
-        if (controller == null) {
-            new PlayerController(Game.getInstance().getPlayer());
+            if (Game.getInstance().getMaze() != null) {
+                Game.getInstance().setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
+            }
+        } else {
+            PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
+            if (controller == null) {
+                new PlayerController(Game.getInstance().getPlayer());
+            }
         }
     }
 
