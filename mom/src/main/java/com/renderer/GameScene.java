@@ -33,8 +33,6 @@ public class GameScene extends Scene {
 
     /** Scene camera. */
     private Camera camera;
-    /** Player controller. */
-    private PlayerController playerController;
     /** Last entered tile by the player. */
     private Tile enteredTile;
 
@@ -105,9 +103,9 @@ public class GameScene extends Scene {
             Game.getInstance().setPlayer(
                     new Player(Game.getInstance().getMaze().getSpawnPoint()));
         }
-        this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
-        if (this.playerController == null) {
-            this.playerController = new PlayerController(Game.getInstance().getPlayer());
+        PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
+        if (controller == null) {
+            new PlayerController(Game.getInstance().getPlayer());
         }
     }
 
@@ -120,10 +118,6 @@ public class GameScene extends Scene {
             return;
         }
 
-        if (this.playerController != null) {
-            playerController.update();
-        }
-
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
@@ -133,7 +127,6 @@ public class GameScene extends Scene {
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
-            handleTileCollision(maze, p);
         }
 
         this.camera.update();
@@ -165,7 +158,10 @@ public class GameScene extends Scene {
             default:
                 break;
         }
-        event.accept(playerController);
+        PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
+        if (controller != null) {
+            event.accept(controller);
+        }
     }
 
     /**
