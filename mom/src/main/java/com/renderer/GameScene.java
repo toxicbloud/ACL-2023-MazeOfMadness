@@ -17,6 +17,10 @@ import com.ui.EndScene;
  * This is the game scene class.
  */
 public class GameScene extends Scene {
+    /** Amount of shift in x (screen) direction for block next to of others. */
+    public static final float TILE_X_SHIFT = 0.25f;
+    /** Amount of shift in y (screen) direction for block on top of others. */
+    public static final float TILE_Y_SHIFT = 0.5f;
     /** Mouse delta to camera zoom conversion. */
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
@@ -25,10 +29,6 @@ public class GameScene extends Scene {
     private static final int BLOC_SUBDIVISION = 100;
     /** Z order multiplier. */
     private static final float Z_ORDER_MULTIPLIER = 4.0f;
-    /** Amount of shift in x (screen) direction for block on top of others. */
-    private static final float TILE_X_SHIFT = 0.25f;
-    /** Amount of shift in y (screen) direction for block on top of others. */
-    private static final float TILE_Y_SHIFT = 0.5f;
 
     /** Scene camera. */
     private Camera camera;
@@ -38,6 +38,16 @@ public class GameScene extends Scene {
      */
     public GameScene() {
         super();
+        camera = new Camera();
+    }
+
+    /**
+     * GameScene constructor.
+     * @param width Scene width.
+     * @param height Scene height.
+     */
+    public GameScene(int width, int height) {
+        super(width, height);
         camera = new Camera();
     }
 
@@ -68,12 +78,10 @@ public class GameScene extends Scene {
         Vector3 pos = coord.sub(cam.getPosition());
 
         return new Vector2(
-                // coord.x - coord.z / 2,
-                // coord.y - coord.z / 2
                 (pos.x - pos.y) / 2.0f,
                 pos.z * TILE_Y_SHIFT - (pos.x + pos.y) * TILE_X_SHIFT)
                 .mul(zoom)
-                .add(new Vector2(window.getWidth() / 2, window.getHeight() / 2))
+                .add(new Vector2(gscene.getWidth() / 2, gscene.getHeight() / 2))
                 .sub(zoom / 2);
     }
 
@@ -157,9 +165,12 @@ public class GameScene extends Scene {
             default:
                 break;
         }
-        PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
-        if (controller != null) {
-            event.accept(controller);
+        Player player = Game.getInstance().getPlayer();
+        if (player != null) {
+            PlayerController controller = (PlayerController) player.getController();
+            if (controller != null) {
+                event.accept(controller);
+            }
         }
     }
 

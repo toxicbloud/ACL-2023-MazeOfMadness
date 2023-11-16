@@ -144,6 +144,7 @@ public class MenuScene extends Scene {
                 var maze = MazeFactory.createMaze();
                 TrapSpawner.spawnTraps(maze);
                 Game.getInstance().setMaze(maze);
+                Game.getInstance().setPlayer(new Player(maze.getSpawnPoint()));
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);
             }

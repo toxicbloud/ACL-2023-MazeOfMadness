@@ -71,6 +71,15 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     }
 
     /**
+     * Divide this vector by a float.
+     * @param f The float to divide by.
+     * @return The quotient of the vector and the float.
+     */
+    public Vector3 div(float f) {
+        return new Vector3(x / f, y / f, z / f);
+    }
+
+    /**
      * Returns the normalized vector.
      * @return The normalized vector.
      */

@@ -45,6 +45,7 @@ public class Window extends Game {
      */
     public Window() {
         this.events = new EventManager();
+        this.setInstance();
     }
 
     /**
@@ -56,6 +57,7 @@ public class Window extends Game {
     public Window(String title) {
         this();
         this.title = title;
+        this.setInstance();
     }
 
     /**
@@ -70,6 +72,15 @@ public class Window extends Game {
         this(title);
         this.width = width;
         this.height = height;
+        this.setInstance();
+    }
+
+    private void setInstance() {
+        if (Window.instance != null) {
+            return;
+        } else {
+            Window.instance = this;
+        }
     }
 
     /**
@@ -85,12 +96,6 @@ public class Window extends Game {
      * Initialize the window.
      */
     public void init() {
-        if (Window.instance != null) {
-            return;
-        } else {
-            Window.instance = this;
-        }
-
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(this.title);
         config.setWindowedMode(this.width, this.height);
@@ -257,6 +262,10 @@ public class Window extends Game {
         this.canvas.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
         this.hud.getProjectionMatrix().setToOrtho2D(0, 0, this.width, this.height);
         this.hud.updateMatrices();
+        if (this.scene != null) {
+            this.scene.setWidth(this.width);
+            this.scene.setHeight(this.height);
+        }
     }
 
     /**
