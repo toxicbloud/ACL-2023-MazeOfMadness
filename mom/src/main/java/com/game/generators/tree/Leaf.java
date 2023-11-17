@@ -348,7 +348,8 @@ public class Leaf {
 
         // Setting up the endpoint.
         room = root.getLeft().getRoom();
-        maze[room.getX() + room.getY() * width] = new Next(); // We change the tile at the x and y coordinate.
+        // We change the tile at the x, y and z + 1 coordinates.
+        maze[room.getX() + room.getY() * width + width * height] = new Next();
 
         return maze;
     }
