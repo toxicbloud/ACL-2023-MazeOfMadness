@@ -67,9 +67,9 @@ public final class Game {
      * @return The game score (points / time).
      */
     public int getScore() {
-        float delta = Time.getInstance().getAbsTime() - baseTime;
-        int score = this.points / (int) delta;
-        return score;
+        // float delta = Time.getInstance().getAbsTime() - baseTime;
+        // int score = this.points / (int) delta;
+        return 666;
     }
 
     /**

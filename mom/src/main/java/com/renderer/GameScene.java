@@ -1,5 +1,11 @@
 package com.renderer;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
@@ -18,6 +24,10 @@ import com.ui.EndScene;
  * This is the game scene class.
  */
 public class GameScene extends Scene {
+    /**
+     * Score padding.
+     */
+    private static final int SCORE_PADDING = 10;
     /** Mouse delta to camera zoom conversion. */
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
@@ -37,6 +47,18 @@ public class GameScene extends Scene {
     private PlayerController playerController;
     /** Last entered tile by the player. */
     private Tile enteredTile;
+    /**
+     * Stage for the UI.
+     */
+    private Stage hud;
+    /**
+     * Skin for the UI.
+     */
+    private Skin skin;
+    /**
+     * Label for the score.
+     */
+    private Label scoreLabel;
 
     /**
      * GameScene constructor.
@@ -109,6 +131,16 @@ public class GameScene extends Scene {
         if (this.playerController == null) {
             this.playerController = new PlayerController(Game.getInstance().getPlayer());
         }
+        hud = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+
+        // add score in top left corner
+        scoreLabel = new Label("Score: " + Game.getInstance().getScore(), skin);
+        Table root = new Table();
+        root.top().left();
+        root.setFillParent(true);
+        root.add(scoreLabel).pad(SCORE_PADDING).row();
+        hud.addActor(root);
     }
 
     /**
@@ -149,6 +181,7 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
+        drawHUD();
     }
 
     /**
@@ -208,5 +241,11 @@ public class GameScene extends Scene {
             }
             enteredTile = tile;
         }
+    }
+
+    private void drawHUD() {
+        hud.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        hud.getViewport().apply(true);
+        hud.draw();
     }
 }
