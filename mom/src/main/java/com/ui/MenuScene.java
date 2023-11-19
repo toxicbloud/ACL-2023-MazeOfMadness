@@ -136,8 +136,7 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var maze = MazeFactory.createMaze();
-                TrapSpawner.spawnTraps(maze);
+                var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
                 Game.getInstance().setMaze(maze);
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);

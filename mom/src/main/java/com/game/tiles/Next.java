@@ -42,11 +42,10 @@ public class Next extends Ground {
 
     @Override
     public void onPlayerEnter(Player p) {
-        var maze = MazeFactory.createMaze();
+        var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
         Game.getInstance().setMaze(maze);
         Game.getInstance().getPlayer().setPosition(maze.getSpawnPoint());
         Window.getInstance().setScene(new GameScene());
         MonsterSpawner.spawnMonsters(maze);
-        TrapSpawner.spawnTraps(maze);
     }
 }
