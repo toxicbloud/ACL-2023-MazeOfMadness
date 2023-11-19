@@ -10,6 +10,7 @@ import com.game.tiles.VoidTile;
 import com.renderer.GameScene;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -80,6 +81,20 @@ public class Maze implements Evolvable {
         this.setTilesDefaultPositions();
     }
 
+    /**
+     * Maze constructor.
+     *
+     * @param w     the width of the maze (x axis).
+     * @param h     the height of the maze (y axis).
+     * @param d     the depth of the maze (z axis).
+     * @param t     the tiles of the maze.
+     * @param spawn the spawnpoint of the player.
+     */
+    public Maze(int w, int h, int d, Tile[] t, Vector3 spawn) {
+        this(w, h, d, t);
+        this.spawnPoint = spawn;
+    }
+
     private void setTilesDefaultPositions() {
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
@@ -127,7 +142,7 @@ public class Maze implements Evolvable {
         for (Entity e : entities) {
             e.render();
         }
-        for (Entity e: entities) {
+        for (Entity e : entities) {
             Controller c = e.getController();
             if (c != null) {
                 c.render();
@@ -168,9 +183,7 @@ public class Maze implements Evolvable {
      * @return The tiles of the maze.
      */
     public Tile[] getTiles() {
-        // TODO protect the tiles array from being modified, encapsulate it
-        // not difficult here but wee need to change generators
-        return tiles;
+        return Arrays.copyOf(this.tiles, this.tiles.length);
     }
 
     /**
