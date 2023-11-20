@@ -16,6 +16,7 @@ import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.PlayerController;
+import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.ui.EndScene;
 
@@ -52,13 +53,13 @@ public class GameScene extends Scene {
      */
     private Stage hud;
     /**
-     * Skin for the UI.
-     */
-    private Skin skin;
-    /**
      * Label for the score.
      */
     private Label scoreLabel;
+    /**
+     * Indicates if the scene is in edit mode.
+     */
+    private boolean editMode;
 
     /**
      * GameScene constructor.
@@ -66,6 +67,16 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+    }
+
+    /**
+     * GameScene constructor.
+     *
+     * @param editMode Indicates if the scene is in edit mode.
+     */
+    public GameScene(boolean editMode) {
+        this();
+        this.editMode = editMode;
     }
 
     /**
@@ -123,31 +134,38 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        if (Game.getInstance().getPlayer() == null) {
-            Game.getInstance().setPlayer(
-                    new Player(Game.getInstance().getMaze().getSpawnPoint()));
+        Game game = Game.getInstance();
+        if (game.getPlayer() == null) {
+            game.setPlayer(
+                    new Player(game.getMaze().getSpawnPoint()));
         }
-        this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
+        this.playerController = (PlayerController) game.getPlayer().getController();
         if (this.playerController == null) {
-            this.playerController = new PlayerController(Game.getInstance().getPlayer());
+            this.playerController = new PlayerController(game.getPlayer());
         }
-        hud = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        if (!editMode) {
+            hud = new Stage(new ScreenViewport());
 
-        // add score in top left corner
-        scoreLabel = new Label("Score: " + Game.getInstance().getScore(), skin);
-        Table root = new Table();
-        root.top().left();
-        root.setFillParent(true);
-        root.add(scoreLabel).pad(SCORE_PADDING).row();
-        hud.addActor(root);
+            // add score in top left corner
+            scoreLabel = new Label("Score: " + Game.getInstance().getPoints(),
+                    new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
+            game.addPropertyChangeListener("points", evt -> {
+                scoreLabel.setText("Score: " + evt.getNewValue());
+            });
+            Table root = new Table();
+            root.top().left();
+            root.setFillParent(true);
+            root.add(scoreLabel).pad(SCORE_PADDING).row();
+            hud.addActor(root);
+        }
     }
 
     /**
      * Update the scene.
      */
     public void update() {
-        Maze maze = Game.getInstance().getMaze();
+        Game game = Game.getInstance();
+        Maze maze = game.getMaze();
         if (maze == null) {
             return;
         }
@@ -156,16 +174,24 @@ public class GameScene extends Scene {
             playerController.update();
         }
 
-        Player p = Game.getInstance().getPlayer();
+        Player p = game.getPlayer();
         if (p != null) {
             if (p.isDead()) {
-                Game.getInstance().setPlayer(null);
-                Game.getInstance().setMaze(null);
+                game.setPlayer(null);
+                game.setMaze(null);
                 Window.getInstance().setScene(new EndScene(false));
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
             handleTileCollision(maze, p);
+        }
+
+        // delete monsters that are dead
+        for (Monster monster : maze.getMonsters()) {
+            if (monster.isDead()) {
+                game.addPoints(monster.getPoints());
+                maze.removeMonster(monster);
+            }
         }
 
         this.camera.update();
@@ -181,7 +207,9 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
-        drawHUD();
+        if (!editMode) {
+            drawHUD();
+        }
     }
 
     /**

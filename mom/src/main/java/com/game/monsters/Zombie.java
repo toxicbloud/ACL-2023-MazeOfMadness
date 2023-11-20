@@ -23,6 +23,8 @@ public class Zombie extends Monster {
     private static final int ZOMBIE_HEALTH = 100;
     /** Default zombie max health. */
     private static final int ZOMBIE_MAX_HEALTH = 150;
+    /** Amount of points the player gets when killing a zombie. */
+    private static final int ZOMBIE_POINTS = 40;
 
     /**
      * Zombie constructor.
@@ -50,5 +52,10 @@ public class Zombie extends Monster {
     @Override
     public void update() {
         super.update();
+    }
+
+    @Override
+    public int getPoints() {
+        return ZOMBIE_POINTS;
     }
 }

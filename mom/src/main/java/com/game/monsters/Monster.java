@@ -13,6 +13,10 @@ public abstract class Monster extends Living {
      * Number of frames in the animation.
      */
     private static final int FRAMES_NUMBER = 40;
+    /**
+     * Ammount of points the player gets when killing a monster.
+     */
+    private static final int DEFAULT_POINTS = 20;
 
     /** The monster type. */
     private MonsterType type;
@@ -80,5 +84,14 @@ public abstract class Monster extends Living {
      */
     public MonsterType getType() {
         return type;
+    }
+
+    /**
+     * Get the points the player gets when killing the monster.
+     *
+     * @return The points the player gets when killing the monster.
+     */
+    public int getPoints() {
+        return DEFAULT_POINTS;
     }
 }
