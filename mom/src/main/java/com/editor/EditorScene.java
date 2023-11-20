@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.engine.Evolvable;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.Window;
@@ -13,7 +12,6 @@ import com.engine.events.EventMouseMoved;
 import com.engine.events.EventType;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
-import com.game.Entity;
 import com.game.Game;
 import com.game.Maze;
 import com.game.tiles.GroundRock;
@@ -42,6 +40,7 @@ public class EditorScene extends GameScene {
     private Vector2 lastMousePosition;
     /** Current mmouse position on screen. */
     private Vector2 mousePosition;
+    /** Current cursor position. */
     private Vector3 cursorPos;
 
     /**
