@@ -80,6 +80,30 @@ public class Maze implements Evolvable {
         this.setTilesDefaultPositions();
     }
 
+    /**
+     * Maze constructor.
+     * This is the constructor for the maze class.
+     *
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
+     * @param t The tiles of the maze.
+     * @param m The monsters of the maze.
+     * @param i The items of the maze.
+     */
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i) {
+        if (t.length != w * h * d) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
+        }
+        this.width = w;
+        this.height = h;
+        this.depth = d;
+        this.tiles = t;
+        this.monsters = m;
+        this.items = i;
+        this.setTilesDefaultPositions();
+    }
+
     private void setTilesDefaultPositions() {
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {

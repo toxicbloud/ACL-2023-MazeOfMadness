@@ -1,0 +1,56 @@
+{
+  "name": "Charlemagne first floor",
+  "description": "Charlemagne first floor is a strange place to be.",
+  "author": "Antonin Rousseau",
+  "version": "1.4.2",
+  "maze": {
+    "width": 1,
+    "height": 3,
+    "depth": 1,
+    "tiles": [
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      },
+      {
+        "type": "WallRock"
+      }
+    ],
+    "monsters": [
+      {
+        "type": "zombie",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ],
+    "items": [
+      {
+        "type": "sword",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "player": {
+    "health": 100,
+    "maxHealth": 100,
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 2
+    },
+    "items": [
+      {
+        "type": "sword"
+      }
+    ]
+  }
+}
