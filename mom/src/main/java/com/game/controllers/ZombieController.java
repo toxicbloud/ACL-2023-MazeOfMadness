@@ -133,6 +133,11 @@ public class ZombieController extends Controller {
                 );
             }
         }
+
+        if (((Zombie) target).findPlayerInEnemyVision(player)) {
+            ((Zombie) target).getWeapon().setPosition(target.getPosition());
+            ((Zombie) target).getWeapon().attack(player);
+        }
     }
 
     /**
