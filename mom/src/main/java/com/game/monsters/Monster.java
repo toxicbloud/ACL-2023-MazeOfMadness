@@ -3,6 +3,7 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Living;
+import com.game.Score;
 
 /**
  * Monster class.
@@ -93,5 +94,14 @@ public abstract class Monster extends Living {
      */
     public int getPoints() {
         return DEFAULT_POINTS;
+    }
+
+    /**
+     * Accept a Score object.
+     *
+     * @param score The score object to accept.
+     */
+    public void accept(Score score) {
+        score.addPoints(DEFAULT_POINTS);
     }
 }

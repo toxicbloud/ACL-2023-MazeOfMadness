@@ -1,8 +1,5 @@
 package com.game;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 /**
  * Game class.
  * This is the game class.
@@ -11,23 +8,18 @@ public final class Game {
     /** The game instance. */
     private static Game instance;
     /** The game score. */
-    private int points;
+    private Score score;
     /** The game player entity. */
     private Player player;
     /** The current game maze. */
     private Maze maze;
-    /**
-     * The property change support used to notify the view of changes.
-     */
-    private PropertyChangeSupport support;
 
     /**
      * Game constructor.
      * Initialize the game.
      */
     public Game() {
-        this.points = 0;
-        support = new PropertyChangeSupport(this);
+        this.score = new Score();
     }
 
     /**
@@ -50,7 +42,7 @@ public final class Game {
      * @param m The game maze.
      */
     public Game(Maze m) {
-        this.points = 0;
+        this();
         this.maze = m;
     }
 
@@ -64,42 +56,6 @@ public final class Game {
             instance = new Game();
         }
         return instance;
-    }
-
-    /**
-     * Get the game points.
-     *
-     * @return The game points.
-     */
-    public int getPoints() {
-        return points;
-    }
-
-    /**
-     * Add points to the game score.
-     *
-     * @param pts The points to add.
-     */
-    public void addPoints(int pts) {
-        support.firePropertyChange("points", this.points, this.points + pts);
-        this.points += pts;
-    }
-
-    /**
-     * Remove points from the game score.
-     *
-     * @param pts The points to remove.
-     */
-    public void removePoints(int pts) {
-        support.firePropertyChange("points", this.points, this.points - pts);
-        this.points -= pts;
-    }
-
-    /**
-     * Reset the game score.
-     */
-    public void resetScore() {
-        this.points = 0;
     }
 
     /**
@@ -139,12 +95,11 @@ public final class Game {
     }
 
     /**
-     * Add a property change listener.
+     * Get the game score.
      *
-     * @param propertyName The property name.
-     * @param listener     The listener.
+     * @return The game score.
      */
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        support.addPropertyChangeListener(propertyName, listener);
+    public Score getScore() {
+        return score;
     }
 }

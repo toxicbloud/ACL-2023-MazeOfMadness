@@ -147,9 +147,9 @@ public class GameScene extends Scene {
             hud = new Stage(new ScreenViewport());
 
             // add score in top left corner
-            scoreLabel = new Label("Score: " + Game.getInstance().getPoints(),
+            scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
                     new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
-            game.addPropertyChangeListener("points", evt -> {
+            game.getScore().addPropertyChangeListener("points", evt -> {
                 scoreLabel.setText("Score: " + evt.getNewValue());
             });
             Table root = new Table();
@@ -189,7 +189,7 @@ public class GameScene extends Scene {
         // delete monsters that are dead
         for (Monster monster : maze.getMonsters()) {
             if (monster.isDead()) {
-                game.addPoints(monster.getPoints());
+                game.getScore().handleKill(monster);
                 maze.removeMonster(monster);
             }
         }

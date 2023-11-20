@@ -3,6 +3,7 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
+import com.game.Score;
 
 /**
  * Zombie class.
@@ -57,5 +58,16 @@ public class Zombie extends Monster {
     @Override
     public int getPoints() {
         return ZOMBIE_POINTS;
+    }
+
+    /**
+     * Accept a Score object.
+     *
+     * @param score The score object to accept.
+     */
+    @Override
+    public void accept(Score score) {
+        score.addPoints(ZOMBIE_HEALTH);
+        score.addKill(MonsterType.MONSTER_ZOMBIE);
     }
 }
