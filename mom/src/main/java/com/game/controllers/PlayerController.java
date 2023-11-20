@@ -57,10 +57,10 @@ public class PlayerController extends Controller implements EventVisitor {
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
         if (attack) {
-            Living enemy = ((Player) getTarget()).findEnemyInVisionField();
+            Living enemy = ((Player) target).findEnemyInPlayerVision();
             if (enemy != null) {
-                ((Player) getTarget()).getWeapon().setPosition(target.getPosition());
-                ((Player) getTarget()).getWeapon().attack(enemy);
+                ((Player) target).getWeapon().setPosition(target.getPosition());
+                ((Player) target).getWeapon().attack(enemy);
             }
         }
     }
