@@ -5,7 +5,6 @@ import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.renderer.GameScene;
-
 import org.json.JSONObject;
 
 /**

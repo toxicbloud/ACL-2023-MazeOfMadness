@@ -20,6 +20,7 @@
     ],
     "monsters": [
       {
+        "health": 100,
         "type": "zombie",
         "position": {
           "x": 0,
@@ -41,7 +42,6 @@
   },
   "player": {
     "health": 100,
-    "maxHealth": 100,
     "position": {
       "x": 0,
       "y": 0,

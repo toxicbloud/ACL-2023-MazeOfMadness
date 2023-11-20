@@ -14,6 +14,6 @@ public class PlayerFist extends WeaponFist {
      * PlayerFist constructor.
      */
     public PlayerFist() {
-        super(PlayerFist.DAMAGE, PlayerFist.ATTACK_COOLDOWN);
+        super(DAMAGE, ATTACK_COOLDOWN);
     }
 }
