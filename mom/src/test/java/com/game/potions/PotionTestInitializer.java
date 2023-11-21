@@ -1,11 +1,15 @@
 package com.game.potions;
 
+import com.GdxTestRunner;
 import com.game.Player;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * PotionTestInitializer class. Is used to provide initializers to the potions test classes.
  */
+
+@ExtendWith(GdxTestRunner.class)
 public abstract class PotionTestInitializer {
 
     /** Player used to test the potion effects. */

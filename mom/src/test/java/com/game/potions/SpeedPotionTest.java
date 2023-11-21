@@ -1,14 +1,11 @@
 package com.game.potions;
 
-import com.GdxTestRunner;
 import com.game.Player;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * SpeedPotion test class.
  */
-@ExtendWith(GdxTestRunner.class)
 public class SpeedPotionTest extends PotionTestInitializer {
 
     /**

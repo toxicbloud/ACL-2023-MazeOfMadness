@@ -238,12 +238,17 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Regenerate health.
+     * Regenerate health. If the health amount makes the entity's health higher than it's maximum possible health, it
+     * caps to the maximum health.
      *
      * @param h The health amount.
      */
     public void regen(int h) {
-        this.health += h;
+        if (this.getHealth() + h < this.maxHealth) {
+            this.health += h;
+        } else {
+            this.health = this.maxHealth;
+        }
     }
 
     /**
