@@ -1,6 +1,7 @@
 package com.game.potions;
 
 import com.engine.utils.Vector3;
+import com.game.ItemType;
 import com.game.Player;
 
 /**
@@ -20,14 +21,14 @@ public class HealthPotion extends Potion {
      * @param position Position of the potion inside the maze.
      */
     public HealthPotion(Vector3 position) {
-        super(HealthPotion.SPRITE_SHIFT, position);
+        super(HealthPotion.SPRITE_SHIFT, position, ItemType.ITEM_HEALTH_POTION);
     }
 
     /**
      * Health potion constructor.
      */
     public HealthPotion() {
-        super(HealthPotion.SPRITE_SHIFT, new Vector3());
+        super(HealthPotion.SPRITE_SHIFT, new Vector3(), ItemType.ITEM_HEALTH_POTION);
     }
 
     @Override

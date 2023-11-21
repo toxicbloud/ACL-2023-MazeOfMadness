@@ -4,6 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Item;
+import com.game.ItemType;
 import com.game.Player;
 
 /**
@@ -19,9 +20,10 @@ public abstract class Potion extends Item {
      *
      * @param spriteShift Shift for the potion's sprite.
      * @param position Position of the potion inside the maze.
+     * @param t Type of the item.
      */
-    protected Potion(int spriteShift, Vector3 position) {
-        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift));
+    protected Potion(int spriteShift, Vector3 position, ItemType t) {
+        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift), t);
         this.setPosition(position);
     }
 

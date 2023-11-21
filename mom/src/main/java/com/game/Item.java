@@ -9,12 +9,18 @@ import org.json.JSONObject;
  * This is the base class for all items.
  */
 public abstract class Item extends Entity {
+
+    /** The type of the item. */
+    private ItemType type;
+
     /**
      * Item constructor.
      * @param sprite The sprite to use.
+     * @param t The type of the item.
      */
-    protected Item(Sprite sprite) {
+    protected Item(Sprite sprite, ItemType t) {
         super(sprite, new Vector3(), new Vector3(1, 1, 1));
+        this.type = t;
     }
 
     /**
@@ -34,7 +40,7 @@ public abstract class Item extends Entity {
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 
-        // json.put("type", this.type);
+        json.put("type", this.type);
         json.put("position", getPosition().toJSON());
 
         return json;

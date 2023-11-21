@@ -1,6 +1,7 @@
 package com.game.potions;
 
 import com.engine.utils.Vector3;
+import com.game.ItemType;
 import com.game.Player;
 import com.game.weapons.Weapon;
 
@@ -18,14 +19,14 @@ public class StrengthPotion extends Potion {
      * @param position Position of the potion inside the maze.
      */
     public StrengthPotion(Vector3 position) {
-        super(STRENGTH_POTION_SPRITE_SHIFT, position);
+        super(STRENGTH_POTION_SPRITE_SHIFT, position, ItemType.ITEM_STRENGTH_POTION);
     }
 
     /**
      * Strength potion constructor.
      */
     public StrengthPotion() {
-        super(STRENGTH_POTION_SPRITE_SHIFT, new Vector3());
+        super(STRENGTH_POTION_SPRITE_SHIFT, new Vector3(), ItemType.ITEM_STRENGTH_POTION);
     }
 
     @Override
