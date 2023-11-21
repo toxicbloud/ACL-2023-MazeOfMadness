@@ -147,21 +147,9 @@ public class GameScene extends Scene {
      */
     public void create() {
         this.playerController = new PlayerController(Game.getInstance().getPlayer());
-        Game game = Game.getInstance();
         if (!editMode) {
             buildMenu();
-            hud = new Stage(new ScreenViewport());
-            // add score in top left corner
-            scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
-                    new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
-            game.getScore().addPropertyChangeListener("points", evt -> {
-                scoreLabel.setText("Score: " + evt.getNewValue());
-            });
-            Table root = new Table();
-            root.top().left();
-            root.setFillParent(true);
-            root.add(scoreLabel).pad(SCORE_PADDING).row();
-            hud.addActor(root);
+            buildHUD();
         }
     }
 
@@ -201,7 +189,9 @@ public class GameScene extends Scene {
 
         this.camera.update();
         maze.update();
-        pauseMenu.act();
+        if (!editMode) {
+            pauseMenu.act();
+        }
     }
 
     /**
@@ -269,6 +259,25 @@ public class GameScene extends Scene {
      */
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    /**
+     * Build the HUD UI.
+     */
+    private void buildHUD() {
+        Game game = Game.getInstance();
+        hud = new Stage(new ScreenViewport());
+        // add score in top left corner
+        scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
+                new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
+        game.getScore().addPropertyChangeListener("points", evt -> {
+            scoreLabel.setText("Score: " + evt.getNewValue());
+        });
+        Table root = new Table();
+        root.top().left();
+        root.setFillParent(true);
+        root.add(scoreLabel).pad(SCORE_PADDING).row();
+        hud.addActor(root);
     }
 
     /**
