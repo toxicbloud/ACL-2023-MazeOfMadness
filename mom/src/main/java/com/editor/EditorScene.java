@@ -103,6 +103,9 @@ public class EditorScene extends GameScene {
     /** List of entities in the maze. */
     private List<Entity> mazeEntities = new ArrayList<Entity>();
 
+    /** fake Player entity. */
+    private Player player = new Player(new Vector3(0, 0, 1));
+
     /**
      * EditorScene constructor.
      */
@@ -151,6 +154,7 @@ public class EditorScene extends GameScene {
         if (this.inGameSceneZone) {
             Game.getInstance().getMaze().addTemporaryEntity(this.placeholderBlock);
         }
+        Game.getInstance().getMaze().addTemporaryEntity(this.player);
         super.render();
         renderEditorTab();
         Entity selectedEntity = selectableEntities[selectedEntityIndex];
@@ -256,7 +260,7 @@ public class EditorScene extends GameScene {
                     "level author",
                     "level version",
                     Game.getInstance().getMaze(),
-                    Game.getInstance().getPlayer());
+                    this.player);
 
                 FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");
                 dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
@@ -303,6 +307,12 @@ public class EditorScene extends GameScene {
         }
 
         Entity selectedEntity = selectableEntities[selectedEntityIndex];
+
+        if (selectedEntity instanceof Player) {
+            this.player.setPosition(pos);
+            return;
+        }
+
         Entity newEntity = null;
         try {
             Constructor<?> constructor = selectedEntity.getClass().getDeclaredConstructor();
