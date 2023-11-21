@@ -67,10 +67,6 @@ public final class PotionSpawner {
             }
         }
 
-        for (Item p : potions) {
-            System.out.println(p.getPosition());
-        }
-
         maze.setItems(potions.toArray(new Item[potions.size()]));
     }
 
