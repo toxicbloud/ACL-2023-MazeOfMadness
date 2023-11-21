@@ -136,7 +136,7 @@ public class ZombieController extends Controller {
             }
         }
 
-        if (((Zombie) target).findPlayerInEnemyFOV(player)
+        if (((Zombie) target).findPlayer(player)
             && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
             ((Zombie) target).getWeapon().setPosition(target.getPosition());
             ((Zombie) target).getWeapon().attack(player);

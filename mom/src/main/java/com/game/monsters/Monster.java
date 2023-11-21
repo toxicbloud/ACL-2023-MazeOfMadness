@@ -74,6 +74,16 @@ public abstract class Monster extends Living {
     }
 
     /**
+     * Detect whether the player is in an enemy's field of vision.
+     *
+     * @param player The player.
+     * @return Whether the player is in an enemy's field of vision.
+     */
+    public boolean findPlayer(Living player) {
+        return isInFOV(this, player);
+    }
+
+    /**
      * Get the monster type.
      *
      * @return The monster type.

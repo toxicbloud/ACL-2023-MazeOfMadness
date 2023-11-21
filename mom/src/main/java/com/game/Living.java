@@ -10,9 +10,6 @@ import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
 import com.renderer.GameScene;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Living class.
  * This is the base class for all living entities.
@@ -212,7 +209,14 @@ public abstract class Living extends Entity {
         }
     }
 
-    private boolean isInFOV(Living entity1, Living entity2) {
+    /**
+     *  Detects whether entity2 is in entity1's FOV.
+     *
+     * @param entity1 The entity from which the FOV emanates.
+     * @param entity2 The entity we're trying to determine if it's in the FOV.
+     * @return whether entity2 is in entity1's FOV.
+     */
+    public boolean isInFOV(Living entity1, Living entity2) {
         Vector3 entity1ToEntity2 = entity2.getPosition().sub(entity1.getPosition());
         double distance = entity1ToEntity2.len();
         if (distance > MAX_RANGE_FOV) {
@@ -222,35 +226,6 @@ public abstract class Living extends Entity {
         angleBetweenEntities = (angleBetweenEntities + DEGREES) % DEGREES;
         double angleDiff = Math.abs(angleBetweenEntities - directionToAngle(entity1.getDirection()));
         return angleDiff <= FOV_RADIUS / 2;
-    }
-
-    /**
-     * Detect whether an enemy is in the player's field of vision.
-     *
-     * @return The living entity in the range attack.
-     */
-    public List<Living> findEnemiesInPlayerFOV() {
-        List<Living> enemiesInFOV = new ArrayList<>();
-        Living[] enemies = Game.getInstance().getMaze().getMonsters();
-
-        for (Living enemy : enemies) {
-            if (enemy != this && enemy.getHealth() > 0) {
-                if (isInFOV(this, enemy)) {
-                    enemiesInFOV.add(enemy);
-                }
-            }
-        }
-        return enemiesInFOV;
-    }
-
-    /**
-     * Detect whether the player is in an enemy's field of vision.
-     *
-     * @param player The player.
-     * @return Whether the player is in an enemy's field of vision.
-     */
-    public boolean findPlayerInEnemyFOV(Living player) {
-        return isInFOV(this, player);
     }
 
     /**
