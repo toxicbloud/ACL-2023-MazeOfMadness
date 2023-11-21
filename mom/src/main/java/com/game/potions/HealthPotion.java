@@ -32,11 +32,6 @@ public class HealthPotion extends Potion {
 
     @Override
     protected void applyEffect(Player player) {
-        int newHealth = player.getHealth() + HealthPotion.HEALTH_AMOUNT;
-        if (newHealth > player.getMaxHealth()) {
-            newHealth = player.getMaxHealth();
-        }
-
-        player.setHealth(newHealth);
+        player.regen(HealthPotion.HEALTH_AMOUNT);
     }
 }
