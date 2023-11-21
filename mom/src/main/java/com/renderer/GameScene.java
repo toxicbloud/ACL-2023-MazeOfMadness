@@ -148,6 +148,8 @@ public class GameScene extends Scene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Window.getInstance().setScene(new MenuScene());
+                Game.getInstance().setMaze(null);
+                Game.getInstance().setPlayer(null);
             }
         });
         // max int value to be sure that
