@@ -22,7 +22,6 @@ import com.game.Player;
 import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
 import com.ui.EndScene;
-import com.ui.MenuScene;
 
 /**
  * GameScene class.
@@ -119,10 +118,6 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        if (Game.getInstance().getPlayer() == null) {
-            Game.getInstance().setPlayer(
-                    new Player(Game.getInstance().getMaze().getSpawnPoint()));
-        }
         this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
         if (this.playerController == null) {
             this.playerController = new PlayerController(Game.getInstance().getPlayer());
@@ -147,9 +142,9 @@ public class GameScene extends Scene {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Window.getInstance().setScene(new MenuScene());
                 Game.getInstance().setMaze(null);
                 Game.getInstance().setPlayer(null);
+                Window.getInstance().setScene(new EndScene(false));
             }
         });
         // max int value to be sure that

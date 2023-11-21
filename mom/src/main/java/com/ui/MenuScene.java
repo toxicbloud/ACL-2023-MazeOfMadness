@@ -137,7 +137,9 @@ public class MenuScene extends Scene {
                 music.stop();
                 music.dispose();
                 var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-                Game.getInstance().setMaze(maze);
+                Game game = Game.getInstance();
+                game.setMaze(maze);
+                game.setPlayer(new Player(maze.getSpawnPoint()));
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);
             }
@@ -196,13 +198,8 @@ public class MenuScene extends Scene {
         });
         levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
 
-        Thread thread = new Thread(() -> {
-            music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
-            music.play();
-            music.setVolume(MUSIC_VOLUME);
-        });
-
-        // load sound asynchronously
-        thread.start();
+        music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
+        music.play();
+        music.setVolume(MUSIC_VOLUME);
     }
 }
