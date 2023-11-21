@@ -26,6 +26,7 @@ import com.game.Game;
 import com.game.Item;
 import com.game.Level;
 import com.game.LevelLoader;
+import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
 import com.game.monsters.Monster;
@@ -249,7 +250,21 @@ public class EditorScene extends GameScene {
         });
         saveBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("saveBtn click");
+                Level level = new Level(
+                    "level name",
+                    "level description",
+                    "level author",
+                    "level version",
+                    Game.getInstance().getMaze(),
+                    Game.getInstance().getPlayer());
+
+                FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");
+                dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
+                dialog.setMode(FileDialog.SAVE);
+                dialog.setVisible(true);
+                String file = dialog.getFile();
+                String path = dialog.getDirectory();
+                LevelSaver.save(new FileHandle(new File(path + file)), level);
             }
         });
         backBtn.addListener(new ClickListener() {

@@ -3,7 +3,6 @@ package com.game;
 import com.badlogic.gdx.files.FileHandle;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
-
 import org.json.JSONObject;
 
 /**
@@ -49,7 +48,7 @@ public final class LevelSaver {
         json.put("depth", maze.getDepth());
         json.put("tiles", mazeTiles2json(maze.getTiles()));
         json.put("monsters", mazeMonsters2json(maze.getMonsters()));
-        json.put("items", maze.getItems());
+        json.put("items", mazeitems2json(maze.getItems()));
 
         return json;
     }
