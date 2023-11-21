@@ -16,4 +16,14 @@ public abstract class WeaponFist extends Weapon {
     protected WeaponFist(int damage, int cooldown) {
         super(damage, cooldown, FIST_RANGE);
     }
+
+    /**
+     * WeaponFist constructor.
+     * @param damage The damage amount.
+     * @param cooldown The cooldown between two attacks.
+     * @param hasDoubleDamage If the damages of this weapon has been doubled.
+     */
+    protected WeaponFist(int damage, int cooldown, boolean hasDoubleDamage) {
+        super(damage, cooldown, FIST_RANGE, hasDoubleDamage);
+    }
 }

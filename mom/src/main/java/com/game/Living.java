@@ -40,6 +40,8 @@ public abstract class Living extends Entity {
     private int maxHealth;
     /** Living speed. */
     private float speed;
+    /** Strength amount. */ // TODO : rename that if needed.
+    private float strength;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
@@ -148,7 +150,7 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Create an health bar.
+     * Creates a health bar.
      */
     private void renderHealthBar() {
         Window.getInstance().getCanvas().end();
