@@ -29,9 +29,10 @@ public abstract class Weapon extends Item {
      * @param damage          The damage amount.
      * @param cooldown        The cooldown between two attacks.
      * @param range           The range.
+     * @param t               The type of the weapon.
      */
-    protected Weapon(int damage, int cooldown, float range) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), ItemType.WEAPON_PLAYER_FIST);
+    protected Weapon(int damage, int cooldown, float range, ItemType t) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
@@ -45,9 +46,10 @@ public abstract class Weapon extends Item {
      * @param cooldown        The cooldown between two attacks.
      * @param range           The range.
      * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param t               The type of the weapon.
      */
-    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), ItemType.WEAPON_PLAYER_FIST);
+    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;

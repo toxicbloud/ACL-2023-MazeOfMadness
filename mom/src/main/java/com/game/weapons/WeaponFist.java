@@ -1,5 +1,7 @@
 package com.game.weapons;
 
+import com.game.ItemType;
+
 /**
  * WeaponFist class.
  * This is the base class for all fist weapons.
@@ -12,9 +14,10 @@ public abstract class WeaponFist extends Weapon {
      * WeaponFist constructor.
      * @param damage The damage amount.
      * @param cooldown The cooldown between two attacks.
+     * @param t        The type of fist
      */
-    protected WeaponFist(int damage, int cooldown) {
-        super(damage, cooldown, FIST_RANGE);
+    protected WeaponFist(int damage, int cooldown, ItemType t) {
+        super(damage, cooldown, FIST_RANGE, t);
     }
 
     /**
@@ -22,8 +25,9 @@ public abstract class WeaponFist extends Weapon {
      * @param damage The damage amount.
      * @param cooldown The cooldown between two attacks.
      * @param hasDoubleDamage If the damages of this weapon has been doubled.
+     * @param t               The type of fist
      */
-    protected WeaponFist(int damage, int cooldown, boolean hasDoubleDamage) {
-        super(damage, cooldown, FIST_RANGE, hasDoubleDamage);
+    protected WeaponFist(int damage, int cooldown, boolean hasDoubleDamage, ItemType t) {
+        super(damage, cooldown, FIST_RANGE, hasDoubleDamage, t);
     }
 }
