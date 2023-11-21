@@ -68,6 +68,17 @@ public final class PotionSpawner {
         maze.setItems(potions.toArray(new Item[potions.size()]));
     }
 
+    /**
+     * This method checks if the potion can be spawned on the choosen tile.
+     * It will check if the tile is not the end of the level and at the
+     * player's spawnpoint.
+     *
+     * @param maze The maze used to check.
+     * @param x    x coordinate of the tile to check.
+     * @param y    y coordinate of the tile to check.
+     * @param sr   Random number generator.
+     * @return boolean indicating if the tile can accept a potion item.
+     */
     private static boolean canSpawnPotion(Maze maze, int x, int y, SecureRandom sr) {
         Vector3 spawn = maze.getSpawnPoint();
         Tile target = maze.getTile(x, y, 0);
