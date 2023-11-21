@@ -1,12 +1,11 @@
 package com.game.tiles;
 
-import org.json.JSONObject;
-
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Player;
+import org.json.JSONObject;
 
 /**
  * Tile class.
