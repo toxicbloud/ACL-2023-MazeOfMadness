@@ -12,5 +12,7 @@ public enum ItemType {
     /** Speed potion type. */
     ITEM_SPEED_POTION,
     /** PlayerFist weapon type. */
-    WEAPON_PLAYER_FIST
+    WEAPON_PLAYER_FIST,
+    /** Sword weapon type. */
+    WEAPON_SWORD
 }
