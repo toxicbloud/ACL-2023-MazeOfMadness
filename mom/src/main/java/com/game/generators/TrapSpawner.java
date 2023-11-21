@@ -38,8 +38,9 @@ public final class TrapSpawner {
      * This Method spawn different traps inside the maze.
      *
      * @param maze Maze to populate.
+     * @return Maze populated with traps.
      */
-    public static void spawnTraps(Maze maze) {
+    public static Maze spawnTraps(Maze maze) {
         SecureRandom sr = new SecureRandom();
         Tile[] mazeTiles = maze.getTiles();
         boolean spawnedATrap = false; // This value allows us to not spawn a trap where there is already one.
@@ -66,6 +67,7 @@ public final class TrapSpawner {
                 }
             }
         }
+        return new Maze(maze.getWidth(), maze.getHeight(), maze.getDepth(), mazeTiles, maze.getSpawnPoint());
     }
 
     /**
