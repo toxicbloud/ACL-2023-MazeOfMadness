@@ -40,8 +40,6 @@ public abstract class Living extends Entity {
     private int maxHealth;
     /** Living speed. */
     private float speed;
-    /** Strength amount. */ // TODO : rename that if needed.
-    private float strength;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
