@@ -17,7 +17,7 @@ public class StrengthPotionTest extends PotionTestInitializer {
         StrengthPotion potion = new StrengthPotion();
         potion.applyEffect(this.getPlayer());
 
-        final String str = "[ERROR] - The potion eefect did not change the weapon !";
+        final String str = "[ERROR] - The potion effect did not change the weapon !";
         assert this.getPlayer().getWeapon().hasDoubleDamage() : str;
     }
 
