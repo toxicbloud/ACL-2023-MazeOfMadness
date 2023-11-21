@@ -1,11 +1,18 @@
 package com.editor;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.engine.Sprite;
-import com.engine.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.engine.events.EventMouseMoved;
@@ -26,6 +33,8 @@ import com.renderer.GameScene;
 public class EditorScene extends GameScene {
     /** Height of the editor tab. */
     private static final int EDITOR_TAB_HEIGHT = 200;
+    /** Padding between editor buttons. */
+    private static final int EDITOR_BUTTON_PADDING = 4;
     /** Color of the editor tab background. */
     private static final Color TAB_BACKGROUND_COLOR = new Color(0.2f, 0.22f, 0.25f, 1.0f);
 
@@ -40,38 +49,46 @@ public class EditorScene extends GameScene {
     private Vector2 lastMousePosition;
     /** Current mmouse position on screen. */
     private Vector2 mousePosition;
-    /** Current cursor position. */
-    private Vector3 cursorPos;
+
+    /** Placeholder block. For 3D cursor visualization. */
+    private PlaceholderBlock placeholderBlock;
+
+    /** Stage for Editor top interface. */
+    private Stage stage;
 
     /**
      * EditorScene constructor.
      */
     public EditorScene() {
         super();
+        this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
     @Override
     public void create() {
         super.create();
+        this.placeholderBlock = new PlaceholderBlock();
         Game.getInstance().setMaze(new Maze(2, 1, 1, new Tile[]{new GroundRock(), new WallRock()}));
+
+        this.buildEditorTab();
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(Window.getInstance().getEventManager());
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
     public void update() {
+        stage.act();
         super.update();
     }
 
     @Override
     public void render() {
-        super.render();
-        if (cursorPos != null) {
-            new Sprite(
-                new Texture("images/debug.png"),
-                16,
-                16,
-                0
-            ).render(cursorPos, new Vector3(1, 1, 1));
+        if (this.inGameSceneZone) {
+            Game.getInstance().getMaze().addTemporaryEntity(this.placeholderBlock);
         }
+        super.render();
         renderEditorTab();
     }
 
@@ -95,6 +112,81 @@ public class EditorScene extends GameScene {
         return super.getHeight() - EDITOR_TAB_HEIGHT;
     }
 
+    private void buildEditorTab() {
+        Table root = new Table();
+        root.setFillParent(true);
+        root.setHeight(EDITOR_TAB_HEIGHT);
+        stage.addActor(root);
+
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        TextButton loadBtn = new TextButton("Load", skin);
+        TextButton saveBtn = new TextButton("Save", skin);
+        TextButton backBtn = new TextButton("Back", skin);
+        TextButton upBtn = new TextButton("/\\", skin);
+        TextButton downBtn = new TextButton("\\/", skin);
+
+        Table mainTable = new Table();
+
+        Table loadSaveButtons = new Table();
+        loadSaveButtons.add(loadBtn)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+        loadSaveButtons.row();
+        loadSaveButtons.add(saveBtn)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+
+        Table upDownButtons = new Table();
+        upDownButtons.add(upBtn)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+        upDownButtons.add(downBtn)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+
+        Table backButtons = new Table();
+        backButtons.add(backBtn)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+        backButtons.row();
+        backButtons.add(upDownButtons)
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
+
+        Table selectorTable = new Table();
+
+        mainTable.add(backButtons);
+        mainTable.add(selectorTable).growX();
+        mainTable.add(loadSaveButtons);
+        root.add(mainTable).expand().growX().top();
+
+        loadBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("loadBtn click");
+            }
+        });
+        saveBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("saveBtn click");
+            }
+        });
+        backBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("backBtn click");
+            }
+        });
+        upBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("upBtn click");
+            }
+        });
+        downBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("downBtn click");
+            }
+        });
+    }
+
     private void renderEditorTab() {
         SpriteBatch canvas = Window.getInstance().getCanvas();
         ShapeRenderer hud = Window.getInstance().getHUD();
@@ -111,6 +203,10 @@ public class EditorScene extends GameScene {
         );
 
         hud.end();
+
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        stage.getViewport().apply(true);
+        stage.draw();
         canvas.begin();
     }
 
@@ -144,7 +240,8 @@ public class EditorScene extends GameScene {
                     lastMousePosition = mousePosition;
                 } else {
                     EventMouseMoved event = (EventMouseMoved) ev;
-                    cursorPos = getBlocAtCursor(new Vector2(event.getX(), event.getY()), 0);
+                    Vector3 cursorPos = getBlocAtCursor(new Vector2(event.getX(), event.getY()), 0);
+                    this.placeholderBlock.setPosition(cursorPos);
                 }
                 break;
             default:
@@ -167,9 +264,9 @@ public class EditorScene extends GameScene {
         float x = y + 2 * a;
 
         return new Vector3(
-            Math.round(x),
-            Math.round(y),
-            Math.round(z)
+            Math.round(x + getCamera().getPosition().x),
+            Math.round(y + getCamera().getPosition().y),
+            Math.round(z + getCamera().getPosition().z)
         );
     }
 }

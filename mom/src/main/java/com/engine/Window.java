@@ -203,6 +203,14 @@ public class Window extends Game {
     }
 
     /**
+     * Get the window event manager.
+     * @return The window event manager.
+     */
+    public EventManager getEventManager() {
+        return this.events;
+    }
+
+    /**
      * Close the window.
      */
     public void close() {

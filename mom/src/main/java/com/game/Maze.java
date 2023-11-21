@@ -32,6 +32,8 @@ public class Maze implements Evolvable {
     private Item[] items;
     /** Spawnpoint for the player. */
     private Vector3 spawnPoint;
+    /** Temporary entities (only drew for the current frame). */
+    private List<Entity> temporaryEntities = new ArrayList<>();
 
     /**
      * Maze constructor.
@@ -136,6 +138,7 @@ public class Maze implements Evolvable {
         entities.addAll(List.of(this.monsters));
         entities.addAll(List.of(this.tiles));
         entities.addAll(List.of(this.items));
+        entities.addAll(temporaryEntities);
         if (Game.getInstance().getPlayer() != null) {
             entities.add(0, Game.getInstance().getPlayer());
         }
@@ -157,6 +160,16 @@ public class Maze implements Evolvable {
                 c.render();
             }
         }
+
+        temporaryEntities.clear();
+    }
+
+    /**
+     * Add a temporary entity to draw on this frame only.
+     * @param e The entity to add.
+     */
+    public void addTemporaryEntity(Entity e) {
+        temporaryEntities.add(e);
     }
 
     /**
