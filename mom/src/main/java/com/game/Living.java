@@ -234,7 +234,7 @@ public abstract class Living extends Entity {
         if (this.health < 0) {
             this.health = 0;
         }
-        return this.health <= 0;
+        return this.health == 0;
     }
 
     /**
