@@ -4,6 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Time;
 import com.game.Item;
+import com.game.ItemType;
 import com.game.Living;
 
 /**
@@ -30,7 +31,7 @@ public abstract class Weapon extends Item {
      * @param range           The range.
      */
     protected Weapon(int damage, int cooldown, float range) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), ItemType.WEAPON_PLAYER_FIST);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
@@ -46,7 +47,7 @@ public abstract class Weapon extends Item {
      * @param hasDoubleDamage If the power of this weapon has been doubled.
      */
     protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), ItemType.WEAPON_PLAYER_FIST);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
