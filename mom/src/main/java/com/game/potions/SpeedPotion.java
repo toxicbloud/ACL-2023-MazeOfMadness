@@ -1,6 +1,7 @@
 package com.game.potions;
 
 import com.engine.utils.Vector3;
+import com.game.ItemType;
 import com.game.Player;
 
 /**
@@ -20,14 +21,14 @@ public class SpeedPotion extends Potion {
      * @param position Position of the potion inside the maze.
      */
     public SpeedPotion(Vector3 position) {
-        super(SpeedPotion.SPRITE_SHIFT, position);
+        super(SpeedPotion.SPRITE_SHIFT, position, ItemType.ITEM_SPEED_POTION);
     }
 
     /**
      * Speed potion constructor.
      */
     public SpeedPotion() {
-        super(SpeedPotion.SPRITE_SHIFT, new Vector3());
+        super(SpeedPotion.SPRITE_SHIFT, new Vector3(), ItemType.ITEM_SPEED_POTION);
     }
 
     @Override
