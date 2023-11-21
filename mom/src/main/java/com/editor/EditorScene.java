@@ -1,12 +1,5 @@
 package com.editor;
 
-import java.awt.FileDialog;
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.files.FileHandle;
@@ -49,6 +42,13 @@ import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
 import com.ui.MenuScene;
+
+import java.awt.FileDialog;
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Editor scene.

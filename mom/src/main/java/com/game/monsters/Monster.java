@@ -3,8 +3,8 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Living;
-import org.json.JSONObject;
 import com.game.Score;
+import org.json.JSONObject;
 
 /**
  * Monster class.
