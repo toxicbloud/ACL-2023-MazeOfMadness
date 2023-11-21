@@ -260,7 +260,7 @@ public class EditorScene extends GameScene {
                     "level author",
                     "level version",
                     Game.getInstance().getMaze(),
-                    this.player);
+                    player);
 
                 FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");
                 dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
