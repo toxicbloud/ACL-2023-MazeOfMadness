@@ -61,12 +61,12 @@ public class Zombie extends Monster {
     }
 
     /**
-     * Accept a Score object.
+     * Affect the score.
      *
      * @param score The score object to accept.
      */
     @Override
-    public void accept(Score score) {
+    public void affectScore(Score score) {
         score.addPoints(ZOMBIE_HEALTH);
         score.addKill(MonsterType.MONSTER_ZOMBIE);
     }

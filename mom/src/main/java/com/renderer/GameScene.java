@@ -182,7 +182,7 @@ public class GameScene extends Scene {
         // delete monsters that are dead
         for (Monster monster : maze.getMonsters()) {
             if (monster.isDead()) {
-                game.getScore().handleKill(monster);
+                monster.affectScore(game.getScore());
                 maze.removeMonster(monster);
             }
         }
