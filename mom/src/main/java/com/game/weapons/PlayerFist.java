@@ -16,4 +16,17 @@ public class PlayerFist extends WeaponFist {
     public PlayerFist() {
         super(DAMAGE, ATTACK_COOLDOWN);
     }
+
+    /**
+     * PlayerFist constructor.
+     * @param hasDoubleDamage If the weapon's damage have been doubled.
+     */
+    public PlayerFist(boolean hasDoubleDamage) {
+        super(PlayerFist.DAMAGE * 2, PlayerFist.ATTACK_COOLDOWN, hasDoubleDamage);
+    }
+
+    @Override
+    public Weapon createDoubleDamageWeapon() {
+        return new PlayerFist(true);
+    }
 }

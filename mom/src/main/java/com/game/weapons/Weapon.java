@@ -20,19 +20,38 @@ public abstract class Weapon extends Item {
     private float range;
     /** The last time when the player attacks. */
     private long lastAttackTime;
+    /** If the weapon's damage has been multiplied by a potion. */
+    private final boolean hasDoubleDamage;
 
     /**
      * Weapon constructor.
      *
-     * @param damage   The damage amount.
-     * @param cooldown The cooldown between two attacks.
-     * @param range    The range.
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
      */
     protected Weapon(int damage, int cooldown, float range) {
         super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
+        this.hasDoubleDamage = false;
+    }
+
+    /**
+     * Weapon constructor.
+     *
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     */
+    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
     }
 
     /**
@@ -100,4 +119,19 @@ public abstract class Weapon extends Item {
     public void update() {
 
     }
+
+    /**
+     * Returns if the weapon's damage has been doubled.
+     * @return If the weapon's damage has been doubled.
+     */
+    public boolean hasDoubleDamage() {
+        return hasDoubleDamage;
+    }
+
+    /**
+     * This method creates a new weapon that has the double of the damages of the current weapon.
+     *
+     * @return A double damage weapon.
+     */
+    public abstract Weapon createDoubleDamageWeapon();
 }

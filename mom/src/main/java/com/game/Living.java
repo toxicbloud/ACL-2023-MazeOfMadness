@@ -40,6 +40,8 @@ public abstract class Living extends Entity {
     private int maxHealth;
     /** Living speed. */
     private float speed;
+    /** Strength amount. */ // TODO : rename that if needed.
+    private float strength;
     /** Living direction. */
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
@@ -148,7 +150,7 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Create an health bar.
+     * Creates a health bar.
      */
     private void renderHealthBar() {
         Window.getInstance().getCanvas().end();
@@ -234,16 +236,21 @@ public abstract class Living extends Entity {
         if (this.health < 0) {
             this.health = 0;
         }
-        return this.health <= 0;
+        return this.health == 0;
     }
 
     /**
-     * Regenerate health.
+     * Regenerate health. If the health amount makes the entity's health higher than it's maximum possible health, it
+     * caps to the maximum health.
      *
      * @param h The health amount.
      */
     public void regen(int h) {
-        this.health += h;
+        if (this.getHealth() + h < this.maxHealth) {
+            this.health += h;
+        } else {
+            this.health = this.maxHealth;
+        }
     }
 
     /**
