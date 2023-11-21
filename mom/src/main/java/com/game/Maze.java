@@ -296,6 +296,17 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * remove a monster from the maze.
+     *
+     * @param m the monster to remove.
+     */
+    public void removeMonster(Monster m) {
+        List<Monster> ms = new ArrayList<>(Arrays.asList(this.monsters));
+        ms.remove(m);
+        this.monsters = ms.toArray(new Monster[0]);
+    }
+
+    /**
      * Set the monsters of the maze.
      *
      * @param monsters The monsters of the maze.

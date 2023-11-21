@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.game.Game;
+import com.game.Score;
+import com.game.monsters.MonsterType;
 
 /**
  * Scene shown when the game ends.
@@ -118,15 +121,19 @@ public class EndScene extends Scene {
             root.row();
             failSound.play();
         }
-
+        Score score = Game.getInstance().getScore();
         root.row();
+        // score label
+        Label scoreLabel = new Label("Score: " + score.getPoints(), skin, "subtitle");
+        root.add(scoreLabel).center().padBottom(FIFTY_CONSTANT).row();
         Table zombieTable = new Table();
         zombieTable.add(zombie).size(ONE_HUNDRED_FLOAT, ONE_HUNDRED_FLOAT);
-        zombieTable.add(new Label("x5", skin, "subtitle"));
+        zombieTable.add(new Label("x" + score.getKillCount(MonsterType.MONSTER_ZOMBIE), skin,
+                "subtitle"));
         // space between the two
         zombieTable.add().width(ONE_HUNDRED_FLOAT);
         zombieTable.add(ghost).size(ONE_HUNDRED_FLOAT, ONE_HUNDRED_FLOAT);
-        zombieTable.add(new Label("x25", skin, "subtitle"));
+        zombieTable.add(new Label("x" + score.getKillCount(MonsterType.MONSTER_GHOST), skin, "subtitle"));
         root.add(zombieTable).center().padBottom(FIFTY_CONSTANT);
         root.row();
 
