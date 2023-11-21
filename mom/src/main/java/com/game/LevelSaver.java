@@ -3,6 +3,8 @@ package com.game;
 import com.badlogic.gdx.files.FileHandle;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -53,31 +55,31 @@ public final class LevelSaver {
         return json;
     }
 
-    private static JSONObject mazeTiles2json(Tile[] tiles) {
-        JSONObject json = new JSONObject();
+    private static JSONArray mazeTiles2json(Tile[] tiles) {
+        JSONArray json = new JSONArray();
 
         for (int i = 0; i < tiles.length; i++) {
-            json.put(String.valueOf(i), tiles[i].toJSON());
+            json.put(tiles[i].toJSON());
         }
 
         return json;
     }
 
-    private static JSONObject mazeMonsters2json(Monster[] monsters) {
-        JSONObject json = new JSONObject();
+    private static JSONArray mazeMonsters2json(Monster[] monsters) {
+        JSONArray json = new JSONArray();
 
         for (int i = 0; i < monsters.length; i++) {
-            json.put(String.valueOf(i), monsters[i].toJSON());
+            json.put(monsters[i].toJSON());
         }
 
         return json;
     }
 
-    private static JSONObject mazeitems2json(Item[] items) {
-        JSONObject json = new JSONObject();
+    private static JSONArray mazeitems2json(Item[] items) {
+        JSONArray json = new JSONArray();
 
         for (int i = 0; i < items.length; i++) {
-            json.put(String.valueOf(i), items[i].toJSON());
+            json.put(items[i].toJSON());
         }
 
         return json;
