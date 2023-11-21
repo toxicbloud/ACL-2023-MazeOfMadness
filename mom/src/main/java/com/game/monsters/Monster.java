@@ -3,6 +3,7 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Living;
+import org.json.JSONObject;
 
 /**
  * Monster class.
@@ -80,5 +81,19 @@ public abstract class Monster extends Living {
      */
     public MonsterType getType() {
         return type;
+    }
+
+    /**
+     * Returns a JSON version of the monster.
+     * @return A JSONObject representing the monster.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("type", this.type.toString());
+        json.put("position", this.getPosition().toJSON());
+        json.put("health", this.getHealth());
+
+        return json;
     }
 }

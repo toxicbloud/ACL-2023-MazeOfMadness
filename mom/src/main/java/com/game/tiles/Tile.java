@@ -1,5 +1,7 @@
 package com.game.tiles;
 
+import org.json.JSONObject;
+
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
@@ -118,6 +120,18 @@ public abstract class Tile extends Entity {
      */
     public void onPlayerExit(Player p) {
 
+    }
+
+    /**
+     * Returns a json version of the tile.
+     * @return A JSONObject representing the tile.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("type", type.toString());
+
+        return json;
     }
 
 }

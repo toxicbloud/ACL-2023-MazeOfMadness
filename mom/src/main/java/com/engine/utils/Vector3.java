@@ -1,5 +1,7 @@
 package com.engine.utils;
 
+import org.json.JSONObject;
+
 /**
  * Vector3 class.
  * This is a 3D vector.
@@ -109,5 +111,19 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
      */
     public float getZ() {
         return z;
+    }
+
+    /**
+     * Returns a json representation of the vector.
+     * @return a JSONObject representing the vector.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("x", x);
+        json.put("y", y);
+        json.put("z", z);
+
+        return json;
     }
 }

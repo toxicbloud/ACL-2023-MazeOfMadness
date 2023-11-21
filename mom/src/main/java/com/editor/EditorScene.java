@@ -1,7 +1,15 @@
 package com.editor;
 
+import java.awt.FileDialog;
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,19 +31,24 @@ import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
 import com.game.Item;
+import com.game.Level;
+import com.game.LevelLoader;
 import com.game.Maze;
+import com.game.Player;
 import com.game.monsters.Monster;
+import com.game.monsters.Zombie;
+import com.game.potions.HealthPotion;
+import com.game.tiles.End;
+import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
+import com.game.tiles.GroundSpikes;
+import com.game.tiles.GroundWater;
+import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
 import com.ui.MenuScene;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Editor scene.
@@ -63,11 +76,11 @@ public class EditorScene extends GameScene {
     /** Is the mouse pressed or not. */
     private boolean mousePressed;
     /** Last action's mouse position on screen. */
-    private Vector2 lastMousePosition;
+    private Vector2 lastMousePosition = new Vector2();
     /** Last click's mouse position on screen. */
-    private Vector2 lastMouseClickPosition;
+    private Vector2 lastMouseClickPosition = new Vector2();
     /** Current mmouse position on screen. */
-    private Vector2 mousePosition;
+    private Vector2 mousePosition = new Vector2();
 
     /** Placeholder block. For 3D cursor visualization. */
     private PlaceholderBlock placeholderBlock;
@@ -96,7 +109,15 @@ public class EditorScene extends GameScene {
 
         selectableEntities = new Entity[]{
             new GroundRock(),
-            new WallRock()
+            new WallRock(),
+            new End(),
+            new Next(),
+            new GroundSpikes(),
+            new GroundWater(),
+            new GroundLava(),
+            new HealthPotion(),
+            new Zombie(),
+            new Player()
         };
     }
 
@@ -212,7 +233,14 @@ public class EditorScene extends GameScene {
 
         loadBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("loadBtn click");
+                FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Open");
+                dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
+                dialog.setMode(FileDialog.LOAD);
+                dialog.setVisible(true);
+                String file = dialog.getFile();
+                String path = dialog.getDirectory();
+
+                loadFile(path + file);
             }
         });
         saveBtn.addListener(new ClickListener() {
@@ -448,5 +476,10 @@ public class EditorScene extends GameScene {
                 monstersArray,
                 itemsArray,
                 false));
+    }
+
+    private void loadFile(String file) {
+        Level level = LevelLoader.load(new FileHandle(new File(file)));
+        Game.getInstance().setMaze(level.getMaze());
     }
 }

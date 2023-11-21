@@ -205,6 +205,7 @@ public class Maze implements Evolvable {
             Controller c = e.getController();
             if (c != null) {
                 c.render();
+            }
             if (e != null) {
                 e.render();
             }

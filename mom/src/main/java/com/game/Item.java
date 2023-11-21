@@ -1,9 +1,8 @@
 package com.game;
 
-import org.json.JSONObject;
-
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
+import org.json.JSONObject;
 
 /**
  * Item class.
@@ -35,7 +34,7 @@ public abstract class Item extends Entity {
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 
-        json.put("type", this.type);
+        // json.put("type", this.type);
         json.put("position", getPosition().toJSON());
 
         return json;
