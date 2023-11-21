@@ -181,6 +181,7 @@ public class GameScene extends Scene {
 
         this.camera.update();
         maze.update();
+        pauseMenu.act();
     }
 
     /**
@@ -192,9 +193,12 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
+
+        Window.getInstance().getCanvas().end();
+        Window.getInstance().getCanvas().begin();
+
         if (isPaused) {
             pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-            pauseMenu.act();
             pauseMenu.draw();
         }
     }
