@@ -197,7 +197,7 @@ public abstract class Living extends Entity {
      *
      * @return The living entity in the range attack.
      */
-    public List<Living> findEnemyInPlayerVision() {
+    public List<Living> findEnemiesInPlayerFOV() {
         List<Living> enemiesInFOV = new ArrayList<>();
         Living[] enemies = Game.getInstance().getMaze().getMonsters();
 
@@ -220,7 +220,7 @@ public abstract class Living extends Entity {
      * @param player The player.
      * @return Whether the player is in an enemy's field of vision.
      */
-    public boolean findPlayerInEnemyVision(Living player) {
+    public boolean findPlayerInEnemyFOV(Living player) {
         Vector3 playerPosition = player.getPosition();
         Vector3 enemyPosition = getPosition();
 

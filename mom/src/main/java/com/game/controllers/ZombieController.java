@@ -140,7 +140,6 @@ public class ZombieController extends Controller {
             && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
             ((Zombie) target).getWeapon().setPosition(target.getPosition());
             ((Zombie) target).getWeapon().attack(player);
-            System.out.println("Attaque");
             lastAttackTime = Time.getInstance().getCurrentTime();
         }
     }
