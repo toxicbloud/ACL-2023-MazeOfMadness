@@ -118,37 +118,8 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
-        if (this.playerController == null) {
-            this.playerController = new PlayerController(Game.getInstance().getPlayer());
-        }
-        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
-        pauseMenu = new Stage(new ScreenViewport());
-        Table root = new Table();
-        root.setFillParent(true);
-        pauseMenu.addActor(root);
-        // continue button
-        TextButton continueButton = new TextButton("Continue", skin);
-        continueButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                isPaused = false;
-                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
-            }
-        });
-        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
-        // exit button
-        TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Game.getInstance().setMaze(null);
-                Game.getInstance().setPlayer(null);
-                Window.getInstance().setScene(new EndScene(false));
-            }
-        });
-        // max int value to be sure that
-        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
+        this.playerController = new PlayerController(Game.getInstance().getPlayer());
+        buildMenu();
     }
 
     /**
@@ -243,6 +214,39 @@ public class GameScene extends Scene {
      */
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    /**
+     * Build the menu UI.
+     */
+    private void buildMenu() {
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        pauseMenu = new Stage(new ScreenViewport());
+        Table root = new Table();
+        root.setFillParent(true);
+        pauseMenu.addActor(root);
+        // continue button
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isPaused = false;
+                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+            }
+        });
+        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
+        // exit button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.getInstance().setMaze(null);
+                Game.getInstance().setPlayer(null);
+                Window.getInstance().setScene(new EndScene(false));
+            }
+        });
+        // max int value to be sure that
+        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
     }
 
     /**
