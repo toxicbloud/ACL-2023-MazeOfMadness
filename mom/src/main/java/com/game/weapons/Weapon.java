@@ -2,7 +2,6 @@ package com.game.weapons;
 
 import com.engine.Sprite;
 import com.engine.Texture;
-import com.engine.utils.Time;
 import com.game.Item;
 import com.game.Living;
 
@@ -17,8 +16,6 @@ public abstract class Weapon extends Item {
     private int cooldown;
     /** Weapon range. */
     private float range;
-    /** The last time when the player attacks. */
-    private long lastAttackTime;
 
     /**
      * Weapon constructor.
@@ -71,10 +68,7 @@ public abstract class Weapon extends Item {
         if (this.distance(living) > this.range) {
             return false;
         }
-        if (Time.getInstance().getCurrentTime() - lastAttackTime > getCooldown()) {
-            living.takeDamage(this.damage);
-            lastAttackTime = Time.getInstance().getCurrentTime();
-        }
+        living.takeDamage(this.damage);
         return true;
     }
 
