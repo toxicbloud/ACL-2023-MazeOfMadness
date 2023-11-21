@@ -44,6 +44,7 @@ Il s'adresse donc aux joueurs occasionnels voulant battre la campagne mais aussi
 | **S**            | Se déplacer vers le bas.   |
 | **D**            | Se déplacer vers la droite.|
 | **barre espace** | Attaquer les monstres.     |
+| **F**            | Ramasser les objets.       |
 
 ## Objectif du Projet
 L'objectif ultime de ce projet est de créer une expérience de jeu isométrique captivante qui défie les joueurs avec des labyrinthes complexes ainsi qu'une variété de monstres. Le jeu vise à offrir une rejouabilité infinie grâce à ses labyrinthes générés aléatoirement et à son éditeur de niveaux communautaires.
