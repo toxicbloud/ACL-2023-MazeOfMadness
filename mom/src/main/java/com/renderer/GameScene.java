@@ -1,9 +1,19 @@
 package com.renderer;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.engine.events.EventKeyPressed;
 import com.engine.events.EventMouseScrolled;
+import com.engine.events.KeyCode;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
@@ -12,6 +22,7 @@ import com.game.Player;
 import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
 import com.ui.EndScene;
+import com.ui.MenuScene;
 
 /**
  * GameScene class.
@@ -30,6 +41,8 @@ public class GameScene extends Scene {
     private static final float TILE_X_SHIFT = 0.25f;
     /** Amount of shift in y (screen) direction for block on top of others. */
     private static final float TILE_Y_SHIFT = 0.5f;
+    /** Button padding. */
+    private static final int BUTTON_PADDING = 20;
 
     /** Scene camera. */
     private Camera camera;
@@ -37,6 +50,10 @@ public class GameScene extends Scene {
     private PlayerController playerController;
     /** Last entered tile by the player. */
     private Tile enteredTile;
+    /** Pause menu. */
+    private Stage pauseMenu;
+    /** boolean to know if the game is paused. */
+    private boolean isPaused;
 
     /**
      * GameScene constructor.
@@ -44,6 +61,7 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+        isPaused = false;
     }
 
     /**
@@ -109,6 +127,31 @@ public class GameScene extends Scene {
         if (this.playerController == null) {
             this.playerController = new PlayerController(Game.getInstance().getPlayer());
         }
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        pauseMenu = new Stage(new ScreenViewport());
+        Table root = new Table();
+        root.setFillParent(true);
+        pauseMenu.addActor(root);
+        // continue button
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isPaused = false;
+                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+            }
+        });
+        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
+        // exit button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Window.getInstance().setScene(new MenuScene());
+            }
+        });
+        // max int value to be sure that
+        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
     }
 
     /**
@@ -149,6 +192,11 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
+        if (isPaused) {
+            pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+            pauseMenu.act();
+            pauseMenu.draw();
+        }
     }
 
     /**
@@ -161,6 +209,16 @@ public class GameScene extends Scene {
             case MOUSE_SCROLLED:
                 float delta = -((EventMouseScrolled) event).getDelta();
                 this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
+                break;
+            case KEY_PRESSED:
+                if (((EventKeyPressed) event).getKeyCode() == KeyCode.KEY_ESCAPE) {
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        Gdx.input.setInputProcessor(pauseMenu);
+                    } else {
+                        Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+                    }
+                }
                 break;
             default:
                 break;
