@@ -5,13 +5,19 @@ import com.engine.utils.Vector3;
 import com.game.exceptions.InvalidItemException;
 import com.game.exceptions.InvalidMonsterException;
 import com.game.exceptions.InvalidSchemaException;
+import com.game.exceptions.InvalidTileException;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
+import com.game.potions.HealthPotion;
+import com.game.potions.SpeedPotion;
+import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundGrass;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
+import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
+import com.game.tiles.Next;
 import com.game.tiles.StairGrass;
 import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
@@ -19,7 +25,6 @@ import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.game.weapons.Sword;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -122,7 +127,7 @@ public class Level {
             tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
             monsters = parseMonsters(mazeJsonObject.getJSONArray("monsters"));
             items = parseItems(mazeJsonObject.getJSONArray("items"));
-        } catch (InvalidMonsterException | InvalidItemException e) {
+        } catch (InvalidMonsterException | InvalidItemException | InvalidTileException e) {
             System.err.println("Error : Cannot load level : " + e.getMessage());
             return null;
         }
@@ -133,32 +138,41 @@ public class Level {
             depth,
             tiles,
             monsters,
-            items);
+            items,
+            false);
     }
 
-    private Tile parseTile(JSONObject tileJsonObject) throws IllegalArgumentException, JSONException {
+    private Tile parseTile(JSONObject tileJsonObject) throws InvalidTileException, InvalidSchemaException {
+        verifyJSON(tileJsonObject, "type");
+        verifyJSON(tileJsonObject, "position");
+
         String type = tileJsonObject.getString("type");
+        Vector3 position = parsePosition(tileJsonObject.getJSONObject("position"));
         switch (type) {
-            case "StairGrass":
-                return new StairGrass(tileJsonObject.getInt("direction"));
-            case "StairRock":
-                return new StairRock(tileJsonObject.getInt("direction"));
-            case "GroundRock":
-                return new GroundRock();
-            case "GroundLava":
-                return new GroundLava();
-            case "GroundWater":
-                return new GroundWater();
+            case "STAIR_GRASS":
+                return new StairGrass(position, tileJsonObject.getInt("direction"));
+            case "STAIR_ROCK":
+                return new StairRock(position, tileJsonObject.getInt("direction"));
+            case "GROUND_ROCK":
+                return new GroundRock(position);
+            case "GROUND_LAVA":
+                return new GroundLava(position);
+            case "GROUND_WATER":
+                return new GroundWater(position);
+            case "GROUND_SPIKES":
+                return new GroundSpikes(position);
             case "GroundGrass":
-                return new GroundGrass();
-            case "WallRock":
-                return new WallRock();
-            case "VoidTile":
-                return new VoidTile();
-            case "End":
-                return new End();
+                return new GroundGrass(position);
+            case "WALL_ROCK":
+                return new WallRock(position);
+            case "VOID":
+                return new VoidTile(position);
+            case "GROUND_NEXT":
+                return new Next(position);
+            case "GROUND_END":
+                return new End(position);
             default:
-                throw new IllegalArgumentException("Unknown tile type: " + type);
+                throw new InvalidTileException("Unknown tile type: " + type);
         }
     }
 
@@ -186,8 +200,12 @@ public class Level {
         String type = monsterJsonObject.getString("type");
         Vector3 position = parsePosition(monsterJsonObject.getJSONObject("position"));
         switch (type) {
-            case "zombie":
+            case "MONSTER_ZOMBIE":
                 return new Zombie(position);
+            // case "MONSTER_GHOST":
+            //     return new Ghost(position);
+            // case "MONSTER_BOSS":
+            //     return new Boss(position);
             default:
                 throw new InvalidMonsterException("[" + type + "] monster does not exist (invalid monster type).");
         }
@@ -200,14 +218,21 @@ public class Level {
         String type = itemJsonObject.getString("type");
         Vector3 position = parsePosition(itemJsonObject.getJSONObject("position"));
         switch (type) {
-            case "sword":
+            case "WEAPON_SWORD":
                 return new Sword(position);
+            case "ITEM_HEALTH_POTION":
+                return new HealthPotion(position);
+            case "ITEM_STRENGTH_POTION":
+                return new StrengthPotion(position);
+            case "ITEM_SPEED_POTION":
+                return new SpeedPotion(position);
             default:
                 throw new InvalidItemException("[" + type + "] item does not exist (invalid item type).");
         }
     }
 
-    private Tile[] parseTiles(JSONArray tilesJsonArray) {
+    private Tile[] parseTiles(JSONArray tilesJsonArray)
+        throws InvalidTileException, InvalidSchemaException {
         Tile[] tiles = new Tile[tilesJsonArray.length()];
         for (int i = 0; i < tilesJsonArray.length(); i++) {
             tiles[i] = parseTile(tilesJsonArray.getJSONObject(i));

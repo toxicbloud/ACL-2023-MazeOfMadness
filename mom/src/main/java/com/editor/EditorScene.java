@@ -151,10 +151,13 @@ public class EditorScene extends GameScene {
 
     @Override
     public void render() {
-        if (this.inGameSceneZone) {
-            Game.getInstance().getMaze().addTemporaryEntity(this.placeholderBlock);
+        Maze maze = Game.getInstance().getMaze();
+        if (maze != null) {
+            if (this.inGameSceneZone) {
+                maze.addTemporaryEntity(this.placeholderBlock);
+            }
+            Game.getInstance().getMaze().addTemporaryEntity(this.player);
         }
-        Game.getInstance().getMaze().addTemporaryEntity(this.player);
         super.render();
         renderEditorTab();
         Entity selectedEntity = selectableEntities[selectedEntityIndex];

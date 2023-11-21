@@ -129,6 +129,7 @@ public abstract class Tile extends Entity {
         JSONObject json = new JSONObject();
 
         json.put("type", type.toString());
+        json.put("position", getPosition().toJSON());
 
         return json;
     }
