@@ -225,7 +225,7 @@ public abstract class Living extends Entity {
         double angleBetweenEntities = Math.toDegrees(Math.atan2(entity1ToEntity2.getY(), entity1ToEntity2.getX()));
         angleBetweenEntities = (angleBetweenEntities + DEGREES) % DEGREES;
         double angleDiff = Math.abs(angleBetweenEntities - directionToAngle(entity1.getDirection()));
-        return angleDiff <= FOV_RADIUS / 2;
+        return angleDiff <= FOV_RADIUS / 2 || angleDiff >= DEGREES - FOV_RADIUS / 2;
     }
 
     /**
