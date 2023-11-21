@@ -28,9 +28,19 @@ public abstract class Item extends Entity {
      * @param sprite The sprite to use.
      * @param position The position of the item.
      * @param size The size of the item.
+     * @param t The type of the item.
      */
-    protected Item(Sprite sprite, Vector3 position, Vector3 size) {
+    protected Item(Sprite sprite, Vector3 position, Vector3 size, ItemType t) {
         super(sprite, position, size);
+        this.type = t;
+    }
+
+    /**
+     * Getter for the itemType.
+     * @return Item's type.
+     */
+    public ItemType getItemType() {
+        return type;
     }
 
     /**

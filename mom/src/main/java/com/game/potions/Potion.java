@@ -23,8 +23,11 @@ public abstract class Potion extends Item {
      * @param t Type of the item.
      */
     protected Potion(int spriteShift, Vector3 position, ItemType t) {
-        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift), t);
-        this.setPosition(position);
+        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift),
+                position,
+                new Vector3(1, 1, 1),
+                t
+        );
     }
 
     /**
