@@ -6,10 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.engine.events.EventKeyPressed;
 import com.engine.events.EventMouseScrolled;
+import com.engine.events.KeyCode;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
@@ -19,6 +25,7 @@ import com.game.controllers.PlayerController;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.ui.EndScene;
+import com.ui.MenuScene;
 
 /**
  * GameScene class.
@@ -42,6 +49,9 @@ public class GameScene extends Scene {
     /** Z order multiplier. */
     private static final float Z_ORDER_MULTIPLIER = 4.0f;
 
+    /** Button padding. */
+    private static final int BUTTON_PADDING = 20;
+
     /** Scene camera. */
     private Camera camera;
 
@@ -59,6 +69,10 @@ public class GameScene extends Scene {
      * Indicates if the scene is in edit mode.
      */
     private boolean editMode;
+    /** Pause menu. */
+    private Stage pauseMenu;
+    /** boolean to know if the game is paused. */
+    private boolean isPaused;
 
     /**
      * GameScene constructor.
@@ -66,6 +80,7 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+        isPaused = false;
     }
 
     /**
@@ -141,25 +156,18 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        if (Game.getInstance().getPlayer() == null) {
-            if (Game.getInstance().getMaze() != null) {
-                Game.getInstance().setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
+        Game game = Game.getInstance();
+        if (game.getPlayer() == null) {
+            if (game.getMaze() != null) {
+                game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
             }
         } else {
-            PlayerController controller = (PlayerController) Game.getInstance().getPlayer().getController();
+            PlayerController controller = (PlayerController) game.getPlayer().getController();
             if (controller == null) {
-                new PlayerController(Game.getInstance().getPlayer());
+                new PlayerController(game.getPlayer());
             }
         }
 
-        Game game = Game.getInstance();
-        if (game.getPlayer() == null) {
-            game.setPlayer(
-                    new Player(game.getMaze().getSpawnPoint()));
-        }
-        if (game.getPlayer().getController() == null) {
-            new PlayerController(game.getPlayer());
-        }
         if (!editMode) {
             hud = new Stage(new ScreenViewport());
 
@@ -175,6 +183,31 @@ public class GameScene extends Scene {
             root.add(scoreLabel).pad(SCORE_PADDING).row();
             hud.addActor(root);
         }
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        pauseMenu = new Stage(new ScreenViewport());
+        Table root = new Table();
+        root.setFillParent(true);
+        pauseMenu.addActor(root);
+        // continue button
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isPaused = false;
+                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+            }
+        });
+        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
+        // exit button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Window.getInstance().setScene(new MenuScene());
+            }
+        });
+        // max int value to be sure that
+        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
     }
 
     /**
@@ -208,6 +241,7 @@ public class GameScene extends Scene {
 
         this.camera.update();
         maze.update();
+        pauseMenu.act();
     }
 
     /**
@@ -222,6 +256,14 @@ public class GameScene extends Scene {
         if (!editMode) {
             drawHUD();
         }
+
+        Window.getInstance().getCanvas().end();
+        Window.getInstance().getCanvas().begin();
+
+        if (isPaused) {
+            pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+            pauseMenu.draw();
+        }
     }
 
     /**
@@ -234,6 +276,16 @@ public class GameScene extends Scene {
             case MOUSE_SCROLLED:
                 float delta = -((EventMouseScrolled) event).getDelta();
                 this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
+                break;
+            case KEY_PRESSED:
+                if (((EventKeyPressed) event).getKeyCode() == KeyCode.KEY_ESCAPE) {
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        Gdx.input.setInputProcessor(pauseMenu);
+                    } else {
+                        Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+                    }
+                }
                 break;
             default:
                 break;

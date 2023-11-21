@@ -290,4 +290,13 @@ public class Window extends Game {
     public void run() {
         init();
     }
+
+    /**
+     * Get the event manager.
+     *
+     * @return The event manager.
+     */
+    public EventManager getEventManager() {
+        return this.events;
+    }
 }
