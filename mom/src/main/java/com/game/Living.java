@@ -10,6 +10,9 @@ import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
 import com.renderer.GameScene;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Living class.
  * This is the base class for all living entities.
@@ -174,16 +177,16 @@ public abstract class Living extends Entity {
         switch (direction) {
             case UP:
                 return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y < enemyPos.y
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                        && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case DOWN:
                 return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y > enemyPos.y
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                        && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case RIGHT:
                 return playerPos.x < enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                        && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case LEFT:
                 return playerPos.x > enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                        && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             default:
                 return false;
         }
@@ -194,7 +197,8 @@ public abstract class Living extends Entity {
      *
      * @return The living entity in the range attack.
      */
-    public Living findEnemyInVisionField() {
+    public List<Living> findEnemyInPlayerVision() {
+        List<Living> enemiesInFOV = new ArrayList<>();
         Living[] enemies = Game.getInstance().getMaze().getMonsters();
 
         for (Living enemy : enemies) {
@@ -203,11 +207,24 @@ public abstract class Living extends Entity {
                 Vector3 playerPosition = getPosition();
 
                 if (isInVisionField(playerPosition, enemyPosition)) {
-                    return enemy;
+                    enemiesInFOV.add(enemy);
                 }
             }
         }
-        return null;
+        return enemiesInFOV;
+    }
+
+    /**
+     * Detect whether the player is in an enemy's field of vision.
+     *
+     * @param player The player.
+     * @return Whether the player is in an enemy's field of vision.
+     */
+    public boolean findPlayerInEnemyVision(Living player) {
+        Vector3 playerPosition = player.getPosition();
+        Vector3 enemyPosition = getPosition();
+
+        return isInVisionField(enemyPosition, playerPosition);
     }
 
     /**

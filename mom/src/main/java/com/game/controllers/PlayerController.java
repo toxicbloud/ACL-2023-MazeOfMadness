@@ -62,7 +62,7 @@ public class PlayerController extends Controller implements EventVisitor {
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
         if (attack && Time.getInstance().getCurrentTime() - lastAttackTime
             > ((Player) target).getWeapon().getCooldown()) {
-            List<Living> enemies = ((Player) target).findEnemyInPlayerVision();
+            List<Living> enemies = ((Player) target).findEnemiesInPlayerFOV();
             for (Living enemy : enemies) {
                 ((Player) target).getWeapon().setPosition(target.getPosition());
                 ((Player) target).getWeapon().attack(enemy);
