@@ -269,7 +269,7 @@ public class GameScene extends Scene {
         hud = new Stage(new ScreenViewport());
         // add score in top left corner
         scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
-                new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
+                new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")), "subtitle");
         game.getScore().addPropertyChangeListener("points", evt -> {
             scoreLabel.setText("Score: " + evt.getNewValue());
         });
