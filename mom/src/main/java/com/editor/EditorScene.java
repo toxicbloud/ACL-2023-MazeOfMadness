@@ -106,7 +106,7 @@ public class EditorScene extends GameScene {
      * EditorScene constructor.
      */
     public EditorScene() {
-        super();
+        super(true);
         this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         selectableEntities = new Entity[]{
