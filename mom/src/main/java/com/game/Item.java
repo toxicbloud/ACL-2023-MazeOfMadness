@@ -14,7 +14,7 @@ public abstract class Item extends Entity {
      * @param sprite The sprite to use.
      */
     protected Item(Sprite sprite) {
-        super(sprite);
+        super(sprite, new Vector3(), new Vector3(1, 1, 1));
     }
 
     /**
