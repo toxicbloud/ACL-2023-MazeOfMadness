@@ -25,4 +25,11 @@ public abstract class Item extends Entity {
     protected Item(Sprite sprite, Vector3 position, Vector3 size) {
         super(sprite, position, size);
     }
+
+    /**
+     * This method calls the interaction method of the Item.
+     *
+     * @param player player to use for the interaction.
+     */
+    public abstract void interact(Player player);
 }

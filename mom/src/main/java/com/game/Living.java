@@ -211,6 +211,39 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Detects and returns an item in the player's range if there is one.
+     *
+     * @return The first item in range.
+     */
+    public Item findItemInRange() {
+        for (Item i : Game.getInstance().getMaze().getItems()) {
+            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition())) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method checks if an item is in the range of the player.
+     *
+     * @param itemPosition Position of the item to check.
+     * @param playerPosition Position of the player.
+     * @return If the item is in the range of the player.
+     */
+    private boolean isInRange(Vector3 itemPosition, Vector3 playerPosition) {
+        final float rangeSquared = 0.5f * 0.5f;
+
+        // To compute if the item is in the player's range, we need to check if the distance of the item from the player
+        // is inside a sphere that has for center the player and for radius the pickup range.
+        float xDistanceFromCenterSquared = (itemPosition.x - playerPosition.x) * (itemPosition.x - playerPosition.x);
+        float yDistanceFromCenterSquared = (itemPosition.y - playerPosition.y) * (itemPosition.y - playerPosition.y);
+        float zDistanceFromCenterSquared = (itemPosition.z - playerPosition.z) * (itemPosition.z - playerPosition.z);
+
+        return xDistanceFromCenterSquared + yDistanceFromCenterSquared + zDistanceFromCenterSquared <= rangeSquared;
+    }
+
+    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
