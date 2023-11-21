@@ -23,10 +23,12 @@ public final class MazeFactory {
     /**
      * Private default constructor.
      */
-    private MazeFactory() { }
+    private MazeFactory() {
+    }
 
     /**
-     * This function generates an initialized Maze Object that has been generated randomly with predetermined height
+     * This function generates an initialized Maze Object that has been generated
+     * randomly with predetermined height
      * and width values. These are randomly generated inside the function.
      *
      * @return Maze object initialized with a random maze.
@@ -39,7 +41,8 @@ public final class MazeFactory {
     }
 
     /**
-     * This function generates an initialized Maze Object that has been generated randomly.
+     * This function generates an initialized Maze Object that has been generated
+     * randomly.
      * WARNING - This method is made to generate mazes that are 1 block high.
      *
      * @param width  Width of the maze
@@ -48,6 +51,9 @@ public final class MazeFactory {
      * @return Maze object initialized with a random maze
      */
     public static Maze createMaze(int width, int height, int depth) {
+        if (depth <= 0) {
+            throw new IllegalArgumentException("[ERROR] - depth parameter must be greater than 0");
+        }
         // We prepare the variable for the spawnpoint computed during maze generation.
         Vector3 spawnpoint = new Vector3(0, 0, 0);
 
@@ -61,11 +67,12 @@ public final class MazeFactory {
     }
 
     /**
-     * Superset of the RNG method that allows to provide a random int between 2 numbers.
+     * Superset of the RNG method that allows to provide a random int between 2
+     * numbers.
      * It's only purpose is to facilitate the RNG method call.
      *
-     * @param  min Lower bound.
-     * @param  max Upper bound.
+     * @param min Lower bound.
+     * @param max Upper bound.
      * @return Random int between min and max parameters.
      */
     public static int randomInt(int min, int max) {

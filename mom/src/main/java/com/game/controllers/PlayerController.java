@@ -23,19 +23,22 @@ import com.game.Player;
  * This is the player controller class.
  */
 public class PlayerController extends Controller implements EventVisitor {
-    /** DOWN direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_DOWN = new Vector2(0.0f, 1.0f);
-    /** LEFT direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_LEFT = new Vector2(-1.0f, 0.0f);
-    /** RIGHT direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_RIGHT = new Vector2(1.0f, 0.0f);
-    /** UP direction movement vector. */
-    private static final Vector2 MOVE_VECTOR_UP = new Vector2(0.0f, -1.0f);
+    /** KEY_LEFT index in arrows array. */
+    private static final int KEY_LEFT_INDEX = 0;
+    /** KEY_RIGHT index in arrows array. */
+    private static final int KEY_RIGHT_INDEX = 1;
+    /** KEY_UP index in arrows array. */
+    private static final int KEY_UP_INDEX = 2;
+    /** KEY_DOWN index in arrows array. */
+    private static final int KEY_DOWN_INDEX = 3;
     /** To know if the player attacks or no. */
     private boolean attack;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
+
+    /** Controller's pressed arrows for direction. */
+    private boolean[] arrows = new boolean[4];
 
     /**
      * PlayerController constructor.
@@ -110,19 +113,19 @@ public class PlayerController extends Controller implements EventVisitor {
         switch (code) {
             case KEY_LEFT:
             case KEY_Q:
-                direction = direction.add(MOVE_VECTOR_LEFT);
+                arrows[KEY_LEFT_INDEX] = true;
                 break;
             case KEY_RIGHT:
             case KEY_D:
-                direction = direction.add(MOVE_VECTOR_RIGHT);
+                arrows[KEY_RIGHT_INDEX] = true;
                 break;
             case KEY_UP:
             case KEY_Z:
-                direction = direction.add(MOVE_VECTOR_UP);
+                arrows[KEY_UP_INDEX] = true;
                 break;
             case KEY_DOWN:
             case KEY_S:
-                direction = direction.add(MOVE_VECTOR_DOWN);
+                arrows[KEY_DOWN_INDEX] = true;
                 break;
             case KEY_SPACE:
                 attack = true;
@@ -130,6 +133,7 @@ public class PlayerController extends Controller implements EventVisitor {
             default:
                 break;
         }
+        this.updateDirectionVector();
     }
 
     @Override
@@ -142,19 +146,19 @@ public class PlayerController extends Controller implements EventVisitor {
         switch (code) {
             case KEY_LEFT:
             case KEY_Q:
-                direction = direction.sub(MOVE_VECTOR_LEFT);
+                arrows[KEY_LEFT_INDEX] = false;
                 break;
             case KEY_RIGHT:
             case KEY_D:
-                direction = direction.sub(MOVE_VECTOR_RIGHT);
+                arrows[KEY_RIGHT_INDEX] = false;
                 break;
             case KEY_UP:
             case KEY_Z:
-                direction = direction.sub(MOVE_VECTOR_UP);
+                arrows[KEY_UP_INDEX] = false;
                 break;
             case KEY_DOWN:
             case KEY_S:
-                direction = direction.sub(MOVE_VECTOR_DOWN);
+                arrows[KEY_DOWN_INDEX] = false;
                 break;
             case KEY_SPACE:
                 attack = false;
@@ -162,5 +166,13 @@ public class PlayerController extends Controller implements EventVisitor {
             default:
                 break;
         }
+        this.updateDirectionVector();
+    }
+
+    private void updateDirectionVector() {
+        this.direction = new Vector2(
+            (arrows[KEY_RIGHT_INDEX] ? 1 : 0) - (arrows[KEY_LEFT_INDEX] ? 1 : 0),
+            (arrows[KEY_DOWN_INDEX] ? 1 : 0) - (arrows[KEY_UP_INDEX] ? 1 : 0)
+        ).normalize();
     }
 }

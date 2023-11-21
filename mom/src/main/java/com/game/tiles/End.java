@@ -2,6 +2,7 @@ package com.game.tiles;
 
 import com.engine.Sprite;
 import com.engine.Window;
+import com.engine.utils.Vector3;
 import com.game.Player;
 import com.ui.EndScene;
 
@@ -23,6 +24,15 @@ public class End extends Ground {
      */
     public End() {
         super(TileType.GROUND_END, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, END_SPRITE_SHIFT));
+    }
+
+    /**
+     * End full constructor.
+     *
+     * @param position The position of the tile
+     */
+    public End(Vector3 position) {
+        super(TileType.GROUND_END, new Sprite(TILE_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, END_SPRITE_SHIFT), position);
     }
 
     @Override

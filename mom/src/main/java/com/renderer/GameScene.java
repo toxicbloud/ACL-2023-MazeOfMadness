@@ -105,7 +105,10 @@ public class GameScene extends Scene {
             Game.getInstance().setPlayer(
                     new Player(Game.getInstance().getMaze().getSpawnPoint()));
         }
-        this.playerController = new PlayerController(Game.getInstance().getPlayer());
+        this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
+        if (this.playerController == null) {
+            this.playerController = new PlayerController(Game.getInstance().getPlayer());
+        }
     }
 
     /**
