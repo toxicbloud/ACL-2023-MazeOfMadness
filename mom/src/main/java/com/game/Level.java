@@ -77,6 +77,24 @@ public class Level {
     }
 
     /**
+     * Construct a new Level object from all its attributes.
+     * @param name The level's name.
+     * @param description The level's description.
+     * @param author The level's author.
+     * @param version The level's version.
+     * @param maze The level's maze.
+     * @param player The level's player.
+     */
+    public Level(String name, String description, String author, String version, Maze maze, Player player) {
+        this.name = name;
+        this.description = description;
+        this.author = author;
+        this.version = version;
+        this.maze = maze;
+        this.playerData = new PlayerData(player);
+    }
+
+    /**
      * Main method.
      * For testing purposes only.
      * @param args The arguments.

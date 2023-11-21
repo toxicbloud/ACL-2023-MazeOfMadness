@@ -28,6 +28,15 @@ public class PlayerData {
     }
 
     /**
+     * Construct a new PlayerData object from a player.
+     * @param player The player to construct the PlayerData object from.
+     */
+    public PlayerData(Player player) {
+        this.health = player.getHealth();
+        this.position = player.getPosition();
+    }
+
+    /**
      * Construct a new PlayerData object from values,
      * used when serializing the PlayerData object to JSON.
      *
