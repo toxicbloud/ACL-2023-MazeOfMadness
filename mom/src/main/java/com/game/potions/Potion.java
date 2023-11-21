@@ -21,8 +21,10 @@ public abstract class Potion extends Item {
      * @param position Position of the potion inside the maze.
      */
     protected Potion(int spriteShift, Vector3 position) {
-        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift));
-        this.setPosition(position);
+        super(new Sprite(Potion.POTIONS_TEXTURE, SPRITE_SIZE, SPRITE_SIZE, spriteShift),
+                position,
+                new Vector3(1, 1, 1)
+        );
     }
 
     /**

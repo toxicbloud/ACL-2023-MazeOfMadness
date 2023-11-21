@@ -16,9 +16,8 @@ import java.util.ArrayList;
  * PotionSpawner class.
  */
 public final class PotionSpawner {
-
     /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
-    private static final float POTION_SPAWN_PROBABILITY = 0.2F;
+    private static final float POTION_SPAWN_PROBABILITY = 0.01F;
     /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
     private static final float HEALTH_POTION_THRESHOLD = 0.5F;
     /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
@@ -54,19 +53,18 @@ public final class PotionSpawner {
                     if (randomFloat < PotionSpawner.HEALTH_POTION_THRESHOLD
                             && healthPotionCounter < PotionSpawner.MAX_HEALTH_POTIONS) {
                         healthPotionCounter += 1;
-                        potions.add(new HealthPotion(new Vector3(i, j, 2)));
+                        potions.add(new HealthPotion(new Vector3(i, j, 1)));
                     } else if (randomFloat < PotionSpawner.SPEED_POTION_THRESHOLD
                             && speedPotionCounter < PotionSpawner.MAX_SPEED_POTIONS) {
                         speedPotionCounter += 1;
-                        potions.add(new SpeedPotion(new Vector3(i, j, 2)));
+                        potions.add(new SpeedPotion(new Vector3(i, j, 1)));
                     } else if (strengthPotionCounter < PotionSpawner.MAX_STRENGTH_POTIONS) {
                         strengthPotionCounter += 1;
-                        potions.add(new StrengthPotion(new Vector3(i, j, 2)));
+                        potions.add(new StrengthPotion(new Vector3(i, j, 1)));
                     }
                 }
             }
         }
-
         maze.setItems(potions.toArray(new Item[potions.size()]));
     }
 
