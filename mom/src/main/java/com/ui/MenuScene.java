@@ -158,6 +158,18 @@ public class MenuScene extends Scene {
         Table rootCampaign = new Table();
         rootCampaign.setFillParent(true);
         campaignMenu.addActor(rootCampaign);
+        TextButton back = new TextButton(
+                "Back", skin);
+        campaignMenu.addActor(back);
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.play();
+                currenStage = mainMenu;
+                Gdx.input.setInputProcessor(mainMenu);
+            }
+        });
 
         // text : Level selection
         Table levelSelectionTable = new Table(skin);
