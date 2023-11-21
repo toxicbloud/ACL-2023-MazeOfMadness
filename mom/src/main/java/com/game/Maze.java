@@ -106,11 +106,41 @@ public class Maze implements Evolvable {
         this.setTilesDefaultPositions();
     }
 
+    /**
+     * Maze constructor.
+     * This is the constructor for the maze class.
+     *
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
+     * @param t The tiles of the maze.
+     * @param m The monsters of the maze.
+     * @param i The items of the maze.
+     * @param setTilesPositions Whether to set the tiles positions or not.
+     */
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i, boolean setTilesPositions) {
+        if (t.length != w * h * d) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
+        }
+        this.width = w;
+        this.height = h;
+        this.depth = d;
+        this.tiles = t;
+        this.monsters = m;
+        this.items = i;
+        if (setTilesPositions) {
+            this.setTilesDefaultPositions();
+        }
+    }
+
     private void setTilesDefaultPositions() {
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
                 for (int z = 0; z < this.depth; z++) {
-                    this.getTile(x, y, z).setPosition(new Vector3(x, y, z));
+                    Tile t = this.getTile(x, y, z);
+                    if (t != null) {
+                        t.setPosition(new Vector3(x, y, z));
+                    }
                 }
             }
         }
@@ -122,7 +152,9 @@ public class Maze implements Evolvable {
             m.update();
         }
         for (Tile t : this.tiles) {
-            t.update();
+            if (t != null) {
+                t.update();
+            }
         }
         for (Item i : this.items) {
             i.update();
@@ -152,12 +184,8 @@ public class Maze implements Evolvable {
         });
 
         for (Entity e : entities) {
-            e.render();
-        }
-        for (Entity e: entities) {
-            Controller c = e.getController();
-            if (c != null) {
-                c.render();
+            if (e != null) {
+                e.render();
             }
         }
 
