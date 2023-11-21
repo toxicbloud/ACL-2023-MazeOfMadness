@@ -31,6 +31,8 @@ import com.game.Player;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
 import com.game.potions.HealthPotion;
+import com.game.potions.SpeedPotion;
+import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
@@ -116,6 +118,8 @@ public class EditorScene extends GameScene {
             new GroundWater(),
             new GroundLava(),
             new HealthPotion(),
+            new StrengthPotion(),
+            new SpeedPotion(),
             new Zombie(),
             new Player()
         };
