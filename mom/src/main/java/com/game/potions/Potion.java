@@ -12,6 +12,7 @@ import com.game.Player;
  */
 public abstract class Potion extends Item {
 
+    //FIXME: Bad
     /** Texture for the potions. */
     protected static final Texture POTIONS_TEXTURE = new Texture("images/potions.png");
 

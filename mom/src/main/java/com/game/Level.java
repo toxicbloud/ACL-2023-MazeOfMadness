@@ -1,17 +1,31 @@
 package com.game;
 
+import com.engine.Window;
+import com.engine.utils.Vector3;
+import com.game.exceptions.InvalidItemException;
+import com.game.exceptions.InvalidMonsterException;
+import com.game.exceptions.InvalidSchemaException;
+import com.game.exceptions.InvalidTileException;
+import com.game.monsters.Ghost;
+import com.game.monsters.Monster;
+import com.game.monsters.Zombie;
+import com.game.potions.HealthPotion;
+import com.game.potions.SpeedPotion;
+import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundGrass;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
+import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
+import com.game.tiles.Next;
 import com.game.tiles.StairGrass;
 import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
+import com.game.weapons.Sword;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -49,54 +63,201 @@ public class Level {
      * @param json The JSON object to construct the Level object from.
      */
     public Level(JSONObject json) {
-        this.name = json.getString("name");
-        this.description = json.getString("description");
-        this.author = json.getString("author");
-        this.version = json.getString("version");
-        this.maze = parseMaze(json.getJSONObject("maze"));
-        this.playerData = new PlayerData(json.getJSONObject("player"));
-    }
+        try {
+            verifyJSON(json, "name");
+            verifyJSON(json, "description");
+            verifyJSON(json, "author");
+            verifyJSON(json, "version");
+            verifyJSON(json, "maze");
+            verifyJSON(json, "player");
 
-    private Maze parseMaze(JSONObject mazeJsonObject) {
-        int width = mazeJsonObject.getInt("width");
-        int height = mazeJsonObject.getInt("height");
-        int depth = mazeJsonObject.getInt("depth");
-        return new Maze(width, height, depth, parseTiles(mazeJsonObject.getJSONArray("tiles")));
-    }
-
-    private Tile parseTile(JSONObject tileJsonObject) throws IllegalArgumentException, JSONException {
-        String type = tileJsonObject.getString("type");
-        switch (type) {
-            case "StairGrass":
-                return new StairGrass(tileJsonObject.getInt("direction"));
-            case "StairRock":
-                return new StairRock(tileJsonObject.getInt("direction"));
-            case "GroundRock":
-                return new GroundRock();
-            case "GroundLava":
-                return new GroundLava();
-            case "GroundWater":
-                return new GroundWater();
-            case "GroundGrass":
-                return new GroundGrass();
-            case "WallRock":
-                return new WallRock();
-            case "VoidTile":
-                return new VoidTile();
-            case "End":
-                return new End();
-            default:
-                throw new IllegalArgumentException("Unknown tile type: " + type);
+            this.name = json.getString("name");
+            this.description = json.getString("description");
+            this.author = json.getString("author");
+            this.version = json.getString("version");
+            this.maze = parseMaze(json.getJSONObject("maze"));
+            this.playerData = new PlayerData(json.getJSONObject("player"));
+        } catch (InvalidSchemaException e) {
+            System.err.println("Error : Cannot load level : " + e.getMessage());
         }
     }
 
-    private Tile[] parseTiles(JSONArray tilesJsonArray) {
+    /**
+     * Construct a new Level object from all its attributes.
+     * @param name The level's name.
+     * @param description The level's description.
+     * @param author The level's author.
+     * @param version The level's version.
+     * @param maze The level's maze.
+     * @param player The level's player.
+     */
+    public Level(String name, String description, String author, String version, Maze maze, Player player) {
+        this.name = name;
+        this.description = description;
+        this.author = author;
+        this.version = version;
+        this.maze = maze;
+        this.playerData = new PlayerData(player);
+    }
+
+    /**
+     * Main method.
+     * For testing purposes only.
+     * @param args The arguments.
+     */
+    public static void main(String[] args) {
+        Window win = new Window();
+        win.setScene(new LevelTestScene("src/main/resources/maps/test.json"));
+        win.run();
+    }
+
+    private Maze parseMaze(JSONObject mazeJsonObject) throws InvalidSchemaException {
+        verifyJSON(mazeJsonObject, "width");
+        verifyJSON(mazeJsonObject, "height");
+        verifyJSON(mazeJsonObject, "depth");
+
+        int width = mazeJsonObject.getInt("width");
+        int height = mazeJsonObject.getInt("height");
+        int depth = mazeJsonObject.getInt("depth");
+
+        Tile[] tiles;
+        Monster[] monsters;
+        Item[] items;
+
+        try {
+            tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
+            monsters = parseMonsters(mazeJsonObject.getJSONArray("monsters"));
+            items = parseItems(mazeJsonObject.getJSONArray("items"));
+        } catch (InvalidMonsterException | InvalidItemException | InvalidTileException e) {
+            System.err.println("Error : Cannot load level : " + e.getMessage());
+            return null;
+        }
+
+        return new Maze(
+            width,
+            height,
+            depth,
+            tiles,
+            monsters,
+            items,
+            false);
+    }
+
+    private Tile parseTile(JSONObject tileJsonObject) throws InvalidTileException, InvalidSchemaException {
+        verifyJSON(tileJsonObject, "type");
+        verifyJSON(tileJsonObject, "position");
+
+        String type = tileJsonObject.getString("type");
+        Vector3 position = parsePosition(tileJsonObject.getJSONObject("position"));
+        switch (type) {
+            case "STAIR_GRASS":
+                return new StairGrass(position, tileJsonObject.getInt("direction"));
+            case "STAIR_ROCK":
+                return new StairRock(position, tileJsonObject.getInt("direction"));
+            case "GROUND_ROCK":
+                return new GroundRock(position);
+            case "GROUND_LAVA":
+                return new GroundLava(position);
+            case "GROUND_WATER":
+                return new GroundWater(position);
+            case "GROUND_SPIKES":
+                return new GroundSpikes(position);
+            case "GroundGrass":
+                return new GroundGrass(position);
+            case "WALL_ROCK":
+                return new WallRock(position);
+            case "VOID":
+                return new VoidTile(position);
+            case "GROUND_NEXT":
+                return new Next(position);
+            case "GROUND_END":
+                return new End(position);
+            default:
+                throw new InvalidTileException("Unknown tile type: " + type);
+        }
+    }
+
+    private void verifyJSON(JSONObject jsonObject, String key) throws InvalidSchemaException {
+        if (!jsonObject.has(key)) {
+            throw new InvalidSchemaException("Missing key [" + key + "] in JSON object.");
+        }
+    }
+
+    private Vector3 parsePosition(JSONObject positionJsonObject) throws InvalidSchemaException {
+        verifyJSON(positionJsonObject, "x");
+        verifyJSON(positionJsonObject, "y");
+        verifyJSON(positionJsonObject, "z");
+
+        return new Vector3(
+            positionJsonObject.getFloat("x"),
+            positionJsonObject.getFloat("y"),
+            positionJsonObject.getFloat("z"));
+    }
+
+    private Monster parseMonster(JSONObject monsterJsonObject) throws InvalidMonsterException, InvalidSchemaException {
+        verifyJSON(monsterJsonObject, "type");
+        verifyJSON(monsterJsonObject, "position");
+
+        String type = monsterJsonObject.getString("type");
+        Vector3 position = parsePosition(monsterJsonObject.getJSONObject("position"));
+        switch (type) {
+            case "MONSTER_ZOMBIE":
+                return new Zombie(position);
+            case "MONSTER_GHOST":
+                return new Ghost(position);
+            // case "MONSTER_BOSS":
+            //     return new Boss(position);
+            default:
+                throw new InvalidMonsterException("[" + type + "] monster does not exist (invalid monster type).");
+        }
+    }
+
+    private Item parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
+        verifyJSON(itemJsonObject, "type");
+        verifyJSON(itemJsonObject, "position");
+
+        String type = itemJsonObject.getString("type");
+        Vector3 position = parsePosition(itemJsonObject.getJSONObject("position"));
+        switch (type) {
+            case "WEAPON_SWORD":
+                return new Sword(position);
+            case "ITEM_HEALTH_POTION":
+                return new HealthPotion(position);
+            case "ITEM_STRENGTH_POTION":
+                return new StrengthPotion(position);
+            case "ITEM_SPEED_POTION":
+                return new SpeedPotion(position);
+            default:
+                throw new InvalidItemException("[" + type + "] item does not exist (invalid item type).");
+        }
+    }
+
+    private Tile[] parseTiles(JSONArray tilesJsonArray)
+        throws InvalidTileException, InvalidSchemaException {
         Tile[] tiles = new Tile[tilesJsonArray.length()];
         for (int i = 0; i < tilesJsonArray.length(); i++) {
             tiles[i] = parseTile(tilesJsonArray.getJSONObject(i));
             // TODO set position
         }
         return tiles;
+    }
+
+    private Monster[] parseMonsters(JSONArray monstersJsonArray)
+        throws InvalidMonsterException, InvalidSchemaException {
+        Monster[] monsters = new Monster[monstersJsonArray.length()];
+        for (int i = 0; i < monstersJsonArray.length(); i++) {
+            monsters[i] = parseMonster(monstersJsonArray.getJSONObject(i));
+        }
+        return monsters;
+    }
+
+    private Item[] parseItems(JSONArray itemsJsonArray)
+        throws InvalidItemException, InvalidSchemaException {
+        Item[] items = new Item[itemsJsonArray.length()];
+        for (int i = 0; i < itemsJsonArray.length(); i++) {
+            items[i] = parseItem(itemsJsonArray.getJSONObject(i));
+        }
+        return items;
     }
 
     /**

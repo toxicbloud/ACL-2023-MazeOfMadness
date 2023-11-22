@@ -2,6 +2,7 @@ package com.game;
 
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
+import org.json.JSONObject;
 
 /**
  * Item class.
@@ -9,17 +10,17 @@ import com.engine.utils.Vector3;
  */
 public abstract class Item extends Entity {
 
-    /** Type of the item. */
-    private final ItemType itemType;
+    /** The type of the item. */
+    private ItemType type;
 
     /**
      * Item constructor.
      * @param sprite The sprite to use.
-     * @param t Item's type.
+     * @param t The type of the item.
      */
     protected Item(Sprite sprite, ItemType t) {
         super(sprite, new Vector3(), new Vector3(1, 1, 1));
-        this.itemType = t;
+        this.type = t;
     }
 
     /**
@@ -27,11 +28,11 @@ public abstract class Item extends Entity {
      * @param sprite The sprite to use.
      * @param position The position of the item.
      * @param size The size of the item.
-     * @param t Item's type.
+     * @param t The type of the item.
      */
     protected Item(Sprite sprite, Vector3 position, Vector3 size, ItemType t) {
         super(sprite, position, size);
-        this.itemType = t;
+        this.type = t;
     }
 
     /**
@@ -39,7 +40,20 @@ public abstract class Item extends Entity {
      * @return Item's type.
      */
     public ItemType getItemType() {
-        return itemType;
+        return type;
+    }
+
+    /**
+     * Returns a json representation of the item.
+     * @return A JSONObject representing the item.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("type", this.type);
+        json.put("position", getPosition().toJSON());
+
+        return json;
     }
 
     /**

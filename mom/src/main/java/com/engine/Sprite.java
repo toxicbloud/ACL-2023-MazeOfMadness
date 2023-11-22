@@ -113,13 +113,22 @@ public class Sprite {
     public void render(Vector3 position, Vector3 size) {
         updateSpriteAnimation();
 
+        Vector2 screenPos = GameScene.getWorldToScreenCoordinates(position);
+        Vector2 screenSize = GameScene.getWorldToScreenSize(size);
+        render(screenPos, screenSize);
+    }
+
+    /**
+     * Render the sprite.
+     * @param position The position of the sprite. (screen coordinates)
+     * @param size The size of the sprite. (screen coordinates)
+     */
+    public void render(Vector2 position, Vector2 size) {
         Window window = Window.getInstance();
         SpriteBatch canvas = window.getCanvas();
 
-        Vector2 screenPos = GameScene.getWorldToScreenCoordinates(position);
-        Vector2 screenSize = GameScene.getWorldToScreenSize(size);
-        sprite.setPosition(screenPos.x, screenPos.y);
-        sprite.setSize(screenSize.x, screenSize.y);
+        sprite.setPosition(position.x, position.y);
+        sprite.setSize(size.x, size.y);
         sprite.draw(canvas);
     }
 

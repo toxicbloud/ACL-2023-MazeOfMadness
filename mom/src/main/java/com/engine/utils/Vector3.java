@@ -1,5 +1,7 @@
 package com.engine.utils;
 
+import org.json.JSONObject;
+
 /**
  * Vector3 class.
  * This is a 3D vector.
@@ -71,6 +73,15 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
     }
 
     /**
+     * Divide this vector by a float.
+     * @param f The float to divide by.
+     * @return The quotient of the vector and the float.
+     */
+    public Vector3 div(float f) {
+        return new Vector3(x / f, y / f, z / f);
+    }
+
+    /**
      * Returns the normalized vector.
      * @return The normalized vector.
      */
@@ -100,5 +111,19 @@ public class Vector3 extends com.badlogic.gdx.math.Vector3 {
      */
     public float getZ() {
         return z;
+    }
+
+    /**
+     * Returns a json representation of the vector.
+     * @return a JSONObject representing the vector.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("x", x);
+        json.put("y", y);
+        json.put("z", z);
+
+        return json;
     }
 }

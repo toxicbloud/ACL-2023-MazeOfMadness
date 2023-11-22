@@ -11,8 +11,8 @@ import com.game.Player;
 import com.game.monsters.Zombie;
 
 /**
- * PlayerController class.
- * This is the player controller class.
+ * ZombieController class.
+ * This is the zombie controller class.
  */
 public class ZombieController extends Controller {
     /** Maximum distance to walk before changing direction. */
@@ -32,6 +32,8 @@ public class ZombieController extends Controller {
     private static final boolean MODE_RANDOM = false;
     /** Movement mode (smart). */
     private static final boolean MODE_PATHFINDING = true;
+    /** The last time when the zombie attacks. */
+    private long lastAttackTime;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -64,6 +66,13 @@ public class ZombieController extends Controller {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
 
+        if (((Zombie) target).findPlayer(player)
+            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
+            ((Zombie) target).getWeapon().setPosition(target.getPosition());
+            ((Zombie) target).getWeapon().attack(player);
+            lastAttackTime = Time.getInstance().getCurrentTime();
+        }
+
         if (this.mode == MODE_RANDOM) {
             if (target.distance(player) < Zombie.VIEW_DISTANCE) {
                 this.mode = MODE_PATHFINDING;
@@ -87,6 +96,10 @@ public class ZombieController extends Controller {
                 this.determineDirectionPattern();
             }
         } else {
+            if (player == null) {
+                return;
+            }
+
             if (path == null) {
                 PathFinder finder = PathFinder.fromMaze(target.getPosition(), player.getPosition());
                 if (finder == null || !finder.findPath()) {
