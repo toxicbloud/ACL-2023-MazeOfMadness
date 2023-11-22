@@ -23,3 +23,13 @@ Ajouter des instructions sur les contrôles dans le README @Maximelego @toxicblo
     > Simplification de la GameScene @FurWaz @toxicbloud
 
 ## Qu'est-ce qui n'a pas été fait ?
+
+- Rien
+
+## Problèmes rencontrés
+
+- Les monstres ne se déplacent pas jusqu'au joueur, mais s'arrêtent à côté de lui. @aildontknow
+- Le temps parait s'écouler plus vite que prévu. @FurWaz
+- Le menu pause dans la scène de jeu ne bloque pas l'avancée du jeu. @toxicbloud
+- Le score affiché dans l'écran de jeu et l'écran de fin n'est pas remis a zéro entre les parties @toxicbloud
+- La barre de vie du joueur se confond trop facilement avec celles des monstres. Il faudrait qu'elle soit d'une autre couleur. @FurWaz
