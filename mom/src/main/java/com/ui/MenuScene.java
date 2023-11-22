@@ -21,6 +21,7 @@ import com.game.LevelLoader;
 import com.game.Player;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
+import com.game.generators.PotionSpawner;
 import com.game.generators.TrapSpawner;
 import com.renderer.GameScene;
 
@@ -140,6 +141,7 @@ public class MenuScene extends Scene {
                 Game.getInstance().setMaze(maze);
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);
+                PotionSpawner.spawnPotion(maze);
             }
         });
         /* CAMPAIGN MENU SECTION */

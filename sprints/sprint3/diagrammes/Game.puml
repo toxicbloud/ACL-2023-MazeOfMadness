@@ -83,18 +83,10 @@ package Game {
 
     package Potions {
         abstract Potion {
-            - health: int
-            - strength: int
-            - speed: int
-            - timeToLive: float
+            # POTION_TEXTURE: Texture
             ---
-            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
-            + getHealth(): int
-            + setHealth(health: int)
-            + getStrength(): int
-            + setStrength(strength: int)
-            + getSpeed(): int
-            + setSpeed(speed: int)
+            # Potion(spriteShift: int, position: Vector3)
+            # applyEffect(Player player)
         }
         Item <|-- Potion
         Potion <|-- HealthPotion
@@ -102,18 +94,29 @@ package Game {
         Potion <|-- SpeedPotion
 
         class HealthPotion {
+            - SPRITE_SHIFT: int
+            - HEALTH_AMOUNT: int
             ---
             + HealthPotion()
+            + HealthPotion(position: Vector3)
+            # applyEffect(Player player)
         }
 
         class StrengthPotion {
+            - SPRITE_SHIFT: int
             ---
             + StrengthPotion()
+            + StrengthPotion(position: Vector3)
+            # applyEffect(Player player)
         }
 
         class SpeedPotion {
+            - SPRITE_SHIFT: int
+            - SPEED_MULTIPLIER: float
             ---
             + SpeedPotion()
+            + SpeedPotion(position: Vector3)
+            # applyEffect(Player player)
         }
     }
 
