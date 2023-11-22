@@ -36,16 +36,6 @@ Il s'adresse donc aux joueurs occasionnels voulant battre la campagne mais aussi
 
 - **Prise en Charge de la Manette :** Le jeu est conçu pour être accessible aux joueurs qui préfèrent jouer avec une manette, offrant une expérience de jeu fluide et intuitive mais surtout accessible.
 
-## Contrôles : 
-| Touche           | Action                     |
-| ---------------- | -------------------------- |
-| **Z**            | Se déplacer vers le haut.  |
-| **Q**            | Se déplacer vers la gauche.|
-| **S**            | Se déplacer vers le bas.   |
-| **D**            | Se déplacer vers la droite.|
-| **barre espace** | Attaquer les monstres.     |
-| **F**            | Ramasser les objets.       |
-
 ## Objectif du Projet
 L'objectif ultime de ce projet est de créer une expérience de jeu isométrique captivante qui défie les joueurs avec des labyrinthes complexes ainsi qu'une variété de monstres. Le jeu vise à offrir une rejouabilité infinie grâce à ses labyrinthes générés aléatoirement et à son éditeur de niveaux communautaires.
 
@@ -102,3 +92,24 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-ro
  
 
 Merci à [@Nicoooooo](https://github.com/Nicoooooo) pour cette astuce sur MacOS
+
+# Utilisation
+
+## Contrôles : 
+| Touche           | Action                     |
+| ---------------- | -------------------------- |
+| **Z**            | Se déplacer vers le haut.  |
+| **Q**            | Se déplacer vers la gauche.|
+| **S**            | Se déplacer vers le bas.   |
+| **D**            | Se déplacer vers la droite.|
+| **barre espace** | Attaquer les monstres.     |
+| **F**            | Ramasser les objets.       |
+
+## Objets à Ramasser :
+
+### Potions :
+| Couleur            | Effet                         |
+| ------------------ | ----------------------------- |
+| **Rouge**          | Rend de la vie au joueur.     |
+| **Jaune**          | Augmente la force au joueur.  |
+| **Bleu**           | Augmente la vitesse au joueur.|
