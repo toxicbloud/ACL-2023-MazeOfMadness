@@ -17,4 +17,9 @@ Le joueur peut ramasser les potions dans le labyrinthe. @Maximelego
 
 Ajouter des instructions sur les contrôles dans le README @Maximelego @toxicbloud
 
+- Améliorer la qualité générale du code.
+    > encapsulation des Tiles du labyrinthe @toxicbloud
+
+    > Simplification de la GameScene @FurWaz @toxicbloud
+
 ## Qu'est-ce qui n'a pas été fait ?
