@@ -143,8 +143,11 @@ package Game {
             - cooldown: int
             - range: float
             - lastAttackTime: long
+            - hasDoubleDamage: boolean
             # Weapon(int attack, int attack, float range)
             + attack(living: Living): boolean
+            --
+            # createDoubleDamageWeapon(): Weapon
         }
         Item <|-- Weapon
         Weapon <|-- WeaponFist
@@ -164,11 +167,13 @@ package Game {
         class PlayerFist {
             ---
             + PlayerFist()
+            + createDoubleDamageWeapon(): Weapon
         }
 
         class ZombieFist {
             ---
             + ZombieFist()
+            + createDoubleDamageWeapon(): Weapon
         }
 
         class GhostFist {
