@@ -113,3 +113,20 @@ Merci à [@Nicoooooo](https://github.com/Nicoooooo) pour cette astuce sur MacOS
 | **Rouge**          | Rend de la vie au joueur.     |
 | **Jaune**          | Augmente la force au joueur.  |
 | **Bleu**           | Augmente la vitesse au joueur.|
+
+## Editeur de niveaux :
+
+### Présentation :
+L'éditeur de niveau est accessible depuis le menu principal du jeu, en cliquant sur le bouton "Editor". Il permet de créer des niveaux personnalisés pour le jeu.
+
+Ce dernier est composé de deux parties :
+- Une zone de contrôle au dessus
+- Une zone de visualisation et création en dessous.
+
+La zone de controle contient un bouton retour ainsi que deux boutons de contrôles de la hauteur du curseur 3D a gauche, Deux boutons de chargement et sauvegarde de niveau a droite, et enfin
+une selection du type de bloc / entité / item a poser au centre.
+
+### Controles :
+L'éditeur de niveau est utilisable avec la souris seulement, aucun raccourci clavier n'est disponible.
+
+Pour poser un nouveau bloc dans l'éditeur, il suffit de bouger la souris dans la zone 3D (Zone du bas)
