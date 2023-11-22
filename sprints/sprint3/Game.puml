@@ -1,0 +1,343 @@
+@startuml Game models class diagram
+title Game models class diagram
+
+package Engine {
+    interface Evolvable
+    class Vector3
+    class Sprite
+}
+
+package Game {
+    class Game {
+        - baseTime: float
+        ---
+        + GetCurrentMaze(): Maze
+        + GetPlayer(): Player
+        + GetScore(): int
+        + AddPoints(points: int)
+        + RemPoints(points: int)
+        + ResetScore()
+    }
+    Game "1" -- "1..0" Maze : currentMaze
+    Game "1" -- "1..0" Player : player
+    Game "1" -- "1" Score : score
+
+    class Score {
+        - points: int
+        - kills : Map<MonsterType, Integer>
+        - support : PropertyChangeSupport
+        ---
+        + Score()
+        + addPoints(points: int) : void
+        + getPoints() : int
+        + getKillCount(type: MonsterType) : int
+        + addKill(type: MonsterType) : void
+        + addPropertyChangeListener(name: String, listener: PropertyChangeListener) : void
+    }
+
+    class Maze {
+        - width: int
+        - height: int
+        - spawnpoint: Vector3
+        ---
+        + Maze()
+        + Maze(width: int, height: int)
+        + Maze(tiles: Tile[][])
+        + getWidth(): int
+        + getHeight(): int
+        + getTile(x: int, y: int): Tile
+        + getMonsters(): Monster[]
+        + setMonsters(monsters: Monster[])
+        + getItems(): Item[]
+        + setItems(items: Item[])
+        + getSpawnPoint(): Vector3
+        + setItems(spawnpoint: Vector3)
+    }
+    Maze "1" -- "*" Tile: - tiles: Tile[][]
+    Maze "1" -- "*" Monster: - monsters: Monster[]
+    Maze "1" -- "*" Item: - items: Item[]
+
+    abstract Entity {
+        - position: Vector3
+        - size: Vector3
+        - sprite: Sprite
+        ---
+        # Entity(sprite: Sprite)
+        # Entity(sprite: Sprite, position: Vector3, size: Vector3)
+        # tileCollides(t: Tile): boolean
+        - getCollisionMovement(move: Vector2): Vector2
+        - getCollideMovement(move: Vector2, pos: Vector3): Vector2
+        - getCollideMovementX(moveX: float, origin: Vector3): float
+        - getCollideMovementY(moveY: float, origin Vector3): float
+        + registerController(c: Controller): void
+        + update(): void
+        + render(): void
+        + moveBy(delta: Vector2): void
+        + distance(entity: Entity): float
+        + getPosition(): Vector3
+        + getSize(): Vector3
+        + getSprite(): Sprite
+        + setPosition(position: Vector3)
+        + setSize(size: Vector3)
+        + setSprite(sprite: Sprite)
+    }
+    Evolvable <|-- Entity
+    Entity "1" -- "1" Vector3 : position
+    Entity "1" -- "1" Vector3 : size
+    Entity "1" -- "1" Sprite : sprite
+    Entity <|-- Item
+    Entity <|-- Living
+
+    abstract Item {
+
+    }
+
+    package Potions {
+        abstract Potion {
+            - health: int
+            - strength: int
+            - speed: int
+            - timeToLive: float
+            ---
+            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+            + getHealth(): int
+            + setHealth(health: int)
+            + getStrength(): int
+            + setStrength(strength: int)
+            + getSpeed(): int
+            + setSpeed(speed: int)
+        }
+        Item <|-- Potion
+        Potion <|-- HealthPotion
+        Potion <|-- StrengthPotion
+        Potion <|-- SpeedPotion
+
+        class HealthPotion {
+            ---
+            + HealthPotion()
+        }
+
+        class StrengthPotion {
+            ---
+            + StrengthPotion()
+        }
+
+        class SpeedPotion {
+            ---
+            + SpeedPotion()
+        }
+    }
+
+    package Weapons {
+        abstract Weapon {
+            - attack: int
+            - cooldown: int
+            - range: float
+            - lastAttackTime: long
+            # Weapon(int attack, int attack, float range)
+            + attack(living: Living): boolean
+        }
+        Item <|-- Weapon
+        Weapon <|-- WeaponFist
+        Weapon <|-- WeaponSword
+        Weapon <|-- WeaponAxe
+        Weapon <|-- WeaponBow
+
+        abstract WeaponFist {
+            # WeaponFist(damage: int, cooldown: int)
+        }
+
+        WeaponFist <|-- PlayerFist
+        WeaponFist <|-- ZombieFist
+        WeaponFist <|-- GhostFist
+        WeaponFist <|-- BossFist
+
+        class PlayerFist {
+            ---
+            + PlayerFist()
+        }
+
+        class ZombieFist {
+            ---
+            + ZombieFist()
+        }
+
+        class GhostFist {
+            ---
+            + GhostFist()
+        }
+
+        class BossFist {
+            ---
+            + BossFist()
+        }
+
+        class WeaponSword {
+            ---
+            + WeaponSword()
+        }
+
+        class WeaponAxe {
+            ---
+            + WeaponAxe()
+        }
+
+        class WeaponBow {
+            ---
+            + WeaponBow()
+        }
+    }
+
+    abstract Living {
+        - health: int
+        - maxHealth: int 
+        - speed : float
+        - direction: Direction
+        - weapon: Weapon
+        ---
+        # Living(sprite: Sprite)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3, health: int, maxHealth: int)
+        - updateDirection(delta: Vector2): void
+        - updateSprite(delta: Vector2): void
+        - renderHealthBar(): void
+        - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
+        - setDirection(dir: Direction): void
+        + render(): void
+        + moveBy(delta: Vector2)
+        + attack(living: Living): boolean
+        + takeDamage(damage: int) : boolean
+        + findEnemyInVisionField(): Living
+        + regen(health: int) : void
+        + isDead(): boolean
+        + getWeapon(): Weapon
+        + setWeapon(weapon: Weapon)
+    }
+    Living "1" -- "1" Weapon : weapon
+    Living <|-- Player
+    Living <|-- Monster
+
+    class Player {
+        
+    }
+
+    package Monsters {
+        abstract Monster {
+            ---
+            + affectScore(Score score): void
+        }
+        Monster <|-- Zombie
+        Monster <|-- Ghost
+        Monster <|-- Boss
+
+        class Zombie {
+            ---
+            + Zombie()
+            + affectScore(Score score): void
+        }
+
+        class Ghost {
+            ---
+            + Ghost()
+        }
+
+        class Boss {
+            ---
+            + Boss()
+        }
+    }
+
+    package controller {
+        class PlayerController {
+            - player: Player
+            ---
+            + PlayerController(player: Player)
+            + update(): void
+            + visit(EventMouseMoved ev): void
+            + visit(EventMousePressed ev): void
+            + visit(EventMouseReleased ev): void
+            + visit(EventMouseScrolled ev): void
+            + visit(EventKeyPressed ev): void
+            + visit(EventKeyReleased ev): void
+            + visit(EventGamepadMoved ev): void
+            + visit(EventGamepadPressed ev): void
+            + visit(EventGamepadReleased ev): void
+        }
+    }
+
+    package Tiles {
+        abstract Tile {
+            - solid: boolean
+            ---
+            + Tile(sprite: Sprite, solid: boolean)
+            + isSolid(): boolean
+            + onPlayerEnter(player: Player): void
+            + onPlayerExit(player: Player): void
+        }
+        Entity <|-- Tile
+        Tile <|-- Wall
+        Tile <|-- Ground
+        Tile <|-- VoidTile
+        Wall <|-- WallRock
+        Ground <|-- GroundWater
+        Ground <|-- GroundLava
+        Ground <|-- GroundRock
+        Ground <|-- End
+        Ground <|-- Next
+
+        abstract Wall {
+            ---
+            + Wall()
+        }
+
+        abstract Ground {
+            ---
+            + Ground()
+        }
+
+        class GroundRock {
+            ---
+            + GroundRock()
+        }
+
+        class GroundWater {
+            {static} - SPEED_FACTOR : int
+            ---
+            + GroundWater()
+        }
+        class GroundLava {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            {static} - SPEED_FACTOR : int
+            - lastDamageTime : long
+            ---
+            + GroundLava()
+        }
+        class GroundSpikes {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            - lastDamageTime : long
+            ---
+            + GroundSpikes()
+        }
+
+        class WallRock {
+            ---
+            + WallRock()
+        }
+        class VoidTile {
+            ---
+            + VoidTile()
+        }
+        class End{
+            ---
+            + End()
+        }
+        class Next{
+            ---
+            + Next()
+        }
+    }
+}
+
+@enduml
