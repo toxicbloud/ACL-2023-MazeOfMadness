@@ -30,9 +30,33 @@ public abstract class Living extends Entity {
      */
     private static final int DEFAULT_LIVING_HEALTH = 100;
     /**
-     * Tolerance value for the player's vision field.
+     * Value in degrees for RIGHT direction.
      */
-    private static final float TOLERANCE = 0.5f;
+    private static final double RIGHT_DEGREES = 0.0;
+    /**
+     * Value in degrees for UP direction.
+     */
+    private static final double UP_DEGREES = 90.0;
+    /**
+     * Value in degrees for LEFT direction.
+     */
+    private static final double LEFT_DEGREES = 180.0;
+    /**
+     * Value in degrees for DOWN direction.
+     */
+    private static final double DOWN_DEGREES = 270.0;
+    /**
+     * Radian to degree conversion value.
+     */
+    private static final double DEGREES = 360.0;
+    /**
+     * Maximum range of the entity's FOV.
+     */
+    private static final double FOV_RADIUS = 100.0;
+    /**
+     * Maximum range of the entity's FOV.
+     */
+    private static final double MAX_RANGE_FOV = 6.0;
 
     /** Living health. */
     private int health;
@@ -170,44 +194,38 @@ public abstract class Living extends Entity {
         Window.getInstance().getCanvas().begin();
     }
 
-    private boolean isInVisionField(Vector3 playerPos, Vector3 enemyPos) {
+    private static double directionToAngle(Direction direction) {
         switch (direction) {
-            case UP:
-                return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y < enemyPos.y
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
-            case DOWN:
-                return Math.abs(playerPos.x - enemyPos.x) <= TOLERANCE && playerPos.y > enemyPos.y
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
             case RIGHT:
-                return playerPos.x < enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                return RIGHT_DEGREES;
+            case UP:
+                return UP_DEGREES;
             case LEFT:
-                return playerPos.x > enemyPos.x && Math.abs(playerPos.y - enemyPos.y) <= TOLERANCE
-                    && Math.abs(playerPos.z - enemyPos.z) <= TOLERANCE;
+                return LEFT_DEGREES;
+            case DOWN:
+                return DOWN_DEGREES;
             default:
-                return false;
+                throw new IllegalArgumentException("Invalid direction");
         }
     }
 
     /**
-     * Detect whether an enemy is in the player's field of vision.
+     *  Detects whether entity2 is in entity1's FOV.
      *
-     * @return The living entity in the range attack.
+     * @param entity1 The entity from which the FOV emanates.
+     * @param entity2 The entity we're trying to determine if it's in the FOV.
+     * @return whether entity2 is in entity1's FOV.
      */
-    public Living findEnemyInVisionField() {
-        Living[] enemies = Game.getInstance().getMaze().getMonsters();
-
-        for (Living enemy : enemies) {
-            if (enemy != this && enemy.getHealth() > 0) {
-                Vector3 enemyPosition = enemy.getPosition();
-                Vector3 playerPosition = getPosition();
-
-                if (isInVisionField(playerPosition, enemyPosition)) {
-                    return enemy;
-                }
-            }
+    public boolean isInFOV(Living entity1, Living entity2) {
+        Vector3 entity1ToEntity2 = entity2.getPosition().sub(entity1.getPosition());
+        double distance = entity1ToEntity2.len();
+        if (distance > MAX_RANGE_FOV) {
+            return false;
         }
-        return null;
+        double angleBetweenEntities = Math.toDegrees(Math.atan2(entity1ToEntity2.getY(), entity1ToEntity2.getX()));
+        angleBetweenEntities = (angleBetweenEntities + DEGREES) % DEGREES;
+        double angleDiff = Math.abs(angleBetweenEntities - directionToAngle(entity1.getDirection()));
+        return angleDiff <= FOV_RADIUS / 2 || angleDiff >= DEGREES - FOV_RADIUS / 2;
     }
 
     /**
@@ -291,6 +309,15 @@ public abstract class Living extends Entity {
      */
     public boolean isDead() {
         return this.health <= 0;
+    }
+
+    /**
+     * Get the direction.
+     *
+     * @return The direction of the entity.
+     */
+    public Direction getDirection() {
+        return direction;
     }
 
     /**

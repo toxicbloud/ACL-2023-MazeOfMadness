@@ -5,6 +5,8 @@ import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.*;
 
+import java.util.List;
+
 /**
  * PlayerController class.
  * This is the player controller class.
@@ -20,6 +22,8 @@ public class PlayerController extends Controller implements EventVisitor {
     private static final int KEY_DOWN_INDEX = 3;
     /** To know if the player attacks or no. */
     private boolean attack;
+    /** The last time when the player attacks. */
+    private long lastAttackTime;
     /** To know if the player tries to interact with an item or not. */
     private boolean interact;
 
@@ -45,12 +49,14 @@ public class PlayerController extends Controller implements EventVisitor {
         target.moveBy(
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
-        if (attack) {
-            Living enemy = ((Player) getTarget()).findEnemyInVisionField();
-            if (enemy != null) {
-                ((Player) getTarget()).getWeapon().setPosition(target.getPosition());
-                ((Player) getTarget()).getWeapon().attack(enemy);
+        if (attack && Time.getInstance().getCurrentTime() - lastAttackTime
+            > ((Player) target).getWeapon().getCooldown()) {
+            List<Living> enemies = ((Player) target).findEnemies();
+            for (Living enemy : enemies) {
+                ((Player) target).getWeapon().setPosition(target.getPosition());
+                ((Player) target).getWeapon().attack(enemy);
             }
+            lastAttackTime = Time.getInstance().getCurrentTime();
         }
         if (interact) {
             Item item = ((Player) getTarget()).findItemInRange();
@@ -173,8 +179,7 @@ public class PlayerController extends Controller implements EventVisitor {
 
     private void updateDirectionVector() {
         this.direction = new Vector2(
-            (arrows[KEY_RIGHT_INDEX] ? 1 : 0) - (arrows[KEY_LEFT_INDEX] ? 1 : 0),
-            (arrows[KEY_DOWN_INDEX] ? 1 : 0) - (arrows[KEY_UP_INDEX] ? 1 : 0)
-        ).normalize();
+                (arrows[KEY_RIGHT_INDEX] ? 1 : 0) - (arrows[KEY_LEFT_INDEX] ? 1 : 0),
+                (arrows[KEY_DOWN_INDEX] ? 1 : 0) - (arrows[KEY_UP_INDEX] ? 1 : 0)).normalize();
     }
 }

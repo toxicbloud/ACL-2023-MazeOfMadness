@@ -96,9 +96,13 @@ package Game {
 
     package Potions {
         abstract Potion {
-            # POTION_TEXTURE: Texture
+            - health: int
+            - strength: int
+            - speed: int
+            - timeToLive: float
             ---
-            # Potion(spriteShift: int, position: Vector3)
+            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+            # POTION_TEXTURE: Texture
             # applyEffect(Player player)
         }
         Item <|-- Potion
@@ -139,8 +143,11 @@ package Game {
             - cooldown: int
             - range: float
             - lastAttackTime: long
+            - hasDoubleDamage: boolean
             # Weapon(int attack, int attack, float range)
             + attack(living: Living): boolean
+            --
+            # createDoubleDamageWeapon(): Weapon
         }
         Item <|-- Weapon
         Weapon <|-- WeaponFist
@@ -160,11 +167,13 @@ package Game {
         class PlayerFist {
             ---
             + PlayerFist()
+            + createDoubleDamageWeapon(): Weapon
         }
 
         class ZombieFist {
             ---
             + ZombieFist()
+            + createDoubleDamageWeapon(): Weapon
         }
 
         class GhostFist {
@@ -206,6 +215,9 @@ package Game {
         - updateDirection(delta: Vector2): void
         - updateSprite(delta: Vector2): void
         - renderHealthBar(): void
+        - directionToAngle(direction: Direction): double
+        + isInFOV(entity1: Living, entity2: Living): boolean
+        + getDirection(): Direction
         - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
         - setDirection(dir: Direction): void
         - isInRange(itemPosition: Vector3, playerPosition: Vector3): boolean
@@ -225,12 +237,13 @@ package Game {
     Living <|-- Monster
 
     class Player {
-        
+        + findEnemies(): List<Living>
     }
 
     package Monsters {
         abstract Monster {
             ---
+            + findPlayer(Living player): boolean
             + affectScore(Score score): void
         }
         Monster <|-- Zombie

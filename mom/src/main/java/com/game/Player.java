@@ -6,6 +6,9 @@ import com.engine.utils.Vector3;
 import com.game.tiles.Tile;
 import com.game.weapons.PlayerFist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Player class.
  * This is the player class.
@@ -76,5 +79,24 @@ public class Player extends Living {
             }
             enteredTile = tile;
         }
+    }
+
+    /**
+     * Detect whether an enemy is in the player's field of vision.
+     *
+     * @return The living entity in the range attack.
+     */
+    public List<Living> findEnemies() {
+        List<Living> enemiesInFOV = new ArrayList<>();
+        Living[] enemies = Game.getInstance().getMaze().getMonsters();
+
+        for (Living enemy : enemies) {
+            if (enemy != this && enemy.getHealth() > 0) {
+                if (isInFOV(this, enemy)) {
+                    enemiesInFOV.add(enemy);
+                }
+            }
+        }
+        return enemiesInFOV;
     }
 }
