@@ -52,9 +52,6 @@ public class GameScene extends Scene {
 
     /** Scene camera. */
     private Camera camera;
-
-    /** Last entered tile by the player. */
-    private Tile enteredTile;
     /**
      * Stage for the UI.
      */
