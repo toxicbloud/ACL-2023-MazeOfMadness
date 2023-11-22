@@ -29,6 +29,7 @@ import com.game.LevelLoader;
 import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
+import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
 import com.game.potions.HealthPotion;
@@ -126,6 +127,7 @@ public class EditorScene extends GameScene {
             new StrengthPotion(),
             new SpeedPotion(),
             new Zombie(),
+            new Ghost(),
             new Player()
         };
     }

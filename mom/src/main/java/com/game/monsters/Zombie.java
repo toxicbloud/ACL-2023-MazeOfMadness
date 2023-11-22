@@ -5,6 +5,7 @@ import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
 import com.game.controllers.ZombieController;
+import com.game.weapons.ZombieFist;
 
 /**
  * Zombie class.
@@ -14,13 +15,10 @@ public class Zombie extends Monster {
 
     /** Zombie speed. */
     public static final float ZOMBIE_SPEED = 1.5f;
-
     /** Zombie view distance to chase player. */
     public static final float VIEW_DISTANCE = 3f;
-
     /** Zombie distance at which it will leave the player alone. */
     public static final float LEAVE_DISTANCE = 6f;
-
     /** Default zombie health. */
     private static final int ZOMBIE_HEALTH = 100;
     /** Default zombie max health. */
@@ -33,9 +31,9 @@ public class Zombie extends Monster {
      * This is the default constructor for the zombie class.
      */
     public Zombie() {
-        super(
-                new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
+        super(new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
                 MonsterType.MONSTER_ZOMBIE, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
+        this.setWeapon(new ZombieFist());
         this.registerController(new ZombieController(this));
     }
 
@@ -46,10 +44,9 @@ public class Zombie extends Monster {
      * @param position The position of the zombie.
      */
     public Zombie(Vector3 position) {
-        super(
-                new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
-                MonsterType.MONSTER_ZOMBIE,
-                position, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
+        super(new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
+                MonsterType.MONSTER_ZOMBIE, position, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
+        this.setWeapon(new ZombieFist());
         this.registerController(new ZombieController(this));
     }
 

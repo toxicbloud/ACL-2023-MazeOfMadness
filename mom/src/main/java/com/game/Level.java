@@ -6,6 +6,7 @@ import com.game.exceptions.InvalidItemException;
 import com.game.exceptions.InvalidMonsterException;
 import com.game.exceptions.InvalidSchemaException;
 import com.game.exceptions.InvalidTileException;
+import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
 import com.game.potions.HealthPotion;
@@ -202,8 +203,8 @@ public class Level {
         switch (type) {
             case "MONSTER_ZOMBIE":
                 return new Zombie(position);
-            // case "MONSTER_GHOST":
-            //     return new Ghost(position);
+            case "MONSTER_GHOST":
+                return new Ghost(position);
             // case "MONSTER_BOSS":
             //     return new Boss(position);
             default:

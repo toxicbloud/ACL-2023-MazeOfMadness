@@ -32,6 +32,8 @@ public class ZombieController extends Controller {
     private static final boolean MODE_RANDOM = false;
     /** Movement mode (smart). */
     private static final boolean MODE_PATHFINDING = true;
+    /** The last time when the zombie attacks. */
+    private long lastAttackTime;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -63,6 +65,13 @@ public class ZombieController extends Controller {
     public void update() {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
+
+        if (((Zombie) target).findPlayer(player)
+            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
+            ((Zombie) target).getWeapon().setPosition(target.getPosition());
+            ((Zombie) target).getWeapon().attack(player);
+            lastAttackTime = Time.getInstance().getCurrentTime();
+        }
 
         if (this.mode == MODE_RANDOM) {
             if (target.distance(player) < Zombie.VIEW_DISTANCE) {

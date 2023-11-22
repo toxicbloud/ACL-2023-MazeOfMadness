@@ -13,6 +13,9 @@ import com.game.monsters.Ghost;
  * This is the ghost controller class.
  */
 public class GhostController extends Controller {
+    /** Minimum distance to the player to stop chasing. */
+    private static final float MIN_PLAYER_DISTANCE = 0.5f;
+
     /**
      * GhostController constructor.
      * @param ghost The ghost to control.
@@ -27,19 +30,23 @@ public class GhostController extends Controller {
         Entity target = getTarget();
 
         if (player != null) {
-            Vector3 delta = new Vector3(
-                player.getPosition().x - target.getPosition().x,
-                player.getPosition().y - target.getPosition().y,
-                0.0f
-            );
-            target.moveBy(
-                new Vector2(
-                    delta.x,
-                    delta.y
-                )
-                .normalize()
-                .mul(Time.getInstance().getDeltaTime() * Ghost.GHOST_SPEED
-            ));
+            float distance = player.distance(target);
+
+            if (distance > MIN_PLAYER_DISTANCE) {
+                Vector3 delta = new Vector3(
+                    player.getPosition().x - target.getPosition().x,
+                    player.getPosition().y - target.getPosition().y,
+                    0.0f
+                );
+                target.moveBy(
+                    new Vector2(
+                        delta.x,
+                        delta.y
+                    )
+                    .normalize()
+                    .mul(Time.getInstance().getDeltaTime() * Ghost.GHOST_SPEED
+                ));
+            }
         }
     }
 }
