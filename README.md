@@ -113,3 +113,29 @@ Merci à [@Nicoooooo](https://github.com/Nicoooooo) pour cette astuce sur MacOS
 | **Rouge**          | Rend de la vie au joueur.     |
 | **Jaune**          | Augmente la force au joueur.  |
 | **Bleu**           | Augmente la vitesse au joueur.|
+
+## Editeur de niveaux :
+
+### Présentation :
+L'éditeur de niveau est accessible depuis le menu principal du jeu, en cliquant sur le bouton "Editor". Il permet de créer des niveaux personnalisés pour le jeu.
+
+Ce dernier est composé de deux parties :
+- Une zone de contrôle au dessus
+- Une zone de visualisation et création en dessous.
+
+La zone de controle contient un bouton retour ainsi que deux boutons de contrôles de la hauteur du curseur 3D a gauche, Deux boutons de chargement et sauvegarde de niveau a droite, et enfin
+une selection du type de bloc / entité / item à poser au centre.
+
+### Controles :
+L'éditeur de niveau est utilisable avec la souris seulement, aucun raccourci clavier n'est disponible.
+
+Pour poser un nouveau bloc dans l'éditeur, il suffit de bouger la souris dans la zone 3D (Zone du bas) et cliquer sur le bouton gauche de la souris pour ajouter le bloc sélectionné à la scène.
+
+Pour retirer un bloc, il suffit de cliquer sur le bouton droit de la souris en visant le bloc désiré avec la souris.
+
+Pour déplacer la caméra, vous pouvez appuier sur le bouton droit de la souris et rester appuyé tout en bougeant la souris.
+
+Vous pouvez également agrandir ou réduire la taille de la scène en utilisant la molette de la souris.
+
+### Hauteur de curseur :
+Remarque : La hauteur du curseur dans la scène 3D est fixée pour permettre une plus grande facilité d'utilisation de l'éditeur. Cependant vous pouvez facilement changer cette hauteur en appuyant sur un des deux boutons de la zone 2D en dessous du bouton "Back" en haut a gauche de l'éditeur.
