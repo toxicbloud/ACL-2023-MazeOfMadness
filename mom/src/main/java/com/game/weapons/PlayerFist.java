@@ -8,7 +8,7 @@ import com.game.ItemType;
  */
 public class PlayerFist extends WeaponFist {
     /** PlayerFist damage amount. */
-    private static final int DAMAGE = 1;
+    private static final int DAMAGE = 10;
     /** PlayerFist cooldown. */
     private static final int ATTACK_COOLDOWN = 250;
 
