@@ -1,6 +1,7 @@
 package com.game;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.engine.utils.Vector3;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import org.json.JSONArray;
@@ -43,6 +44,31 @@ public final class LevelSaver {
 
     private static JSONObject maze2json(Maze maze) {
         JSONObject json = new JSONObject();
+
+        int minX = 0;
+        int minY = 0;
+        int minZ = 0;
+        for (Tile t : maze.getTiles()) {
+            if (t.getPosition().getX() < minX) {
+                minX = (int) t.getPosition().getX();
+            }
+            if (t.getPosition().getY() < minY) {
+                minY = (int) t.getPosition().getY();
+            }
+            if (t.getPosition().getZ() < minZ) {
+                minZ = (int) t.getPosition().getZ();
+            }
+        }
+        Vector3 shift = new Vector3(-minX, -minY, -minZ);
+        for (Tile t : maze.getTiles()) {
+            t.setPosition(t.getPosition().add(shift));
+        }
+        for (Monster m : maze.getMonsters()) {
+            m.setPosition(m.getPosition().add(shift));
+        }
+        for (Item i : maze.getItems()) {
+            i.setPosition(i.getPosition().add(shift));
+        }
 
         json.put("width", maze.getWidth());
         json.put("height", maze.getHeight());

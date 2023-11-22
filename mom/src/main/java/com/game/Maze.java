@@ -140,11 +140,26 @@ public class Maze implements Evolvable {
         this.width = w;
         this.height = h;
         this.depth = d;
-        this.tiles = t;
         this.monsters = m;
         this.items = i;
         if (setTilesPositions) {
+            this.tiles = t;
             this.setTilesDefaultPositions();
+        } else {
+            this.tiles = new Tile[t.length];
+            for (Tile tile : t) {
+                Vector3 pos = tile.getPosition();
+                int index = getTileIndex((int) pos.x, (int) pos.y, (int) pos.z);
+                this.tiles[index] = tile;
+            }
+            for (int j = 0; j < this.tiles.length; j++) {
+                if (this.tiles[j] == null) {
+                    this.tiles[j] = new VoidTile(new Vector3(
+                        j % this.width,
+                        j / this.width,
+                        j / (this.width * this.height)));
+                }
+            }
         }
     }
 
@@ -270,7 +285,18 @@ public class Maze implements Evolvable {
         if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
             return new VoidTile(new Vector3(x, y, z));
         }
-        return tiles[x + y * width + z * (width * height)];
+        return tiles[getTileIndex(x, y, z)];
+    }
+
+    /**
+     * Returns the tile index in the tiles array.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param z The z coordinate.
+     * @return The tile index in the tiles array.
+     */
+    public int getTileIndex(int x, int y, int z) {
+        return x + y * width + z * width * height;
     }
 
     /**

@@ -41,6 +41,7 @@ import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
 import com.game.tiles.Next;
 import com.game.tiles.Tile;
+import com.game.tiles.TileType;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
@@ -201,8 +202,8 @@ public class EditorScene extends GameScene {
         TextButton backBtn = new TextButton("Back", skin);
         TextButton prevBtn = new TextButton("<", skin);
         TextButton nextBtn = new TextButton(">", skin);
-        TextButton upBtn = new TextButton("/\\", skin);
-        TextButton downBtn = new TextButton("\\/", skin);
+        TextButton upBtn = new TextButton("^", skin);
+        TextButton downBtn = new TextButton("v", skin);
 
         Table mainTable = new Table();
 
@@ -512,6 +513,23 @@ public class EditorScene extends GameScene {
 
     private void loadFile(String file) {
         Level level = LevelLoader.load(new FileHandle(new File(file)));
-        Game.getInstance().setMaze(level.getMaze());
+        Maze maze = level.getMaze();
+        if (maze == null) {
+            return;
+        }
+
+        this.mazeEntities = new ArrayList<Entity>();
+        for (Tile t : maze.getTiles()) {
+            if (t.getType() != TileType.VOID) {
+                this.mazeEntities.add(t);
+            }
+        }
+        for (Monster m : maze.getMonsters()) {
+            this.mazeEntities.add(m);
+        }
+        for (Item i : maze.getItems()) {
+            this.mazeEntities.add(i);
+        }
+        generateMazeFromList();
     }
 }
