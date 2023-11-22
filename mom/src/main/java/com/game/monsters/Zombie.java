@@ -3,6 +3,7 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
+import com.game.Score;
 
 /**
  * Zombie class.
@@ -23,6 +24,8 @@ public class Zombie extends Monster {
     private static final int ZOMBIE_HEALTH = 100;
     /** Default zombie max health. */
     private static final int ZOMBIE_MAX_HEALTH = 150;
+    /** Amount of points the player gets when killing a zombie. */
+    private static final int ZOMBIE_POINTS = 40;
 
     /**
      * Zombie constructor.
@@ -50,5 +53,21 @@ public class Zombie extends Monster {
     @Override
     public void update() {
         super.update();
+    }
+
+    @Override
+    public int getPoints() {
+        return ZOMBIE_POINTS;
+    }
+
+    /**
+     * Affect the score.
+     *
+     * @param score The score object to accept.
+     */
+    @Override
+    public void affectScore(Score score) {
+        score.addPoints(ZOMBIE_HEALTH);
+        score.addKill(MonsterType.MONSTER_ZOMBIE);
     }
 }
