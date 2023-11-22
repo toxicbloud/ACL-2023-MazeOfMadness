@@ -3,7 +3,6 @@ package com.game;
 import com.badlogic.gdx.files.FileHandle;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
