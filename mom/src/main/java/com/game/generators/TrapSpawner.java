@@ -72,8 +72,8 @@ public final class TrapSpawner {
 
     /**
      * This method checks if the trap can be spawned on the choosen tile.
-     * It will check if the tile is not in a corridor and at the player's
-     * spawnpoint.
+     * It will check if the tile is not the end of the level and at the
+     * player's spawnpoint.
      *
      * @param maze The maze used to check.
      * @param x    x coordinate of the tile to check.
