@@ -1,22 +1,9 @@
 package com.game.controllers;
 
-import com.engine.events.EventGamepadMoved;
-import com.engine.events.EventGamepadPressed;
-import com.engine.events.EventGamepadReleased;
-import com.engine.events.EventKeyPressed;
-import com.engine.events.EventKeyReleased;
-import com.engine.events.EventMouseMoved;
-import com.engine.events.EventMousePressed;
-import com.engine.events.EventMouseReleased;
-import com.engine.events.EventMouseScrolled;
-import com.engine.events.EventVisitor;
-import com.engine.events.GamepadAxis;
-import com.engine.events.KeyCode;
+import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
-import com.game.Entity;
-import com.game.Living;
-import com.game.Player;
+import com.game.*;
 
 import java.util.List;
 
@@ -37,6 +24,8 @@ public class PlayerController extends Controller implements EventVisitor {
     private boolean attack;
     /** The last time when the player attacks. */
     private long lastAttackTime;
+    /** To know if the player tries to interact with an item or not. */
+    private boolean interact;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -68,6 +57,13 @@ public class PlayerController extends Controller implements EventVisitor {
                 ((Player) target).getWeapon().attack(enemy);
             }
             lastAttackTime = Time.getInstance().getCurrentTime();
+        }
+        if (interact) {
+            Item item = ((Player) getTarget()).findItemInRange();
+            if (item != null) {
+                item.interact((Player) getTarget());
+                Game.getInstance().getMaze().removeItem(item);
+            }
         }
     }
 
@@ -136,6 +132,9 @@ public class PlayerController extends Controller implements EventVisitor {
             case KEY_SPACE:
                 attack = true;
                 break;
+            case KEY_F:
+                interact = true;
+                break;
             default:
                 break;
         }
@@ -168,6 +167,9 @@ public class PlayerController extends Controller implements EventVisitor {
                 break;
             case KEY_SPACE:
                 attack = false;
+                break;
+            case KEY_F:
+                interact = false;
                 break;
             default:
                 break;

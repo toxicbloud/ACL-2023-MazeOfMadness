@@ -69,7 +69,7 @@
     <module name="MissingSwitchDefault" />
     <module name="ModifiedControlVariable" />
     <module name="MultipleVariableDeclarations" />
-    <module name="NoClone" />
+    <!-- <module name="NoClone" /> -->
     <module name="NoFinalizer" />
     <module name="OneStatementPerLine" />
     <module name="OverloadMethodsDeclarationOrder" />

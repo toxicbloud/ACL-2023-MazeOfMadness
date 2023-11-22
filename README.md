@@ -92,3 +92,24 @@ LinkedIn         | [Antonin Rousseau](https://www.linkedin.com/in/antonin-ro
  
 
 Merci à [@Nicoooooo](https://github.com/Nicoooooo) pour cette astuce sur MacOS
+
+# Utilisation
+
+## Contrôles : 
+| Touche           | Action                     |
+| ---------------- | -------------------------- |
+| **Z**            | Se déplacer vers le haut.  |
+| **Q**            | Se déplacer vers la gauche.|
+| **S**            | Se déplacer vers le bas.   |
+| **D**            | Se déplacer vers la droite.|
+| **barre espace** | Attaquer les monstres.     |
+| **F**            | Ramasser les objets.       |
+
+## Objets à Ramasser :
+
+### Potions :
+| Couleur            | Effet                         |
+| ------------------ | ----------------------------- |
+| **Rouge**          | Rend de la vie au joueur.     |
+| **Jaune**          | Augmente la force au joueur.  |
+| **Bleu**           | Augmente la vitesse au joueur.|

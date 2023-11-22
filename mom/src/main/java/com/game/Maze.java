@@ -33,6 +33,8 @@ public class Maze implements Evolvable {
     private Item[] items;
     /** Spawnpoint for the player. */
     private Vector3 spawnPoint;
+    /** Temporary entities (only drew for the current frame). */
+    private List<Entity> temporaryEntities = new ArrayList<>();
 
     /**
      * Maze constructor.
@@ -95,11 +97,80 @@ public class Maze implements Evolvable {
         this.spawnPoint = spawn;
     }
 
+    /**
+     * Maze constructor.
+     * This is the constructor for the maze class.
+     *
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
+     * @param t The tiles of the maze.
+     * @param m The monsters of the maze.
+     * @param i The items of the maze.
+     */
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i) {
+        if (t.length != w * h * d) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
+        }
+        this.width = w;
+        this.height = h;
+        this.depth = d;
+        this.tiles = t;
+        this.monsters = m;
+        this.items = i;
+        this.setTilesDefaultPositions();
+    }
+
+    /**
+     * Maze constructor.
+     * This is the constructor for the maze class.
+     *
+     * @param w The width of the maze (x axis).
+     * @param h The height of the maze (y axis).
+     * @param d The depth of the maze (z axis).
+     * @param t The tiles of the maze.
+     * @param m The monsters of the maze.
+     * @param i The items of the maze.
+     * @param setTilesPositions Whether to set the tiles positions or not.
+     */
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i, boolean setTilesPositions) {
+        if (t.length != w * h * d) {
+            throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
+        }
+        this.width = w;
+        this.height = h;
+        this.depth = d;
+        this.monsters = m;
+        this.items = i;
+        if (setTilesPositions) {
+            this.tiles = t;
+            this.setTilesDefaultPositions();
+        } else {
+            this.tiles = new Tile[t.length];
+            for (Tile tile : t) {
+                Vector3 pos = tile.getPosition();
+                int index = getTileIndex((int) pos.x, (int) pos.y, (int) pos.z);
+                this.tiles[index] = tile;
+            }
+            for (int j = 0; j < this.tiles.length; j++) {
+                if (this.tiles[j] == null) {
+                    this.tiles[j] = new VoidTile(new Vector3(
+                        j % this.width,
+                        j / this.width,
+                        j / (this.width * this.height)));
+                }
+            }
+        }
+    }
+
     private void setTilesDefaultPositions() {
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
                 for (int z = 0; z < this.depth; z++) {
-                    this.getTile(x, y, z).setPosition(new Vector3(x, y, z));
+                    Tile t = this.getTile(x, y, z);
+                    if (t != null) {
+                        t.setPosition(new Vector3(x, y, z));
+                    }
                 }
             }
         }
@@ -111,7 +182,9 @@ public class Maze implements Evolvable {
             m.update();
         }
         for (Tile t : this.tiles) {
-            t.update();
+            if (t != null) {
+                t.update();
+            }
         }
         for (Item i : this.items) {
             i.update();
@@ -127,6 +200,7 @@ public class Maze implements Evolvable {
         entities.addAll(List.of(this.monsters));
         entities.addAll(List.of(this.tiles));
         entities.addAll(List.of(this.items));
+        entities.addAll(temporaryEntities);
         if (Game.getInstance().getPlayer() != null) {
             entities.add(0, Game.getInstance().getPlayer());
         }
@@ -147,7 +221,20 @@ public class Maze implements Evolvable {
             if (c != null) {
                 c.render();
             }
+            if (e != null) {
+                e.render();
+            }
         }
+
+        temporaryEntities.clear();
+    }
+
+    /**
+     * Add a temporary entity to draw on this frame only.
+     * @param e The entity to add.
+     */
+    public void addTemporaryEntity(Entity e) {
+        temporaryEntities.add(e);
     }
 
     /**
@@ -187,6 +274,14 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Set the tiles of the maze.
+     * @param tiles The tiles of the maze.
+     */
+    public void setTiles(Tile[] tiles) {
+        this.tiles = tiles;
+    }
+
+    /**
      * Get the tile at the given coordinates.
      *
      * @param x The x coordinate.
@@ -198,7 +293,7 @@ public class Maze implements Evolvable {
         if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
             return new VoidTile(new Vector3(x, y, z));
         }
-        return tiles[x + y * width + z * (width * height)];
+        return tiles[getTileIndex(x, y, z)];
     }
 
     /**
@@ -215,12 +310,34 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Returns the tile index in the tiles array.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param z The z coordinate.
+     * @return The tile index in the tiles array.
+     */
+    public int getTileIndex(int x, int y, int z) {
+        return x + y * width + z * width * height;
+    }
+
+    /**
      * Get the monsters of the maze.
      *
      * @return The monsters of the maze.
      */
     public Monster[] getMonsters() {
         return monsters;
+    }
+
+    /**
+     * remove a monster from the maze.
+     *
+     * @param m the monster to remove.
+     */
+    public void removeMonster(Monster m) {
+        List<Monster> ms = new ArrayList<>(Arrays.asList(this.monsters));
+        ms.remove(m);
+        this.monsters = ms.toArray(new Monster[0]);
     }
 
     /**
@@ -295,5 +412,16 @@ public class Maze implements Evolvable {
      */
     public Vector3 getSpawnPoint() {
         return this.spawnPoint;
+    }
+
+    /**
+     * Removes an item from the maze.
+     *
+     * @param i item to remove from the maze.
+     */
+    public void removeItem(Item i) {
+        List<Item> itemList = new ArrayList<>(Arrays.asList(this.items));
+        itemList.remove(i);
+        this.items = itemList.toArray(new Item[0]);
     }
 }

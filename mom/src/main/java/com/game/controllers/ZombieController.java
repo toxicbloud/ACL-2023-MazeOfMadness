@@ -96,6 +96,10 @@ public class ZombieController extends Controller {
                 this.determineDirectionPattern();
             }
         } else {
+            if (player == null) {
+                return;
+            }
+
             if (path == null) {
                 PathFinder finder = PathFinder.fromMaze(target.getPosition(), player.getPosition());
                 if (finder == null || !finder.findPath()) {

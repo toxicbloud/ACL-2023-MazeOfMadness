@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.editor.EditorScene;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
@@ -21,6 +22,7 @@ import com.game.LevelLoader;
 import com.game.Player;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
+import com.game.generators.PotionSpawner;
 import com.game.generators.TrapSpawner;
 import com.renderer.GameScene;
 
@@ -44,6 +46,8 @@ public class MenuScene extends Scene {
      * Music volume.
      */
     private static final float MUSIC_VOLUME = 0.1f;
+    /** Editor button padding from screen border. */
+    private static final float PADDING_EDITOR_BUTTON = 16f;
     /**
      * Maze of Madness logo
      * Copyright : Antonin Rousseau.
@@ -115,10 +119,12 @@ public class MenuScene extends Scene {
         root.setFillParent(true);
         mainMenu.addActor(root);
 
+        root.add(new Table()).expandY().top().row();
+
         // Table pour centrer le logo
         Table logoTable = new Table();
         logoTable.add(logo).center().padBottom(PAD_BOTTOM).row();
-        root.add(logoTable).expandX().top().row();
+        root.add(logoTable).expandY().expandX().top().row();
 
         // Table pour les boutons
         Table buttonTable = new Table();
@@ -137,9 +143,12 @@ public class MenuScene extends Scene {
                 music.stop();
                 music.dispose();
                 var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-                Game.getInstance().setMaze(maze);
+                Game game = Game.getInstance();
+                game.setMaze(maze);
+                game.setPlayer(new Player(maze.getSpawnPoint()));
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);
+                PotionSpawner.spawnPotion(maze);
             }
         });
         /* CAMPAIGN MENU SECTION */
@@ -153,9 +162,40 @@ public class MenuScene extends Scene {
                 Gdx.input.setInputProcessor(campaignMenu);
             }
         });
+
+        // bouton editor
+        TextButton editor = new TextButton(
+                "Editor", skin);
+        // table pour mettre le logo dans le bas gauche
+        Table editorTable = new Table();
+        editorTable.add(editor).left().bottom().padLeft(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
+        root.add(editorTable).expandY().bottom().left();
+        // Editor button listener
+        editor.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                Window.getInstance().setScene(new EditorScene());
+            }
+        });
+
         Table rootCampaign = new Table();
         rootCampaign.setFillParent(true);
         campaignMenu.addActor(rootCampaign);
+        TextButton back = new TextButton(
+                "Back", skin);
+        campaignMenu.addActor(back);
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.play();
+                currenStage = mainMenu;
+                Gdx.input.setInputProcessor(mainMenu);
+            }
+        });
 
         // text : Level selection
         Table levelSelectionTable = new Table(skin);
@@ -196,13 +236,8 @@ public class MenuScene extends Scene {
         });
         levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
 
-        Thread thread = new Thread(() -> {
-            music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
-            music.play();
-            music.setVolume(MUSIC_VOLUME);
-        });
-
-        // load sound asynchronously
-        thread.start();
+        music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
+        music.play();
+        music.setVolume(MUSIC_VOLUME);
     }
 }

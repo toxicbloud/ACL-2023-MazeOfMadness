@@ -2,8 +2,11 @@ package com.game.weapons;
 
 import com.engine.Sprite;
 import com.engine.Texture;
+import com.engine.utils.Vector3;
 import com.game.Item;
+import com.game.ItemType;
 import com.game.Living;
+import com.game.Player;
 
 /**
  * Weapon class.
@@ -16,6 +19,8 @@ public abstract class Weapon extends Item {
     private int cooldown;
     /** Weapon range. */
     private float range;
+    /** If the weapon's damage has been multiplied by a potion. */
+    private final boolean hasDoubleDamage;
 
     /**
      * Weapon constructor.
@@ -23,12 +28,53 @@ public abstract class Weapon extends Item {
      * @param damage   The damage amount.
      * @param cooldown The cooldown between two attacks.
      * @param range    The range.
+     * @param t        The type of the weapon.
      */
-    protected Weapon(int damage, int cooldown, float range) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
+    protected Weapon(int damage, int cooldown, float range, ItemType t) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
+        this.hasDoubleDamage = false;
+    }
+
+    /**
+     * Weapon constructor.
+     *
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param t               The type of the weapon.
+     */
+    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
+    }
+
+    /**
+     * Weapon constructor.
+     *
+     * @param position        The position of the weapon.
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param t               The type of the weapon.
+     */
+    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
+        super(
+                new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE),
+                position,
+                new Vector3(1, 1, 1),
+                t);
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
     }
 
     /**
@@ -78,4 +124,26 @@ public abstract class Weapon extends Item {
     public void update() {
 
     }
+
+    /**
+     * Returns if the weapon's damage has been doubled.
+     *
+     * @return If the weapon's damage has been doubled.
+     */
+    public boolean hasDoubleDamage() {
+        return hasDoubleDamage;
+    }
+
+    /**
+     * This method creates a new weapon that has the double of the damages of the
+     * current weapon.
+     *
+     * @return A double damage weapon.
+     */
+    public abstract Weapon createDoubleDamageWeapon();
+
+    @Override
+    public void interact(Player player) {
+    }
+
 }

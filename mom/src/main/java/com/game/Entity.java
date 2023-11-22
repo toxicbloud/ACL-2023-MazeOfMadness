@@ -13,7 +13,7 @@ import com.game.tiles.Tile;
  */
 public abstract class Entity implements Evolvable {
     /** Default sprite size. */
-    protected static final int SPRITE_SIZE = 64;
+    public static final int SPRITE_SIZE = 64;
 
     /** Collisions border with. */
     protected static final float COLLISIONS_BORDER_WIDTH = 0.08f;

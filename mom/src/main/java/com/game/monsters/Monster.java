@@ -3,6 +3,8 @@ package com.game.monsters;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Living;
+import com.game.Score;
+import org.json.JSONObject;
 
 /**
  * Monster class.
@@ -13,6 +15,10 @@ public abstract class Monster extends Living {
      * Number of frames in the animation.
      */
     private static final int FRAMES_NUMBER = 40;
+    /**
+     * Ammount of points the player gets when killing a monster.
+     */
+    private static final int DEFAULT_POINTS = 20;
 
     /** The monster type. */
     private MonsterType type;
@@ -90,5 +96,37 @@ public abstract class Monster extends Living {
      */
     public MonsterType getType() {
         return type;
+    }
+
+    /**
+     * Returns a JSON version of the monster.
+     * @return A JSONObject representing the monster.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("type", this.type.toString());
+        json.put("position", this.getPosition().toJSON());
+        json.put("health", this.getHealth());
+
+        return json;
+    }
+
+    /**
+     * Get the points the player gets when killing the monster.
+     *
+     * @return The points the player gets when killing the monster.
+     */
+    public int getPoints() {
+        return DEFAULT_POINTS;
+    }
+
+    /**
+     * Affect the score.
+     *
+     * @param score The score object to accept.
+     */
+    public void affectScore(Score score) {
+        score.addPoints(DEFAULT_POINTS);
     }
 }

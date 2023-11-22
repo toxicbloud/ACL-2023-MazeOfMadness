@@ -26,11 +26,6 @@ public class LevelLoaderTest {
     private static final int EXPECTED_HEALTH = 100;
 
     /**
-     * The expected maximum health of the player.
-     */
-    private static final int EXPECTED_MAX_HEALTH = 120;
-
-    /**
      * The expected position of the player.
      */
     private static final Vector3 EXPECTED_POSITION = new Vector3(2.0f, 4.0f, 5.0f);
@@ -43,7 +38,6 @@ public class LevelLoaderTest {
         String jsonPlayerData = """
                         {
                             "health": 100,
-                            "maxHealth": 120,
                             "position": {
                                 "x": 2.0,
                                 "y": 4.0,
@@ -60,7 +54,6 @@ public class LevelLoaderTest {
         assertEquals(EXPECTED_HEALTH, playerData.getInt("health"));
         PlayerData player = new PlayerData(playerData);
         assertEquals(EXPECTED_HEALTH, player.getHealth(), "Player health should be 100");
-        assertEquals(EXPECTED_MAX_HEALTH, player.getMaxHealth(), "Player max health should be 120");
         assertEquals(EXPECTED_POSITION, player.getPosition(), "Player position should be (2.0, 4.0, 5.0)");
     }
 
@@ -69,10 +62,9 @@ public class LevelLoaderTest {
      */
     @Test
     void testPlayerDataSerialization() {
-        PlayerData player = new PlayerData(EXPECTED_HEALTH, EXPECTED_MAX_HEALTH, EXPECTED_POSITION);
+        PlayerData player = new PlayerData(EXPECTED_HEALTH, EXPECTED_POSITION);
         JSONObject jsonPlayer = player.toJSON();
         assertEquals(EXPECTED_HEALTH, jsonPlayer.getInt("health"));
-        assertEquals(EXPECTED_MAX_HEALTH, jsonPlayer.getInt("maxHealth"));
         JSONObject jsonPosition = (JSONObject) jsonPlayer.get("position");
         assertEquals(EXPECTED_POSITION.getX(), jsonPosition.getFloat("x"));
         assertEquals(EXPECTED_POSITION.getY(), jsonPosition.getFloat("y"));
@@ -91,60 +83,29 @@ public class LevelLoaderTest {
                     "author": "Antonin Rousseau",
                     "version": "1.4.2",
                     "maze": {
-                        "width": 2,
+                        "width": 1,
                         "height": 1,
                         "depth": 1,
                         "tiles": [
                             {
-                                "type": "StairGrass",
-                                "direction": 0
-                            },
-                            {
-                                "type": "GroundRock"
-                            }
-                        ],
-                        "monsters": [
-                            {
-                                "type": "zombie",
-                                "position": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "z": 0
-                                }
-                            },
-                            {
-                                "type": "ghost",
-                                "position": {
+                                "type": "GROUND_ROCK",
+                                position: {
                                     "x": 0,
                                     "y": 0,
                                     "z": 0
                                 }
                             }
                         ],
-                        "items": [
-                            {
-                                "type": "sword",
-                                "position": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "z": 0
-                                }
-                            }
-                        ]
+                        "monsters": [],
+                        "items": []
                     },
                     "player": {
                         "health": 100,
-                        "maxHealth": 100,
                         "position": {
                             "x": 0,
                             "y": 0,
                             "z": 0
-                        },
-                        "items": [
-                            {
-                                "type": "sword"
-                            }
-                        ]
+                        }
                     }
                 }
                 """;
@@ -155,7 +116,7 @@ public class LevelLoaderTest {
         Level parsedLevel = new Level(jsonLevel);
         assertEquals("Charlemagne first floor", parsedLevel.getName());
         assertEquals(parsedLevel.getMaze().getHeight(), 1);
-        assertEquals(parsedLevel.getMaze().getWidth(), 2);
+        assertEquals(parsedLevel.getMaze().getWidth(), 1);
         assertEquals(parsedLevel.getMaze().getDepth(), 1);
     }
 

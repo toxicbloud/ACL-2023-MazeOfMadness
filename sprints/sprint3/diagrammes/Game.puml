@@ -21,7 +21,20 @@ package Game {
     }
     Game "1" -- "1..0" Maze : currentMaze
     Game "1" -- "1..0" Player : player
+    Game "1" -- "1" Score : score
 
+    class Score {
+        - points: int
+        - kills : Map<MonsterType, Integer>
+        - support : PropertyChangeSupport
+        ---
+        + Score()
+        + addPoints(points: int) : void
+        + getPoints() : int
+        + getKillCount(type: MonsterType) : int
+        + addKill(type: MonsterType) : void
+        + addPropertyChangeListener(name: String, listener: PropertyChangeListener) : void
+    }
     class Maze {
         - width: int
         - height: int
@@ -76,7 +89,9 @@ package Game {
     Entity <|-- Living
 
     abstract Item {
-
+        # Item(sprite: Sprite)
+        # Item(Sprite: sprite, Vector3: position, Vector3: size)
+        # interact(player: Player)
     }
 
     package Potions {
@@ -87,12 +102,8 @@ package Game {
             - timeToLive: float
             ---
             # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
-            + getHealth(): int
-            + setHealth(health: int)
-            + getStrength(): int
-            + setStrength(strength: int)
-            + getSpeed(): int
-            + setSpeed(speed: int)
+            # POTION_TEXTURE: Texture
+            # applyEffect(Player player)
         }
         Item <|-- Potion
         Potion <|-- HealthPotion
@@ -100,18 +111,29 @@ package Game {
         Potion <|-- SpeedPotion
 
         class HealthPotion {
+            - SPRITE_SHIFT: int
+            - HEALTH_AMOUNT: int
             ---
             + HealthPotion()
+            + HealthPotion(position: Vector3)
+            # applyEffect(Player player)
         }
 
         class StrengthPotion {
+            - SPRITE_SHIFT: int
             ---
             + StrengthPotion()
+            + StrengthPotion(position: Vector3)
+            # applyEffect(Player player)
         }
 
         class SpeedPotion {
+            - SPRITE_SHIFT: int
+            - SPEED_MULTIPLIER: float
             ---
             + SpeedPotion()
+            + SpeedPotion(position: Vector3)
+            # applyEffect(Player player)
         }
     }
 
@@ -189,15 +211,19 @@ package Game {
         - updateSprite(delta: Vector2): void
         - renderHealthBar(): void
         - directionToAngle(direction: Direction): double
+        + isInFOV(entity1: Living, entity2: Living): boolean
+        + getDirection(): Direction
+        - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
         - setDirection(dir: Direction): void
+        - isInRange(itemPosition: Vector3, playerPosition: Vector3): boolean
+        + findItemInRange(): Item
         + render(): void
         + moveBy(delta: Vector2)
-        + isInFOV(entity1: Living, entity2: Living): boolean
         + attack(living: Living): boolean
         + takeDamage(damage: int) : boolean
+        + findEnemyInVisionField(): Living
         + regen(health: int) : void
         + isDead(): boolean
-        + getDirection(): Direction
         + getWeapon(): Weapon
         + setWeapon(weapon: Weapon)
     }
@@ -211,7 +237,9 @@ package Game {
 
     package Monsters {
         abstract Monster {
+            ---
             + findPlayer(Living player): boolean
+            + affectScore(Score score): void
         }
         Monster <|-- Zombie
         Monster <|-- Ghost
@@ -220,6 +248,7 @@ package Game {
         class Zombie {
             ---
             + Zombie()
+            + affectScore(Score score): void
         }
 
         class Ghost {

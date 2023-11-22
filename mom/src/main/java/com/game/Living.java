@@ -172,7 +172,7 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Create an health bar.
+     * Creates a health bar.
      */
     private void renderHealthBar() {
         Window.getInstance().getCanvas().end();
@@ -229,6 +229,39 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Detects and returns an item in the player's range if there is one.
+     *
+     * @return The first item in range.
+     */
+    public Item findItemInRange() {
+        for (Item i : Game.getInstance().getMaze().getItems()) {
+            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition())) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method checks if an item is in the range of the player.
+     *
+     * @param itemPosition Position of the item to check.
+     * @param playerPosition Position of the player.
+     * @return If the item is in the range of the player.
+     */
+    private boolean isInRange(Vector3 itemPosition, Vector3 playerPosition) {
+        final float rangeSquared = 0.5f * 0.5f;
+
+        // To compute if the item is in the player's range, we need to check if the distance of the item from the player
+        // is inside a sphere that has for center the player and for radius the pickup range.
+        float xDistanceFromCenterSquared = (itemPosition.x - playerPosition.x) * (itemPosition.x - playerPosition.x);
+        float yDistanceFromCenterSquared = (itemPosition.y - playerPosition.y) * (itemPosition.y - playerPosition.y);
+        float zDistanceFromCenterSquared = (itemPosition.z - playerPosition.z) * (itemPosition.z - playerPosition.z);
+
+        return xDistanceFromCenterSquared + yDistanceFromCenterSquared + zDistanceFromCenterSquared <= rangeSquared;
+    }
+
+    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
@@ -252,16 +285,21 @@ public abstract class Living extends Entity {
         if (this.health < 0) {
             this.health = 0;
         }
-        return this.health <= 0;
+        return this.health == 0;
     }
 
     /**
-     * Regenerate health.
+     * Regenerate health. If the health amount makes the entity's health higher than it's maximum possible health, it
+     * caps to the maximum health.
      *
      * @param h The health amount.
      */
     public void regen(int h) {
-        this.health += h;
+        if (this.getHealth() + h < this.maxHealth) {
+            this.health += h;
+        } else {
+            this.health = this.maxHealth;
+        }
     }
 
     /**

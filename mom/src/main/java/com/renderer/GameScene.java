@@ -1,16 +1,27 @@
 package com.renderer;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.engine.events.EventKeyPressed;
 import com.engine.events.EventMouseScrolled;
+import com.engine.events.KeyCode;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.PlayerController;
-import com.game.tiles.Tile;
+import com.game.monsters.Monster;
 import com.ui.EndScene;
 
 /**
@@ -18,6 +29,14 @@ import com.ui.EndScene;
  * This is the game scene class.
  */
 public class GameScene extends Scene {
+    /** Amount of shift in x (screen) direction for block next to of others. */
+    public static final float TILE_X_SHIFT = 0.25f;
+    /** Amount of shift in y (screen) direction for block on top of others. */
+    public static final float TILE_Y_SHIFT = 0.5f;
+    /**
+     * Score padding.
+     */
+    private static final int SCORE_PADDING = 10;
     /** Mouse delta to camera zoom conversion. */
     private static final float DELTA_2_ZOOM = 0.1f;
     /** Camera zoom multiplier. */
@@ -26,17 +45,28 @@ public class GameScene extends Scene {
     private static final int BLOC_SUBDIVISION = 100;
     /** Z order multiplier. */
     private static final float Z_ORDER_MULTIPLIER = 4.0f;
-    /** Amount of shift in x (screen) direction for block on top of others. */
-    private static final float TILE_X_SHIFT = 0.25f;
-    /** Amount of shift in y (screen) direction for block on top of others. */
-    private static final float TILE_Y_SHIFT = 0.5f;
+
+    /** Button padding. */
+    private static final int BUTTON_PADDING = 20;
 
     /** Scene camera. */
     private Camera camera;
-    /** Player controller. */
-    private PlayerController playerController;
-    /** Last entered tile by the player. */
-    private Tile enteredTile;
+    /**
+     * Stage for the UI.
+     */
+    private Stage hud;
+    /**
+     * Label for the score.
+     */
+    private Label scoreLabel;
+    /**
+     * Indicates if the scene is in edit mode.
+     */
+    private boolean editMode;
+    /** Pause menu. */
+    private Stage pauseMenu;
+    /** boolean to know if the game is paused. */
+    private boolean isPaused;
 
     /**
      * GameScene constructor.
@@ -44,6 +74,27 @@ public class GameScene extends Scene {
     public GameScene() {
         super();
         camera = new Camera();
+        isPaused = false;
+    }
+
+    /**
+     * GameScene constructor.
+     * @param width Scene width.
+     * @param height Scene height.
+     */
+    public GameScene(int width, int height) {
+        super(width, height);
+        camera = new Camera();
+    }
+
+    /**
+     * GameScene constructor.
+     *
+     * @param editMode Indicates if the scene is in edit mode.
+     */
+    public GameScene(boolean editMode) {
+        this();
+        this.editMode = editMode;
     }
 
     /**
@@ -73,12 +124,10 @@ public class GameScene extends Scene {
         Vector3 pos = coord.sub(cam.getPosition());
 
         return new Vector2(
-                // coord.x - coord.z / 2,
-                // coord.y - coord.z / 2
                 (pos.x - pos.y) / 2.0f,
                 pos.z * TILE_Y_SHIFT - (pos.x + pos.y) * TILE_X_SHIFT)
                 .mul(zoom)
-                .add(new Vector2(window.getWidth() / 2, window.getHeight() / 2))
+                .add(new Vector2(gscene.getWidth() / 2, gscene.getHeight() / 2))
                 .sub(zoom / 2);
     }
 
@@ -101,13 +150,21 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        if (Game.getInstance().getPlayer() == null) {
-            Game.getInstance().setPlayer(
-                    new Player(Game.getInstance().getMaze().getSpawnPoint()));
+        Game game = Game.getInstance();
+        if (game.getPlayer() == null) {
+            if (game.getMaze() != null) {
+                game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
+            }
+        } else {
+            PlayerController controller = (PlayerController) game.getPlayer().getController();
+            if (controller == null) {
+                new PlayerController(game.getPlayer());
+            }
         }
-        this.playerController = (PlayerController) Game.getInstance().getPlayer().getController();
-        if (this.playerController == null) {
-            this.playerController = new PlayerController(Game.getInstance().getPlayer());
+
+        if (!editMode) {
+            buildMenu();
+            buildHUD();
         }
     }
 
@@ -115,29 +172,36 @@ public class GameScene extends Scene {
      * Update the scene.
      */
     public void update() {
-        Maze maze = Game.getInstance().getMaze();
+        Game game = Game.getInstance();
+        Maze maze = game.getMaze();
         if (maze == null) {
             return;
-        }
-
-        if (this.playerController != null) {
-            playerController.update();
         }
 
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
-                Game.getInstance().setPlayer(null);
-                Game.getInstance().setMaze(null);
+                game.setPlayer(null);
+                game.setMaze(null);
                 Window.getInstance().setScene(new EndScene(false));
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
-            handleTileCollision(maze, p);
+        }
+
+        // delete monsters that are dead
+        for (Monster monster : maze.getMonsters()) {
+            if (monster.isDead()) {
+                monster.affectScore(game.getScore());
+                maze.removeMonster(monster);
+            }
         }
 
         this.camera.update();
         maze.update();
+        if (!editMode) {
+            pauseMenu.act();
+        }
     }
 
     /**
@@ -149,6 +213,17 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
+
+        Window.getInstance().getCanvas().end();
+        Window.getInstance().getCanvas().begin();
+
+        if (!editMode) {
+            drawHUD();
+            if (isPaused) {
+                pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                pauseMenu.draw();
+            }
+        }
     }
 
     /**
@@ -162,10 +237,26 @@ public class GameScene extends Scene {
                 float delta = -((EventMouseScrolled) event).getDelta();
                 this.camera.setZoom(this.camera.getZoom() * (delta * DELTA_2_ZOOM + ZOOM_MULTIPLIER));
                 break;
+            case KEY_PRESSED:
+                if (((EventKeyPressed) event).getKeyCode() == KeyCode.KEY_ESCAPE) {
+                    isPaused = !isPaused;
+                    if (isPaused) {
+                        Gdx.input.setInputProcessor(pauseMenu);
+                    } else {
+                        Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+                    }
+                }
+                break;
             default:
                 break;
         }
-        event.accept(playerController);
+        Player player = Game.getInstance().getPlayer();
+        if (player != null) {
+            PlayerController controller = (PlayerController) player.getController();
+            if (controller != null) {
+                event.accept(controller);
+            }
+        }
     }
 
     /**
@@ -187,26 +278,60 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Trigger the tile when the player enters it and trigger the
-     * tile when the player exits it.
-     *
-     * @param maze   The maze.
-     * @param player The player.
+     * Build the HUD UI.
      */
-    private void handleTileCollision(Maze maze, Player player) {
-        // find the tile under the player
-        Vector3 pos = player.getPosition();
-        int x = Math.round(pos.x);
-        int y = Math.round(pos.y);
-        int z = Math.round(pos.z);
-        Tile tile = maze.getTile(x, y, z - 1);
+    private void buildHUD() {
+        Game game = Game.getInstance();
+        hud = new Stage(new ScreenViewport());
+        // add score in top left corner
+        scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
+                new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")), "subtitle");
+        game.getScore().addPropertyChangeListener("points", evt -> {
+            scoreLabel.setText("Score: " + evt.getNewValue());
+        });
+        Table root = new Table();
+        root.top().left();
+        root.setFillParent(true);
+        root.add(scoreLabel).pad(SCORE_PADDING).row();
+        hud.addActor(root);
+    }
 
-        if (tile != null && tile != enteredTile) {
-            tile.onPlayerEnter(player);
-            if (enteredTile != null) {
-                enteredTile.onPlayerExit(player);
+    /**
+     * Build the menu UI.
+     */
+    private void buildMenu() {
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        pauseMenu = new Stage(new ScreenViewport());
+        Table root = new Table();
+        root.setFillParent(true);
+        pauseMenu.addActor(root);
+        // continue button
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isPaused = false;
+                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
             }
-            enteredTile = tile;
-        }
+        });
+        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
+        // exit button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.getInstance().setMaze(null);
+                Game.getInstance().setPlayer(null);
+                Window.getInstance().setScene(new EndScene(false));
+            }
+        });
+        // max int value to be sure that
+        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
+    }
+
+    private void drawHUD() {
+        hud.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        hud.getViewport().apply(true);
+        hud.draw();
     }
 }
