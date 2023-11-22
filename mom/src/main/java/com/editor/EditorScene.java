@@ -253,6 +253,9 @@ public class EditorScene extends GameScene {
                 String file = dialog.getFile();
                 String path = dialog.getDirectory();
 
+                if (file == null) {
+                    return;
+                }
                 loadFile(path + file);
             }
         });
@@ -272,6 +275,10 @@ public class EditorScene extends GameScene {
                 dialog.setVisible(true);
                 String file = dialog.getFile();
                 String path = dialog.getDirectory();
+
+                if (file == null) {
+                    return;
+                }
                 LevelSaver.save(new FileHandle(new File(path + file)), level);
 
                 loadFile(path + file);
