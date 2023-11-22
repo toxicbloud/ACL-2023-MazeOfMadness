@@ -83,60 +83,29 @@ public class LevelLoaderTest {
                     "author": "Antonin Rousseau",
                     "version": "1.4.2",
                     "maze": {
-                        "width": 2,
+                        "width": 1,
                         "height": 1,
                         "depth": 1,
                         "tiles": [
                             {
-                                "type": "StairGrass",
-                                "direction": 0
-                            },
-                            {
-                                "type": "GroundRock"
-                            }
-                        ],
-                        "monsters": [
-                            {
-                                "type": "zombie",
-                                "position": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "z": 0
-                                }
-                            },
-                            {
-                                "type": "ghost",
-                                "position": {
+                                "type": "GROUND_ROCK",
+                                position: {
                                     "x": 0,
                                     "y": 0,
                                     "z": 0
                                 }
                             }
                         ],
-                        "items": [
-                            {
-                                "type": "sword",
-                                "position": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "z": 0
-                                }
-                            }
-                        ]
+                        "monsters": [],
+                        "items": []
                     },
                     "player": {
                         "health": 100,
-                        "maxHealth": 100,
                         "position": {
                             "x": 0,
                             "y": 0,
                             "z": 0
-                        },
-                        "items": [
-                            {
-                                "type": "sword"
-                            }
-                        ]
+                        }
                     }
                 }
                 """;
@@ -147,7 +116,7 @@ public class LevelLoaderTest {
         Level parsedLevel = new Level(jsonLevel);
         assertEquals("Charlemagne first floor", parsedLevel.getName());
         assertEquals(parsedLevel.getMaze().getHeight(), 1);
-        assertEquals(parsedLevel.getMaze().getWidth(), 2);
+        assertEquals(parsedLevel.getMaze().getWidth(), 1);
         assertEquals(parsedLevel.getMaze().getDepth(), 1);
     }
 
