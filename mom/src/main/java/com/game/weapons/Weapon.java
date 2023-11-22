@@ -7,6 +7,7 @@ import com.engine.utils.Vector3;
 import com.game.Item;
 import com.game.ItemType;
 import com.game.Living;
+import com.game.Player;
 
 /**
  * Weapon class.
@@ -144,4 +145,8 @@ public abstract class Weapon extends Item {
      * @return A double damage weapon.
      */
     public abstract Weapon createDoubleDamageWeapon();
+
+    @Override
+    public void interact(Player player) {}
+
 }

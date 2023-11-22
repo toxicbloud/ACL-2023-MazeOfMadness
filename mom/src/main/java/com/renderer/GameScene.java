@@ -24,7 +24,6 @@ import com.game.controllers.PlayerController;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.ui.EndScene;
-import com.ui.MenuScene;
 
 /**
  * GameScene class.
@@ -168,45 +167,9 @@ public class GameScene extends Scene {
         }
 
         if (!editMode) {
-            hud = new Stage(new ScreenViewport());
-
-            // add score in top left corner
-            scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
-                    new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")));
-            game.getScore().addPropertyChangeListener("points", evt -> {
-                scoreLabel.setText("Score: " + evt.getNewValue());
-            });
-            Table root = new Table();
-            root.top().left();
-            root.setFillParent(true);
-            root.add(scoreLabel).pad(SCORE_PADDING).row();
-            hud.addActor(root);
+            buildMenu();
+            buildHUD();
         }
-        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
-        pauseMenu = new Stage(new ScreenViewport());
-        Table root = new Table();
-        root.setFillParent(true);
-        pauseMenu.addActor(root);
-        // continue button
-        TextButton continueButton = new TextButton("Continue", skin);
-        continueButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                isPaused = false;
-                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
-            }
-        });
-        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
-        // exit button
-        TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Window.getInstance().setScene(new MenuScene());
-            }
-        });
-        // max int value to be sure that
-        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
     }
 
     /**
@@ -233,14 +196,16 @@ public class GameScene extends Scene {
         // delete monsters that are dead
         for (Monster monster : maze.getMonsters()) {
             if (monster.isDead()) {
-                game.getScore().handleKill(monster);
+                monster.affectScore(game.getScore());
                 maze.removeMonster(monster);
             }
         }
 
         this.camera.update();
         maze.update();
-        pauseMenu.act();
+        if (!editMode) {
+            pauseMenu.act();
+        }
     }
 
     /**
@@ -252,16 +217,16 @@ public class GameScene extends Scene {
             return;
         }
         maze.render();
-        if (!editMode) {
-            drawHUD();
-        }
 
         Window.getInstance().getCanvas().end();
         Window.getInstance().getCanvas().begin();
 
-        if (isPaused) {
-            pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-            pauseMenu.draw();
+        if (!editMode) {
+            drawHUD();
+            if (isPaused) {
+                pauseMenu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                pauseMenu.draw();
+            }
         }
     }
 
@@ -314,6 +279,58 @@ public class GameScene extends Scene {
      */
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    /**
+     * Build the HUD UI.
+     */
+    private void buildHUD() {
+        Game game = Game.getInstance();
+        hud = new Stage(new ScreenViewport());
+        // add score in top left corner
+        scoreLabel = new Label("Score: " + Game.getInstance().getScore().getPoints(),
+                new Skin(Gdx.files.internal("skins/pixthulhu-ui.json")), "subtitle");
+        game.getScore().addPropertyChangeListener("points", evt -> {
+            scoreLabel.setText("Score: " + evt.getNewValue());
+        });
+        Table root = new Table();
+        root.top().left();
+        root.setFillParent(true);
+        root.add(scoreLabel).pad(SCORE_PADDING).row();
+        hud.addActor(root);
+    }
+
+    /**
+     * Build the menu UI.
+     */
+    private void buildMenu() {
+        Skin skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
+        pauseMenu = new Stage(new ScreenViewport());
+        Table root = new Table();
+        root.setFillParent(true);
+        pauseMenu.addActor(root);
+        // continue button
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isPaused = false;
+                Gdx.input.setInputProcessor(Window.getInstance().getEventManager());
+            }
+        });
+        root.add(continueButton).center().padBottom(BUTTON_PADDING).row();
+        // exit button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.getInstance().setMaze(null);
+                Game.getInstance().setPlayer(null);
+                Window.getInstance().setScene(new EndScene(false));
+            }
+        });
+        // max int value to be sure that
+        root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
     }
 
     private void drawHUD() {

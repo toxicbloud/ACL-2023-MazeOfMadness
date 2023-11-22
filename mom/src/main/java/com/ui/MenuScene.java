@@ -143,8 +143,9 @@ public class MenuScene extends Scene {
                 music.stop();
                 music.dispose();
                 var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-                Game.getInstance().setMaze(maze);
-                Game.getInstance().setPlayer(new Player(maze.getSpawnPoint()));
+                Game game = Game.getInstance();
+                game.setMaze(maze);
+                game.setPlayer(new Player(maze.getSpawnPoint()));
                 Window.getInstance().setScene(new GameScene());
                 MonsterSpawner.spawnMonsters(maze);
                 PotionSpawner.spawnPotion(maze);
@@ -183,6 +184,18 @@ public class MenuScene extends Scene {
         Table rootCampaign = new Table();
         rootCampaign.setFillParent(true);
         campaignMenu.addActor(rootCampaign);
+        TextButton back = new TextButton(
+                "Back", skin);
+        campaignMenu.addActor(back);
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.play();
+                currenStage = mainMenu;
+                Gdx.input.setInputProcessor(mainMenu);
+            }
+        });
 
         // text : Level selection
         Table levelSelectionTable = new Table(skin);
@@ -223,13 +236,8 @@ public class MenuScene extends Scene {
         });
         levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
 
-        Thread thread = new Thread(() -> {
-            music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
-            music.play();
-            music.setVolume(MUSIC_VOLUME);
-        });
-
-        // load sound asynchronously
-        thread.start();
+        music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
+        music.play();
+        music.setVolume(MUSIC_VOLUME);
     }
 }

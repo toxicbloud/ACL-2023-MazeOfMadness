@@ -21,7 +21,20 @@ package Game {
     }
     Game "1" -- "1..0" Maze : currentMaze
     Game "1" -- "1..0" Player : player
+    Game "1" -- "1" Score : score
 
+    class Score {
+        - points: int
+        - kills : Map<MonsterType, Integer>
+        - support : PropertyChangeSupport
+        ---
+        + Score()
+        + addPoints(points: int) : void
+        + getPoints() : int
+        + getKillCount(type: MonsterType) : int
+        + addKill(type: MonsterType) : void
+        + addPropertyChangeListener(name: String, listener: PropertyChangeListener) : void
+    }
     class Maze {
         - width: int
         - height: int
@@ -76,7 +89,9 @@ package Game {
     Entity <|-- Living
 
     abstract Item {
-
+        # Item(sprite: Sprite)
+        # Item(Sprite: sprite, Vector3: position, Vector3: size)
+        # interact(player: Player)
     }
 
     package Potions {
@@ -193,6 +208,8 @@ package Game {
         - renderHealthBar(): void
         - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
         - setDirection(dir: Direction): void
+        - isInRange(itemPosition: Vector3, playerPosition: Vector3): boolean
+        + findItemInRange(): Item
         + render(): void
         + moveBy(delta: Vector2)
         + attack(living: Living): boolean
@@ -213,7 +230,8 @@ package Game {
 
     package Monsters {
         abstract Monster {
-
+            ---
+            + affectScore(Score score): void
         }
         Monster <|-- Zombie
         Monster <|-- Ghost
@@ -222,6 +240,7 @@ package Game {
         class Zombie {
             ---
             + Zombie()
+            + affectScore(Score score): void
         }
 
         class Ghost {

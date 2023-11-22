@@ -112,11 +112,11 @@ public abstract class Monster extends Living {
     }
 
     /**
-     * Accept a Score object.
+     * Affect the score.
      *
      * @param score The score object to accept.
      */
-    public void accept(Score score) {
+    public void affectScore(Score score) {
         score.addPoints(DEFAULT_POINTS);
     }
 }

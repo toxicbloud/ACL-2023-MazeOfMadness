@@ -1,6 +1,5 @@
 package com.game;
 
-import com.game.monsters.Monster;
 import com.game.monsters.MonsterType;
 
 import java.beans.PropertyChangeListener;
@@ -33,15 +32,6 @@ public class Score {
         this.points = 0;
         this.support = new PropertyChangeSupport(this);
         this.kills = new HashMap<>();
-    }
-
-    /**
-     * Handle kill.
-     *
-     * @param monster The monster which was killed by the player.
-     */
-    public void handleKill(Monster monster) {
-        monster.accept(this);
     }
 
     /**
