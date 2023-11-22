@@ -66,6 +66,13 @@ public class ZombieController extends Controller {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
 
+        if (((Zombie) target).findPlayer(player)
+            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
+            ((Zombie) target).getWeapon().setPosition(target.getPosition());
+            ((Zombie) target).getWeapon().attack(player);
+            lastAttackTime = Time.getInstance().getCurrentTime();
+        }
+
         if (this.mode == MODE_RANDOM) {
             if (target.distance(player) < Zombie.VIEW_DISTANCE) {
                 this.mode = MODE_PATHFINDING;
@@ -134,13 +141,6 @@ public class ZombieController extends Controller {
                     .mul(Time.getInstance().getDeltaTime() * Zombie.ZOMBIE_SPEED)
                 );
             }
-        }
-
-        if (((Zombie) target).findPlayer(player)
-            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
-            ((Zombie) target).getWeapon().setPosition(target.getPosition());
-            ((Zombie) target).getWeapon().attack(player);
-            lastAttackTime = Time.getInstance().getCurrentTime();
         }
     }
 

@@ -8,7 +8,7 @@ public class ZombieFist extends WeaponFist {
     /** ZombieFist damage amout. */
     private static final int DAMAGE = 5;
     /** ZombieFist cooldown. */
-    private static final int ATTACK_COOLDOWN = 500;
+    private static final int ATTACK_COOLDOWN = 750;
 
     /**
      * ZombieFist constructor.
