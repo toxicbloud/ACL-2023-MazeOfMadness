@@ -307,4 +307,15 @@ public class Maze implements Evolvable {
     public Vector3 getSpawnPoint() {
         return this.spawnPoint;
     }
+
+    /**
+     * Removes an item from the maze.
+     *
+     * @param i item to remove from the maze.
+     */
+    public void removeItem(Item i) {
+        List<Item> itemList = new ArrayList<>(Arrays.asList(this.items));
+        itemList.remove(i);
+        this.items = itemList.toArray(new Item[0]);
+    }
 }

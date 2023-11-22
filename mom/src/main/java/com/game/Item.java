@@ -41,4 +41,11 @@ public abstract class Item extends Entity {
     public ItemType getItemType() {
         return itemType;
     }
+
+    /**
+     * This method calls the interaction method of the Item.
+     *
+     * @param player player to use for the interaction.
+     */
+    public abstract void interact(Player player);
 }

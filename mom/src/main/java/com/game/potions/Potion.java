@@ -36,4 +36,9 @@ public abstract class Potion extends Item {
      * @param player Player to apply the potion effects upon.
      */
     protected abstract void applyEffect(Player player);
+
+    @Override
+    public void interact(Player player) {
+        this.applyEffect(player);
+    }
 }
