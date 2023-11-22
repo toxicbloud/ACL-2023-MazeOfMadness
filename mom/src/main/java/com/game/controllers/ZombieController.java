@@ -11,8 +11,8 @@ import com.game.Player;
 import com.game.monsters.Zombie;
 
 /**
- * PlayerController class.
- * This is the player controller class.
+ * ZombieController class.
+ * This is the zombie controller class.
  */
 public class ZombieController extends Controller {
     /** Maximum distance to walk before changing direction. */
