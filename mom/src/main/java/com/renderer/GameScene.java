@@ -22,7 +22,6 @@ import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.PlayerController;
 import com.game.monsters.Monster;
-import com.game.tiles.Tile;
 import com.ui.EndScene;
 
 /**
@@ -30,6 +29,10 @@ import com.ui.EndScene;
  * This is the game scene class.
  */
 public class GameScene extends Scene {
+    /** Amount of shift in x (screen) direction for block next to of others. */
+    public static final float TILE_X_SHIFT = 0.25f;
+    /** Amount of shift in y (screen) direction for block on top of others. */
+    public static final float TILE_Y_SHIFT = 0.5f;
     /**
      * Score padding.
      */
@@ -42,23 +45,12 @@ public class GameScene extends Scene {
     private static final int BLOC_SUBDIVISION = 100;
     /** Z order multiplier. */
     private static final float Z_ORDER_MULTIPLIER = 4.0f;
-    /** Amount of shift in x (screen) direction for block on top of others. */
-    private static final float TILE_X_SHIFT = 0.25f;
-    /** Amount of shift in y (screen) direction for block on top of others. */
-    private static final float TILE_Y_SHIFT = 0.5f;
+
     /** Button padding. */
     private static final int BUTTON_PADDING = 20;
 
     /** Scene camera. */
     private Camera camera;
-    /** Player controller. */
-    private PlayerController playerController;
-    /** Last entered tile by the player. */
-    private Tile enteredTile;
-    /** Pause menu. */
-    private Stage pauseMenu;
-    /** boolean to know if the game is paused. */
-    private boolean isPaused;
     /**
      * Stage for the UI.
      */
@@ -71,6 +63,10 @@ public class GameScene extends Scene {
      * Indicates if the scene is in edit mode.
      */
     private boolean editMode;
+    /** Pause menu. */
+    private Stage pauseMenu;
+    /** boolean to know if the game is paused. */
+    private boolean isPaused;
 
     /**
      * GameScene constructor.
@@ -79,6 +75,16 @@ public class GameScene extends Scene {
         super();
         camera = new Camera();
         isPaused = false;
+    }
+
+    /**
+     * GameScene constructor.
+     * @param width Scene width.
+     * @param height Scene height.
+     */
+    public GameScene(int width, int height) {
+        super(width, height);
+        camera = new Camera();
     }
 
     /**
@@ -118,12 +124,10 @@ public class GameScene extends Scene {
         Vector3 pos = coord.sub(cam.getPosition());
 
         return new Vector2(
-                // coord.x - coord.z / 2,
-                // coord.y - coord.z / 2
                 (pos.x - pos.y) / 2.0f,
                 pos.z * TILE_Y_SHIFT - (pos.x + pos.y) * TILE_X_SHIFT)
                 .mul(zoom)
-                .add(new Vector2(window.getWidth() / 2, window.getHeight() / 2))
+                .add(new Vector2(gscene.getWidth() / 2, gscene.getHeight() / 2))
                 .sub(zoom / 2);
     }
 
@@ -146,7 +150,18 @@ public class GameScene extends Scene {
      * Create the scene.
      */
     public void create() {
-        this.playerController = new PlayerController(Game.getInstance().getPlayer());
+        Game game = Game.getInstance();
+        if (game.getPlayer() == null) {
+            if (game.getMaze() != null) {
+                game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
+            }
+        } else {
+            PlayerController controller = (PlayerController) game.getPlayer().getController();
+            if (controller == null) {
+                new PlayerController(game.getPlayer());
+            }
+        }
+
         if (!editMode) {
             buildMenu();
             buildHUD();
@@ -163,11 +178,7 @@ public class GameScene extends Scene {
             return;
         }
 
-        if (this.playerController != null) {
-            playerController.update();
-        }
-
-        Player p = game.getPlayer();
+        Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
                 game.setPlayer(null);
@@ -176,7 +187,6 @@ public class GameScene extends Scene {
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
-            handleTileCollision(maze, p);
         }
 
         // delete monsters that are dead
@@ -240,7 +250,13 @@ public class GameScene extends Scene {
             default:
                 break;
         }
-        event.accept(playerController);
+        Player player = Game.getInstance().getPlayer();
+        if (player != null) {
+            PlayerController controller = (PlayerController) player.getController();
+            if (controller != null) {
+                event.accept(controller);
+            }
+        }
     }
 
     /**
@@ -311,30 +327,6 @@ public class GameScene extends Scene {
         });
         // max int value to be sure that
         root.add(exitButton).center().padBottom(BUTTON_PADDING).row();
-    }
-
-    /**
-     * Trigger the tile when the player enters it and trigger the
-     * tile when the player exits it.
-     *
-     * @param maze   The maze.
-     * @param player The player.
-     */
-    private void handleTileCollision(Maze maze, Player player) {
-        // find the tile under the player
-        Vector3 pos = player.getPosition();
-        int x = Math.round(pos.x);
-        int y = Math.round(pos.y);
-        int z = Math.round(pos.z);
-        Tile tile = maze.getTile(x, y, z - 1);
-
-        if (tile != null && tile != enteredTile) {
-            tile.onPlayerEnter(player);
-            if (enteredTile != null) {
-                enteredTile.onPlayerExit(player);
-            }
-            enteredTile = tile;
-        }
     }
 
     private void drawHUD() {

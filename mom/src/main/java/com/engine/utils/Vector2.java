@@ -78,6 +78,15 @@ public class Vector2 extends com.badlogic.gdx.math.Vector2 {
     }
 
     /**
+     * Divide the vector by a float.
+     * @param f the float used to divide
+     * @return a new vector corresponding to (this.x / float, this.y / float)
+     */
+    public Vector2 div(float f) {
+        return new Vector2(x / f, y / f);
+    }
+
+    /**
      * Get the normalized vector.
      * @return The normalized vector.
      */

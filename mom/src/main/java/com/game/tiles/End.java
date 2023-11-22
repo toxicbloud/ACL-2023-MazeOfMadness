@@ -3,6 +3,7 @@ package com.game.tiles;
 import com.engine.Sprite;
 import com.engine.Window;
 import com.engine.utils.Vector3;
+import com.game.Game;
 import com.game.Player;
 import com.ui.EndScene;
 
@@ -46,6 +47,8 @@ public class End extends Ground {
 
     @Override
     public void onPlayerEnter(Player p) {
+        Game.getInstance().setMaze(null);
+        Game.getInstance().setPlayer(null);
         Window.getInstance().setScene(new EndScene(true));
     }
 

@@ -7,10 +7,28 @@ import com.engine.events.Event;
  * This is the base class for all scenes.
  */
 public abstract class Scene implements Evolvable {
+    /** Scene width. */
+    private int width;
+    /** Scene height. */
+    private int height;
+
     /**
      * Scene constructor.
      */
-    protected Scene() {}
+    protected Scene() {
+        this.width = Window.getInstance().getWidth();
+        this.height = Window.getInstance().getHeight();
+    }
+
+    /**
+     * Scene constructor.
+     * @param width Scene width.
+     * @param height Scene height.
+     */
+    protected Scene(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 
     /**
      * Create the scene.
@@ -36,4 +54,36 @@ public abstract class Scene implements Evolvable {
      * @param ev The event.
      */
     public abstract void onEvent(Event ev);
+
+    /**
+     * Get the scene width.
+     * @return The scene width.
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Get the scene height.
+     * @return The scene height.
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Set the scene height.
+     * @param height The scene height.
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * Set the scene width.
+     * @param width The scene width.
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
 }

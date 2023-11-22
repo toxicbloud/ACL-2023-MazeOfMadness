@@ -4,6 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
+import com.game.controllers.ZombieController;
 
 /**
  * Zombie class.
@@ -35,6 +36,7 @@ public class Zombie extends Monster {
         super(
                 new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
                 MonsterType.MONSTER_ZOMBIE, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
+        this.registerController(new ZombieController(this));
     }
 
     /**
@@ -48,6 +50,7 @@ public class Zombie extends Monster {
                 new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
                 MonsterType.MONSTER_ZOMBIE,
                 position, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
+        this.registerController(new ZombieController(this));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.game.weapons;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Time;
+import com.engine.utils.Vector3;
 import com.game.Item;
 import com.game.ItemType;
 import com.game.Living;
@@ -51,6 +52,28 @@ public abstract class Weapon extends Item {
      */
     protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
         super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
+    }
+
+    /**
+     * Weapon constructor.
+     *
+     * @param position The position of the weapon.
+     * @param damage   The damage amount.
+     * @param cooldown The cooldown between two attacks.
+     * @param range    The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param t        The type of the weapon.
+     */
+    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
+        super(
+            new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE),
+            position,
+            new Vector3(1, 1, 1),
+            t);
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
