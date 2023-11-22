@@ -1,6 +1,7 @@
 package com.game.weapons;
 
 import com.game.ItemType;
+import com.game.Player;
 
 /**
  * PlayerFist class.
