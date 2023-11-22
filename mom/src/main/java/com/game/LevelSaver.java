@@ -36,13 +36,13 @@ public final class LevelSaver {
         json.put("description", level.getDescription());
         json.put("author", level.getAuthor());
         json.put("version", level.getVersion());
+        json.put("maze", maze2json(level.getMaze(), level.getPlayerData()));
         json.put("player", level.getPlayerData().toJSON());
-        json.put("maze", maze2json(level.getMaze()));
 
         return json;
     }
 
-    private static JSONObject maze2json(Maze maze) {
+    private static JSONObject maze2json(Maze maze, PlayerData playerData) {
         JSONObject json = new JSONObject();
 
         int minX = 0;
@@ -69,6 +69,7 @@ public final class LevelSaver {
         for (Item i : maze.getItems()) {
             i.setPosition(i.getPosition().add(shift));
         }
+        playerData.setPosition(playerData.getPosition().add(shift));
 
         json.put("width", maze.getWidth());
         json.put("height", maze.getHeight());

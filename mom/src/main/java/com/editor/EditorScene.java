@@ -273,6 +273,8 @@ public class EditorScene extends GameScene {
                 String file = dialog.getFile();
                 String path = dialog.getDirectory();
                 LevelSaver.save(new FileHandle(new File(path + file)), level);
+
+                loadFile(path + file);
             }
         });
         backBtn.addListener(new ClickListener() {
@@ -500,15 +502,11 @@ public class EditorScene extends GameScene {
         Item[] itemsArray = new Item[items.size()];
         items.toArray(itemsArray);
 
-        Game.getInstance().setMaze(
-            new Maze(
-                width,
-                height,
-                depth,
-                tilesArray,
-                monstersArray,
-                itemsArray,
-                false));
+        Maze maze = new Maze(width, height, depth);
+        maze.setTiles(tilesArray);
+        maze.setItems(itemsArray);
+        maze.setMonsters(monstersArray);
+        Game.getInstance().setMaze(maze);
     }
 
     private void loadFile(String file) {
@@ -530,6 +528,8 @@ public class EditorScene extends GameScene {
         for (Item i : maze.getItems()) {
             this.mazeEntities.add(i);
         }
+
+        this.player.setPosition(level.getPlayerData().getPosition());
         generateMazeFromList();
     }
 }

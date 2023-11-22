@@ -274,6 +274,14 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Set the tiles of the maze.
+     * @param tiles The tiles of the maze.
+     */
+    public void setTiles(Tile[] tiles) {
+        this.tiles = tiles;
+    }
+
+    /**
      * Get the tile at the given coordinates.
      *
      * @param x The x coordinate.
@@ -289,17 +297,6 @@ public class Maze implements Evolvable {
     }
 
     /**
-     * Returns the tile index in the tiles array.
-     * @param x The x coordinate.
-     * @param y The y coordinate.
-     * @param z The z coordinate.
-     * @return The tile index in the tiles array.
-     */
-    public int getTileIndex(int x, int y, int z) {
-        return x + y * width + z * width * height;
-    }
-
-    /**
      * Get the tile at the given position.
      *
      * @param pos The position.
@@ -310,6 +307,17 @@ public class Maze implements Evolvable {
                 (int) Math.floor(pos.x),
                 (int) Math.floor(pos.y),
                 (int) Math.round(pos.z));
+    }
+
+    /**
+     * Returns the tile index in the tiles array.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param z The z coordinate.
+     * @return The tile index in the tiles array.
+     */
+    public int getTileIndex(int x, int y, int z) {
+        return x + y * width + z * width * height;
     }
 
     /**
