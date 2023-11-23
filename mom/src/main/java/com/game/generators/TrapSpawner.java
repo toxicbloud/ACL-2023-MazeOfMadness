@@ -18,17 +18,17 @@ public final class TrapSpawner {
     /**
      * LAVA_SPAWN_PROBABILITY : Rate of spawn for the lava traps inside the maze.
      */
-    private static final float LAVA_SPAWN_PROBABILITY = 0.10F;
+    private static final float LAVA_SPAWN_PROBABILITY = 0.05F;
     /**
      * WATER_SPAWN_PROBABILITY : Rate of spawn for the water traps inside the maze.
      */
-    private static final float WATER_SPAWN_PROBABILITY = 0.20F;
+    private static final float WATER_SPAWN_PROBABILITY = 0.10F;
 
     /**
      * SPIKES_SPAWN_PROBABILITY : Rate of spawn for the spikes traps inside the
      * maze.
      */
-    private static final float SPIKES_SPAWN_PROBABILITY = 0.05F;
+    private static final float SPIKES_SPAWN_PROBABILITY = 0.04F;
 
     /** Private constructor for the TrapSpawner class. */
     private TrapSpawner() {
