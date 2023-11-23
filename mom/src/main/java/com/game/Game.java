@@ -112,6 +112,20 @@ public final class Game {
     }
 
     /**
+     * End the game.
+     * Free the maze and the player.
+     *
+     * @return The score of the game.
+     */
+    public Score end() {
+        this.maze = null;
+        this.player = null;
+        Score res = score;
+        score = new Score();
+        return res;
+    }
+
+    /**
      * Create and load a new game.
      * ensure that the player and the score are new.
      */

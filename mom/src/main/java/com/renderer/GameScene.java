@@ -182,9 +182,7 @@ public class GameScene extends Scene {
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
-                game.setPlayer(null);
-                game.setMaze(null);
-                Window.getInstance().setScene(new EndScene(game.getScore(), false));
+                Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
@@ -321,9 +319,7 @@ public class GameScene extends Scene {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Game.getInstance().setMaze(null);
-                Game.getInstance().setPlayer(null);
-                Window.getInstance().setScene(new EndScene(Game.getInstance().getScore(), false));
+                Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
             }
         });
         // max int value to be sure that

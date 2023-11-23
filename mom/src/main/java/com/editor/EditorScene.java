@@ -289,8 +289,7 @@ public class EditorScene extends GameScene {
         backBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Window.getInstance().setScene(new MenuScene());
-                Game.getInstance().setMaze(null);
-                Game.getInstance().setPlayer(null);
+                Game.getInstance().end();
             }
         });
         upBtn.addListener(new ClickListener() {
