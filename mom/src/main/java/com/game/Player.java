@@ -28,11 +28,11 @@ public class Player extends Living {
     /** Last entered tile by the player. */
     private Tile enteredTile;
     /** Red component for the health bar color. */
-    private final float rComponent = 36f / 255.0f;
+    private final float rComponent = 0.1f;
     /** Green component for the health bar color. */
-    private final float gComponent = 209f / 255.0f;
+    private final float gComponent = 0.62f;
     /** Blue component for the health bar color. */
-    private final float bComponent = 44f / 255.0f;
+    private final float bComponent = 0.1f;
 
     /**
      * Player constructor.
