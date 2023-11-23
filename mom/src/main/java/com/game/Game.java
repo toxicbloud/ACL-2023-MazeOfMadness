@@ -94,15 +94,6 @@ public final class Game {
     }
 
     /**
-     * Set the game maze.
-     *
-     * @param maze The game maze.
-     */
-    public void setMaze(Maze maze) {
-        this.maze = maze;
-    }
-
-    /**
      * Get the game score.
      *
      * @return The game score.
@@ -130,7 +121,7 @@ public final class Game {
      * ensure that the player and the score are new.
      */
     public void loadNew() {
-        setMaze(TrapSpawner.spawnTraps(MazeFactory.createMaze()));
+        this.maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
         setPlayer(new Player(maze.getSpawnPoint()));
         score = new Score();
         Window.getInstance().setScene(new GameScene());
@@ -144,7 +135,7 @@ public final class Game {
      */
     public void loadNext() {
         var newMaze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-        Game.getInstance().setMaze(newMaze);
+        this.maze = newMaze;
         Game.getInstance().getPlayer().setPosition(newMaze.getSpawnPoint());
         Window.getInstance().setScene(new GameScene());
         MonsterSpawner.spawnMonsters(newMaze);
@@ -175,7 +166,7 @@ public final class Game {
      * @param level The level to load from.
      */
     public void loadFromLevel(Level level) {
-        setMaze(level.getMaze());
+        this.maze = level.getMaze();
         setPlayer(new Player(level.getPlayerData().getPosition()));
         score = new Score();
         Window.getInstance().setScene(new GameScene());

@@ -67,6 +67,10 @@ public class GameScene extends Scene {
     private Stage pauseMenu;
     /** boolean to know if the game is paused. */
     private boolean isPaused;
+    /**
+     * The maze to update and render.
+     */
+    private Maze maze;
 
     /**
      * GameScene constructor.
@@ -152,6 +156,7 @@ public class GameScene extends Scene {
      */
     public void create() {
         Game game = Game.getInstance();
+        this.maze = game.getMaze();
         if (game.getPlayer() == null) {
             if (game.getMaze() != null) {
                 game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
@@ -174,7 +179,6 @@ public class GameScene extends Scene {
      */
     public void update() {
         Game game = Game.getInstance();
-        Maze maze = game.getMaze();
         if (maze == null) {
             return;
         }
@@ -207,7 +211,6 @@ public class GameScene extends Scene {
      * Render the scene.
      */
     public void render() {
-        Maze maze = Game.getInstance().getMaze();
         if (maze == null) {
             return;
         }
@@ -330,5 +333,23 @@ public class GameScene extends Scene {
         hud.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         hud.getViewport().apply(true);
         hud.draw();
+    }
+
+    /**
+     * Set the maze of the scene.
+     *
+     * @param maze The maze.
+     */
+    protected void setMaze(Maze maze) {
+        this.maze = maze;
+    }
+
+    /**
+     * Get the maze of the scene.
+     *
+     * @return The maze.
+     */
+    protected Maze getMaze() {
+        return maze;
     }
 }
