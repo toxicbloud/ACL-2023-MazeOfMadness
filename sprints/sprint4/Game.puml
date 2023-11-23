@@ -1,5 +1,6 @@
 @startuml Game models class diagram
 title Game models class diagram
+skinparam Linetype ortho
 
 package Engine {
     interface Evolvable
