@@ -112,7 +112,7 @@ public class EditorScene extends GameScene {
      * EditorScene constructor.
      */
     public EditorScene() {
-        super(true);
+        super(null, true);
         this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         selectableEntities = new Entity[] {
@@ -268,7 +268,7 @@ public class EditorScene extends GameScene {
                         "level description",
                         "level author",
                         "level version",
-                        Game.getInstance().getMaze(),
+                        getMaze(),
                         player);
 
                 FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");

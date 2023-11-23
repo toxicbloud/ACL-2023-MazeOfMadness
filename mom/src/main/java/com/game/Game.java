@@ -122,11 +122,11 @@ public final class Game {
      */
     public void loadNew() {
         this.maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-        setPlayer(new Player(maze.getSpawnPoint()));
+        this.player = new Player(maze.getSpawnPoint());
         score = new Score();
-        Window.getInstance().setScene(new GameScene());
-        MonsterSpawner.spawnMonsters(maze);
-        PotionSpawner.spawnPotion(maze);
+        Window.getInstance().setScene(new GameScene(this.maze));
+        MonsterSpawner.spawnMonsters(this.maze);
+        PotionSpawner.spawnPotion(this.maze);
     }
 
     /**
@@ -134,12 +134,11 @@ public final class Game {
      * keep the same player.
      */
     public void loadNext() {
-        var newMaze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-        this.maze = newMaze;
-        Game.getInstance().getPlayer().setPosition(newMaze.getSpawnPoint());
-        Window.getInstance().setScene(new GameScene());
-        MonsterSpawner.spawnMonsters(newMaze);
-        PotionSpawner.spawnPotion(newMaze);
+        this.maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
+        this.player.setPosition(this.maze.getSpawnPoint());
+        Window.getInstance().setScene(new GameScene(this.maze));
+        MonsterSpawner.spawnMonsters(this.maze);
+        PotionSpawner.spawnPotion(this.maze);
     }
 
     /**
@@ -167,8 +166,8 @@ public final class Game {
      */
     public void loadFromLevel(Level level) {
         this.maze = level.getMaze();
-        setPlayer(new Player(level.getPlayerData().getPosition()));
+        this.player = new Player(level.getPlayerData().getPosition());
         score = new Score();
-        Window.getInstance().setScene(new GameScene());
+        Window.getInstance().setScene(new GameScene(this.maze));
     }
 }

@@ -31,7 +31,7 @@ public class LevelTestScene extends Scene {
         System.out.println("==> Level object : " + level);
 
         Game.getInstance().loadFromLevel(level);
-        Window.getInstance().setScene(new GameScene());
+        Window.getInstance().setScene(new GameScene(level.getMaze()));
     }
 
     @Override

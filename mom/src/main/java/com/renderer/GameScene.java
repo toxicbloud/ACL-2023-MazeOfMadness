@@ -71,34 +71,31 @@ public class GameScene extends Scene {
      * The maze to update and render.
      */
     private Maze maze;
+    /**
+     * The player.
+     */
+    private Player player;
 
     /**
      * GameScene constructor.
+     *
+     * @param maze The maze to render.
      */
-    public GameScene() {
+    public GameScene(Maze maze) {
         super();
         camera = new Camera();
         isPaused = false;
+        this.maze = maze;
     }
 
     /**
      * GameScene constructor.
      *
-     * @param width  Scene width.
-     * @param height Scene height.
-     */
-    public GameScene(int width, int height) {
-        super(width, height);
-        camera = new Camera();
-    }
-
-    /**
-     * GameScene constructor.
-     *
+     * @param maze     The maze to render.
      * @param editMode Indicates if the scene is in edit mode.
      */
-    public GameScene(boolean editMode) {
-        this();
+    public GameScene(Maze maze, boolean editMode) {
+        this(maze);
         this.editMode = editMode;
     }
 
@@ -156,21 +153,11 @@ public class GameScene extends Scene {
      */
     public void create() {
         Game game = Game.getInstance();
-        this.maze = game.getMaze();
-        if (game.getPlayer() == null) {
-            if (game.getMaze() != null) {
-                game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
-            }
-        } else {
-            PlayerController controller = (PlayerController) game.getPlayer().getController();
-            if (controller == null) {
-                new PlayerController(game.getPlayer());
-            }
-        }
-
+        this.player = game.getPlayer();
         if (!editMode) {
             buildMenu();
             buildHUD();
+            new PlayerController(game.getPlayer());
         }
     }
 
@@ -252,7 +239,6 @@ public class GameScene extends Scene {
             default:
                 break;
         }
-        Player player = Game.getInstance().getPlayer();
         if (player != null) {
             PlayerController controller = (PlayerController) player.getController();
             if (controller != null) {
