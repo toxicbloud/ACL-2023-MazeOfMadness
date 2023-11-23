@@ -1,0 +1,85 @@
+@startuml Generators class diagram
+title Generators class diagram
+
+package Generators {
+    class MazeFactory {
+        + randomInt(int min, int max): int
+        + static createMaze(): Maze
+        + static createMaze(int: width, int: height, int:width): Maze
+    }
+
+    class MonsterFactory {
+        + createZombie()
+        + createGhost()
+        + createBoss()
+    }
+
+    class PotionFactory {
+        + createHealthPotion()
+        + createStrenghPotion()
+        + createSpeedPotion()
+    }
+
+    class WeaponFactory {
+        + createSword()
+        + createBow()
+        + createAxe()
+    }
+
+    class MonsterSpawner {
+        + spawnMonsters(maze: Maze): Maze
+    }
+
+    class ItemSpawner {
+        + spawnItems(maze: Maze): Maze
+    }
+
+    class TrapSpawner {
+        + spawnTraps(maze: Maze)
+        - canSpawnTrap(maze: Maze, int x, int y) : boolean
+    }
+
+    class PotionSpawner {
+        + spawnPotions(maze: Maze)
+        - canSpawnPotion(maze: Maze, int x, int y, SecureRandom sr) : boolean
+    }
+
+    package tree {
+        class Leaf {
+            int x
+            int y
+            int height
+            int width
+            Leaf left
+            Leaf right
+            + Leaf(int: x, int: y, int: width, int: height)
+            - splitLeaves() : ArrayList<Leaves>
+            - split(): boolean
+            - canSplitH(): boolean
+            - createRooms()
+            - createCorridor(Rectangle l, Rectangle r)
+            - addCorridorToLeaf(Vector2 pointForX, Vector2 pointForY, int rectangleWidth, int rectangleHeight)
+            - exportToArray(Tile[] maze, int mazeHeight, int mazeWidth, int mazeDepth)
+            + generateMazeArray(int width, int height, int depth, Vector3 spawnpoint): Tile[]
+            + getRoom(): Rectangle
+            + getLeft(): Leaf
+            + getRight(): Leaf
+        }
+        class Rectangle {
+            int x
+            int y
+            int width
+            int height
+            int bottom
+            int top
+            int left
+            int right
+            + Rectangle(int: x, int: y, int: width, int: height)
+            + populateMazeWithRectangle(Tile[], int mazeHeight, int mazeWidth, int mazeDepth)
+        }
+
+        Leaf -- "*" Rectangle
+    }
+}
+
+@enduml
