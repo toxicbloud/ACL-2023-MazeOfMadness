@@ -1,5 +1,6 @@
 package com.game;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.engine.Window;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
@@ -134,5 +135,35 @@ public final class Game {
         Window.getInstance().setScene(new GameScene());
         MonsterSpawner.spawnMonsters(newMaze);
         PotionSpawner.spawnPotion(newMaze);
+    }
+
+    /**
+     * Load a game from a file.
+     *
+     * @param file The file to load from.
+     */
+    public void loadFromFile(FileHandle file) {
+        loadFromLevel(LevelLoader.load(file));
+    }
+
+    /**
+     * Load a game from a file.
+     *
+     * @param path The path to the file to load from.
+     */
+    public void loadFromFile(String path) {
+        loadFromFile(new FileHandle(path));
+    }
+
+    /**
+     * Load a game from a level.
+     *
+     * @param level The level to load from.
+     */
+    public void loadFromLevel(Level level) {
+        setMaze(level.getMaze());
+        setPlayer(new Player(level.getPlayerData().getPosition()));
+        score = new Score();
+        Window.getInstance().setScene(new GameScene());
     }
 }
