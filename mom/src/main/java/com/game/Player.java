@@ -25,14 +25,10 @@ public class Player extends Living {
     private static final Vector3 PLAYER_SIZE = new Vector3(PLAYER_WIDTH, PLAYER_WIDTH, 1.0f);
     /** Default player max health. */
     private static final int PLAYER_MAX_HEALTH = 100;
+    /** Modified color for the player's Health Bar. */
+    private static final Color HEALTH_BAR_COLOR = new Color(0.1f, 0.62f, 0.1f, 1f);
     /** Last entered tile by the player. */
     private Tile enteredTile;
-    /** Red component for the health bar color. */
-    private final float rComponent = 0.1f;
-    /** Green component for the health bar color. */
-    private final float gComponent = 0.62f;
-    /** Blue component for the health bar color. */
-    private final float bComponent = 0.1f;
 
     /**
      * Player constructor.
@@ -43,7 +39,7 @@ public class Player extends Living {
         this.setWeapon(new PlayerFist());
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
-        this.setHealthBarColor(new Color(rComponent, gComponent, bComponent, 1f));
+        this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
     }
 
     /**
@@ -57,7 +53,7 @@ public class Player extends Living {
         this.setWeapon(new PlayerFist());
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
-        this.setHealthBarColor(new Color(rComponent, gComponent, bComponent, 1f));
+        this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
     }
 
     @Override

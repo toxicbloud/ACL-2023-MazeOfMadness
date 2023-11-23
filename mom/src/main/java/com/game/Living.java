@@ -393,7 +393,7 @@ public abstract class Living extends Entity {
      *
      * @param healthBarColor new color for the health bar.
      */
-    public void setHealthBarColor(Color healthBarColor) {
+    protected void setHealthBarColor(Color healthBarColor) {
         this.healthBarColor = healthBarColor;
     }
 }
