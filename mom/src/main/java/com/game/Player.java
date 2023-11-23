@@ -1,5 +1,6 @@
 package com.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
@@ -24,9 +25,14 @@ public class Player extends Living {
     private static final Vector3 PLAYER_SIZE = new Vector3(PLAYER_WIDTH, PLAYER_WIDTH, 1.0f);
     /** Default player max health. */
     private static final int PLAYER_MAX_HEALTH = 100;
-
     /** Last entered tile by the player. */
     private Tile enteredTile;
+    /** Red component for the health bar color. */
+    private final float rComponent = 36f / 255.0f;
+    /** Green component for the health bar color. */
+    private final float gComponent = 209f / 255.0f;
+    /** Blue component for the health bar color. */
+    private final float bComponent = 44f / 255.0f;
 
     /**
      * Player constructor.
@@ -37,6 +43,7 @@ public class Player extends Living {
         this.setWeapon(new PlayerFist());
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
+        this.setHealthBarColor(new Color(rComponent, gComponent, bComponent, 1f));
     }
 
     /**
@@ -50,6 +57,7 @@ public class Player extends Living {
         this.setWeapon(new PlayerFist());
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
+        this.setHealthBarColor(new Color(rComponent, gComponent, bComponent, 1f));
     }
 
     @Override
