@@ -20,10 +20,6 @@ import com.engine.events.Event;
 import com.game.Game;
 import com.game.LevelLoader;
 import com.game.Player;
-import com.game.generators.MazeFactory;
-import com.game.generators.MonsterSpawner;
-import com.game.generators.PotionSpawner;
-import com.game.generators.TrapSpawner;
 import com.renderer.GameScene;
 
 /**
@@ -142,13 +138,7 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-                Game game = Game.getInstance();
-                game.setMaze(maze);
-                game.setPlayer(new Player(maze.getSpawnPoint()));
-                Window.getInstance().setScene(new GameScene());
-                MonsterSpawner.spawnMonsters(maze);
-                PotionSpawner.spawnPotion(maze);
+                Game.getInstance().loadNew();
             }
         });
         /* CAMPAIGN MENU SECTION */

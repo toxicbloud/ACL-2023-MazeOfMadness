@@ -1,5 +1,12 @@
 package com.game;
 
+import com.engine.Window;
+import com.game.generators.MazeFactory;
+import com.game.generators.MonsterSpawner;
+import com.game.generators.PotionSpawner;
+import com.game.generators.TrapSpawner;
+import com.renderer.GameScene;
+
 /**
  * Game class.
  * This is the game class.
@@ -101,5 +108,31 @@ public final class Game {
      */
     public Score getScore() {
         return score;
+    }
+
+    /**
+     * Create and load a new game.
+     * ensure that the player and the score are new.
+     */
+    public void loadNew() {
+        setMaze(TrapSpawner.spawnTraps(MazeFactory.createMaze()));
+        setPlayer(new Player(maze.getSpawnPoint()));
+        score = new Score();
+        Window.getInstance().setScene(new GameScene());
+        MonsterSpawner.spawnMonsters(maze);
+        PotionSpawner.spawnPotion(maze);
+    }
+
+    /**
+     * Create and load the next maze.
+     * keep the same player.
+     */
+    public void loadNext() {
+        var newMaze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
+        Game.getInstance().setMaze(newMaze);
+        Game.getInstance().getPlayer().setPosition(newMaze.getSpawnPoint());
+        Window.getInstance().setScene(new GameScene());
+        MonsterSpawner.spawnMonsters(newMaze);
+        PotionSpawner.spawnPotion(newMaze);
     }
 }
