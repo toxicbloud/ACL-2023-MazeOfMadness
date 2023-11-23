@@ -79,7 +79,8 @@ public class GameScene extends Scene {
 
     /**
      * GameScene constructor.
-     * @param width Scene width.
+     *
+     * @param width  Scene width.
      * @param height Scene height.
      */
     public GameScene(int width, int height) {
@@ -183,7 +184,7 @@ public class GameScene extends Scene {
             if (p.isDead()) {
                 game.setPlayer(null);
                 game.setMaze(null);
-                Window.getInstance().setScene(new EndScene(false));
+                Window.getInstance().setScene(new EndScene(game.getScore(), false));
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
@@ -322,7 +323,7 @@ public class GameScene extends Scene {
             public void clicked(InputEvent event, float x, float y) {
                 Game.getInstance().setMaze(null);
                 Game.getInstance().setPlayer(null);
-                Window.getInstance().setScene(new EndScene(false));
+                Window.getInstance().setScene(new EndScene(Game.getInstance().getScore(), false));
             }
         });
         // max int value to be sure that

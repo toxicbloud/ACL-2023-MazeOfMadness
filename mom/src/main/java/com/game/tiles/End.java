@@ -49,7 +49,7 @@ public class End extends Ground {
     public void onPlayerEnter(Player p) {
         Game.getInstance().setMaze(null);
         Game.getInstance().setPlayer(null);
-        Window.getInstance().setScene(new EndScene(true));
+        Window.getInstance().setScene(new EndScene(Game.getInstance().getScore(), true));
     }
 
 }
