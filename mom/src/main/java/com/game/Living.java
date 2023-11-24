@@ -68,6 +68,8 @@ public abstract class Living extends Entity {
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
     private Weapon weapon;
+    /**Color of the rendered health bar. */
+    private Color healthBarColor;
 
     /**
      * Living direction enum.
@@ -92,6 +94,7 @@ public abstract class Living extends Entity {
         super(sprite);
         this.health = DEFAULT_LIVING_HEALTH;
         this.maxHealth = DEFAULT_LIVING_HEALTH;
+        this.healthBarColor = Color.RED;
     }
 
     /**
@@ -105,6 +108,7 @@ public abstract class Living extends Entity {
         super(sprite, position, size);
         this.health = DEFAULT_LIVING_HEALTH;
         this.maxHealth = DEFAULT_LIVING_HEALTH;
+        this.healthBarColor = Color.RED;
     }
 
     /**
@@ -120,6 +124,7 @@ public abstract class Living extends Entity {
         super(sprite, position, size);
         this.health = health;
         this.maxHealth = maxHealth;
+        this.healthBarColor = Color.RED;
     }
 
     /**
@@ -187,7 +192,7 @@ public abstract class Living extends Entity {
         renderer.setColor(Color.WHITE);
         renderer.rect(pos.x - (size.x / 2), pos.y, size.x, size.y);
         renderer.set(ShapeType.Filled);
-        renderer.setColor(Color.RED);
+        renderer.setColor(this.healthBarColor);
         renderer.rect((pos.x - (size.x / 2)) + 1, pos.y + 1, healthBarStatus, size.y - 2);
         renderer.end();
 
@@ -381,5 +386,14 @@ public abstract class Living extends Entity {
      */
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
+    }
+
+    /**
+     * Sets the health bar color.
+     *
+     * @param healthBarColor new color for the health bar.
+     */
+    protected void setHealthBarColor(Color healthBarColor) {
+        this.healthBarColor = healthBarColor;
     }
 }
