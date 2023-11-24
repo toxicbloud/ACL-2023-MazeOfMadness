@@ -134,13 +134,11 @@ public class Rectangle {
     public void populateMazeWithRect(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth, Vector3 spawnpoint) {
         // Computing starting tile to fill.
         int startingTileIndex = this.x + this.y * mazeWidth;
-        int xCoordTest = this.x;
 
         // We fill each Tile that is inside the current rectangle with a GroundRock.
         for (int i = startingTileIndex;
              i < startingTileIndex + (mazeWidth * this.height);
              i += mazeWidth) {
-            xCoordTest++;
 
             for (int j = 0; j < this.width; j++) {
                 // We fill the ground layer
