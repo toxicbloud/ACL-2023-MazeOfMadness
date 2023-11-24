@@ -72,10 +72,6 @@ public final class TrapSpawner {
         // We ensure that :
         // -> The trap won't be set on the player's spawnpoint.
         // -> That the tile targeted is a ground rock.
-
-        System.out.println("Spawnpoint : (" + spawnpoint.x + ", " + spawnpoint.y + ")");
-        System.out.println("Tile       : (" + x + ", " + y + ")");
-
         return (int) spawnpoint.x != x
                && (int) spawnpoint.y != y
                && target.getType() == TileType.GROUND_ROCK;
