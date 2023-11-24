@@ -19,11 +19,11 @@ import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
 import com.game.LevelLoader;
+import com.game.Maze;
 import com.game.Player;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
-import com.game.generators.TrapSpawner;
 import com.renderer.GameScene;
 
 /**
@@ -142,7 +142,7 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
+                Maze maze = MazeFactory.createMaze();
                 Game game = Game.getInstance();
                 game.setMaze(maze);
                 game.setPlayer(new Player(maze.getSpawnPoint()));
