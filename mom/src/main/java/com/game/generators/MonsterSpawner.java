@@ -4,6 +4,7 @@ import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
 
@@ -21,6 +22,11 @@ public final class MonsterSpawner {
     public static final double PROBA_ZOMBIE = 0.03;
 
     /**
+     * Probability of spawning a ghost.
+     */
+    public static final double PROBA_GHOST = 0.01;
+
+    /**
      * Minimum distance between player and monster.
      */
     public static final float MIN_DST_PLAYER_MONSTER = 6;
@@ -36,6 +42,7 @@ public final class MonsterSpawner {
      */
     public static void spawnMonsters(Maze maze) {
         List<Monster> monsters = new ArrayList<Monster>();
+        boolean spawnedAMonster = false;
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
                 if (!canSpawnMonster(maze, x, y)) {
@@ -43,9 +50,14 @@ public final class MonsterSpawner {
                 }
 
                 if (Math.random() < PROBA_ZOMBIE) {
-                    Zombie zombie = new Zombie(new Vector3(x, y, 1));
-                    monsters.add(zombie);
+                    monsters.add(new Zombie(new Vector3(x, y, 1)));
+                    spawnedAMonster = true;
                 }
+
+                if (Math.random() < PROBA_GHOST && !spawnedAMonster) {
+                    monsters.add(new Ghost(new Vector3(x, y, 1)));
+                }
+                spawnedAMonster = false;
             }
         }
         maze.setMonsters(monsters.toArray(new Monster[monsters.size()]));
