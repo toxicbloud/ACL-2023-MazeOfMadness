@@ -16,5 +16,9 @@ public enum ItemType {
     /** ZombieFist weapon type. */
     WEAPON_ZOMBIE_FIST,
     /** Sword weapon type. */
-    WEAPON_SWORD
+    WEAPON_SWORD,
+    /** Axe weapon type. */
+    WEAPON_AXE,
+    /** Teddy weapon type. */
+    WEAPON_TEDDY
 }
