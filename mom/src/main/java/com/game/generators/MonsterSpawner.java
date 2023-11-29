@@ -16,19 +16,13 @@ import java.util.List;
  * It spawns monster on the maze.
  */
 public final class MonsterSpawner {
-    /**
-     * Probability of spawning a zombie.
-     */
+    /** Probability of spawning a zombie. */
     public static final double PROBA_ZOMBIE = 0.03;
 
-    /**
-     * Probability of spawning a ghost.
-     */
-    public static final double PROBA_GHOST = 0.01;
+    /** Probability of spawning a ghost. */
+    public static final double PROBA_GHOST = 0.005;
 
-    /**
-     * Minimum distance between player and monster.
-     */
+    /** Minimum distance between player and monster. */
     public static final float MIN_DST_PLAYER_MONSTER = 6;
 
     /**
@@ -41,23 +35,24 @@ public final class MonsterSpawner {
      * @param maze Maze to populate.
      */
     public static void spawnMonsters(Maze maze) {
-        List<Monster> monsters = new ArrayList<Monster>();
-        boolean spawnedAMonster = false;
+        List<Monster> monsters = new ArrayList<>();
+        double randomChoice;
+
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
                 if (!canSpawnMonster(maze, x, y)) {
                     continue;
                 }
 
-                if (Math.random() < PROBA_ZOMBIE) {
-                    monsters.add(new Zombie(new Vector3(x, y, 1)));
-                    spawnedAMonster = true;
-                }
+                randomChoice = Math.random();
 
-                if (Math.random() < PROBA_GHOST && !spawnedAMonster) {
+                if (randomChoice <= PROBA_ZOMBIE) {
+                    monsters.add(new Zombie(new Vector3(x, y, 1)));
+                    continue;
+                }
+                if (randomChoice <= PROBA_GHOST + PROBA_ZOMBIE) {
                     monsters.add(new Ghost(new Vector3(x, y, 1)));
                 }
-                spawnedAMonster = false;
             }
         }
         maze.setMonsters(monsters.toArray(new Monster[monsters.size()]));
