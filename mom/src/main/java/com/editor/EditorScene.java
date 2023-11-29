@@ -112,10 +112,10 @@ public class EditorScene extends GameScene {
      * EditorScene constructor.
      */
     public EditorScene() {
-        super(true);
+        super(null, true);
         this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        selectableEntities = new Entity[]{
+        selectableEntities = new Entity[] {
             new GroundRock(),
             new WallRock(),
             new End(),
@@ -154,12 +154,12 @@ public class EditorScene extends GameScene {
 
     @Override
     public void render() {
-        Maze maze = Game.getInstance().getMaze();
+        Maze maze = super.getMaze();
         if (maze != null) {
             if (this.inGameSceneZone) {
                 maze.addTemporaryEntity(this.placeholderBlock);
             }
-            Game.getInstance().getMaze().addTemporaryEntity(this.player);
+            super.getMaze().addTemporaryEntity(this.player);
         }
         super.render();
         renderEditorTab();
@@ -167,11 +167,11 @@ public class EditorScene extends GameScene {
         if (selectedEntity != null) {
             Vector2 size = new Vector2(SELECTED_ENTITY_SIZE, SELECTED_ENTITY_SIZE);
             selectedEntity.getSprite().render(
-                new Vector2(
-                    Window.getInstance().getWidth() / 2,
-                    Window.getInstance().getHeight() - EDITOR_TAB_HEIGHT / 2)
-                    .sub(size.div(2)),
-                size);
+                    new Vector2(
+                            Window.getInstance().getWidth() / 2,
+                            Window.getInstance().getHeight() - EDITOR_TAB_HEIGHT / 2)
+                            .sub(size.div(2)),
+                    size);
         }
     }
 
@@ -211,29 +211,29 @@ public class EditorScene extends GameScene {
 
         Table loadSaveButtons = new Table();
         loadSaveButtons.add(loadBtn)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
         loadSaveButtons.row();
         loadSaveButtons.add(saveBtn)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
 
         Table upDownButtons = new Table();
         upDownButtons.add(upBtn)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
         upDownButtons.add(downBtn)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
 
         Table backButtons = new Table();
         backButtons.add(backBtn)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
         backButtons.row();
         backButtons.add(upDownButtons)
-            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-            .pad(EDITOR_BUTTON_PADDING);
+                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+                .pad(EDITOR_BUTTON_PADDING);
 
         Table selectorTable = new Table();
         Table placeholderSelected = new Table();
@@ -264,12 +264,12 @@ public class EditorScene extends GameScene {
         saveBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Level level = new Level(
-                    "level name",
-                    "level description",
-                    "level author",
-                    "level version",
-                    Game.getInstance().getMaze(),
-                    player);
+                        "level name",
+                        "level description",
+                        "level author",
+                        "level version",
+                        getMaze(),
+                        player);
 
                 FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");
                 dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
@@ -289,8 +289,7 @@ public class EditorScene extends GameScene {
         backBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Window.getInstance().setScene(new MenuScene());
-                Game.getInstance().setMaze(null);
-                Game.getInstance().setPlayer(null);
+                Game.getInstance().end();
             }
         });
         upBtn.addListener(new ClickListener() {
@@ -333,10 +332,10 @@ public class EditorScene extends GameScene {
             Constructor<?> constructor = selectedEntity.getClass().getDeclaredConstructor();
             newEntity = (Entity) constructor.newInstance();
         } catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException e) {
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | NoSuchMethodException e) {
             e.printStackTrace();
         }
 
@@ -366,11 +365,10 @@ public class EditorScene extends GameScene {
 
         hud.setColor(TAB_BACKGROUND_COLOR);
         hud.rect(
-            0,
-            super.getHeight() - EDITOR_TAB_HEIGHT,
-            super.getWidth(),
-            EDITOR_TAB_HEIGHT
-        );
+                0,
+                super.getHeight() - EDITOR_TAB_HEIGHT,
+                super.getWidth(),
+                EDITOR_TAB_HEIGHT);
 
         hud.end();
 
@@ -411,18 +409,15 @@ public class EditorScene extends GameScene {
             case MOUSE_MOVED:
                 if (mousePressed) {
                     Vector2 delta = new Vector2(
-                        (lastMousePosition.x - mousePosition.x) * getHeight(),
-                        (lastMousePosition.y - mousePosition.y) * getWidth()
-                    );
+                            (lastMousePosition.x - mousePosition.x) * getHeight(),
+                            (lastMousePosition.y - mousePosition.y) * getWidth());
 
                     this.getCamera().setPosition(
-                        this.getCamera().getPosition()
-                        .add(new Vector3(
-                            (delta.x / 2 + delta.y / 2) / getCamera().getZoom() * PAN_SENSIVITY,
-                            (delta.y / 2 - delta.x / 2) / getCamera().getZoom() * PAN_SENSIVITY,
-                            0
-                        ))
-                    );
+                            this.getCamera().getPosition()
+                                    .add(new Vector3(
+                                            (delta.x / 2 + delta.y / 2) / getCamera().getZoom() * PAN_SENSIVITY,
+                                            (delta.y / 2 - delta.x / 2) / getCamera().getZoom() * PAN_SENSIVITY,
+                                            0)));
                     lastMousePosition = mousePosition;
                 } else {
                     EventMouseMoved event = (EventMouseMoved) ev;
@@ -446,10 +441,9 @@ public class EditorScene extends GameScene {
         float x = y + 2 * a;
 
         return new Vector3(
-            Math.round(x + getCamera().getPosition().x),
-            Math.round(y + getCamera().getPosition().y),
-            Math.round(z + getCamera().getPosition().z)
-        );
+                Math.round(x + getCamera().getPosition().x),
+                Math.round(y + getCamera().getPosition().y),
+                Math.round(z + getCamera().getPosition().z));
     }
 
     private void generateMazeFromList() {
@@ -515,7 +509,7 @@ public class EditorScene extends GameScene {
         maze.setTiles(tilesArray);
         maze.setItems(itemsArray);
         maze.setMonsters(monstersArray);
-        Game.getInstance().setMaze(maze);
+        super.setMaze(maze);
     }
 
     private void loadFile(String file) {

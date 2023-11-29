@@ -18,13 +18,8 @@ import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
+import com.game.Level;
 import com.game.LevelLoader;
-import com.game.Player;
-import com.game.generators.MazeFactory;
-import com.game.generators.MonsterSpawner;
-import com.game.generators.PotionSpawner;
-import com.game.generators.TrapSpawner;
-import com.renderer.GameScene;
 
 /**
  * Menu scene.
@@ -142,13 +137,7 @@ public class MenuScene extends Scene {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
-                Game game = Game.getInstance();
-                game.setMaze(maze);
-                game.setPlayer(new Player(maze.getSpawnPoint()));
-                Window.getInstance().setScene(new GameScene());
-                MonsterSpawner.spawnMonsters(maze);
-                PotionSpawner.spawnPotion(maze);
+                Game.getInstance().loadNew();
             }
         });
         /* CAMPAIGN MENU SECTION */
@@ -202,39 +191,35 @@ public class MenuScene extends Scene {
         levelSelectionTable.add("Level selection").center().padBottom(PAD_BOTTOM).row();
         rootCampaign.add(levelSelectionTable).center().row();
 
+        Level level1 = LevelLoader.load(Gdx.files.internal("maps/level1.json"));
         // TextButton : level 1
-        TextButton level1 = new TextButton(
-                LevelLoader.getLevelName(Gdx.files.internal("maps/level1.json")), skin);
-        level1.addListener(new ClickListener() {
+        TextButton level1btn = new TextButton(
+                level1.getName(), skin);
+        level1btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var level1 = LevelLoader.load(Gdx.files.internal("maps/level1.json"));
-                Game.getInstance().setMaze(level1.getMaze());
-                Game.getInstance().setPlayer(new Player(level1.getPlayerData().getPosition()));
-                Window.getInstance().setScene(new GameScene());
+                Game.getInstance().loadFromLevel(level1);
             }
         });
-        levelSelectionTable.add(level1).center().padBottom(PAD_BOTTOM).row();
+        levelSelectionTable.add(level1btn).center().padBottom(PAD_BOTTOM).row();
 
+        Level level2 = LevelLoader.load(Gdx.files.internal("maps/level2.json"));
         // TextButton : level 2
-        TextButton level2 = new TextButton(
-                LevelLoader.getLevelName(Gdx.files.internal("maps/level2.json")), skin);
-        level2.addListener(new ClickListener() {
+        TextButton level2btn = new TextButton(
+                level2.getName(), skin);
+        level2btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
                 music.stop();
                 music.dispose();
-                var level2 = LevelLoader.load(Gdx.files.internal("maps/level2.json"));
-                Game.getInstance().setMaze(level2.getMaze());
-                Game.getInstance().setPlayer(new Player(level2.getPlayerData().getPosition()));
-                Window.getInstance().setScene(new GameScene());
+                Game.getInstance().loadFromLevel(level2);
             }
         });
-        levelSelectionTable.add(level2).center().padBottom(PAD_BOTTOM).row();
+        levelSelectionTable.add(level2btn).center().padBottom(PAD_BOTTOM).row();
 
         music = (Music) Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
         music.play();

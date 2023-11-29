@@ -67,7 +67,7 @@ public class Zombie extends Monster {
      */
     @Override
     public void affectScore(Score score) {
-        score.addPoints(ZOMBIE_HEALTH);
+        score.addPoints(ZOMBIE_POINTS);
         score.addKill(MonsterType.MONSTER_ZOMBIE);
     }
 }
