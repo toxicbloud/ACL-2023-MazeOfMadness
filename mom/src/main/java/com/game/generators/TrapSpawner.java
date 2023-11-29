@@ -11,11 +11,13 @@ import java.security.SecureRandom;
 public final class TrapSpawner {
 
     /** LAVA_SPAWN_PROBABILITY : Rate of spawn for the lava traps inside the maze.*/
-    private static final float LAVA_SPAWN_PROBABILITY = 0.15F;
+    private static final float LAVA_SPAWN_PROBABILITY = 0.1F;
     /** WATER_SPAWN_PROBABILITY : Rate of spawn for the water traps inside the maze.*/
-    private static final float WATER_SPAWN_PROBABILITY = 0.15F;
+    private static final float WATER_SPAWN_PROBABILITY = 0.1F;
     /** SPIKES_SPAWN_PROBABILITY : Rate of spawn for the spikes traps inside the maze.*/
-    private static final float SPIKES_SPAWN_PROBABILITY = 0.10F;
+    private static final float SPIKES_SPAWN_PROBABILITY = 0.05F;
+    /** MIN_DST_PLAYER_TRAP : Minimal distance from the player's spawnpoint where no traps will spawn. */
+    private static final int MIN_DST_PLAYER_TRAP = 6;
 
     /** Private constructor for the TrapSpawner class. */
     private TrapSpawner() {}
@@ -26,31 +28,34 @@ public final class TrapSpawner {
      * @param maze       Maze to populate.
      * @param x          x coordinate of the tile to populate.
      * @param y          y coordinate of the tile to populate.
-     * @param mazeWidth  Width of the maze.
+     * @param tileIndex  Index of the tile to check.
      * @param spawnpoint Spawnpoint to not populate with traps.
      */
-    public static void spawnTrap(Tile[] maze, int x, int y, int mazeWidth, Vector3 spawnpoint) {
+    public static void spawnTrap(Tile[] maze, int x, int y, int tileIndex, Vector3 spawnpoint) {
         SecureRandom sr = new SecureRandom();
-        boolean spawnedATrap = false; // This value allows us to not spawn a trap where there is already one.
+        float randomValue = sr.nextFloat();
+
+        if (!TrapSpawner.canSpawnTrap(maze, x, y, tileIndex, spawnpoint)) {
+            return;
+        }
 
         // Lava spawn
-        if (sr.nextFloat() < TrapSpawner.LAVA_SPAWN_PROBABILITY
-                && TrapSpawner.canSpawnTrap(maze, x, y, mazeWidth, spawnpoint)) {
-            maze[x + y * mazeWidth] = new GroundLava(new Vector3(x, y, 0));
-            spawnedATrap = true;
+        if (randomValue <= TrapSpawner.LAVA_SPAWN_PROBABILITY) {
+            maze[tileIndex] = new GroundLava(new Vector3(x, y, 0));
+            return;
         }
         // Water spawn
-        if (!spawnedATrap
-                && sr.nextFloat() < TrapSpawner.WATER_SPAWN_PROBABILITY
-                && TrapSpawner.canSpawnTrap(maze, x, y, mazeWidth, spawnpoint)) {
-            maze[x + y * mazeWidth] = new GroundWater(new Vector3(x, y, 0));
-            spawnedATrap = true;
+        if (randomValue <= TrapSpawner.LAVA_SPAWN_PROBABILITY
+                + TrapSpawner.WATER_SPAWN_PROBABILITY) {
+            maze[tileIndex] = new GroundWater(new Vector3(x, y, 0));
+            return;
         }
         // Ground spikes
-        if (!spawnedATrap
-                && sr.nextFloat() < TrapSpawner.SPIKES_SPAWN_PROBABILITY
-                && TrapSpawner.canSpawnTrap(maze, x, y, mazeWidth, spawnpoint)) {
-            maze[x + y * mazeWidth] = new GroundSpikes(new Vector3(x, y, 0));
+        if (randomValue <= TrapSpawner.LAVA_SPAWN_PROBABILITY
+                + TrapSpawner.WATER_SPAWN_PROBABILITY
+                + TrapSpawner.SPIKES_SPAWN_PROBABILITY
+        ) {
+            maze[tileIndex] = new GroundSpikes(new Vector3(x, y, 0));
         }
     }
 
@@ -62,18 +67,15 @@ public final class TrapSpawner {
      * @param maze       The maze used to check.
      * @param x          x coordinate of the tile to check.
      * @param y          y coordinate of the tile to check.
-     * @param mazeWidth  Width of the maze.
+     * @param tileIndex  Index of the tile to check.
      * @param spawnpoint Spawnpoint to not populate with traps.
      * @return boolean indicating if the tile can accept a trap.
      */
-    private static boolean canSpawnTrap(Tile[] maze, int x, int y, int mazeWidth, Vector3 spawnpoint) {
-        Tile target = maze[x + y * mazeWidth];
-
+    private static boolean canSpawnTrap(Tile[] maze, int x, int y, int tileIndex, Vector3 spawnpoint) {
         // We ensure that :
-        // -> The trap won't be set on the player's spawnpoint.
+        // -> The trap won't be set near the player's spawnpoint.
         // -> That the tile targeted is a ground rock.
-        return (int) spawnpoint.x != x
-               && (int) spawnpoint.y != y
-               && target.getType() == TileType.GROUND_ROCK;
+        return spawnpoint.dst(x, y, 1.0F) > MIN_DST_PLAYER_TRAP
+               && maze[tileIndex].getType() == TileType.GROUND_ROCK;
     }
 }

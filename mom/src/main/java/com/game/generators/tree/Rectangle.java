@@ -144,14 +144,14 @@ public class Rectangle {
                 // We fill the ground layer
                 maze[i + j] = new GroundRock();
 
+                // We populate the room with traps :
+                if (this.isRoom) {
+                    TrapSpawner.spawnTrap(maze, i % mazeWidth, this.y + j, i + j, spawnpoint);
+                }
+
                 // We unfill the above layers.
                 for (int k = 1; k < mazeDepth; k++) {
                     maze[i + j + (mazeHeight * mazeWidth * k)] = new VoidTile();
-                }
-
-                // We populate the room with traps :
-                if (this.isRoom) {
-                    TrapSpawner.spawnTrap(maze, i / mazeWidth, this.y + j, mazeWidth, spawnpoint);
                 }
             }
         }
