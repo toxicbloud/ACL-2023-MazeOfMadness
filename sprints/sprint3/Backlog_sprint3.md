@@ -1,4 +1,4 @@
-# Liste des fonctionnalités à implémenter pour le sprint 2
+# Liste des fonctionnalités à implémenter pour le sprint 3
 
 ## Paul
 ### Resolution du bug concernant le blocage du joueur.

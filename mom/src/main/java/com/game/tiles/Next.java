@@ -1,15 +1,9 @@
 package com.game.tiles;
 
 import com.engine.Sprite;
-import com.engine.Window;
 import com.engine.utils.Vector3;
 import com.game.Game;
-import com.game.Maze;
 import com.game.Player;
-import com.game.generators.MazeFactory;
-import com.game.generators.MonsterSpawner;
-import com.game.generators.PotionSpawner;
-import com.renderer.GameScene;
 
 /**
  * Next class.
@@ -43,11 +37,6 @@ public class Next extends Ground {
 
     @Override
     public void onPlayerEnter(Player p) {
-        Maze maze = MazeFactory.createMaze();
-        Game.getInstance().setMaze(maze);
-        Game.getInstance().getPlayer().setPosition(maze.getSpawnPoint());
-        Window.getInstance().setScene(new GameScene());
-        MonsterSpawner.spawnMonsters(maze);
-        PotionSpawner.spawnPotion(maze);
+        Game.getInstance().loadNext();
     }
 }

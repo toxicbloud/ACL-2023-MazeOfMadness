@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
-import com.game.Game;
 import com.game.Score;
 import com.game.monsters.MonsterType;
 
@@ -72,15 +71,21 @@ public class EndScene extends Scene {
      * Win sound.
      */
     private Sound winSound;
+    /**
+     * Score obtained by the player in the last GameScene.
+     */
+    private Score score;
 
     /**
      * EndScene constructor.
      *
-     * @param win true if the player won, false otherwise
+     * @param score The score obtained by the player
+     * @param win   true if the player won, false otherwise
      */
-    public EndScene(boolean win) {
+    public EndScene(Score score, boolean win) {
         super();
         this.win = win;
+        this.score = score;
     }
 
     /**
@@ -121,7 +126,6 @@ public class EndScene extends Scene {
             root.row();
             failSound.play();
         }
-        Score score = Game.getInstance().getScore();
         root.row();
         // score label
         Label scoreLabel = new Label("Score: " + score.getPoints(), skin, "subtitle");

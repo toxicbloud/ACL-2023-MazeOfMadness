@@ -67,33 +67,35 @@ public class GameScene extends Scene {
     private Stage pauseMenu;
     /** boolean to know if the game is paused. */
     private boolean isPaused;
+    /**
+     * The maze to update and render.
+     */
+    private Maze maze;
+    /**
+     * The player.
+     */
+    private Player player;
 
     /**
      * GameScene constructor.
+     *
+     * @param maze The maze to render.
      */
-    public GameScene() {
+    public GameScene(Maze maze) {
         super();
         camera = new Camera();
         isPaused = false;
-    }
-
-    /**
-     * GameScene constructor.
-     * @param width Scene width.
-     * @param height Scene height.
-     */
-    public GameScene(int width, int height) {
-        super(width, height);
-        camera = new Camera();
+        this.maze = maze;
     }
 
     /**
      * GameScene constructor.
      *
+     * @param maze     The maze to render.
      * @param editMode Indicates if the scene is in edit mode.
      */
-    public GameScene(boolean editMode) {
-        this();
+    public GameScene(Maze maze, boolean editMode) {
+        this(maze);
         this.editMode = editMode;
     }
 
@@ -151,20 +153,11 @@ public class GameScene extends Scene {
      */
     public void create() {
         Game game = Game.getInstance();
-        if (game.getPlayer() == null) {
-            if (game.getMaze() != null) {
-                game.setPlayer(new Player(Game.getInstance().getMaze().getSpawnPoint()));
-            }
-        } else {
-            PlayerController controller = (PlayerController) game.getPlayer().getController();
-            if (controller == null) {
-                new PlayerController(game.getPlayer());
-            }
-        }
-
+        this.player = game.getPlayer();
         if (!editMode) {
             buildMenu();
             buildHUD();
+            new PlayerController(game.getPlayer());
         }
     }
 
@@ -173,7 +166,6 @@ public class GameScene extends Scene {
      */
     public void update() {
         Game game = Game.getInstance();
-        Maze maze = game.getMaze();
         if (maze == null) {
             return;
         }
@@ -181,9 +173,7 @@ public class GameScene extends Scene {
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
-                game.setPlayer(null);
-                game.setMaze(null);
-                Window.getInstance().setScene(new EndScene(false));
+                Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
                 return;
             }
             this.camera.setTargetPosition(p.getPosition());
@@ -208,7 +198,6 @@ public class GameScene extends Scene {
      * Render the scene.
      */
     public void render() {
-        Maze maze = Game.getInstance().getMaze();
         if (maze == null) {
             return;
         }
@@ -250,7 +239,6 @@ public class GameScene extends Scene {
             default:
                 break;
         }
-        Player player = Game.getInstance().getPlayer();
         if (player != null) {
             PlayerController controller = (PlayerController) player.getController();
             if (controller != null) {
@@ -320,9 +308,7 @@ public class GameScene extends Scene {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Game.getInstance().setMaze(null);
-                Game.getInstance().setPlayer(null);
-                Window.getInstance().setScene(new EndScene(false));
+                Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
             }
         });
         // max int value to be sure that
@@ -333,5 +319,23 @@ public class GameScene extends Scene {
         hud.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         hud.getViewport().apply(true);
         hud.draw();
+    }
+
+    /**
+     * Set the maze of the scene.
+     *
+     * @param maze The maze.
+     */
+    protected void setMaze(Maze maze) {
+        this.maze = maze;
+    }
+
+    /**
+     * Get the maze of the scene.
+     *
+     * @return The maze.
+     */
+    protected Maze getMaze() {
+        return maze;
     }
 }
