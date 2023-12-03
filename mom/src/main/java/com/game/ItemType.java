@@ -20,5 +20,7 @@ public enum ItemType {
     /** Axe weapon type. */
     WEAPON_AXE,
     /** Teddy weapon type. */
-    WEAPON_TEDDY
+    WEAPON_TEDDY,
+    /** Trident weapon type. */
+    WEAPON_TRIDENT
 }
