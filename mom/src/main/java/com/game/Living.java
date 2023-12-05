@@ -323,6 +323,26 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Get the direction vector.
+     *
+     * @return The direction vector of the entity.
+     */
+    public Vector2 getDirectionVector() {
+        switch (direction) {
+            case RIGHT:
+                return new Vector2(1, 0);
+            case UP:
+                return new Vector2(0, 1);
+            case LEFT:
+                return new Vector2(-1, 0);
+            case DOWN:
+                return new Vector2(0, -1);
+            default:
+                throw new IllegalArgumentException("Invalid direction");
+        }
+    }
+
+    /**
      * Get the health.
      *
      * @return The health of the entity.

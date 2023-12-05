@@ -6,6 +6,7 @@ import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.tiles.Tile;
 import com.game.weapons.Bomb;
+import com.game.weapons.Bow;
 import com.game.weapons.PlayerFist;
 import com.game.weapons.Weapon;
 
@@ -55,7 +56,7 @@ public class Player extends Living {
     public Player(Vector3 position) {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), position, PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
-        this.setWeapon(new Bomb());
+        this.setWeapon(new PlayerFist());
         this.defaultWeapon = new PlayerFist();
         this.getWeapon().interact(this);
         this.setHealth(PLAYER_HEALTH);

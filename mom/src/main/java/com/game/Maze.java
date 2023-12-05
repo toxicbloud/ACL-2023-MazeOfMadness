@@ -4,6 +4,7 @@ import com.engine.Evolvable;
 import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 import com.game.monsters.Monster;
+import com.game.particles.Particle;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
 import com.game.tiles.VoidTile;
@@ -31,6 +32,8 @@ public class Maze implements Evolvable {
     private Monster[] monsters;
     /** The items of the maze. */
     private Item[] items;
+    /** The particles of the maze. */
+    private Particle[] particles;
     /** Spawnpoint for the player. */
     private Vector3 spawnPoint;
     /** Temporary entities (only drew for the current frame). */
@@ -44,6 +47,8 @@ public class Maze implements Evolvable {
     public Maze() {
         this.width = 1;
         this.height = 1;
+        this.particles = new Particle[0];
+
     }
 
     /**
@@ -59,6 +64,8 @@ public class Maze implements Evolvable {
         this.height = h;
         this.depth = d;
         this.tiles = new Tile[w * h * d];
+        this.particles = new Particle[0];
+
     }
 
     /**
@@ -81,6 +88,7 @@ public class Maze implements Evolvable {
         this.monsters = new Monster[0];
         this.items = new Item[0];
         this.setTilesDefaultPositions();
+        this.particles = new Particle[0];
     }
 
     /**
@@ -95,6 +103,7 @@ public class Maze implements Evolvable {
     public Maze(int w, int h, int d, Tile[] t, Vector3 spawn) {
         this(w, h, d, t);
         this.spawnPoint = spawn;
+        this.particles = new Particle[0];
     }
 
     /**
@@ -118,6 +127,7 @@ public class Maze implements Evolvable {
         this.tiles = t;
         this.monsters = m;
         this.items = i;
+        this.particles = new Particle[0];
         this.setTilesDefaultPositions();
     }
 
@@ -125,12 +135,12 @@ public class Maze implements Evolvable {
      * Maze constructor.
      * This is the constructor for the maze class.
      *
-     * @param w The width of the maze (x axis).
-     * @param h The height of the maze (y axis).
-     * @param d The depth of the maze (z axis).
-     * @param t The tiles of the maze.
-     * @param m The monsters of the maze.
-     * @param i The items of the maze.
+     * @param w                 The width of the maze (x axis).
+     * @param h                 The height of the maze (y axis).
+     * @param d                 The depth of the maze (z axis).
+     * @param t                 The tiles of the maze.
+     * @param m                 The monsters of the maze.
+     * @param i                 The items of the maze.
      * @param setTilesPositions Whether to set the tiles positions or not.
      */
     public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i, boolean setTilesPositions) {
@@ -142,6 +152,8 @@ public class Maze implements Evolvable {
         this.depth = d;
         this.monsters = m;
         this.items = i;
+        this.particles = new Particle[0];
+
         if (setTilesPositions) {
             this.tiles = t;
             this.setTilesDefaultPositions();
@@ -155,9 +167,9 @@ public class Maze implements Evolvable {
             for (int j = 0; j < this.tiles.length; j++) {
                 if (this.tiles[j] == null) {
                     this.tiles[j] = new VoidTile(new Vector3(
-                        j % this.width,
-                        j / this.width,
-                        j / (this.width * this.height)));
+                            j % this.width,
+                            j / this.width,
+                            j / (this.width * this.height)));
                 }
             }
         }
@@ -189,6 +201,9 @@ public class Maze implements Evolvable {
         for (Item i : this.items) {
             i.update();
         }
+        for (Particle p : this.particles) {
+            p.update();
+        }
         if (Game.getInstance().getPlayer() != null) {
             Game.getInstance().getPlayer().update();
         }
@@ -197,10 +212,10 @@ public class Maze implements Evolvable {
     @Override
     public void render() {
         List<Entity> entities = new ArrayList<>();
-        entities.addAll(List.of(this.monsters));
-        entities.addAll(List.of(this.tiles));
-        entities.addAll(List.of(this.items));
-        entities.addAll(temporaryEntities);
+        entities.addAll(Arrays.asList(this.monsters));
+        entities.addAll(Arrays.asList(this.tiles));
+        entities.addAll(Arrays.asList(this.items));
+        entities.addAll(Arrays.asList(this.particles));
         if (Game.getInstance().getPlayer() != null) {
             entities.add(0, Game.getInstance().getPlayer());
         }
@@ -212,7 +227,6 @@ public class Maze implements Evolvable {
                         - GameScene.getObjectDrawingOrder(o2.getPosition());
             }
         });
-
         for (Entity e : entities) {
             e.render();
         }
@@ -231,6 +245,7 @@ public class Maze implements Evolvable {
 
     /**
      * Add a temporary entity to draw on this frame only.
+     *
      * @param e The entity to add.
      */
     public void addTemporaryEntity(Entity e) {
@@ -275,6 +290,7 @@ public class Maze implements Evolvable {
 
     /**
      * Set the tiles of the maze.
+     *
      * @param tiles The tiles of the maze.
      */
     public void setTiles(Tile[] tiles) {
@@ -311,6 +327,7 @@ public class Maze implements Evolvable {
 
     /**
      * Returns the tile index in the tiles array.
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      * @param z The z coordinate.
@@ -423,5 +440,27 @@ public class Maze implements Evolvable {
         List<Item> itemList = new ArrayList<>(Arrays.asList(this.items));
         itemList.remove(i);
         this.items = itemList.toArray(new Item[0]);
+    }
+
+    /**
+     * Add a particle to the maze.
+     *
+     * @param p particle to add to the maze.
+     */
+    public void addParticle(Particle p) {
+        List<Particle> particlesList = new ArrayList<>(Arrays.asList(this.particles));
+        particlesList.add(p);
+        this.particles = particlesList.toArray(new Particle[0]);
+    }
+
+    /**
+     * Removes a particle from the maze.
+     *
+     * @param p particle to remove from the maze.
+     */
+    public void removeParticle(Particle p) {
+        List<Particle> particlesList = new ArrayList<>(Arrays.asList(this.particles));
+        particlesList.remove(p);
+        this.particles = particlesList.toArray(new Particle[0]);
     }
 }

@@ -112,17 +112,29 @@ public abstract class Weapon extends Item {
     }
 
     /**
+     * handle the cooldown of the weapon.
+     *
+     * @return true if the cooldown is over, false otherwise.
+     */
+    protected boolean handleCooldown() {
+        long currentTime = Time.getInstance().getCurrentTime();
+        if (currentTime - this.lastAttackTime < this.cooldown) {
+            return false;
+        }
+        this.lastAttackTime = currentTime;
+        return true;
+    }
+
+    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
      * @return Whether the attack was successful.
      */
     public boolean attack(Living living) {
-        long currentTime = Time.getInstance().getCurrentTime();
-        if (currentTime - this.lastAttackTime < this.cooldown) {
+        if (!handleCooldown()) {
             return false;
         }
-        this.lastAttackTime = currentTime;
         if (this.distance(living) > this.range) {
             return false;
         }
@@ -137,11 +149,9 @@ public abstract class Weapon extends Item {
      * @return Whether the attack was successful.
      */
     public boolean attack(List<Living> livingList) {
-        long currentTime = Time.getInstance().getCurrentTime();
-        if (currentTime - this.lastAttackTime < this.cooldown) {
+        if (!handleCooldown()) {
             return false;
         }
-        this.lastAttackTime = currentTime;
         boolean successful = false;
         for (Living l : livingList) {
             if (this.distance(l) <= this.range) {
