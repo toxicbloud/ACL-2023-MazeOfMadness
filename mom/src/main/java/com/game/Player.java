@@ -35,6 +35,19 @@ public class Player extends Living {
     private Weapon defaultWeapon;
 
     /**
+     * Player constructor.
+     */
+    public Player() {
+        super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), new Vector3(), PLAYER_SIZE,
+                PLAYER_HEALTH, PLAYER_MAX_HEALTH);
+        this.setWeapon(new PlayerFist());
+        this.defaultWeapon = this.getWeapon();
+        this.setHealth(PLAYER_HEALTH);
+        this.setSpeed(PLAYER_SPEED);
+        this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
+    }
+
+    /**
      * Player full constructor.
      *
      * @param position The position of the player.
