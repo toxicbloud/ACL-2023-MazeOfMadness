@@ -238,13 +238,13 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Detects and returns an item in the player's range if there is one.
+     * Detects and returns a pickable item in the player's range if there is one.
      *
-     * @return The first item in range.
+     * @return The first pickable item in the player's range if there is one, null
      */
     public Item findItemInRange() {
         for (Item i : Game.getInstance().getMaze().getItems()) {
-            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition())) {
+            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition()) && i.isPickable()) {
                 return i;
             }
         }

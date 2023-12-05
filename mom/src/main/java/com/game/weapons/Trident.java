@@ -2,6 +2,8 @@ package com.game.weapons;
 
 import com.engine.utils.Vector3;
 import com.game.ItemType;
+import com.game.Living;
+import com.game.Living.Direction;
 
 /**
  * Trident class.
@@ -13,6 +15,14 @@ public class Trident extends Weapon {
     private static final int ATTACK_COOLDOWN = 300;
     /** Trident range. */
     private static final int RANGE = 1;
+    /**
+     * If the trident is launched.
+     */
+    private boolean isLaunched;
+    /**
+     * The direction of the trident.
+     */
+    private Direction direction;
 
     /**
      * Trident constructor.
@@ -43,6 +53,27 @@ public class Trident extends Weapon {
     @Override
     public Weapon createDoubleDamageWeapon() {
         return new Trident(this.getPosition(), true);
+    }
+
+    @Override
+    public boolean attack(Living living) {
+        launch();
+        getOwner().setWeapon(null);
+        return true;
+    }
+
+    private void launch() {
+        this.isLaunched = true;
+        this.direction = getOwner().getDirection();
+    }
+
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    @Override
+    public void update() {
     }
 
 }
