@@ -1,5 +1,7 @@
 package com.game.particles;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.engine.Sprite;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
@@ -24,6 +26,19 @@ public class Arrow extends Particle {
      * Speed at which the arrow moves.
      */
     private static final float ARROW_SPEED = 4.5f;
+
+    /**
+     * Arrow sound played when the arrow hits a wall.
+     */
+    private static final Sound WALL_HIT_SOUND = (Sound) Gdx.audio
+            .newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
+
+    /**
+     * Arrow sound played when the arrow hits an enemy.
+     */
+    private static final Sound ENEMY_HIT_SOUND = (Sound) Gdx.audio
+            .newSound(Gdx.files.internal("sounds/hit.mp3"));
+
     /**
      * Arrow direction.
      */
@@ -56,10 +71,12 @@ public class Arrow extends Particle {
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ARROW_SPEED));
         if (lastPosition.epsilonEquals(this.getPosition(), EPSILON)) {
+            WALL_HIT_SOUND.play();
             this.destroy();
         }
         Arrays.asList(Game.getInstance().getMaze().getMonsters()).forEach(monster -> {
             if (monster.getPosition().dst(this.getPosition()) < KILL_DISTANCE) {
+                ENEMY_HIT_SOUND.play();
                 monster.takeDamage(this.damage);
                 this.destroy();
             }

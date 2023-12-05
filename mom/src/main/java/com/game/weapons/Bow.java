@@ -1,5 +1,7 @@
 package com.game.weapons;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.ItemType;
@@ -16,6 +18,10 @@ public class Bow extends Weapon {
     private static final int DAMAGE = 30;
     /** Bow cooldown. */
     private static final int ATTACK_COOLDOWN = 500;
+    /**
+     * Bow shoot sound.
+     */
+    private static final Sound SHOOT_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/whoosh.mp3"));
 
     /**
      * Bow constructor.
@@ -53,8 +59,7 @@ public class Bow extends Weapon {
         if (!handleCooldown()) {
             return false;
         }
-        Game.getInstance().getMaze()
-                .addParticle(new Arrow(getSprite(), getOwner().getDirectionVector(), getPosition(), getDamage()));
+        shoot();
         return true;
     }
 
@@ -63,9 +68,14 @@ public class Bow extends Weapon {
         if (!handleCooldown()) {
             return false;
         }
+        shoot();
+        return true;
+    }
+
+    private void shoot() {
+        SHOOT_SOUND.play();
         Game.getInstance().getMaze()
                 .addParticle(new Arrow(getSprite(), getOwner().getDirectionVector(), getPosition(), getDamage()));
-        return true;
     }
 
     @Override
