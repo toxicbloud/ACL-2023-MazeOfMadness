@@ -55,6 +55,9 @@ public abstract class Entity implements Evolvable {
      * @param c The controller to register.
      */
     public void registerController(Controller c) {
+        if (this.controller != null) {
+            this.controller.unregister();
+        }
         this.controller = c;
     }
 

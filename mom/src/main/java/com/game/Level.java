@@ -143,7 +143,14 @@ public class Level {
             false);
     }
 
-    private Tile parseTile(JSONObject tileJsonObject) throws InvalidTileException, InvalidSchemaException {
+    /**
+     * Parse a tile from a JSON object.
+     * @param tileJsonObject The JSON object to parse the tile from.
+     * @return The parsed tile.
+     * @throws InvalidTileException If the tile is invalid.
+     * @throws InvalidSchemaException If the JSON object is invalid.
+     */
+    public static Tile parseTile(JSONObject tileJsonObject) throws InvalidTileException, InvalidSchemaException {
         verifyJSON(tileJsonObject, "type");
         verifyJSON(tileJsonObject, "position");
 
@@ -177,13 +184,25 @@ public class Level {
         }
     }
 
-    private void verifyJSON(JSONObject jsonObject, String key) throws InvalidSchemaException {
+    /**
+     * Verify that a JSON object has a key.
+     * @param jsonObject The JSON object to verify.
+     * @param key The key to verify.
+     * @throws InvalidSchemaException If the JSON object does not have the key.
+     */
+    public static void verifyJSON(JSONObject jsonObject, String key) throws InvalidSchemaException {
         if (!jsonObject.has(key)) {
             throw new InvalidSchemaException("Missing key [" + key + "] in JSON object.");
         }
     }
 
-    private Vector3 parsePosition(JSONObject positionJsonObject) throws InvalidSchemaException {
+    /**
+     * Parse a position from a JSON object.
+     * @param positionJsonObject The JSON object to parse the position from.
+     * @return The parsed position.
+     * @throws InvalidSchemaException If the JSON object is invalid.
+     */
+    public static Vector3 parsePosition(JSONObject positionJsonObject) throws InvalidSchemaException {
         verifyJSON(positionJsonObject, "x");
         verifyJSON(positionJsonObject, "y");
         verifyJSON(positionJsonObject, "z");
@@ -194,7 +213,15 @@ public class Level {
             positionJsonObject.getFloat("z"));
     }
 
-    private Monster parseMonster(JSONObject monsterJsonObject) throws InvalidMonsterException, InvalidSchemaException {
+    /**
+     * Parse a monster from a JSON object.
+     * @param monsterJsonObject The JSON object to parse the monster from.
+     * @return The parsed monster.
+     * @throws InvalidMonsterException If the monster is invalid.
+     * @throws InvalidSchemaException If the JSON object is invalid.
+     */
+    public static Monster parseMonster(JSONObject monsterJsonObject)
+        throws InvalidMonsterException, InvalidSchemaException {
         verifyJSON(monsterJsonObject, "type");
         verifyJSON(monsterJsonObject, "position");
 
@@ -212,7 +239,14 @@ public class Level {
         }
     }
 
-    private Item parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
+    /**
+     * Parse an item from a JSON object.
+     * @param itemJsonObject The JSON object to parse the item from.
+     * @return The parsed item.
+     * @throws InvalidItemException If the item is invalid.
+     * @throws InvalidSchemaException If the JSON object is invalid.
+     */
+    public static Item parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
         verifyJSON(itemJsonObject, "type");
         verifyJSON(itemJsonObject, "position");
 

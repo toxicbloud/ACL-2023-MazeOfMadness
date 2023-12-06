@@ -21,6 +21,15 @@ public abstract class Controller implements Evolvable {
     }
 
     /**
+     * Makes the controller forget the target.
+     * This method is called when the target is destroyed.
+     * Or when the controller is destroyed.
+     */
+    public void unregister() {
+        this.target = null;
+    }
+
+    /**
      * Update the controller.
      * This method is called every frame, before any render() call.
      */
