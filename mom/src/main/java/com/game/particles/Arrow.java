@@ -30,14 +30,14 @@ public class Arrow extends Particle {
     /**
      * Arrow sound played when the arrow hits a wall.
      */
-    private static final Sound WALL_HIT_SOUND = (Sound) Gdx.audio
-            .newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
+    private static final Sound WALL_HIT_SOUND =
+            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
 
     /**
      * Arrow sound played when the arrow hits an enemy.
      */
-    private static final Sound ENEMY_HIT_SOUND = (Sound) Gdx.audio
-            .newSound(Gdx.files.internal("sounds/hit.mp3"));
+    private static final Sound ENEMY_HIT_SOUND =
+            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/hit.mp3"));
 
     /**
      * Arrow direction.
@@ -51,13 +51,13 @@ public class Arrow extends Particle {
     /**
      * Arrow constructor.
      *
-     * @param sprite    The sprite of the arrow.
+     * @param sprite The sprite of the arrow.
      * @param direction The direction of the arrow.
-     * @param position  The position of the arrow.
-     * @param damage    The damage of the arrow.
+     * @param position The position of the arrow.
+     * @param damage The damage of the arrow.
      */
     public Arrow(Sprite sprite, Vector2 direction, Vector3 position, int damage) {
-        super(sprite, direction, position);
+        super(sprite, position);
         this.direction = direction.normalize();
         this.damage = damage;
     }
@@ -67,9 +67,8 @@ public class Arrow extends Particle {
         super.update();
         Vector2 normalized = direction.normalize();
         Vector3 lastPosition = this.getPosition();
-        this.moveBy(
-                new Vector2(normalized.x, normalized.y)
-                        .mul(Time.getInstance().getDeltaTime() * ARROW_SPEED));
+        this.moveBy(new Vector2(normalized.x, normalized.y)
+                .mul(Time.getInstance().getDeltaTime() * ARROW_SPEED));
         if (lastPosition.epsilonEquals(this.getPosition(), EPSILON)) {
             WALL_HIT_SOUND.play();
             this.destroy();

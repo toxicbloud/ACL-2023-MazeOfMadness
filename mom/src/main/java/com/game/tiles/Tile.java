@@ -4,17 +4,21 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Entity;
+import com.game.Game;
 import com.game.Player;
 import org.json.JSONObject;
 
 /**
- * Tile class.
- * This is the tile class.
+ * Tile class. This is the tile class.
  */
 public abstract class Tile extends Entity {
+
     /** Tiles default sprite. */
     protected static final Texture TILE_TEXTURE = new Texture("images/tiles.png");
-
+    /**
+     * How many neighbours a tile can have.
+     */
+    private static final int NEIGHBOURS_COUNTS = 4;
     /** The default frame time for Tiles animations (15 fps). */
     private static final float TILE_SPRITE_FRAME_TIME = 1 / 15.0f;
 
@@ -25,10 +29,8 @@ public abstract class Tile extends Entity {
     private boolean solid;
 
     /**
-     * Tile constructor.
-     * This is the default constructor for the tile class.
-     * It sets the solid to false.
-     * And the position to (0, 0, 0).
+     * Tile constructor. This is the default constructor for the tile class. It sets the solid to
+     * false. And the position to (0, 0, 0).
      *
      * @param t The type of the tile.
      * @param s The sprite of the tile.
@@ -40,12 +42,10 @@ public abstract class Tile extends Entity {
     }
 
     /**
-     * Tile constructor.
-     * This is the constructor for the tile class.
-     * And the position to (0, 0, 0).
+     * Tile constructor. This is the constructor for the tile class. And the position to (0, 0, 0).
      *
-     * @param t     The type of the tile.
-     * @param s     The sprite of the tile.
+     * @param t The type of the tile.
+     * @param s The sprite of the tile.
      * @param solid If the tile is solid.
      */
     public Tile(TileType t, Sprite s, boolean solid) {
@@ -55,9 +55,7 @@ public abstract class Tile extends Entity {
     }
 
     /**
-     * Tile constructor.
-     * This is the constructor for the tile class.
-     * It sets the solid to false.
+     * Tile constructor. This is the constructor for the tile class. It sets the solid to false.
      *
      * @param t The type of the tile.
      * @param s The sprite of the tile.
@@ -70,12 +68,11 @@ public abstract class Tile extends Entity {
     }
 
     /**
-     * Tile constructor.
-     * This is the constructor for the tile class.
+     * Tile constructor. This is the constructor for the tile class.
      *
-     * @param t     The type of the tile.
-     * @param s     The sprite of the tile.
-     * @param p     The position of the tile.
+     * @param t The type of the tile.
+     * @param s The sprite of the tile.
+     * @param p The position of the tile.
      * @param solid If the tile is solid.
      */
     public Tile(TileType t, Sprite s, Vector3 p, boolean solid) {
@@ -123,6 +120,7 @@ public abstract class Tile extends Entity {
 
     /**
      * Returns a json version of the tile.
+     *
      * @return A JSONObject representing the tile.
      */
     public JSONObject toJSON() {
@@ -132,6 +130,35 @@ public abstract class Tile extends Entity {
         json.put("position", getPosition().toJSON());
 
         return json;
+    }
+
+    /**
+     * Returns the neighbours of the tile.
+     *
+     * @return The neighbours of the tile.
+     */
+    public Tile[] getNeighbours() {
+        final Tile[] neighbours = new Tile[NEIGHBOURS_COUNTS];
+        int x = (int) getPosition().x;
+        int y = (int) getPosition().y;
+        int z = (int) getPosition().z;
+
+        // verify that neighbours are in the maze
+        if (x > 0) {
+            neighbours[0] = Game.getInstance().getMaze().getTile(x - 1, y, z);
+        }
+        if (x < Game.getInstance().getMaze().getWidth() - 1) {
+            neighbours[1] = Game.getInstance().getMaze().getTile(x + 1, y, z);
+        }
+        if (y > 0) {
+            neighbours[2] = Game.getInstance().getMaze().getTile(x, y - 1, z);
+        }
+        if (y < Game.getInstance().getMaze().getHeight() - 1) {
+            final int i = 3;
+            neighbours[i] = Game.getInstance().getMaze().getTile(x, y + 1, z);
+        }
+
+        return neighbours;
     }
 
 }

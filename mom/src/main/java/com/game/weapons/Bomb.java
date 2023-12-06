@@ -4,15 +4,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
+import com.game.Game;
 import com.game.ItemType;
 import com.game.Living;
+import com.game.particles.Fire;
+import com.game.tiles.Tile;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Bomb class.
  */
 public class Bomb extends Weapon {
+    /**
+     *
+     */
+    private static final int EXPLOSION_DEPTH = 5;
     /** Bomb damage amount. */
     private static final int DAMAGE = 30;
     /** Bomb cooldown. */
@@ -24,12 +35,14 @@ public class Bomb extends Weapon {
     /**
      * Sound played when the bomb is thrown and is waiting to explode.
      */
-    private static final Sound WAITING_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
+    private static final Sound WAITING_SOUND =
+            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
 
     /**
      * Sound played when the bomb explodes.
      */
-    private static final Sound EXPLOSION_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
+    private static final Sound EXPLOSION_SOUND =
+            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
     /**
      * If the Bomb is launched.
      */
@@ -56,7 +69,7 @@ public class Bomb extends Weapon {
     /**
      * Bomb full constructor.
      *
-     * @param position        The position of the Bomb.
+     * @param position The position of the Bomb.
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
@@ -110,6 +123,34 @@ public class Bomb extends Weapon {
             if (this.getPosition().dst(owner.getPosition()) < 1) {
                 owner.takeDamage(this.getDamage());
             }
+            int bombX = Math.round(this.getPosition().x);
+            int bombY = Math.round(this.getPosition().y);
+            int bombZ = Math.round(this.getPosition().z);
+
+            Queue<Object[]> queue = new LinkedList<>();
+            Set<Tile> visited = new HashSet<>();
+            Tile start = Game.getInstance().getMaze().getTile(bombX, bombY, bombZ);
+            queue.add(new Object[] {start, 0});
+            visited.add(start);
+
+            while (!queue.isEmpty()) {
+                Object[] currentPair = queue.poll();
+                Tile current = (Tile) currentPair[0];
+                int depth = (Integer) currentPair[1];
+                if (current != null && depth <= EXPLOSION_DEPTH) {
+                    // current.onBombExplode(this);
+                    System.out.println("BOOM" + current.getPosition());
+                    Game.getInstance().getMaze()
+                            .addParticle(new Fire(getSprite(), current.getPosition()));
+                    for (Tile tile : current.getNeighbours()) {
+                        if (!visited.contains(tile) && !tile.isSolid()) {
+                            queue.add(new Object[] {tile, depth + 1});
+                            visited.add(tile);
+                        }
+                    }
+                }
+            }
+
             owner.setWeapon(null);
             EXPLOSION_SOUND.play();
         }
