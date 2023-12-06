@@ -7,6 +7,8 @@ import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.ItemType;
 import com.game.Living;
+import com.game.monsters.Monster;
+import com.game.particles.BombThrown;
 import com.game.particles.Fire;
 import com.game.tiles.Tile;
 
@@ -25,7 +27,7 @@ public class Bomb extends Weapon {
      */
     private static final int EXPLOSION_DEPTH = 5;
     /** Bomb damage amount. */
-    private static final int DAMAGE = 30;
+    private static final int DAMAGE = 200;
     /** Bomb cooldown. */
     private static final int ATTACK_COOLDOWN = 300;
     /** Bomb range. */
@@ -91,7 +93,6 @@ public class Bomb extends Weapon {
 
     @Override
     public boolean attack(List<Living> livingList) {
-        // return super.attack(livingList);
         if (!isThrown) {
             launch();
         }
@@ -99,16 +100,16 @@ public class Bomb extends Weapon {
     }
 
     private void launch() {
-        System.out.println("LAUNCH");
         WAITING_SOUND.play();
         this.isThrown = true;
         this.setPickable(false);
         this.launchTime = Time.getInstance().getCurrentTime();
+        Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
     }
 
     @Override
     public void render() {
-        if (isThrown) {
+        if (!isThrown) {
             super.render();
         }
     }
@@ -116,8 +117,6 @@ public class Bomb extends Weapon {
     @Override
     public void update() {
         if (isThrown && Time.getInstance().getCurrentTime() - launchTime > EXPLOSION_DELAY) {
-
-            System.out.println("BOOM");
             Living owner = getOwner();
 
             if (this.getPosition().dst(owner.getPosition()) < 1) {
@@ -138,10 +137,7 @@ public class Bomb extends Weapon {
                 Tile current = (Tile) currentPair[0];
                 int depth = (Integer) currentPair[1];
                 if (current != null && depth <= EXPLOSION_DEPTH) {
-                    // current.onBombExplode(this);
-                    System.out.println("BOOM" + current.getPosition());
-                    Game.getInstance().getMaze()
-                            .addParticle(new Fire(getSprite(), current.getPosition()));
+                    Game.getInstance().getMaze().addParticle(new Fire(current.getPosition()));
                     for (Tile tile : current.getNeighbours()) {
                         if (!visited.contains(tile) && !tile.isSolid()) {
                             queue.add(new Object[] {tile, depth + 1});
@@ -150,7 +146,14 @@ public class Bomb extends Weapon {
                     }
                 }
             }
-
+            for (Monster monster : Game.getInstance().getMaze().getMonsters()) {
+                Vector3 pos = monster.getPosition();
+                Tile tile = Game.getInstance().getMaze().getTile(Math.round(pos.x),
+                        Math.round(pos.y), Math.round(pos.z));
+                if (visited.contains(tile)) {
+                    monster.takeDamage(this.getDamage());
+                }
+            }
             owner.setWeapon(null);
             EXPLOSION_SOUND.play();
         }
