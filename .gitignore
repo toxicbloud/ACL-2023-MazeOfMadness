@@ -30,4 +30,5 @@ Resources/Tiles/*
 Resources/Potions/*
 Resources/Bomb/*
 Resources/Sword/*
+Resources/BombItem/*
 *.blend
