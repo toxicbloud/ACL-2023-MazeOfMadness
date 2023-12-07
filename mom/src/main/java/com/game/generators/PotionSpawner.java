@@ -65,7 +65,7 @@ public final class PotionSpawner {
                 }
             }
         }
-        maze.setItems(potions.toArray(new Item[potions.size()]));
+        maze.addItems(potions.toArray(new Item[potions.size()]));
     }
 
     /**

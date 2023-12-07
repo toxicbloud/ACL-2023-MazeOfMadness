@@ -386,6 +386,23 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Adds items to the maze without deleting the existing ones.
+     *
+     * @param newItems The items to add to the maze.
+     */
+    public void addItems(Item[] newItems) {
+        // We initialize the new array.
+        int firstArrayLength = this.items.length;
+        int secondArrayLength = newItems.length;
+        Item[] newItemArray = new Item[firstArrayLength + secondArrayLength];
+
+        // We fuse the two arrays.
+        System.arraycopy(this.items, 0, newItemArray, 0, firstArrayLength);
+        System.arraycopy(newItems, 0, newItemArray, firstArrayLength, secondArrayLength);
+        this.setItems(newItemArray);
+    }
+
+    /**
      * ToString method. Displays the maze into grid-like String.
      *
      * @return Maze turned into a String.
