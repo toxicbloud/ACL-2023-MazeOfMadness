@@ -220,4 +220,11 @@ public abstract class NetworkManagerUDP {
     public int getPort() {
         return socket.getLocalPort();
     }
+
+    /**
+     * shutdown.
+     */
+    public void shutdown() {
+        this.socket.close();
+    }
 }

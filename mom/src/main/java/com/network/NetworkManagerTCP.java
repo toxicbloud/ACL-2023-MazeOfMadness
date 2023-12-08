@@ -245,4 +245,15 @@ public abstract class NetworkManagerTCP {
     public int getPort() {
         return socket.getLocalPort();
     }
+
+    /**
+     * shutdown.
+     */
+    public void shutdown() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error closing socket: " + e.getMessage());
+        }
+    }
 }

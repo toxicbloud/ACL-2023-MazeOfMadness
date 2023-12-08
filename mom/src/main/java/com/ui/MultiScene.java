@@ -22,6 +22,7 @@ import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import com.network.GameSceneClient;
 import com.network.GameSceneServer;
+import com.network.MultiManager;
 import com.network.NetworkClient;
 import com.network.NetworkDialogs;
 import com.network.NetworkMazeBuilder;
@@ -62,35 +63,27 @@ public class MultiScene extends Scene {
      */
     private Skin skin;
 
+    /** Multiplayer manager. */
+    private MultiManager manager;
+
     /**
      * The button click sound.
      * punch sound
      */
     private Sound buttonClick;
 
-    /** Network server. */
-    private NetworkServer server;
-
-    /** Network client. */
-    private NetworkClient client;
-
     /**
      * Default constructor.
      */
     public MultiScene() {
         super();
+        this.manager = new MultiManager();
     }
 
     @Override
     public void update() {
         currentStage.act();
-
-        if (this.server != null) {
-            this.server.update();
-        }
-        if (this.client != null) {
-            this.client.update();
-        }
+        manager.update();
     }
 
     @Override
@@ -302,7 +295,7 @@ public class MultiScene extends Scene {
                     int portNbr = Integer.parseInt(portField.getText());
                     listenForServer(ipField.getText(), portNbr);
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid port number");
+                    setTextStatus("Error : Invalid port number !");
                 }
             }
         });
@@ -335,7 +328,6 @@ public class MultiScene extends Scene {
                 return data.length > 0 && data[0] == NetworkDialogs.REGISTER_RQT;
             },
             (data, infos) -> {
-                System.out.println("Received REGISTER packet from " + infos.toString());
                 serv.sendData(new byte[]{NetworkDialogs.REGISTER_RSP}, infos);
             }
         );
@@ -344,8 +336,6 @@ public class MultiScene extends Scene {
                 return data.length > 0 && data[0] == NetworkDialogs.MAZE_RQT;
             },
             (data, infos) -> {
-                System.out.println("Received GETMAP packet from " + infos.toString());
-
                 int mazeDataLength =
                     maze.getTiles().length
                     + maze.getMonsters().length
