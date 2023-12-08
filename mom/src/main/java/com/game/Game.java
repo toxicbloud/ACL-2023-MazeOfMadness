@@ -5,6 +5,7 @@ import com.engine.Window;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
+import com.game.generators.WeaponSpawner;
 import com.renderer.GameScene;
 
 /**

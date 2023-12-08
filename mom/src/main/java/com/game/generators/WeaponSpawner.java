@@ -15,11 +15,8 @@ public final class WeaponSpawner {
     /** MIN_DST_PLAYER_WEAPON : Safe distance from player's spawn to not spawn weapons in. */
     private static final int MIN_DST_PLAYER_WEAPON = 8;
 
-    /** WEAPON_SPAWN_PROBABILITY : Base spawn probability for a weapon. */
-    private static final float WEAPON_SPAWN_PROBABILITY = 0.1F;
-
     /** SWORD_PROBABILITY : Base spawn probability for a sword. */
-    private static final float SWORD_PROBABILTY = 0.1F;
+    private static final float SWORD_PROBABILTY = 0.01F;
 
     /**
      * Private constructor for the weapon spawner.
@@ -84,7 +81,6 @@ public final class WeaponSpawner {
         return (int) spawn.x != x
                 && (int) spawn.y != y
                 && target.getType() != TileType.GROUND_END
-                && target.getType() == TileType.GROUND_ROCK
-                && sr.nextFloat() <= WeaponSpawner.WEAPON_SPAWN_PROBABILITY;
+                && target.getType() == TileType.GROUND_ROCK;
     }
 }
