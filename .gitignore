@@ -33,4 +33,6 @@ Resources/SwordItem/*
 Resources/BombItem/*
 Resources/Weapons/*
 Resources/Trident/*
+Resources/Bow/*
+Resources/Arrow/*
 *.blend
