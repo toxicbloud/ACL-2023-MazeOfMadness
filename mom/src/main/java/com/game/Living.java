@@ -413,4 +413,9 @@ public abstract class Living extends Entity {
     protected void setHealthBarColor(Color healthBarColor) {
         this.healthBarColor = healthBarColor;
     }
+
+    @Override
+    protected void remove() {
+        // SHOULD NO BE ABLE TO REMOVE LIVING IF NOT MONSTER
+    }
 }
