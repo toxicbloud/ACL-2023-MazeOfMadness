@@ -1,5 +1,7 @@
 package com.game.tiles;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Player;
@@ -51,6 +53,7 @@ public class GroundLava extends Ground {
     public void update() {
         if (currentPlayer != null) {
             if (System.currentTimeMillis() - lastDamageTime > DAMAGE_DELAY) {
+                SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
                 currentPlayer.takeDamage(DAMAGE_AMOUNT);
                 lastDamageTime = System.currentTimeMillis();
             }
