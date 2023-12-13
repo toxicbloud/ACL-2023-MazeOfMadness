@@ -88,4 +88,12 @@ public abstract class WorldItem extends Entity {
     protected void setPickable(boolean pickable) {
         this.pickable = pickable;
     }
+
+    @Override
+    protected void remove() {
+        Maze maze = Game.getInstance().getMaze();
+        if (maze != null) {
+            maze.removeItem(this);
+        }
+    }
 }

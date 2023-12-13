@@ -161,4 +161,8 @@ public abstract class Tile extends Entity {
         return neighbours;
     }
 
+    @Override
+    protected void remove() {
+        // CANNOT REMOVE TILES FROM MAZE
+    }
 }

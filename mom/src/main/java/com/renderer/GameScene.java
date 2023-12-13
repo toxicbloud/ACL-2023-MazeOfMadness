@@ -175,18 +175,18 @@ public class GameScene extends Scene {
             this.camera.setTargetPosition(p.getPosition());
         }
 
-        // delete monsters that are dead
-        for (Monster monster : maze.getMonsters()) {
-            if (monster.isDead()) {
-                monster.affectScore(game.getScore());
-                maze.removeMonster(monster);
-            }
-        }
-
         this.camera.update();
         maze.update();
         if (!editMode) {
             pauseMenu.act();
+        }
+
+        // delete monsters that are dead
+        for (Monster monster : maze.getMonsters()) {
+            if (monster.isDead() && !monster.hasBeenDestroyed()) {
+                monster.affectScore(game.getScore());
+                monster.destroy();
+            }
         }
     }
 

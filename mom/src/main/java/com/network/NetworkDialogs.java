@@ -4,10 +4,6 @@ import com.game.Entity;
 import com.game.Level;
 import com.game.Player;
 import com.game.WorldItem;
-import com.game.exceptions.InvalidItemException;
-import com.game.exceptions.InvalidMonsterException;
-import com.game.exceptions.InvalidSchemaException;
-import com.game.exceptions.InvalidTileException;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 import org.json.JSONObject;
@@ -39,9 +35,12 @@ public final class NetworkDialogs {
     /** MAZE_ADD code. */
     public static final byte MAZE_ADD = 23;
     /** MAZE_UPT code. */
-    public static final byte MAZE_UPT = 24;
+    public static final byte MAZE_UPD = 24;
     /** MAZE_REM code. */
     public static final byte MAZE_REM = 25;
+
+    /** PLR_UPD code. */
+    public static final byte PLR_UPD = 26;
 
     /** ENTITY_TLE code. */
     public static final byte ENTITY_TLE = 31;
@@ -172,13 +171,7 @@ public final class NetworkDialogs {
      * @return Monster.
      */
     public static Monster getMonsterFromData(byte[] data, int offset) {
-        try {
-            Monster m = Level.parseMonster(new JSONObject(getStringValue(data, offset)));
-            return m;
-        } catch (InvalidSchemaException | InvalidMonsterException e) {
-            System.out.println("Error parsing monster: " + e.getMessage());
-            return null;
-        }
+        return Level.parseMonster(new JSONObject(getStringValue(data, offset)));
     }
 
     /**
@@ -188,13 +181,7 @@ public final class NetworkDialogs {
      * @return Item.
      */
     public static WorldItem getItemFromData(byte[] data, int offset) {
-        try {
-            WorldItem i = Level.parseItem(new JSONObject(getStringValue(data, offset)));
-            return i;
-        } catch (InvalidSchemaException | InvalidItemException e) {
-            System.out.println("Error parsing item: " + e.getMessage());
-            return null;
-        }
+        return Level.parseItem(new JSONObject(getStringValue(data, offset)));
     }
 
     /**
@@ -204,17 +191,16 @@ public final class NetworkDialogs {
      * @return Player.
      */
     public static Player getPlayerFromData(byte[] data, int offset) {
-        try {
-            JSONObject obj = new JSONObject(getStringValue(data, offset));
-            Level.verifyJSON(obj, "position");
-            Level.verifyJSON(obj, "health");
-            Player p = new Player(Level.parsePosition(obj.getJSONObject("position")));
-            p.setHealth(obj.getInt("health"));
-            return p;
-        } catch (InvalidSchemaException e) {
-            System.out.println("Error parsing player: " + e.getMessage());
+        JSONObject obj = new JSONObject(getStringValue(data, offset + 1));
+        boolean isValid = Level.verifyJSON(obj, "position")
+            && Level.verifyJSON(obj, "health");
+        if (!isValid) {
             return null;
         }
+
+        Player p = new Player(Level.parsePosition(obj.getJSONObject("position")));
+        p.setHealth(obj.getInt("health"));
+        return p;
     }
 
     /**
@@ -224,13 +210,7 @@ public final class NetworkDialogs {
      * @return Tile.
      */
     public static Tile getTileFromData(byte[] data, int offset) {
-        try {
-            Tile t = Level.parseTile(new JSONObject(getStringValue(data, offset)));
-            return t;
-        } catch (InvalidSchemaException | InvalidTileException e) {
-            System.out.println("Error parsing tile: " + e.getMessage());
-            return null;
-        }
+        return Level.parseTile(new JSONObject(getStringValue(data, offset)));
     }
 
     /**

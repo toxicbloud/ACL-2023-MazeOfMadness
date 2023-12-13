@@ -13,6 +13,8 @@ import com.game.weapons.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 /**
  * Player class.
  * This is the player class.
@@ -137,7 +139,12 @@ public class Player extends Living {
      * Returns a JSON representation of the player.
      * @return JSON representation of the player.
      */
-    public String toJSON() {
-        return "{\"position\": " + this.getPosition().toJSON() + ", \"health\": " + this.getHealth() + "}";
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", this.getPosition().toJSON());
+        json.put("health", this.getHealth());
+
+        return json;
     }
 }

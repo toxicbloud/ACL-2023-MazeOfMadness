@@ -2,10 +2,6 @@ package com.game;
 
 import com.engine.Window;
 import com.engine.utils.Vector3;
-import com.game.exceptions.InvalidItemException;
-import com.game.exceptions.InvalidMonsterException;
-import com.game.exceptions.InvalidSchemaException;
-import com.game.exceptions.InvalidTileException;
 import com.game.items.potions.HealthPotion;
 import com.game.items.potions.SpeedPotion;
 import com.game.items.potions.StrengthPotion;
@@ -62,23 +58,22 @@ public class Level {
      * @param json The JSON object to construct the Level object from.
      */
     public Level(JSONObject json) {
-        try {
-            verifyJSON(json, "name");
-            verifyJSON(json, "description");
-            verifyJSON(json, "author");
-            verifyJSON(json, "version");
-            verifyJSON(json, "maze");
-            verifyJSON(json, "player");
-
-            this.name = json.getString("name");
-            this.description = json.getString("description");
-            this.author = json.getString("author");
-            this.version = json.getString("version");
-            this.maze = parseMaze(json.getJSONObject("maze"));
-            this.playerData = new PlayerData(json.getJSONObject("player"));
-        } catch (InvalidSchemaException e) {
-            System.err.println("Error : Cannot load level : " + e.getMessage());
+        boolean isValid = verifyJSON(json, "name")
+            && verifyJSON(json, "description")
+            && verifyJSON(json, "author")
+            && verifyJSON(json, "version")
+            && verifyJSON(json, "maze")
+            && verifyJSON(json, "player");
+        if (!isValid) {
+            return;
         }
+
+        this.name = json.getString("name");
+        this.description = json.getString("description");
+        this.author = json.getString("author");
+        this.version = json.getString("version");
+        this.maze = parseMaze(json.getJSONObject("maze"));
+        this.playerData = new PlayerData(json.getJSONObject("player"));
     }
 
     /**
@@ -110,25 +105,23 @@ public class Level {
         win.run();
     }
 
-    private Maze parseMaze(JSONObject mazeJsonObject) throws InvalidSchemaException {
-        verifyJSON(mazeJsonObject, "width");
-        verifyJSON(mazeJsonObject, "height");
-        verifyJSON(mazeJsonObject, "depth");
+    private Maze parseMaze(JSONObject mazeJsonObject) {
+        boolean isValid = verifyJSON(mazeJsonObject, "width")
+            && verifyJSON(mazeJsonObject, "height")
+            && verifyJSON(mazeJsonObject, "depth");
+        if (!isValid) {
+            return null;
+        }
 
         int width = mazeJsonObject.getInt("width");
         int height = mazeJsonObject.getInt("height");
         int depth = mazeJsonObject.getInt("depth");
 
-        Tile[] tiles;
-        Monster[] monsters;
-        WorldItem[] items;
+        Tile[] tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
+        Monster[] monsters = parseMonsters(mazeJsonObject.getJSONArray("monsters"));
+        WorldItem[] items = parseItems(mazeJsonObject.getJSONArray("items"));
 
-        try {
-            tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
-            monsters = parseMonsters(mazeJsonObject.getJSONArray("monsters"));
-            items = parseItems(mazeJsonObject.getJSONArray("items"));
-        } catch (InvalidMonsterException | InvalidItemException | InvalidTileException e) {
-            System.err.println("Error : Cannot load level : " + e.getMessage());
+        if (tiles == null || monsters == null || items == null) {
             return null;
         }
 
@@ -145,13 +138,14 @@ public class Level {
     /**
      * Parse a tile from a JSON object.
      * @param tileJsonObject The JSON object to parse the tile from.
-     * @return The parsed tile.
-     * @throws InvalidTileException If the tile is invalid.
-     * @throws InvalidSchemaException If the JSON object is invalid.
+     * @return The parsed tile. Null if the tile type is invalid.
      */
-    public static Tile parseTile(JSONObject tileJsonObject) throws InvalidTileException, InvalidSchemaException {
-        verifyJSON(tileJsonObject, "type");
-        verifyJSON(tileJsonObject, "position");
+    public static Tile parseTile(JSONObject tileJsonObject) {
+        boolean isValid = verifyJSON(tileJsonObject, "type")
+            && verifyJSON(tileJsonObject, "position");
+        if (!isValid) {
+            return null;
+        }
 
         String type = tileJsonObject.getString("type");
         Vector3 position = parsePosition(tileJsonObject.getJSONObject("position"));
@@ -179,7 +173,7 @@ public class Level {
             case "GROUND_END":
                 return new End(position);
             default:
-                throw new InvalidTileException("Unknown tile type: " + type);
+                return null;
         }
     }
 
@@ -187,24 +181,27 @@ public class Level {
      * Verify that a JSON object has a key.
      * @param jsonObject The JSON object to verify.
      * @param key The key to verify.
-     * @throws InvalidSchemaException If the JSON object does not have the key.
+     * @return True if the JSON object has the key, false otherwise.
      */
-    public static void verifyJSON(JSONObject jsonObject, String key) throws InvalidSchemaException {
-        if (!jsonObject.has(key)) {
-            throw new InvalidSchemaException("Missing key [" + key + "] in JSON object.");
+    public static boolean verifyJSON(JSONObject jsonObject, String key) {
+        if (!jsonObject.has(key) || jsonObject.isNull(key)) {
+            return false;
         }
+        return true;
     }
 
     /**
      * Parse a position from a JSON object.
      * @param positionJsonObject The JSON object to parse the position from.
-     * @return The parsed position.
-     * @throws InvalidSchemaException If the JSON object is invalid.
+     * @return The parsed position. Null if the position is invalid.
      */
-    public static Vector3 parsePosition(JSONObject positionJsonObject) throws InvalidSchemaException {
-        verifyJSON(positionJsonObject, "x");
-        verifyJSON(positionJsonObject, "y");
-        verifyJSON(positionJsonObject, "z");
+    public static Vector3 parsePosition(JSONObject positionJsonObject) {
+        boolean isValid = verifyJSON(positionJsonObject, "x")
+            && verifyJSON(positionJsonObject, "y")
+            && verifyJSON(positionJsonObject, "z");
+        if (!isValid) {
+            return null;
+        }
 
         return new Vector3(
             positionJsonObject.getFloat("x"),
@@ -215,17 +212,21 @@ public class Level {
     /**
      * Parse a monster from a JSON object.
      * @param monsterJsonObject The JSON object to parse the monster from.
-     * @return The parsed monster.
-     * @throws InvalidMonsterException If the monster is invalid.
-     * @throws InvalidSchemaException If the JSON object is invalid.
+     * @return The parsed monster. Null if the monster type is invalid.
      */
-    public static Monster parseMonster(JSONObject monsterJsonObject)
-        throws InvalidMonsterException, InvalidSchemaException {
-        verifyJSON(monsterJsonObject, "type");
-        verifyJSON(monsterJsonObject, "position");
+    public static Monster parseMonster(JSONObject monsterJsonObject) {
+        boolean isValid = verifyJSON(monsterJsonObject, "type")
+            && verifyJSON(monsterJsonObject, "position");
+        if (!isValid) {
+            return null;
+        }
 
         String type = monsterJsonObject.getString("type");
         Vector3 position = parsePosition(monsterJsonObject.getJSONObject("position"));
+        if (position == null) {
+            return null;
+        }
+
         switch (type) {
             case "MONSTER_ZOMBIE":
                 return new Zombie(position);
@@ -234,23 +235,28 @@ public class Level {
             // case "MONSTER_BOSS":
             //     return new Boss(position);
             default:
-                throw new InvalidMonsterException("[" + type + "] monster does not exist (invalid monster type).");
+                return null;
         }
     }
 
     /**
      * Parse an item from a JSON object.
      * @param itemJsonObject The JSON object to parse the item from.
-     * @return The parsed item.
-     * @throws InvalidItemException If the item is invalid.
-     * @throws InvalidSchemaException If the JSON object is invalid.
+     * @return The parsed item. Null if the item type is invalid.
      */
-    public static WorldItem parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
-        verifyJSON(itemJsonObject, "type");
-        verifyJSON(itemJsonObject, "position");
+    public static WorldItem parseItem(JSONObject itemJsonObject) {
+        boolean isValid = verifyJSON(itemJsonObject, "type")
+            && verifyJSON(itemJsonObject, "position");
+        if (!isValid) {
+            return null;
+        }
 
         String type = itemJsonObject.getString("type");
         Vector3 position = parsePosition(itemJsonObject.getJSONObject("position"));
+        if (position == null) {
+            return null;
+        }
+
         switch (type) {
             case "SWORD":
                 return new com.game.items.weapons.Sword(position);
@@ -271,34 +277,45 @@ public class Level {
             case "ITEM_SPEED_POTION":
                 return new SpeedPotion(position);
             default:
-                throw new InvalidItemException("[" + type + "] item does not exist (invalid item type).");
+                return null;
         }
     }
 
-    private Tile[] parseTiles(JSONArray tilesJsonArray)
-        throws InvalidTileException, InvalidSchemaException {
+    private Tile[] parseTiles(JSONArray tilesJsonArray) {
         Tile[] tiles = new Tile[tilesJsonArray.length()];
         for (int i = 0; i < tilesJsonArray.length(); i++) {
-            tiles[i] = parseTile(tilesJsonArray.getJSONObject(i));
-            // TODO set position
+            Tile tile = parseTile(tilesJsonArray.getJSONObject(i));
+            if (tile == null) {
+                return null;
+            }
+
+            tiles[i] = tile;
         }
         return tiles;
     }
 
-    private Monster[] parseMonsters(JSONArray monstersJsonArray)
-        throws InvalidMonsterException, InvalidSchemaException {
+    private Monster[] parseMonsters(JSONArray monstersJsonArray) {
         Monster[] monsters = new Monster[monstersJsonArray.length()];
         for (int i = 0; i < monstersJsonArray.length(); i++) {
-            monsters[i] = parseMonster(monstersJsonArray.getJSONObject(i));
+            Monster monster = parseMonster(monstersJsonArray.getJSONObject(i));
+            if (monster == null) {
+                return null;
+            }
+
+            monsters[i] = monster;
         }
         return monsters;
     }
 
-    private WorldItem[] parseItems(JSONArray itemsJsonArray)
-        throws InvalidItemException, InvalidSchemaException {
+    private WorldItem[] parseItems(JSONArray itemsJsonArray) {
         WorldItem[] items = new WorldItem[itemsJsonArray.length()];
         for (int i = 0; i < itemsJsonArray.length(); i++) {
-            items[i] = parseItem(itemsJsonArray.getJSONObject(i));
+            WorldItem item = parseItem(itemsJsonArray.getJSONObject(i));
+            if (item == null) {
+                return null;
+            }
+
+            items[i] = item;
         }
         return items;
     }

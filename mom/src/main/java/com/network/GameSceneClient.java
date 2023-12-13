@@ -3,6 +3,8 @@ package com.network;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.controllers.NetworkPlayerController;
+import com.game.controllers.PlayerController;
 import com.renderer.GameScene;
 
 /**
@@ -22,13 +24,16 @@ public class GameSceneClient extends GameScene {
         this.client = client;
 
         client.when((data, infos) -> {
-            return data[0] == NetworkDialogs.MAZE_ADD && data[2] == NetworkDialogs.ENTITY_PLR;
+            return data[0] == NetworkDialogs.MAZE_ADD && data[1 + 2] == NetworkDialogs.ENTITY_PLR;
         }, (data, infos) -> {
             Player player = NetworkDialogs.getPlayerFromData(data, 2 + 1);
             maze.addEntity(player);
-            int clientID = data[1];
+            int clientID = NetworkDialogs.getIntValue(data, 1);
             if (clientID == client.getId()) {
                 Game.getInstance().setPlayer(player);
+                new PlayerController(player);
+            } else {
+                new NetworkPlayerController(player, clientID, client);
             }
             return false;
         });
@@ -40,5 +45,13 @@ public class GameSceneClient extends GameScene {
     public void update() {
         super.update();
         client.update();
+
+        Player player = Game.getInstance().getPlayer();
+        if (player != null && player.hasBeenUpdated()) {
+            byte[] data = NetworkDialogs.encodePlayerValue(player, 1 + 2);
+            data[0] = NetworkDialogs.PLR_UPD;
+            NetworkDialogs.encodeIntValue(client.getId(), data, 1);
+            client.sendData(data);
+        }
     }
 }
