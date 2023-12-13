@@ -62,6 +62,10 @@ public enum WeaponProbas implements ItemProbas {
     /** Value of the element. */
     private final float value;
 
+    /**
+     * Enum constructor.
+     * @param v value for the probability.
+     */
     WeaponProbas(float v) {
         this.value = v;
     }

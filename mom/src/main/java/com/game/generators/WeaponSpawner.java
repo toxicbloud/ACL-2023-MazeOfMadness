@@ -87,6 +87,7 @@ public final class WeaponSpawner {
         return (int) spawn.x != x
                 && (int) spawn.y != y
                 && sr.nextFloat() <= WeaponProbas.DUMMY.getBaseSpawnProba()
+                && maze.getSpawnPoint().dst(x, y, 1) > MIN_DST_PLAYER_WEAPON
                 && target.getType() != TileType.GROUND_END
                 && target.getType() == TileType.GROUND_ROCK;
     }
