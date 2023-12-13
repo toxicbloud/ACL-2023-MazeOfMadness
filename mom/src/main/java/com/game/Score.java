@@ -110,6 +110,7 @@ public class Score {
         } else {
             kills.put(type, kills.get(type) + 1);
         }
+        support.firePropertyChange("points", null, this.points);
     }
 
     /**
