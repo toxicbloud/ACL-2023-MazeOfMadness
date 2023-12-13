@@ -125,7 +125,9 @@ public class Player extends Living {
     @Override
     public void render() {
         super.render();
-        this.getWeapon().render();
+        if (this.getWeapon() != null) {
+            this.getWeapon().render();
+        }
     }
 
     /**
