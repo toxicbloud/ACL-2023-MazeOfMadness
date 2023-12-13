@@ -1,9 +1,9 @@
 package com.network;
 
 import com.game.Entity;
-import com.game.Item;
 import com.game.Level;
 import com.game.Player;
+import com.game.WorldItem;
 import com.game.exceptions.InvalidItemException;
 import com.game.exceptions.InvalidMonsterException;
 import com.game.exceptions.InvalidSchemaException;
@@ -129,7 +129,7 @@ public final class NetworkDialogs {
      * @param offset Offset.
      * @return Encoded Item value.
      */
-    public static byte[] encodeItemValue(Item i, int offset) {
+    public static byte[] encodeItemValue(WorldItem i, int offset) {
         String json = i.toJSON().toString();
         byte[] data = new byte[json.length() + 1 + offset];
         data[offset] = ENTITY_ITM;
@@ -187,9 +187,9 @@ public final class NetworkDialogs {
      * @param offset Offset.
      * @return Item.
      */
-    public static Item getItemFromData(byte[] data, int offset) {
+    public static WorldItem getItemFromData(byte[] data, int offset) {
         try {
-            Item i = Level.parseItem(new JSONObject(getStringValue(data, offset)));
+            WorldItem i = Level.parseItem(new JSONObject(getStringValue(data, offset)));
             return i;
         } catch (InvalidSchemaException | InvalidItemException e) {
             System.out.println("Error parsing item: " + e.getMessage());

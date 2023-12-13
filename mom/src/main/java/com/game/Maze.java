@@ -192,15 +192,15 @@ public class Maze implements Evolvable {
 
         List<Tile> tiles = new ArrayList<Tile>();
         List<Monster> monsters = new ArrayList<Monster>();
-        List<Item> items = new ArrayList<Item>();
+        List<WorldItem> items = new ArrayList<WorldItem>();
 
         for (Entity e : list) {
             if (e instanceof Tile) {
                 tiles.add((Tile) e);
             } else if (e instanceof Monster) {
                 monsters.add((Monster) e);
-            } else if (e instanceof Item) {
-                items.add((Item) e);
+            } else if (e instanceof WorldItem) {
+                items.add((WorldItem) e);
             }
 
             Vector3 pos = e.getPosition();
@@ -238,7 +238,7 @@ public class Maze implements Evolvable {
         }
         Monster[] monstersArray = new Monster[monsters.size()];
         monsters.toArray(monstersArray);
-        Item[] itemsArray = new Item[items.size()];
+        WorldItem[] itemsArray = new WorldItem[items.size()];
         items.toArray(itemsArray);
 
         Maze maze = new Maze(width, height, depth);

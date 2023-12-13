@@ -3,8 +3,8 @@ package com.network;
 import com.engine.Window;
 import com.game.Entity;
 import com.game.Game;
-import com.game.Item;
 import com.game.Maze;
+import com.game.WorldItem;
 import com.game.generators.MazeFactory;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
@@ -250,7 +250,7 @@ public class MultiManager {
                     monsterData[0] = NetworkDialogs.MAZE_ADD;
                     server.sendData(monsterData, infos);
                 }
-                for (Item i : maze.getItems()) {
+                for (WorldItem i : maze.getItems()) {
                     byte[] itemData = NetworkDialogs.encodeItemValue(i, 1);
                     itemData[0] = NetworkDialogs.MAZE_ADD;
                     server.sendData(itemData, infos);
