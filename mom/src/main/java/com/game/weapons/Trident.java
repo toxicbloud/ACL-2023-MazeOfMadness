@@ -37,7 +37,7 @@ public class Trident extends Weapon {
      * Trident constructor.
      */
     public Trident() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_TRIDENT);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.TRIDENT);
         this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
     }
 
@@ -47,7 +47,7 @@ public class Trident extends Weapon {
      * @param position The position of the Trident.
      */
     public Trident(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_TRIDENT);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.TRIDENT);
         this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
     }
 
@@ -58,7 +58,7 @@ public class Trident extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Trident(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_TRIDENT);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.TRIDENT);
     }
 
     @Override

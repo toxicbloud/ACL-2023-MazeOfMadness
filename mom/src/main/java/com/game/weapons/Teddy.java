@@ -18,7 +18,7 @@ public class Teddy extends Weapon {
      * Teddy constructor.
      */
     public Teddy() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_TEDDY);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.TEDDY);
     }
 
     /**
@@ -27,7 +27,7 @@ public class Teddy extends Weapon {
      * @param position The position of the Teddy.
      */
     public Teddy(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_TEDDY);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.TEDDY);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Teddy extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Teddy(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_TEDDY);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.TEDDY);
     }
 
     @Override

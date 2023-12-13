@@ -27,7 +27,7 @@ public class Bow extends Weapon {
      * Bow constructor.
      */
     public Bow() {
-        super(DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, ItemType.WEAPON_BOW);
+        super(DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, ItemType.BOW);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Bow extends Weapon {
      * @param position The position of the Bow.
      */
     public Bow(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, false, ItemType.WEAPON_BOW);
+        super(position, DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, false, ItemType.BOW);
     }
 
     /**
@@ -46,7 +46,7 @@ public class Bow extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bow(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, hasDoubleDamage, ItemType.WEAPON_BOW);
+        super(position, DAMAGE, ATTACK_COOLDOWN, Integer.MAX_VALUE, hasDoubleDamage, ItemType.BOW);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class Bomb extends Weapon {
      * Bomb constructor.
      */
     public Bomb() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_BOMB);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.BOMB);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Bomb extends Weapon {
      * @param position The position of the Bomb.
      */
     public Bomb(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.BOMB);
     }
 
     /**
@@ -73,7 +73,7 @@ public class Bomb extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.BOMB);
     }
 
     @Override

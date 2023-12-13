@@ -18,7 +18,7 @@ public class Axe extends Weapon {
      * Axe constructor.
      */
     public Axe() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_AXE);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.AXE);
     }
 
     /**
@@ -27,7 +27,7 @@ public class Axe extends Weapon {
      * @param position The position of the axe.
      */
     public Axe(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_AXE);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.AXE);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Axe extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Axe(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_AXE);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.AXE);
     }
 
     @Override

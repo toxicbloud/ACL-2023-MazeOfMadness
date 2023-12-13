@@ -19,7 +19,7 @@ public class Sword extends Weapon {
      * Sword constructor.
      */
     public Sword() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_SWORD);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.SWORD);
     }
 
     /**
@@ -28,7 +28,7 @@ public class Sword extends Weapon {
      * @param position The position of the sword.
      */
     public Sword(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_SWORD);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.SWORD);
     }
 
     /**
@@ -38,7 +38,7 @@ public class Sword extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Sword(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_SWORD);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.SWORD);
     }
 
     @Override
