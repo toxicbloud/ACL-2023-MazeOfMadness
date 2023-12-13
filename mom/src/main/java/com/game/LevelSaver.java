@@ -66,7 +66,7 @@ public final class LevelSaver {
         for (Monster m : maze.getMonsters()) {
             m.setPosition(m.getPosition().add(shift));
         }
-        for (Item i : maze.getItems()) {
+        for (WorldItem i : maze.getItems()) {
             i.setPosition(i.getPosition().add(shift));
         }
         playerData.setPosition(playerData.getPosition().add(shift));
@@ -101,7 +101,7 @@ public final class LevelSaver {
         return json;
     }
 
-    private static JSONArray mazeitems2json(Item[] items) {
+    private static JSONArray mazeitems2json(WorldItem[] items) {
         JSONArray json = new JSONArray();
 
         for (int i = 0; i < items.length; i++) {

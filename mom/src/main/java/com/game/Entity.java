@@ -7,6 +7,9 @@ import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 import com.game.tiles.Tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /***
  * Entity class.
  * This is the base class for all entities.
@@ -15,8 +18,14 @@ public abstract class Entity implements Evolvable {
     /** Default sprite size. */
     public static final int SPRITE_SIZE = 64;
 
+    /** All entities list. */
+    public static final List<Entity> ENTITIES = new ArrayList<Entity>();
+
     /** Collisions border with. */
     protected static final float COLLISIONS_BORDER_WIDTH = 0.08f;
+
+    /** Entities unique ID counter. */
+    private static int idCounter;
 
     /** Entity position. */
     private Vector3 position;
@@ -25,8 +34,17 @@ public abstract class Entity implements Evolvable {
     /** Entity sprite. */
     private Sprite sprite;
 
+    /** Updated flag. To indicate an updated state in the entity. */
+    private boolean updatedFlag;
+
+    /** Destroy flag. To indicate that the entity should be removed. */
+    private boolean destroyFlag;
+
     /** Entity's controller. */
     private Controller controller;
+
+    /** Entity unique id. */
+    private int id;
 
     /**
      * Entity constructor.
@@ -36,6 +54,8 @@ public abstract class Entity implements Evolvable {
         this.sprite = sprite;
         position = new Vector3();
         size = new Vector3();
+        this.id = idCounter++;
+        ENTITIES.add(this);
     }
 
     /**
@@ -48,6 +68,8 @@ public abstract class Entity implements Evolvable {
         this.sprite = sprite;
         this.position = position;
         this.size = size;
+        this.id = idCounter++;
+        ENTITIES.add(this);
     }
 
     /**
@@ -55,6 +77,9 @@ public abstract class Entity implements Evolvable {
      * @param c The controller to register.
      */
     public void registerController(Controller c) {
+        if (this.controller != null) {
+            this.controller.unregister();
+        }
         this.controller = c;
     }
 
@@ -63,8 +88,13 @@ public abstract class Entity implements Evolvable {
      * This method is called every frame, before any render() call.
      */
     public void update() {
+        this.updatedFlag = false;
         if (this.controller != null) {
             this.controller.update();
+        }
+
+        if (this.destroyFlag) {
+            this.remove();
         }
     }
 
@@ -79,10 +109,36 @@ public abstract class Entity implements Evolvable {
     }
 
     /**
+     * Indicates that the entity has been updated.
+     * Used by child classes to indicate an updated state.
+     */
+    protected void indicateUpdate() {
+        this.updatedFlag = true;
+    }
+
+    /**
+     * Indicates if the entity has been updated.
+     * @return If the entity has been updated or not.
+     */
+    public boolean hasBeenUpdated() {
+        return this.updatedFlag;
+    }
+
+    /**
+     * Indicates if the entity has been destroyed.
+     * @return If the entity has been destroyed or not.
+     */
+    public boolean hasBeenDestroyed() {
+        return this.destroyFlag;
+    }
+
+    /**
      * Move entity of delta position.
      * @param delta movement delta
      */
     public void moveBy(Vector2 delta) {
+        indicateUpdate();
+
         float floorDiff = Math.abs(this.position.z - (int) this.position.z);
         if (floorDiff < COLLISIONS_BORDER_WIDTH || floorDiff > (1 - COLLISIONS_BORDER_WIDTH)) {
             Vector2 collideMovement = getCollideMovement(delta);
@@ -201,7 +257,7 @@ public abstract class Entity implements Evolvable {
      * @return If the Entity can go through the Tile.
      */
     protected boolean tileCollides(Tile t) {
-        return t.isSolid();
+        return t != null && t.isSolid();
     }
 
     /**
@@ -246,10 +302,27 @@ public abstract class Entity implements Evolvable {
     }
 
     /**
+     * Get the unique id of the entity.
+     * @return The unique id of the entity.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Set the unique id of the entity.
+     * @param id The new unique id.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Set the position of the entity.
      * @param position The new position.
      */
     public void setPosition(Vector3 position) {
+        indicateUpdate();
         this.position = position;
     }
 
@@ -258,6 +331,7 @@ public abstract class Entity implements Evolvable {
      * @param size The new size.
      */
     public void setSize(Vector3 size) {
+        indicateUpdate();
         this.size = size;
     }
 
@@ -266,6 +340,20 @@ public abstract class Entity implements Evolvable {
      * @param sprite The new sprite.
      */
     public void setSprite(Sprite sprite) {
+        indicateUpdate();
         this.sprite = sprite;
     }
+
+    /**
+     * Destroys the entity at next maze update.
+     */
+    public void destroy() {
+        this.indicateUpdate();
+        this.destroyFlag = true;
+    }
+
+    /**
+     * Remove the entity from the game.
+     */
+    protected abstract void remove();
 }

@@ -1,10 +1,14 @@
 package com.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
+import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
 import com.game.weapons.PlayerFist;
+import com.game.weapons.Weapon;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +28,12 @@ public class Player extends Living {
     private static final Vector3 PLAYER_SIZE = new Vector3(PLAYER_WIDTH, PLAYER_WIDTH, 1.0f);
     /** Default player max health. */
     private static final int PLAYER_MAX_HEALTH = 100;
-
+    /** Modified color for the player's Health Bar. */
+    private static final Color HEALTH_BAR_COLOR = new Color(0.1f, 0.62f, 0.1f, 1f);
     /** Last entered tile by the player. */
     private Tile enteredTile;
+    /** Default weapon for when the player has no picked up any custom weapon. */
+    private Weapon defaultWeapon;
 
     /**
      * Player constructor.
@@ -35,8 +42,10 @@ public class Player extends Living {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), new Vector3(), PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new PlayerFist());
+        this.defaultWeapon = this.getWeapon();
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
+        this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
     }
 
     /**
@@ -48,13 +57,16 @@ public class Player extends Living {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), position, PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new PlayerFist());
+        this.defaultWeapon = new PlayerFist();
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
+        this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
     }
 
     @Override
     public void update() {
         super.update();
+        this.getWeapon().update();
         handleTileCollision();
     }
 
@@ -98,5 +110,43 @@ public class Player extends Living {
             }
         }
         return enemiesInFOV;
+    }
+
+    /**
+     * Set the player's weapon and fallback to the default weapon if null.
+     *
+     * @param weapon The weapon to set.
+     */
+    @Override
+    public void setWeapon(Weapon weapon) {
+        super.setWeapon(weapon == null ? defaultWeapon : weapon);
+        if (weapon != null) {
+            weapon.setOwner(this);
+        }
+    }
+
+    @Override
+    public void render() {
+        super.render();
+        if (this.getWeapon() != null) {
+            PlayerController controller = (PlayerController) getController();
+            if (!controller.isMoving() || controller.isAttacking()) {
+                this.getWeapon().render();
+            }
+        }
+    }
+
+    /**
+     * Returns a JSON representation of the player.
+     *
+     * @return JSON representation of the player.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", this.getPosition().toJSON());
+        json.put("health", this.getHealth());
+
+        return json;
     }
 }
