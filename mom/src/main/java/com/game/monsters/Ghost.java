@@ -33,7 +33,6 @@ public class Ghost extends Monster {
             MonsterType.MONSTER_GHOST,
             GHOST_HEALTH,
             GHOST_MAX_HEALTH);
-        this.registerController(new GhostController(this));
     }
 
     /**
