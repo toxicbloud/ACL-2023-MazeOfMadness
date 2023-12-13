@@ -21,21 +21,21 @@ public enum WeaponProbas implements ItemProbas {
         }
     },
     /** The probability for spawning an axe.*/
-    AXE(0.05F) {
+    AXE(0.03F) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createAxe(x, y);
         }
     },
     /** The probability for spawning a bow.*/
-    BOW(0.05F) {
+    BOW(0.03F) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createBow(x, y);
         }
     },
     /** The probability for spawning a trident.*/
-    TRIDENT(0.05F) {
+    TRIDENT(0.01F) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createTrident(x, y);
