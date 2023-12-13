@@ -16,6 +16,10 @@ public final class SoundManager {
     private static final float ZOMBIE_DAMAGE_VOLUME = 0.25f;
     /** Set the potion sound volume. */
     private static final float POTION_VOLUME = 0.25f;
+    /** Set the win sound volume. */
+    private static final float WIN_VOLUME = 0.25f;
+    /** Set the fail sound volume. */
+    private static final float FAIL_VOLUME = 0.4f;
     /** SoundManager instanced class. */
     private static SoundManager instance;
     /** Player attack sound. */
@@ -38,6 +42,10 @@ public final class SoundManager {
     private Sound footStepWater;
     /** The button click sound. */
     private Sound buttonClick;
+    /** Fail sound. */
+    private Sound failSound;
+    /** Win sound. */
+    private Sound winSound;
 
     /** Sound enum. */
     public enum SoundList {
@@ -60,7 +68,11 @@ public final class SoundManager {
         /** Sound when walking in water. */
         FOOTSTEP_WATER,
         /** The button click sound. */
-        BUTTON_CLICK
+        BUTTON_CLICK,
+        /** The win sound. */
+        WIN,
+        /** The fail sound. */
+        FAIL
     }
 
     private SoundManager() {
@@ -90,6 +102,8 @@ public final class SoundManager {
         footStepLava = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/potion.mp3"));
         footStepWater = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/footstepWater.mp3"));
         buttonClick = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
+        failSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/fail.mp3"));
+        winSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
     }
 
     /**
@@ -132,6 +146,14 @@ public final class SoundManager {
                 break;
             case BUTTON_CLICK:
                 buttonClick.play();
+                break;
+            case WIN:
+                long win = winSound.play();
+                winSound.setVolume(win, WIN_VOLUME);
+                break;
+            case FAIL:
+                long fail = failSound.play();
+                failSound.setVolume(fail, FAIL_VOLUME);
                 break;
             default:
                 break;

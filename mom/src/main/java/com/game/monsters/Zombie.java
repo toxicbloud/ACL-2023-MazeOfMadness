@@ -20,7 +20,7 @@ public class Zombie extends Monster {
     /** Zombie distance at which it will leave the player alone. */
     public static final float LEAVE_DISTANCE = 6f;
     /** Default zombie health. */
-    private static final int ZOMBIE_HEALTH = 100;
+    private static final int ZOMBIE_HEALTH = 150;
     /** Default zombie max health. */
     private static final int ZOMBIE_MAX_HEALTH = 150;
     /** Amount of points the player gets when killing a zombie. */
