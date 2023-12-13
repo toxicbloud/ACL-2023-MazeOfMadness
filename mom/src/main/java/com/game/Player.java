@@ -6,7 +6,6 @@ import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
-import com.game.weapons.Bomb;
 import com.game.weapons.PlayerFist;
 import com.game.weapons.Weapon;
 import org.json.JSONObject;
