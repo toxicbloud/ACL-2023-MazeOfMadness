@@ -7,13 +7,11 @@ import com.engine.utils.Vector3;
 import com.game.tiles.Tile;
 import com.game.weapons.Bomb;
 import com.game.weapons.PlayerFist;
-import com.game.weapons.Trident;
 import com.game.weapons.Weapon;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONObject;
 
 /**
  * Player class.

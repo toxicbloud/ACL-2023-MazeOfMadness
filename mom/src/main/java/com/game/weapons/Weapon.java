@@ -223,4 +223,8 @@ public abstract class Weapon extends Entity {
         this.owner = owner;
     }
 
+    @Override
+    protected void remove() {
+        // SHOULD NOT BE ABLE TO REMOVE WEAPON
+    }
 }
