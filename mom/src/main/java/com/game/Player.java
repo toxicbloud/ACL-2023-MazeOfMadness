@@ -42,8 +42,8 @@ public class Player extends Living {
     public Player() {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), new Vector3(), PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
-        this.setWeapon(new PlayerFist());
-        this.defaultWeapon = this.getWeapon();
+        this.defaultWeapon = new PlayerFist();
+        this.setWeapon(this.defaultWeapon);
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
         this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
@@ -57,8 +57,8 @@ public class Player extends Living {
     public Player(Vector3 position) {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), position, PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
-        this.setWeapon(new Bomb());
         this.defaultWeapon = new PlayerFist();
+        this.setWeapon(this.defaultWeapon);
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
         this.setHealthBarColor(Player.HEALTH_BAR_COLOR);

@@ -43,6 +43,9 @@ public final class NetworkDialogs {
     /** PLR_UPD code. */
     public static final byte PLR_UPD = 26;
 
+    /** PLR_ATK code. */
+    public static final byte PLR_ATK = 27;
+
     /** ENTITY_TLE code. */
     public static final byte ENTITY_TLE = 31;
     /** ENTITY_MST code. */

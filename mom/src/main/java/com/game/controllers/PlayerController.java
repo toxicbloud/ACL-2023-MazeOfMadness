@@ -4,6 +4,7 @@ import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.*;
+import com.game.Living.Direction;
 import com.game.weapons.Weapon;
 
 import java.util.List;
@@ -207,5 +208,21 @@ public class PlayerController extends Controller implements EventVisitor {
      */
     public boolean isMoving() {
         return direction.x != 0 || direction.y != 0;
+    }
+
+    /**
+     * Get if the player is interacting or not.
+     * @return True if the player is interacting, false otherwise.
+     */
+    public boolean isInteracting() {
+        return interact;
+    }
+
+    /**
+     * Get the player's direction.
+     * @return Player's direction.
+     */
+    public Vector2 getDirection() {
+        return direction;
     }
 }

@@ -6,7 +6,7 @@ import com.game.Maze;
 import com.game.Player;
 import com.game.Score;
 import com.game.controllers.NetworkPlayerController;
-import com.game.controllers.PlayerController;
+import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
 import com.ui.EndScene;
 
@@ -44,7 +44,7 @@ public class GameSceneClient extends GameScene {
             int clientID = NetworkDialogs.getIntValue(data, 1);
             if (clientID == client.getId()) {
                 Game.getInstance().setPlayer(player);
-                new PlayerController(player);
+                new SyncedPlayerController(player, client.getId(), client);
             } else {
                 new NetworkPlayerController(player, clientID, client);
             }

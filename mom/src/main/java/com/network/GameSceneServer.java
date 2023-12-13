@@ -3,9 +3,11 @@ package com.network;
 import com.engine.Window;
 import com.game.Entity;
 import com.game.Game;
+import com.game.Living;
 import com.game.Maze;
 import com.game.Player;
 import com.game.controllers.NetworkPlayerController;
+import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
 import com.ui.EndScene;
 
@@ -43,6 +45,8 @@ public class GameSceneServer extends GameScene {
     private void spawnAllPlayers() {
         List<NetworkInfos> clients = server.getClients();
         Player player = new Player(maze.getSpawnPoint());
+        new SyncedPlayerController(player, server.getId(), server);
+        Game.getInstance().setPlayer(player);
         byte[] playerData = NetworkDialogs.encodePlayerValue(player, 1 + 2);
         playerData[0] = NetworkDialogs.MAZE_ADD;
         NetworkDialogs.encodeIntValue(0, playerData, 1);
@@ -63,6 +67,16 @@ public class GameSceneServer extends GameScene {
         }
     }
 
+    private Player getClientPlayer(int clientId) {
+        List<NetworkInfos> clients = server.getClients();
+        for (int i = 0; i < clients.size(); i++) {
+            if (clients.get(i).getId() == clientId) {
+                return players[i];
+            }
+        }
+        return null;
+    }
+
     private void setupServerBehaviors() {
         server.when((data, infos) -> {
             return data[0] == NetworkDialogs.PLR_UPD;
@@ -76,6 +90,19 @@ public class GameSceneServer extends GameScene {
         }, (data, infos) -> {
             onExitCalled();
             Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.PLR_ATK;
+        }, (data, infos) -> {
+            int id = NetworkDialogs.getIntValue(data, 1);
+            Player player = getClientPlayer(id);
+
+            if (player != null) {
+                List<Living> enemies = player.findEnemies();
+                player.attack(enemies);
+            }
             return false;
         });
 

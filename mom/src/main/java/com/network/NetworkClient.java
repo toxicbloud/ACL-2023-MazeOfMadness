@@ -46,6 +46,7 @@ public class NetworkClient extends NetworkManagerTCP {
      * @param data Data to send.
      * @return true if the data has been sent, false otherwise.
      */
+    @Override
     public boolean sendData(byte[] data) {
         return this.sendData(data, this.getServerInfos());
     }

@@ -1,5 +1,7 @@
 package com.game;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -272,7 +274,22 @@ public abstract class Living extends Entity {
         if (this.weapon == null) {
             return false;
         }
+        this.weapon.setPosition(this.getPosition());
         return this.weapon.attack(living);
+    }
+
+    /**
+     * Attack a list of living entities.
+     *
+     * @param livings The list of living entities to attack.
+     * @return Whether the attack was successful.
+     */
+    public boolean attack(List<Living> livings) {
+        if (this.weapon == null) {
+            return false;
+        }
+        this.weapon.setPosition(this.getPosition());
+        return this.weapon.attack(livings);
     }
 
     /**

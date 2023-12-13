@@ -13,7 +13,7 @@ import org.json.JSONObject;
  * Network player controller.
  * (used to control other players entities for network games)
  */
-public class NetworkPlayerController extends Controller {
+public class NetworkPlayerController extends PlayerController {
 
     /**
      * Constructor.
