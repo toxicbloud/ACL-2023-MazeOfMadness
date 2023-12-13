@@ -127,6 +127,16 @@ public class Player extends Living {
     @Override
     public void render() {
         super.render();
-        this.getWeapon().render();
+        if (this.getWeapon() != null) {
+            this.getWeapon().render();
+        }
+    }
+
+    /**
+     * Returns a JSON representation of the player.
+     * @return JSON representation of the player.
+     */
+    public String toJSON() {
+        return "{\"position\": " + this.getPosition().toJSON() + ", \"health\": " + this.getHealth() + "}";
     }
 }

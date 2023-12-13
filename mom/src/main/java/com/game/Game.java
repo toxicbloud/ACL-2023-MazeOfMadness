@@ -5,7 +5,6 @@ import com.engine.Window;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
-import com.game.generators.TrapSpawner;
 import com.renderer.GameScene;
 
 /**
@@ -121,7 +120,7 @@ public final class Game {
      * ensure that the player and the score are new.
      */
     public void loadNew() {
-        this.maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
+        this.maze = MazeFactory.createMaze();
         this.player = new Player(maze.getSpawnPoint());
         score = new Score();
         Window.getInstance().setScene(new GameScene(this.maze));
@@ -134,11 +133,21 @@ public final class Game {
      * keep the same player.
      */
     public void loadNext() {
-        this.maze = TrapSpawner.spawnTraps(MazeFactory.createMaze());
+        this.maze = MazeFactory.createMaze();
         this.player.setPosition(this.maze.getSpawnPoint());
         Window.getInstance().setScene(new GameScene(this.maze));
         MonsterSpawner.spawnMonsters(this.maze);
         PotionSpawner.spawnPotion(this.maze);
+    }
+
+    /**
+     * Load a game from a maze.
+     * @param m The maze to load from.
+     */
+    public void loadFrom(Maze m) {
+        this.maze = m;
+        this.player = new Player(m.getSpawnPoint());
+        score = new Score();
     }
 
     /**
