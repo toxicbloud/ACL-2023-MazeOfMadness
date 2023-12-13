@@ -37,14 +37,12 @@ public class Bomb extends Weapon {
     /**
      * Sound played when the bomb is thrown and is waiting to explode.
      */
-    private static final Sound WAITING_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
+    private static final Sound WAITING_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
 
     /**
      * Sound played when the bomb explodes.
      */
-    private static final Sound EXPLOSION_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
+    private static final Sound EXPLOSION_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
     /**
      * If the Bomb is launched.
      */
@@ -71,7 +69,7 @@ public class Bomb extends Weapon {
     /**
      * Bomb full constructor.
      *
-     * @param position The position of the Bomb.
+     * @param position        The position of the Bomb.
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
@@ -118,10 +116,6 @@ public class Bomb extends Weapon {
     public void update() {
         if (isThrown && Time.getInstance().getCurrentTime() - launchTime > EXPLOSION_DELAY) {
             Living owner = getOwner();
-
-            if (this.getPosition().dst(owner.getPosition()) < 1) {
-                owner.takeDamage(this.getDamage());
-            }
             int bombX = Math.round(this.getPosition().x);
             int bombY = Math.round(this.getPosition().y);
             int bombZ = Math.round(this.getPosition().z);
@@ -153,6 +147,12 @@ public class Bomb extends Weapon {
                 if (visited.contains(tile)) {
                     monster.takeDamage(this.getDamage());
                 }
+            }
+            Tile tile = Game.getInstance().getMaze().getTile(owner.getPosition());
+            if (tile != null && visited.contains(tile)) {
+                float distance = owner.getPosition().dst(this.getPosition());
+                // The closer the player is to the bomb, the more damage he takes.
+                owner.takeDamage((int) (this.getDamage() * (1 - distance / EXPLOSION_DEPTH)));
             }
             owner.setWeapon(null);
             EXPLOSION_SOUND.play();
