@@ -1,7 +1,9 @@
 package com.network;
 
+import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.controllers.NetworkPlayerController;
 import com.game.monsters.Monster;
 import com.renderer.GameScene;
 
@@ -31,27 +33,39 @@ public class GameSceneServer extends GameScene {
         this.maze = maze;
 
         this.spawnAllPlayers();
+        this.setupServerBehaviors();
     }
 
     private void spawnAllPlayers() {
         List<NetworkInfos> clients = server.getClients();
         Player player = new Player(maze.getSpawnPoint());
-        byte[] playerData = NetworkDialogs.encodePlayerValue(player, 2);
+        byte[] playerData = NetworkDialogs.encodePlayerValue(player, 1 + 2);
         playerData[0] = NetworkDialogs.MAZE_ADD;
-        playerData[1] = 0;
+        NetworkDialogs.encodeIntValue(0, playerData, 1);
         server.sendData(playerData);
 
         players = new Player[clients.size()];
         for (int i = 0; i < players.length; i++) {
+            int clientId = clients.get(i).getId();
             player = new Player(maze.getSpawnPoint());
+            new NetworkPlayerController(player, clientId, server);
             players[i] = player;
-            // new NetworkPlayerController(player, clients.get(i).getId(), server);
             maze.addEntity(players[i]);
-            playerData = NetworkDialogs.encodePlayerValue(player, 2);
+
+            playerData = NetworkDialogs.encodePlayerValue(player, 1 + 2);
             playerData[0] = NetworkDialogs.MAZE_ADD;
-            playerData[1] = (byte) clients.get(i).getId();
+            NetworkDialogs.encodeIntValue(clientId, playerData, 1);
             server.sendData(playerData);
         }
+    }
+
+    private void setupServerBehaviors() {
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.PLR_UPD;
+        }, (data, infos) -> {
+            server.sendData(data);
+            return false;
+        });
     }
 
     @Override
@@ -71,6 +85,14 @@ public class GameSceneServer extends GameScene {
                 NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
                 server.sendData(entityData);
             }
+        }
+
+        Player player = Game.getInstance().getPlayer();
+        if (player != null && player.hasBeenUpdated()) {
+            byte[] data = NetworkDialogs.encodePlayerValue(player, 1 + 2);
+            data[0] = NetworkDialogs.PLR_UPD;
+            NetworkDialogs.encodeIntValue(server.getId(), data, 1);
+            server.sendData(data);
         }
 
         server.update();

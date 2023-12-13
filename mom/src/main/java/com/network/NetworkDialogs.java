@@ -39,6 +39,9 @@ public final class NetworkDialogs {
     /** MAZE_REM code. */
     public static final byte MAZE_REM = 25;
 
+    /** PLR_UPD code. */
+    public static final byte PLR_UPD = 26;
+
     /** ENTITY_TLE code. */
     public static final byte ENTITY_TLE = 31;
     /** ENTITY_MST code. */
@@ -188,7 +191,7 @@ public final class NetworkDialogs {
      * @return Player.
      */
     public static Player getPlayerFromData(byte[] data, int offset) {
-        JSONObject obj = new JSONObject(getStringValue(data, offset));
+        JSONObject obj = new JSONObject(getStringValue(data, offset + 1));
         boolean isValid = Level.verifyJSON(obj, "position")
             && Level.verifyJSON(obj, "health");
         if (!isValid) {

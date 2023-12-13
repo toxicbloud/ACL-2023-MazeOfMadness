@@ -257,7 +257,7 @@ public abstract class Entity implements Evolvable {
      * @return If the Entity can go through the Tile.
      */
     protected boolean tileCollides(Tile t) {
-        return t.isSolid();
+        return t != null && t.isSolid();
     }
 
     /**
