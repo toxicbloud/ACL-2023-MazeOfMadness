@@ -15,6 +15,10 @@ import com.renderer.GameScene;
  * This is the base class for all living entities.
  */
 public abstract class Living extends Entity {
+    /**
+     * Range at which the player can pick up an item.
+     */
+    private static final float PICKUP_RANGE = 0.5f;
     /** Number of possible directions. */
     private static final int NB_DIRECTIONS = 4;
     /**
@@ -68,7 +72,7 @@ public abstract class Living extends Entity {
     private Direction direction = Direction.DOWN;
     /** Living weapon. */
     private Weapon weapon;
-    /**Color of the rendered health bar. */
+    /** Color of the rendered health bar. */
     private Color healthBarColor;
 
     /**
@@ -215,7 +219,7 @@ public abstract class Living extends Entity {
     }
 
     /**
-     *  Detects whether entity2 is in entity1's FOV.
+     * Detects whether entity2 is in entity1's FOV.
      *
      * @param entity1 The entity from which the FOV emanates.
      * @param entity2 The entity we're trying to determine if it's in the FOV.
@@ -234,13 +238,13 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Detects and returns an item in the player's range if there is one.
+     * Detects and returns a pickable item in the player's range if there is one.
      *
-     * @return The first item in range.
+     * @return The first pickable item in the player's range if there is one, null
      */
-    public Item findItemInRange() {
-        for (Item i : Game.getInstance().getMaze().getItems()) {
-            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition())) {
+    public WorldItem findItemInRange() {
+        for (WorldItem i : Game.getInstance().getMaze().getItems()) {
+            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition()) && i.isPickable()) {
                 return i;
             }
         }
@@ -250,20 +254,12 @@ public abstract class Living extends Entity {
     /**
      * This method checks if an item is in the range of the player.
      *
-     * @param itemPosition Position of the item to check.
+     * @param itemPosition   Position of the item to check.
      * @param playerPosition Position of the player.
      * @return If the item is in the range of the player.
      */
     private boolean isInRange(Vector3 itemPosition, Vector3 playerPosition) {
-        final float rangeSquared = 0.5f * 0.5f;
-
-        // To compute if the item is in the player's range, we need to check if the distance of the item from the player
-        // is inside a sphere that has for center the player and for radius the pickup range.
-        float xDistanceFromCenterSquared = (itemPosition.x - playerPosition.x) * (itemPosition.x - playerPosition.x);
-        float yDistanceFromCenterSquared = (itemPosition.y - playerPosition.y) * (itemPosition.y - playerPosition.y);
-        float zDistanceFromCenterSquared = (itemPosition.z - playerPosition.z) * (itemPosition.z - playerPosition.z);
-
-        return xDistanceFromCenterSquared + yDistanceFromCenterSquared + zDistanceFromCenterSquared <= rangeSquared;
+        return itemPosition.dst(playerPosition) < PICKUP_RANGE;
     }
 
     /**
@@ -294,7 +290,8 @@ public abstract class Living extends Entity {
     }
 
     /**
-     * Regenerate health. If the health amount makes the entity's health higher than it's maximum possible health, it
+     * Regenerate health. If the health amount makes the entity's health higher than
+     * it's maximum possible health, it
      * caps to the maximum health.
      *
      * @param h The health amount.
@@ -323,6 +320,26 @@ public abstract class Living extends Entity {
      */
     public Direction getDirection() {
         return direction;
+    }
+
+    /**
+     * Get the direction vector.
+     *
+     * @return The direction vector of the entity.
+     */
+    public Vector2 getDirectionVector() {
+        switch (direction) {
+            case RIGHT:
+                return new Vector2(1, 0);
+            case UP:
+                return new Vector2(0, 1);
+            case LEFT:
+                return new Vector2(-1, 0);
+            case DOWN:
+                return new Vector2(0, -1);
+            default:
+                throw new IllegalArgumentException("Invalid direction");
+        }
     }
 
     /**
@@ -395,5 +412,10 @@ public abstract class Living extends Entity {
      */
     protected void setHealthBarColor(Color healthBarColor) {
         this.healthBarColor = healthBarColor;
+    }
+
+    @Override
+    protected void remove() {
+        // SHOULD NO BE ABLE TO REMOVE LIVING IF NOT MONSTER
     }
 }
