@@ -8,16 +8,21 @@ import com.game.Player;
  * Bow item class.
  */
 public class Bow extends Weapon {
+    /**
+     * SPRITE_SHIFT.
+     */
+    private static final int SPRITE_SHIFT = 3;
 
-    protected Bow(int spriteShift, Vector3 position, ItemType t) {
-        super(spriteShift, position, t);
-        //TODO Auto-generated constructor stub
+    /**
+     * @param position The position of the bow in the maze.
+     */
+    public Bow(Vector3 position) {
+        super(SPRITE_SHIFT * SPRITE_SIZE, position, ItemType.BOW);
     }
 
     @Override
     protected void equipWeapon(Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equipWeapon'");
+        player.setWeapon(new com.game.weapons.Bow(player.getPosition()));
     }
 
 }

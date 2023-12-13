@@ -24,7 +24,6 @@ import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
-import com.game.weapons.Sword;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -219,8 +218,8 @@ public class Level {
         String type = itemJsonObject.getString("type");
         Vector3 position = parsePosition(itemJsonObject.getJSONObject("position"));
         switch (type) {
-            case "WEAPON_SWORD":
-                return new Sword(position);
+            case "SWORD":
+                return new com.game.items.weapons.Sword(position);
             case "ITEM_HEALTH_POTION":
                 return new HealthPotion(position);
             case "ITEM_STRENGTH_POTION":

@@ -5,7 +5,6 @@ import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
 import com.game.Game;
-import com.game.ItemType;
 import com.game.Living;
 import com.game.monsters.Monster;
 import com.game.particles.BombThrown;
@@ -33,7 +32,7 @@ public class Bomb extends Weapon {
     /** Bomb range. */
     private static final int RANGE = 1;
     /** Bomb explosion delay. */
-    private static final long EXPLOSION_DELAY = 5000;
+    private static final long EXPLOSION_DELAY = 3000;
     /**
      * Sound played when the bomb is thrown and is waiting to explode.
      */
@@ -54,7 +53,7 @@ public class Bomb extends Weapon {
      * Bomb constructor.
      */
     public Bomb() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.BOMB);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE);
     }
 
     /**
@@ -63,7 +62,7 @@ public class Bomb extends Weapon {
      * @param position The position of the Bomb.
      */
     public Bomb(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false);
     }
 
     /**
@@ -73,7 +72,7 @@ public class Bomb extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage);
     }
 
     @Override
@@ -100,7 +99,6 @@ public class Bomb extends Weapon {
     private void launch() {
         WAITING_SOUND.play();
         this.isThrown = true;
-        this.setPickable(false);
         this.launchTime = Time.getInstance().getCurrentTime();
         Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
     }

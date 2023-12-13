@@ -57,7 +57,6 @@ public class Player extends Living {
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new Trident());
         this.defaultWeapon = new PlayerFist();
-        this.getWeapon().interact(this);
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
         this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
@@ -120,6 +119,9 @@ public class Player extends Living {
     @Override
     public void setWeapon(Weapon weapon) {
         super.setWeapon(weapon == null ? defaultWeapon : weapon);
+        if (weapon != null) {
+            weapon.setOwner(this);
+        }
     }
 
     @Override

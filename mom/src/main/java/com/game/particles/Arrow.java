@@ -3,10 +3,12 @@ package com.game.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Game;
+import com.game.Living.Direction;
 
 import java.util.Arrays;
 
@@ -30,14 +32,13 @@ public class Arrow extends Particle {
     /**
      * Arrow sound played when the arrow hits a wall.
      */
-    private static final Sound WALL_HIT_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
+    private static final Sound WALL_HIT_SOUND = (Sound) Gdx.audio
+            .newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
 
     /**
      * Arrow sound played when the arrow hits an enemy.
      */
-    private static final Sound ENEMY_HIT_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/hit.mp3"));
+    private static final Sound ENEMY_HIT_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/hit.mp3"));
 
     /**
      * Arrow direction.
@@ -51,14 +52,14 @@ public class Arrow extends Particle {
     /**
      * Arrow constructor.
      *
-     * @param sprite The sprite of the arrow.
      * @param direction The direction of the arrow.
-     * @param position The position of the arrow.
-     * @param damage The damage of the arrow.
+     * @param position  The position of the arrow.
+     * @param damage    The damage of the arrow.
      */
-    public Arrow(Sprite sprite, Vector2 direction, Vector3 position, int damage) {
-        super(sprite, position);
-        this.direction = direction.normalize();
+    public Arrow(Direction direction, Vector3 position, int damage) {
+        super(new Sprite(new Texture("images/arrow.png"), SPRITE_SIZE, SPRITE_SIZE,
+                direction.ordinal() * SPRITE_SIZE), position);
+        this.direction = getDirectionVector(direction).normalize();
         this.damage = damage;
     }
 
@@ -80,5 +81,26 @@ public class Arrow extends Particle {
                 this.destroy();
             }
         });
+    }
+
+    /**
+     * Get the direction vector from a direction.
+     *
+     * @param direction The direction.
+     * @return The direction vector.
+     */
+    public static Vector2 getDirectionVector(Direction direction) {
+        switch (direction) {
+            case RIGHT:
+                return new Vector2(1, 0);
+            case UP:
+                return new Vector2(0, 1);
+            case LEFT:
+                return new Vector2(-1, 0);
+            case DOWN:
+                return new Vector2(0, -1);
+            default:
+                throw new IllegalArgumentException("Invalid direction");
+        }
     }
 }

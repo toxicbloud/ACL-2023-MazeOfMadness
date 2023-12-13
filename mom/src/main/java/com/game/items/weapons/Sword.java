@@ -8,16 +8,18 @@ import com.game.Player;
  * Sword item class.
  */
 public class Sword extends Weapon {
-
-    protected Sword(int spriteShift, Vector3 position, ItemType t) {
-        super(spriteShift, position, t);
-        // TODO Auto-generated constructor stub
+    /**
+     * Sword constructor.
+     *
+     * @param position The position of the sword in the maze.
+     */
+    public Sword(Vector3 position) {
+        super(0, position, ItemType.SWORD);
     }
 
     @Override
     protected void equipWeapon(Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equipWeapon'");
+        player.setWeapon(new com.game.weapons.Sword(player.getPosition()));
     }
 
 }
