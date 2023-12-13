@@ -1,7 +1,7 @@
 package com.game.generators.probabilities;
 
 import com.game.WorldItem;
-import com.game.generators.WeaponFactory;
+import com.game.generators.factories.WeaponFactory;
 
 /** Probabilities for spawning weapons. */
 public enum WeaponProbas implements ItemProbas {
@@ -71,7 +71,7 @@ public enum WeaponProbas implements ItemProbas {
     }
 
     @Override
-    public ItemProbas[] getItemsProbasArray() {
+    public ItemProbas[] getAllItemsProbas() {
         return WeaponProbas.values();
     }
 

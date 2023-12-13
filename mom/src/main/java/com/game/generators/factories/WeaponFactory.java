@@ -1,4 +1,4 @@
-package com.game.generators;
+package com.game.generators.factories;
 
 import com.engine.utils.Vector3;
 import com.game.items.weapons.*;

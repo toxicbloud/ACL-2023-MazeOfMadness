@@ -1,7 +1,7 @@
 package com.game.generators.tree;
 
 import com.engine.utils.Vector3;
-import com.game.generators.TrapSpawner;
+import com.game.generators.spawners.TrapSpawner;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;

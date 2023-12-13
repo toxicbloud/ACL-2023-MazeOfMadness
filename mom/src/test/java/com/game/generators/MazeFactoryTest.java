@@ -2,6 +2,7 @@ package com.game.generators;
 
 import com.GdxTestRunner;
 import com.game.Maze;
+import com.game.generators.factories.MazeFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

@@ -1,4 +1,4 @@
-package com.game.generators;
+package com.game.generators.spawners;
 
 import com.engine.utils.Vector3;
 import com.game.Game;

@@ -2,10 +2,10 @@ package com.game;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.engine.Window;
-import com.game.generators.MazeFactory;
-import com.game.generators.MonsterSpawner;
-import com.game.generators.PotionSpawner;
-import com.game.generators.WeaponSpawner;
+import com.game.generators.factories.MazeFactory;
+import com.game.generators.spawners.MonsterSpawner;
+import com.game.generators.spawners.PotionSpawner;
+import com.game.generators.spawners.WeaponSpawner;
 import com.renderer.GameScene;
 
 /**

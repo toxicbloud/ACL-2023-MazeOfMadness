@@ -1,4 +1,4 @@
-package com.game.generators;
+package com.game.generators.factories;
 
 /**
  * Monster Factory class.
