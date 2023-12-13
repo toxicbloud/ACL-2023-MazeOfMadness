@@ -46,7 +46,7 @@ public class Zombie extends Monster {
         super(new Sprite(new Texture("images/zombie.png"), SPRITE_SIZE, SPRITE_SIZE),
                 MonsterType.MONSTER_ZOMBIE, position, ZOMBIE_HEALTH, ZOMBIE_MAX_HEALTH);
         this.setWeapon(new ZombieFist());
-        this.registerController(new ZombieController(this));
+        new ZombieController(this);
     }
 
     @Override
