@@ -67,6 +67,11 @@ package Engine {
     }
     Sprite "1" -- "1" Texture : texture
 
+    class SoundManager {
+        + play(SoundList soundList): void
+        + stop(SoundList soundList): void
+    }
+
     package utils {
         class Time {
             - instance: Time
