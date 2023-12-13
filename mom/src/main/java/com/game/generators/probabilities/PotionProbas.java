@@ -13,7 +13,7 @@ public enum PotionProbas implements ItemProbas {
         }
     },
     /** The probability for spawning a strength potion. */
-    STRENGTH(0.10F) {
+    STRENGTH(0.05F) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return PotionFactory.createStrengthPotion(x, y);
@@ -27,7 +27,7 @@ public enum PotionProbas implements ItemProbas {
         }
     },
     /** The probability for spawning a health potion. */
-    HEALTH(0.05F) {
+    HEALTH(0.1F) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return PotionFactory.createHealthPotion(x, y);
