@@ -3,9 +3,9 @@ package com.game.generators;
 import com.engine.utils.Vector3;
 import com.game.Maze;
 import com.game.WorldItem;
-import com.game.potions.HealthPotion;
-import com.game.potions.SpeedPotion;
-import com.game.potions.StrengthPotion;
+import com.game.items.potions.HealthPotion;
+import com.game.items.potions.SpeedPotion;
+import com.game.items.potions.StrengthPotion;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
 

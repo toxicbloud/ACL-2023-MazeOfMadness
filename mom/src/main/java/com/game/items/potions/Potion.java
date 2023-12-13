@@ -1,4 +1,4 @@
-package com.game.potions;
+package com.game.items.potions;
 
 import com.engine.Sprite;
 import com.engine.Texture;

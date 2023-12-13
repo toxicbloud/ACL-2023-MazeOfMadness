@@ -1,6 +1,8 @@
 package com.game.potions;
 
 import com.game.Player;
+import com.game.items.potions.SpeedPotion;
+
 import org.junit.jupiter.api.Test;
 
 /**

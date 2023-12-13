@@ -2,6 +2,8 @@ package com.game.potions;
 
 import org.junit.jupiter.api.Test;
 
+import com.game.items.potions.HealthPotion;
+
 /**
  * HealthPotion test class.
  */
