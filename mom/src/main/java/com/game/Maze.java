@@ -178,6 +178,20 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Returns the tile index in the tiles array.
+     *
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param z The z coordinate.
+     * @param width The width of the maze.
+     * @param height The height of the maze.
+     * @return The tile index in the tiles array.
+     */
+    public static int getTileIndex(int x, int y, int z, int width, int height) {
+        return x + y * width + z * width * height;
+    }
+
+    /**
      * Create a maze from a list of entities.
      * @param list The list of entities.
      * @return The maze.
@@ -217,25 +231,22 @@ public class Maze implements Evolvable {
         int depth = maxZ - minZ + 1;
 
         Tile[] tilesArray = new Tile[width * height * depth];
-        int index = 0;
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    boolean found = false;
-                    for (Tile t : tiles) {
-                        if (t.getPosition().equals(new Vector3(x, y, z))) {
-                            found = true;
-                            tilesArray[index] = t;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        tilesArray[index] = new VoidTile(new Vector3(x, y, z));
-                    }
-                    index++;
-                }
+        Vector3 shift = new Vector3(minX, minY, minZ);
+        for (Tile t : tiles) {
+            t.setPosition(t.getPosition().sub(shift));
+            Vector3 pos = t.getPosition();
+            int index = getTileIndex((int) pos.x, (int) pos.y, (int) pos.z, width, height);
+            tilesArray[index] = t;
+        }
+        for (int i = 0; i < tilesArray.length; i++) {
+            if (tilesArray[i] == null) {
+                tilesArray[i] = new VoidTile(new Vector3(
+                        i % width,
+                        i / width,
+                        i / (width * height)));
             }
         }
+
         Monster[] monstersArray = new Monster[monsters.size()];
         monsters.toArray(monstersArray);
         WorldItem[] itemsArray = new WorldItem[items.size()];
@@ -245,6 +256,7 @@ public class Maze implements Evolvable {
         maze.setTiles(tilesArray);
         maze.setItems(itemsArray);
         maze.setMonsters(monstersArray);
+        maze.setTilesDefaultPositions();
         return maze;
     }
 
@@ -417,7 +429,7 @@ public class Maze implements Evolvable {
      * @return The tile index in the tiles array.
      */
     public int getTileIndex(int x, int y, int z) {
-        return x + y * width + z * width * height;
+        return getTileIndex(x, y, z, width, height);
     }
 
     /**
@@ -465,6 +477,15 @@ public class Maze implements Evolvable {
      */
     public void setItems(WorldItem[] items) {
         this.items = items;
+    }
+
+    /**
+     * Get the particles of the maze.
+     *
+     * @return The particles of the maze.
+     */
+    public Particle[] getParticles() {
+        return particles;
     }
 
     /**

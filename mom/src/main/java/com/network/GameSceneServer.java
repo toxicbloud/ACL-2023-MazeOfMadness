@@ -2,7 +2,7 @@ package com.network;
 
 import com.game.Maze;
 import com.game.Player;
-import com.game.controllers.NetworkLivingController;
+import com.game.monsters.Monster;
 import com.renderer.GameScene;
 
 import java.util.List;
@@ -17,6 +17,9 @@ public class GameSceneServer extends GameScene {
     /** Client players list. */
     private Player[] players;
 
+    /** Maze used in the game. */
+    private Maze maze;
+
     /**
      * Constructor.
      * @param maze Maze.
@@ -25,15 +28,26 @@ public class GameSceneServer extends GameScene {
     public GameSceneServer(Maze maze, NetworkServer server) {
         super(maze);
         this.server = server;
+        this.maze = maze;
 
+        this.spawnAllPlayers();
+    }
+
+    private void spawnAllPlayers() {
         List<NetworkInfos> clients = server.getClients();
+        Player player = new Player(maze.getSpawnPoint());
+        byte[] playerData = NetworkDialogs.encodePlayerValue(player, 2);
+        playerData[0] = NetworkDialogs.MAZE_ADD;
+        playerData[1] = 0;
+        server.sendData(playerData);
+
         players = new Player[clients.size()];
         for (int i = 0; i < players.length; i++) {
-            Player player = new Player(maze.getSpawnPoint());
+            player = new Player(maze.getSpawnPoint());
             players[i] = player;
-            player.registerController(new NetworkLivingController(player, clients.get(i).getId()));
+            // new NetworkPlayerController(player, clients.get(i).getId(), server);
             maze.addEntity(players[i]);
-            byte[] playerData = NetworkDialogs.encodePlayerValue(player, 2);
+            playerData = NetworkDialogs.encodePlayerValue(player, 2);
             playerData[0] = NetworkDialogs.MAZE_ADD;
             playerData[1] = (byte) clients.get(i).getId();
             server.sendData(playerData);
@@ -43,6 +57,18 @@ public class GameSceneServer extends GameScene {
     @Override
     public void update() {
         super.update();
+
+        for (Monster m : maze.getMonsters()) {
+            if (!m.hasBeenUpdated()) {
+                return;
+            }
+
+            byte[] entityData = NetworkDialogs.encodeMonsterValue(m, 1 + 2);
+            entityData[0] = NetworkDialogs.MAZE_UPD;
+            NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
+            server.sendData(entityData);
+        }
+
         server.update();
     }
 }

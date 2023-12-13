@@ -3,6 +3,7 @@ package com.network;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.controllers.PlayerController;
 import com.renderer.GameScene;
 
 /**
@@ -28,6 +29,7 @@ public class GameSceneClient extends GameScene {
             maze.addEntity(player);
             int clientID = data[1];
             if (clientID == client.getId()) {
+                new PlayerController(player);
                 Game.getInstance().setPlayer(player);
             }
             return false;

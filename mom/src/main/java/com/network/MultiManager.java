@@ -5,7 +5,10 @@ import com.game.Entity;
 import com.game.Game;
 import com.game.Maze;
 import com.game.WorldItem;
+import com.game.controllers.NetworkEntityController;
 import com.game.generators.MazeFactory;
+import com.game.generators.MonsterSpawner;
+import com.game.generators.PotionSpawner;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 
@@ -47,9 +50,6 @@ public class MultiManager {
     private static final DataValidator GAME_RDY_RSP_VALIDATOR = (data, infos) -> {
         return data.length > 0 && data[0] == NetworkDialogs.GAME_RDY;
     };
-
-    /** Game start time to lte ll clients spawn map and all before continuing. */
-    private static final int GAME_WAIT_TIME = 500;
 
     /** Network server. */
     private NetworkServer server;
@@ -103,6 +103,8 @@ public class MultiManager {
     public void createServer(String ip, int port) {
         this.server = new NetworkServer(port);
         maze = MazeFactory.createMaze();
+        MonsterSpawner.spawnMonsters(this.maze);
+        PotionSpawner.spawnPotion(this.maze);
         serverGameStarted = false;
         this.setupServerBehaviours();
     }
@@ -170,11 +172,13 @@ public class MultiManager {
         this.client.when(
             MAZE_DATA_RSP_VALIDATOR,
             (data, infos) -> {
-                Entity e = NetworkDialogs.getEntityFromData(data, 1);
+                int entityId = NetworkDialogs.getIntValue(data, 1);
+                Entity e = NetworkDialogs.getEntityFromData(data, 1 + 2);
                 if (e == null) {
                     System.out.println("Error getting entity from data");
                     return true;
                 }
+                e.setId(entityId);
                 builder.addEntity(e);
                 int nbEntities = builder.getEntitiesNumber();
                 int totalNb = builder.getDataLength();
@@ -195,6 +199,9 @@ public class MultiManager {
             GAME_STR_RSP_VALIDATOR,
             (data, infos) -> {
                 maze = builder.build();
+                for (Monster m : maze.getMonsters()) {
+                    new NetworkEntityController(m, client);
+                }
                 Game.getInstance().loadFrom(maze);
                 Window.getInstance().setScene(new GameSceneClient(maze, client));
                 return true;
@@ -241,18 +248,21 @@ public class MultiManager {
                 server.sendData(mazeDataNbPaquets, infos);
 
                 for (Tile t : maze.getTiles()) {
-                    byte[] tileData = NetworkDialogs.encodeTileValue(t, 1);
+                    byte[] tileData = NetworkDialogs.encodeTileValue(t, 1 + 2);
                     tileData[0] = NetworkDialogs.MAZE_ADD;
+                    NetworkDialogs.encodeIntValue(t.getId(), tileData, 1);
                     server.sendData(tileData, infos);
                 }
                 for (Monster m : maze.getMonsters()) {
-                    byte[] monsterData = NetworkDialogs.encodeMonsterValue(m, 1);
+                    byte[] monsterData = NetworkDialogs.encodeMonsterValue(m, 1 + 2);
                     monsterData[0] = NetworkDialogs.MAZE_ADD;
+                    NetworkDialogs.encodeIntValue(m.getId(), monsterData, 1);
                     server.sendData(monsterData, infos);
                 }
                 for (WorldItem i : maze.getItems()) {
-                    byte[] itemData = NetworkDialogs.encodeItemValue(i, 1);
+                    byte[] itemData = NetworkDialogs.encodeItemValue(i, 1 + 2);
                     itemData[0] = NetworkDialogs.MAZE_ADD;
+                    NetworkDialogs.encodeIntValue(i.getId(), itemData, 1);
                     server.sendData(itemData, infos);
                 }
                 return false;
