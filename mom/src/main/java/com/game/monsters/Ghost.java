@@ -4,7 +4,6 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
-import com.game.controllers.GhostController;
 import com.game.tiles.Tile;
 
 /**
