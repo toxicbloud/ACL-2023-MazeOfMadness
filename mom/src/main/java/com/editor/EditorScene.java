@@ -41,7 +41,6 @@ import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
 import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
-import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
 import com.game.tiles.WallRock;
