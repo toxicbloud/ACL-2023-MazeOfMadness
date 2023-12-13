@@ -28,6 +28,7 @@ public class GhostController extends Controller {
     public void update() {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
+        Ghost ghost = (Ghost) target;
 
         if (player != null) {
             float distance = player.distance(target);
@@ -46,6 +47,9 @@ public class GhostController extends Controller {
                     .normalize()
                     .mul(Time.getInstance().getDeltaTime() * Ghost.GHOST_SPEED
                 ));
+            } else {
+                ghost.getWeapon().setPosition(ghost.getPosition());
+                ghost.attack(player);
             }
         }
     }

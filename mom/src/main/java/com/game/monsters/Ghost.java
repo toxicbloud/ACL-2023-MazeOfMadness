@@ -5,6 +5,8 @@ import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
 import com.game.tiles.Tile;
+import com.game.weapons.GhostFist;
+import com.game.weapons.ZombieFist;
 
 /**
  * Ghost class.
@@ -32,6 +34,7 @@ public class Ghost extends Monster {
             MonsterType.MONSTER_GHOST,
             GHOST_HEALTH,
             GHOST_MAX_HEALTH);
+        this.setWeapon(new GhostFist());
     }
 
     /**
@@ -42,6 +45,7 @@ public class Ghost extends Monster {
     public Ghost(Vector3 position) {
         this();
         this.setPosition(position);
+        this.setWeapon(new GhostFist());
     }
 
     @Override
