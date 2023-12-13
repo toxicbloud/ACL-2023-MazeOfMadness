@@ -54,6 +54,10 @@ public class Trident extends Particle {
      * Start position of the trident.
      */
     private Vector3 startPos;
+    /**
+     * If the trident has hit something.
+     */
+    private boolean hasHit;
 
     /**
      * Trident particle constructor.
@@ -71,6 +75,7 @@ public class Trident extends Particle {
 
     @Override
     public void update() {
+        super.update();
         Vector2 normalized = direction.normalize();
         Vector3 lastPosition = this.getPosition();
         this.moveBy(new Vector2(normalized.x, normalized.y)
@@ -82,10 +87,11 @@ public class Trident extends Particle {
                 monster.takeDamage(DAMAGE);
             }
         });
-        if (lastPosition.epsilonEquals(this.getPosition(), EPSILON)
-                || this.startPos.dst(this.getPosition()) > TRIDENT_MAX_FLY_DISTANCE) {
+        if (!hasHit && (lastPosition.epsilonEquals(this.getPosition(), EPSILON)
+                || this.startPos.dst(this.getPosition()) > TRIDENT_MAX_FLY_DISTANCE)) {
             Game.getInstance().getMaze().addItem(new com.game.items.weapons.Trident(this.getPosition()));
             this.destroy();
+            this.hasHit = true;
         }
     }
 

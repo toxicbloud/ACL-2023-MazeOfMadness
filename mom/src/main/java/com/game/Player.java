@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
+import com.game.controllers.PlayerController;
 import com.game.tiles.Tile;
 import com.game.weapons.Bomb;
 import com.game.weapons.PlayerFist;
@@ -129,7 +130,10 @@ public class Player extends Living {
     public void render() {
         super.render();
         if (this.getWeapon() != null) {
-            this.getWeapon().render();
+            PlayerController controller = (PlayerController) getController();
+            if (!controller.isMoving() || controller.isAttacking()) {
+                this.getWeapon().render();
+            }
         }
     }
 
