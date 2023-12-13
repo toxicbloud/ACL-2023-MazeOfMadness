@@ -1,8 +1,8 @@
 package com.game.generators;
 
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.Maze;
+import com.game.WorldItem;
 import com.game.generators.probabilities.ItemProbas;
 import com.game.generators.probabilities.PotionProbas;
 import com.game.tiles.Tile;
@@ -29,7 +29,7 @@ public final class PotionSpawner {
      * @param maze Maze to populate.
      */
     public static void spawnPotion(Maze maze) {
-        ArrayList<Item> potions = new ArrayList<>();
+        ArrayList<WorldItem> potions = new ArrayList<>();
         SecureRandom sr = new SecureRandom();
         float randomValue;
 
@@ -44,7 +44,7 @@ public final class PotionSpawner {
 
             }
         }
-        maze.addItems(potions.toArray(new Item[potions.size()]));
+        maze.addItems(potions.toArray(new WorldItem[potions.size()]));
     }
 
     /**
@@ -55,7 +55,7 @@ public final class PotionSpawner {
      * @param randomFloat Random number generator.
      * @param items       Items array.
      */
-    private static void spawnPotion(int x, int y, float randomFloat, ArrayList<Item> items) {
+    private static void spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
         float counter = 0.F;
         for (ItemProbas wp : PotionProbas.DUMMY.getItemsProbasArray()) {
             counter += wp.getValue();

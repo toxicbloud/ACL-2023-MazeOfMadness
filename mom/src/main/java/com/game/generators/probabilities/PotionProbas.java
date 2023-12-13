@@ -1,6 +1,6 @@
 package com.game.generators.probabilities;
 
-import com.game.Item;
+import com.game.WorldItem;
 import com.game.generators.PotionFactory;
 
 /** Probabilities for spawning potions. */
@@ -8,28 +8,28 @@ public enum PotionProbas implements ItemProbas {
     /** Dummy object. Used to call general methods on it. */
     DUMMY(0.F) {
         @Override
-        public Item getNewItem(int x, int y) {
+        public WorldItem getNewItem(int x, int y) {
             return null;
         }
     },
     /** The probability for spawning a strength potion. */
     STRENGTH(0.10F) {
         @Override
-        public Item getNewItem(int x, int y) {
+        public WorldItem getNewItem(int x, int y) {
             return PotionFactory.createStrengthPotion(x, y);
         }
     },
     /** The probability for spawning a speed potion. */
     SPEED(0.05F) {
         @Override
-        public Item getNewItem(int x, int y) {
+        public WorldItem getNewItem(int x, int y) {
             return PotionFactory.createSpeedPotion(x, y);
         }
     },
     /** The probability for spawning a health potion. */
     HEALTH(0.05F) {
         @Override
-        public Item getNewItem(int x, int y) {
+        public WorldItem getNewItem(int x, int y) {
             return PotionFactory.createHealthPotion(x, y);
         }
     };

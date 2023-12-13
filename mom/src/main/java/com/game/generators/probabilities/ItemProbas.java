@@ -1,6 +1,6 @@
 package com.game.generators.probabilities;
 
-import com.game.Item;
+import com.game.WorldItem;
 
 /** ItemProbas interface. It regroups logistic for all Item spawwning mechanisms. */
 public interface ItemProbas {
@@ -33,7 +33,7 @@ public interface ItemProbas {
      * @param y Y coord to spawn the item to.
      * @return A new Item.
      */
-    Item getNewItem(int x, int y);
+    WorldItem getNewItem(int x, int y);
 
     /**
      * Returns the base spawning probability of the Item class.

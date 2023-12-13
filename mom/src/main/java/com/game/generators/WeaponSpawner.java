@@ -1,8 +1,8 @@
 package com.game.generators;
 
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.Maze;
+import com.game.WorldItem;
 import com.game.generators.probabilities.ItemProbas;
 import com.game.generators.probabilities.WeaponProbas;
 import com.game.tiles.Tile;
@@ -29,7 +29,7 @@ public final class WeaponSpawner {
      */
     public static void spawnWeapons(Maze maze) {
         SecureRandom sr = new SecureRandom();
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<WorldItem> items = new ArrayList<>();
         float randomValue;
 
         for (int x = 0; x < maze.getWidth(); x++) {
@@ -42,7 +42,7 @@ public final class WeaponSpawner {
             }
         }
 
-        maze.addItems(items.toArray(new Item[items.size()]));
+        maze.addItems(items.toArray(new WorldItem[items.size()]));
     }
 
     /**
@@ -53,7 +53,7 @@ public final class WeaponSpawner {
      * @param randomFloat Random number generator.
      * @param items       Items array.
      */
-    private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<Item> items) {
+    private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
         float counter = 0.F;
         for (ItemProbas wp : WeaponProbas.DUMMY.getItemsProbasArray()) {
             counter += wp.getValue();

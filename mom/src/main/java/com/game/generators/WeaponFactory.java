@@ -1,7 +1,7 @@
 package com.game.generators;
 
 import com.engine.utils.Vector3;
-import com.game.weapons.*;
+import com.game.items.weapons.*;
 
 /**
  * WeaponFactory class.
