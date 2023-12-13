@@ -71,10 +71,6 @@ public class GameScene extends Scene {
      * The maze to update and render.
      */
     private Maze maze;
-    /**
-     * The player.
-     */
-    private Player player;
 
     /**
      * GameScene constructor.
@@ -153,11 +149,11 @@ public class GameScene extends Scene {
      */
     public void create() {
         Game game = Game.getInstance();
-        this.player = game.getPlayer();
+        Player player = game.getPlayer();
         if (!editMode) {
             buildMenu();
             buildHUD();
-            new PlayerController(game.getPlayer());
+            new PlayerController(player);
         }
     }
 
@@ -239,6 +235,7 @@ public class GameScene extends Scene {
             default:
                 break;
         }
+        Player player = Game.getInstance().getPlayer();
         if (player != null) {
             PlayerController controller = (PlayerController) player.getController();
             if (controller != null) {
