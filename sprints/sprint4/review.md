@@ -12,9 +12,9 @@
     > Elles apparaissent en fonction de leurs rareté et la disposition du labyrinthe.
     > Le système pour ajouter des Objets dans le labyrinthe est plus évolutif.
 - Les fantomes apparaissent a des endroits aléatoires dans le labyrinthe @Maximelego
-    > Ils apparaissent en fonction de leurs rareté et la disposition du labyrinthe.
+    > Ils apparaissent aléatoirement dans le labyrinthe selon leur probabilité d'apparition.
 - Le nombre et la disposition des pièges dans les labyrinthes est trop élevé @Maximelego
-    > Il faut réduire le nombre de pièges et ajuster leur disposition pour que le jeu soi t plus facile et agréable.
+    > Le nombre de pièges a été réduit et leur placement a été amélioré pour que le jeu soit plus facile et agréable.
 - Sons du jeu @aildontknow
     > ...
 
