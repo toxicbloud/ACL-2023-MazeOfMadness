@@ -22,10 +22,15 @@ public class NetworkEntityController extends Controller {
         super(entity);
 
         network.when((data, infos) -> {
-            return data.length > 1 + 2
-                && data[0] == NetworkDialogs.MAZE_UPD
+            return data.length >= 1 + 2
+                && (data[0] == NetworkDialogs.MAZE_UPD || data[0] == NetworkDialogs.MAZE_REM)
                 && NetworkDialogs.getIntValue(data, 1) == entity.getId();
         }, (data, infos) -> {
+            if (data[0] == NetworkDialogs.MAZE_REM) {
+                getTarget().destroy();
+                return true;
+            }
+
             JSONObject json = new JSONObject(NetworkDialogs.getStringValue(data, 2 + 1));
             if (Level.verifyJSON(json, "position")) {
                 Vector3 pos = getTarget().getPosition();

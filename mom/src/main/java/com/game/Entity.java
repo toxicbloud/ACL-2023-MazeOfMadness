@@ -37,6 +37,9 @@ public abstract class Entity implements Evolvable {
     /** Updated flag. To indicate an updated state in the entity. */
     private boolean updatedFlag;
 
+    /** Destroy flag. To indicate that the entity should be removed. */
+    private boolean destroyFlag;
+
     /** Entity's controller. */
     private Controller controller;
 
@@ -89,6 +92,10 @@ public abstract class Entity implements Evolvable {
         if (this.controller != null) {
             this.controller.update();
         }
+
+        if (this.destroyFlag) {
+            this.remove();
+        }
     }
 
     /**
@@ -115,6 +122,14 @@ public abstract class Entity implements Evolvable {
      */
     public boolean hasBeenUpdated() {
         return this.updatedFlag;
+    }
+
+    /**
+     * Indicates if the entity has been destroyed.
+     * @return If the entity has been destroyed or not.
+     */
+    public boolean hasBeenDestroyed() {
+        return this.destroyFlag;
     }
 
     /**
@@ -328,4 +343,17 @@ public abstract class Entity implements Evolvable {
         indicateUpdate();
         this.sprite = sprite;
     }
+
+    /**
+     * Destroys the entity at next maze update.
+     */
+    public void destroy() {
+        this.indicateUpdate();
+        this.destroyFlag = true;
+    }
+
+    /**
+     * Remove the entity from the game.
+     */
+    protected abstract void remove();
 }

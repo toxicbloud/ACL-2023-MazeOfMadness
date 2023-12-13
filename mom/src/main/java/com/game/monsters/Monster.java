@@ -2,7 +2,9 @@ package com.game.monsters;
 
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
+import com.game.Game;
 import com.game.Living;
+import com.game.Maze;
 import com.game.Score;
 import org.json.JSONObject;
 
@@ -128,5 +130,13 @@ public abstract class Monster extends Living {
      */
     public void affectScore(Score score) {
         score.addPoints(DEFAULT_POINTS);
+    }
+
+    @Override
+    protected void remove() {
+        Maze maze = Game.getInstance().getMaze();
+        if (maze != null) {
+            maze.removeMonster(this);
+        }
     }
 }

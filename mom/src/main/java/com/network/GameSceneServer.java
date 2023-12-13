@@ -59,14 +59,18 @@ public class GameSceneServer extends GameScene {
         super.update();
 
         for (Monster m : maze.getMonsters()) {
-            if (!m.hasBeenUpdated()) {
-                return;
+            if (m.hasBeenUpdated()) {
+                byte[] entityData = NetworkDialogs.encodeMonsterValue(m, 1 + 2);
+                entityData[0] = NetworkDialogs.MAZE_UPD;
+                NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
+                server.sendData(entityData);
             }
-
-            byte[] entityData = NetworkDialogs.encodeMonsterValue(m, 1 + 2);
-            entityData[0] = NetworkDialogs.MAZE_UPD;
-            NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
-            server.sendData(entityData);
+            if (m.hasBeenDestroyed()) {
+                byte[] entityData = new byte[1 + 2];
+                entityData[0] = NetworkDialogs.MAZE_REM;
+                NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
+                server.sendData(entityData);
+            }
         }
 
         server.update();
