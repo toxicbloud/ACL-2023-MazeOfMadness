@@ -21,6 +21,7 @@ public class NetworkEntityController extends Controller {
      */
     public NetworkEntityController(Entity entity, NetworkManagerTCP network) {
         super(entity);
+        System.out.println("NetworkEntityController: " + entity.getId());
 
         network.when((data, infos) -> {
             return data.length >= 1 + 2
@@ -28,6 +29,7 @@ public class NetworkEntityController extends Controller {
                 && NetworkDialogs.getIntValue(data, 1) == entity.getId();
         }, (data, infos) -> {
             if (data[0] == NetworkDialogs.MAZE_REM) {
+                System.out.println("NetworkEntityController: " + entity.getId() + " removed");
                 getTarget().destroy();
                 return true;
             }

@@ -274,7 +274,6 @@ public abstract class Living extends Entity {
         if (this.weapon == null) {
             return false;
         }
-        this.weapon.setPosition(this.getPosition());
         return this.weapon.attack(living);
     }
 
@@ -288,7 +287,6 @@ public abstract class Living extends Entity {
         if (this.weapon == null) {
             return false;
         }
-        this.weapon.setPosition(this.getPosition());
         return this.weapon.attack(livings);
     }
 
@@ -315,6 +313,7 @@ public abstract class Living extends Entity {
      * @param h The health amount.
      */
     public void regen(int h) {
+        indicateUpdate();
         if (this.getHealth() + h < this.maxHealth) {
             this.health += h;
         } else {

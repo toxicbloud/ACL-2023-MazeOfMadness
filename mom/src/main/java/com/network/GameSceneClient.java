@@ -70,6 +70,7 @@ public class GameSceneClient extends GameScene {
 
     @Override
     public void update() {
+        client.update();
         super.update();
         client.update();
 
@@ -80,6 +81,7 @@ public class GameSceneClient extends GameScene {
             NetworkDialogs.encodeIntValue(client.getId(), data, 1);
             client.sendData(data);
         }
+        client.update();
     }
 
     @Override

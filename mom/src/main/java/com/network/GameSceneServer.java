@@ -101,6 +101,7 @@ public class GameSceneServer extends GameScene {
             Player player = getClientPlayer(id);
 
             if (player != null) {
+                player.getWeapon().setPosition(player.getPosition());
                 List<Living> enemies = player.findEnemies();
                 player.attack(enemies);
             }
@@ -114,6 +115,7 @@ public class GameSceneServer extends GameScene {
             Player player = getClientPlayer(id);
 
             if (player != null) {
+                player.getWeapon().setPosition(player.getPosition());
                 WorldItem item = player.findItemInRange();
                 if (item != null) {
                     item.interact(player);
@@ -132,7 +134,7 @@ public class GameSceneServer extends GameScene {
 
     @Override
     public void update() {
-        super.update();
+        server.update();
 
         List<Entity> updatable = new ArrayList<>();
         updatable.addAll(Arrays.asList(maze.getMonsters()));
@@ -152,6 +154,7 @@ public class GameSceneServer extends GameScene {
                 server.sendData(entityData);
             }
         }
+        super.update();
 
         Player player = Game.getInstance().getPlayer();
         if (player != null && player.hasBeenUpdated()) {
@@ -160,8 +163,6 @@ public class GameSceneServer extends GameScene {
             NetworkDialogs.encodeIntValue(server.getId(), data, 1);
             server.sendData(data);
         }
-
-        server.update();
     }
 
     @Override

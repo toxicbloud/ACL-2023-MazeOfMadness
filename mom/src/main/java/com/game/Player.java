@@ -100,7 +100,12 @@ public class Player extends Living {
      */
     public List<Living> findEnemies() {
         List<Living> enemiesInFOV = new ArrayList<>();
-        Living[] enemies = Game.getInstance().getMaze().getMonsters();
+        Maze maze = Game.getInstance().getMaze();
+        if (maze == null) {
+            return enemiesInFOV;
+        }
+
+        Living[] enemies = maze.getMonsters();
 
         for (Living enemy : enemies) {
             if (enemy != this && enemy.getHealth() > 0) {
@@ -119,6 +124,7 @@ public class Player extends Living {
      */
     @Override
     public void setWeapon(Weapon weapon) {
+        indicateUpdate();
         super.setWeapon(weapon == null ? defaultWeapon : weapon);
         if (weapon != null) {
             weapon.setOwner(this);
