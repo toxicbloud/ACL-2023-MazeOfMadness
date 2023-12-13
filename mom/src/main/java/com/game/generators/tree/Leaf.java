@@ -195,13 +195,7 @@ public class Leaf {
                     MazeFactory.randomInt(1, (int) (height - roomSize.y - 1)));
 
             // Places the room within the Leaf.
-            this.room = new Rectangle(
-                    (int) (x + roomPos.x),
-                    (int) (y + roomPos.y),
-                    (int) roomSize.x,
-                    (int) roomSize.y,
-                    true
-            );
+            this.room = new Rectangle((int) (x + roomPos.x), (int) (y + roomPos.y), (int) roomSize.x, (int) roomSize.y);
         }
     }
 
@@ -282,10 +276,7 @@ public class Leaf {
         this.corridors.add(new Rectangle(
                 (int) pointForX.x,
                 (int) pointForY.y,
-                rectangleWidth,
-                rectangleHeight,
-                false)
-        );
+                rectangleWidth, rectangleHeight));
     }
 
     /**
@@ -296,16 +287,15 @@ public class Leaf {
      * @param mazeWidth  Width of the maze to fill.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeDepth  Depth of the maze to fill.
-     * @param spawnpoint Spawnpoint coordinates to avoid filling it with traps.
      */
-    private void exportToArray(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth, Vector3 spawnpoint) {
+    private void exportToArray(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
         // We carve the corridors if there are some inside the current leaf.
         for (Rectangle r : this.corridors) {
-            r.populateMazeWithRect(maze, mazeWidth, mazeHeight, mazeDepth, spawnpoint);
+            r.populateMazeWithRectangle(maze, mazeWidth, mazeHeight, mazeDepth);
         }
         // We carve the room if there is one inside the current leaf.
         if (this.room != null) {
-            this.room.populateMazeWithRect(maze, mazeWidth, mazeHeight, mazeDepth, spawnpoint);
+            this.room.populateMazeWithRectangle(maze, mazeWidth, mazeHeight, mazeDepth);
         }
     }
 
@@ -337,6 +327,11 @@ public class Leaf {
         // halls between them.
         root.createRooms();
 
+        // Finally, we carve the rooms inside the given maze.
+        for (Leaf l : leafArray) {
+            l.exportToArray(maze, width, height, depth);
+        }
+
         // To ensure that we won't get the same room for both starting and ending
         // points, we get the right and left
         // Leaves from the root. Since it's a tree with only 2 child nodes per leaf, we
@@ -351,19 +346,14 @@ public class Leaf {
         spawnpoint.y = room.getY();
         spawnpoint.z = 1;
 
-        // Now, we carve the rooms inside the given maze.
-        for (Leaf l : leafArray) {
-            l.exportToArray(maze, width, height, depth, spawnpoint);
-        }
-
         // Setting up the endpoint.
         room = root.getLeft().getRoom();
-        // We change the tile at the x, y, z = 0 and z = 1 coordinates, if possible.
+        // We change the tile at the x, y, z and z + 1 coordinates, if possible.
         maze[room.getX() + room.getY() * width] = new Next(
                 new Vector3(room.getX(), room.getY(), depth - 1));
         if (depth >= 2) {
             maze[room.getX() + room.getY() * width + width * height] = new Next(
-                    new Vector3(room.getX(), room.getY(), 1));
+                    new Vector3(room.getX(), room.getY(), depth - 1));
         }
 
         return maze;

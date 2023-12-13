@@ -23,26 +23,27 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
+import com.game.Item;
 import com.game.Level;
 import com.game.LevelLoader;
 import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
-import com.game.WorldItem;
-import com.game.items.potions.HealthPotion;
-import com.game.items.potions.SpeedPotion;
-import com.game.items.potions.StrengthPotion;
-import com.game.items.weapons.*;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
+import com.game.potions.HealthPotion;
+import com.game.potions.SpeedPotion;
+import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
 import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
+import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
+import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
 import com.ui.MenuScene;
@@ -111,25 +112,20 @@ public class EditorScene extends GameScene {
      * EditorScene constructor.
      */
     public EditorScene() {
-        super(null, true);
+        super(true);
         this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        selectableEntities = new Entity[] {
+        selectableEntities = new Entity[]{
             new GroundRock(),
             new WallRock(),
             new End(),
+            new Next(),
             new GroundSpikes(),
             new GroundWater(),
             new GroundLava(),
             new HealthPotion(),
             new StrengthPotion(),
             new SpeedPotion(),
-            new Axe(),
-            new Bomb(),
-            new Bow(),
-            new Sword(),
-            new Teddy(),
-            new Trident(),
             new Zombie(),
             new Ghost(),
             new Player()
@@ -158,12 +154,12 @@ public class EditorScene extends GameScene {
 
     @Override
     public void render() {
-        Maze maze = super.getMaze();
+        Maze maze = Game.getInstance().getMaze();
         if (maze != null) {
             if (this.inGameSceneZone) {
                 maze.addTemporaryEntity(this.placeholderBlock);
             }
-            super.getMaze().addTemporaryEntity(this.player);
+            Game.getInstance().getMaze().addTemporaryEntity(this.player);
         }
         super.render();
         renderEditorTab();
@@ -171,11 +167,11 @@ public class EditorScene extends GameScene {
         if (selectedEntity != null) {
             Vector2 size = new Vector2(SELECTED_ENTITY_SIZE, SELECTED_ENTITY_SIZE);
             selectedEntity.getSprite().render(
-                    new Vector2(
-                            Window.getInstance().getWidth() / 2,
-                            Window.getInstance().getHeight() - EDITOR_TAB_HEIGHT / 2)
-                            .sub(size.div(2)),
-                    size);
+                new Vector2(
+                    Window.getInstance().getWidth() / 2,
+                    Window.getInstance().getHeight() - EDITOR_TAB_HEIGHT / 2)
+                    .sub(size.div(2)),
+                size);
         }
     }
 
@@ -215,29 +211,29 @@ public class EditorScene extends GameScene {
 
         Table loadSaveButtons = new Table();
         loadSaveButtons.add(loadBtn)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
         loadSaveButtons.row();
         loadSaveButtons.add(saveBtn)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
 
         Table upDownButtons = new Table();
         upDownButtons.add(upBtn)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
         upDownButtons.add(downBtn)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
 
         Table backButtons = new Table();
         backButtons.add(backBtn)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
         backButtons.row();
         backButtons.add(upDownButtons)
-                .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
-                .pad(EDITOR_BUTTON_PADDING);
+            .height(EDITOR_TAB_HEIGHT / 2 - EDITOR_BUTTON_PADDING * 2)
+            .pad(EDITOR_BUTTON_PADDING);
 
         Table selectorTable = new Table();
         Table placeholderSelected = new Table();
@@ -268,12 +264,12 @@ public class EditorScene extends GameScene {
         saveBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Level level = new Level(
-                        "level name",
-                        "level description",
-                        "level author",
-                        "level version",
-                        getMaze(),
-                        player);
+                    "level name",
+                    "level description",
+                    "level author",
+                    "level version",
+                    Game.getInstance().getMaze(),
+                    player);
 
                 FileDialog dialog = new FileDialog((java.awt.Frame) null, "Select File to Save");
                 dialog.setFilenameFilter((dir, name) -> name.endsWith(".json"));
@@ -293,7 +289,8 @@ public class EditorScene extends GameScene {
         backBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Window.getInstance().setScene(new MenuScene());
-                Game.getInstance().end();
+                Game.getInstance().setMaze(null);
+                Game.getInstance().setPlayer(null);
             }
         });
         upBtn.addListener(new ClickListener() {
@@ -336,10 +333,10 @@ public class EditorScene extends GameScene {
             Constructor<?> constructor = selectedEntity.getClass().getDeclaredConstructor();
             newEntity = (Entity) constructor.newInstance();
         } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException
-                | NoSuchMethodException e) {
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException e) {
             e.printStackTrace();
         }
 
@@ -369,10 +366,11 @@ public class EditorScene extends GameScene {
 
         hud.setColor(TAB_BACKGROUND_COLOR);
         hud.rect(
-                0,
-                super.getHeight() - EDITOR_TAB_HEIGHT,
-                super.getWidth(),
-                EDITOR_TAB_HEIGHT);
+            0,
+            super.getHeight() - EDITOR_TAB_HEIGHT,
+            super.getWidth(),
+            EDITOR_TAB_HEIGHT
+        );
 
         hud.end();
 
@@ -413,15 +411,18 @@ public class EditorScene extends GameScene {
             case MOUSE_MOVED:
                 if (mousePressed) {
                     Vector2 delta = new Vector2(
-                            (lastMousePosition.x - mousePosition.x) * getHeight(),
-                            (lastMousePosition.y - mousePosition.y) * getWidth());
+                        (lastMousePosition.x - mousePosition.x) * getHeight(),
+                        (lastMousePosition.y - mousePosition.y) * getWidth()
+                    );
 
                     this.getCamera().setPosition(
-                            this.getCamera().getPosition()
-                                    .add(new Vector3(
-                                            (delta.x / 2 + delta.y / 2) / getCamera().getZoom() * PAN_SENSIVITY,
-                                            (delta.y / 2 - delta.x / 2) / getCamera().getZoom() * PAN_SENSIVITY,
-                                            0)));
+                        this.getCamera().getPosition()
+                        .add(new Vector3(
+                            (delta.x / 2 + delta.y / 2) / getCamera().getZoom() * PAN_SENSIVITY,
+                            (delta.y / 2 - delta.x / 2) / getCamera().getZoom() * PAN_SENSIVITY,
+                            0
+                        ))
+                    );
                     lastMousePosition = mousePosition;
                 } else {
                     EventMouseMoved event = (EventMouseMoved) ev;
@@ -445,14 +446,76 @@ public class EditorScene extends GameScene {
         float x = y + 2 * a;
 
         return new Vector3(
-                Math.round(x + getCamera().getPosition().x),
-                Math.round(y + getCamera().getPosition().y),
-                Math.round(z + getCamera().getPosition().z));
+            Math.round(x + getCamera().getPosition().x),
+            Math.round(y + getCamera().getPosition().y),
+            Math.round(z + getCamera().getPosition().z)
+        );
     }
 
     private void generateMazeFromList() {
-        Maze maze = Maze.fromList(mazeEntities);
-        super.setMaze(maze);
+        int minX = 0;
+        int minY = 0;
+        int minZ = 0;
+        int maxX = 0;
+        int maxY = 0;
+        int maxZ = 0;
+
+        List<Tile> tiles = new ArrayList<Tile>();
+        List<Monster> monsters = new ArrayList<Monster>();
+        List<Item> items = new ArrayList<Item>();
+
+        for (Entity e : mazeEntities) {
+            if (e instanceof Tile) {
+                tiles.add((Tile) e);
+            } else if (e instanceof Monster) {
+                monsters.add((Monster) e);
+            } else if (e instanceof Item) {
+                items.add((Item) e);
+            }
+
+            Vector3 pos = e.getPosition();
+            minX = Math.min(minX, (int) pos.x);
+            minY = Math.min(minY, (int) pos.y);
+            minZ = Math.min(minZ, (int) pos.z);
+            maxX = Math.max(maxX, (int) pos.x);
+            maxY = Math.max(maxY, (int) pos.y);
+            maxZ = Math.max(maxZ, (int) pos.z);
+        }
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+        int depth = maxZ - minZ + 1;
+
+        Tile[] tilesArray = new Tile[width * height * depth];
+        int index = 0;
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    boolean found = false;
+                    for (Tile t : tiles) {
+                        if (t.getPosition().equals(new Vector3(x, y, z))) {
+                            found = true;
+                            tilesArray[index] = t;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        tilesArray[index] = new VoidTile(new Vector3(x, y, z));
+                    }
+                    index++;
+                }
+            }
+        }
+        Monster[] monstersArray = new Monster[monsters.size()];
+        monsters.toArray(monstersArray);
+        Item[] itemsArray = new Item[items.size()];
+        items.toArray(itemsArray);
+
+        Maze maze = new Maze(width, height, depth);
+        maze.setTiles(tilesArray);
+        maze.setItems(itemsArray);
+        maze.setMonsters(monstersArray);
+        Game.getInstance().setMaze(maze);
     }
 
     private void loadFile(String file) {
@@ -471,7 +534,7 @@ public class EditorScene extends GameScene {
         for (Monster m : maze.getMonsters()) {
             this.mazeEntities.add(m);
         }
-        for (WorldItem i : maze.getItems()) {
+        for (Item i : maze.getItems()) {
             this.mazeEntities.add(i);
         }
 

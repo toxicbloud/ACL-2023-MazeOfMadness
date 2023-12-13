@@ -47,7 +47,9 @@ public class End extends Ground {
 
     @Override
     public void onPlayerEnter(Player p) {
-        Window.getInstance().setScene(new EndScene(Game.getInstance().end(), true));
+        Game.getInstance().setMaze(null);
+        Game.getInstance().setPlayer(null);
+        Window.getInstance().setScene(new EndScene(true));
     }
 
 }

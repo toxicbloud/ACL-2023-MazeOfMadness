@@ -30,9 +30,4 @@ public class PlaceholderBlock extends Entity {
     public void render() {
         super.render();
     }
-
-    @Override
-    protected void remove() {
-        // SHOULD NOT BE REMOVED
-    }
 }

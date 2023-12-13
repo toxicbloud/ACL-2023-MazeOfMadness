@@ -15,16 +15,6 @@ public enum ItemType {
     WEAPON_PLAYER_FIST,
     /** ZombieFist weapon type. */
     WEAPON_ZOMBIE_FIST,
-    /** Sword item type. */
-    SWORD,
-    /** Axe item type. */
-    AXE,
-    /** Teddy item type. */
-    TEDDY,
-    /** Trident item type. */
-    TRIDENT,
-    /** Bomb item type. */
-    BOMB,
-    /** Bow item type. */
-    BOW,
+    /** Sword weapon type. */
+    WEAPON_SWORD
 }

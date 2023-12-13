@@ -9,6 +9,16 @@ import com.ui.MenuScene;
  */
 public final class Main {
 
+    /**
+     * Button width.
+     */
+    public static final int BUTTON_WIDTH = 100;
+
+    /**
+     * Button height.
+     */
+    public static final int BUTTON_HEIGHT = 100;
+
     private Main() {
     }
 

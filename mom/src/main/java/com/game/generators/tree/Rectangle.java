@@ -1,7 +1,5 @@
 package com.game.generators.tree;
 
-import com.engine.utils.Vector3;
-import com.game.generators.TrapSpawner;
 import com.game.tiles.GroundRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
@@ -26,8 +24,6 @@ public class Rectangle {
     private final int left;
     /** right value. */
     private final int right;
-    /** If the rectangle represents a room. */
-    private final boolean isRoom;
 
     /**
      * Constructor. Used to create a rectangle.
@@ -36,9 +32,8 @@ public class Rectangle {
      * @param y      y coord.
      * @param width  width coord.
      * @param height height coord.
-     * @param isRoom If the rectangle represents a room.
      */
-    public Rectangle(int x, int y, int width, int height, boolean isRoom) {
+    public Rectangle(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -47,7 +42,6 @@ public class Rectangle {
         this.top = y;
         this.left = x;
         this.right = x + width;
-        this.isRoom = isRoom;
     }
 
     /**
@@ -129,9 +123,8 @@ public class Rectangle {
      * @param mazeWidth  Width of the maze to fill.
      * @param mazeHeight Height of the maze to fill.
      * @param mazeDepth  Height of the maze to fill.
-     * @param spawnpoint Spawnpoint coordinates to avoid filling it with traps.
      */
-    public void populateMazeWithRect(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth, Vector3 spawnpoint) {
+    public void populateMazeWithRectangle(Tile[] maze, int mazeWidth, int mazeHeight, int mazeDepth) {
         // Computing starting tile to fill.
         int startingTileIndex = this.x + this.y * mazeWidth;
 
@@ -139,16 +132,9 @@ public class Rectangle {
         for (int i = startingTileIndex;
              i < startingTileIndex + (mazeWidth * this.height);
              i += mazeWidth) {
-
             for (int j = 0; j < this.width; j++) {
                 // We fill the ground layer
                 maze[i + j] = new GroundRock();
-
-                // We populate the room with traps :
-                if (this.isRoom) {
-                    TrapSpawner.spawnTrap(maze, i % mazeWidth, this.y + j, i + j, spawnpoint);
-                }
-
                 // We unfill the above layers.
                 for (int k = 1; k < mazeDepth; k++) {
                     maze[i + j + (mazeHeight * mazeWidth * k)] = new VoidTile();

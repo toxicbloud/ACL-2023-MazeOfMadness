@@ -23,7 +23,8 @@ public final class MazeFactory {
     /**
      * Private default constructor.
      */
-    private MazeFactory() {}
+    private MazeFactory() {
+    }
 
     /**
      * This function generates an initialized Maze Object that has been generated
