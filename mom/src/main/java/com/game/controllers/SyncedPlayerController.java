@@ -55,7 +55,6 @@ public class SyncedPlayerController extends PlayerController {
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
 
         if (isAttacking()) {
-            System.out.println("ATTACKING");
             byte[] data = new byte[]{NetworkDialogs.PLR_ATK, 0, 0};
             NetworkDialogs.encodeIntValue(id, data, 1);
             network.sendData(data);
