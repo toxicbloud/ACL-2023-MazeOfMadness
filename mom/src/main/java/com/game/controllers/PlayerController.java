@@ -57,9 +57,12 @@ public class PlayerController extends Controller implements EventVisitor {
             for (Living enemy : enemies) {
                 ((Player) target).getWeapon().setPosition(target.getPosition());
                 ((Player) target).getWeapon().attack(enemy);
+                if (((Player) target).attack(enemy)) {
+                    SoundManager.getInstance().play(SoundList.ZOMBIE_DAMAGE);
+                }
             }
             lastAttackTime = Time.getInstance().getCurrentTime();
-            SoundManager.getInstance().play(SoundList.ATTACK);
+            SoundManager.getInstance().play(SoundList.PLAYER_ATTACK);
         }
         if (interact) {
             Item item = ((Player) getTarget()).findItemInRange();
@@ -69,6 +72,7 @@ public class PlayerController extends Controller implements EventVisitor {
                 SoundManager.getInstance().play(SoundList.POTION);
             }
         }
+
     }
 
     @Override
