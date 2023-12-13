@@ -1,33 +1,25 @@
 package com.game.generators;
 
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.Maze;
-import com.game.potions.HealthPotion;
-import com.game.potions.SpeedPotion;
-import com.game.potions.StrengthPotion;
+import com.game.WorldItem;
+import com.game.generators.probabilities.ItemProbas;
+import com.game.generators.probabilities.PotionProbas;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PotionSpawner class.
  */
 public final class PotionSpawner {
-    /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
-    private static final float POTION_SPAWN_PROBABILITY = 0.01F;
-    /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
-    private static final float HEALTH_POTION_THRESHOLD = 0.5F;
-    /** POTION_SPAWN_PROBABILITY : Rate of spawn for the potions. */
-    private static final float SPEED_POTION_THRESHOLD = 0.75F;
-    /** Maximum number of health potions that can be found in the maze. */
-    private static final int MAX_HEALTH_POTIONS = 3;
-    /** Maximum number of speed potions that can be found in the maze. */
-    private static final int MAX_SPEED_POTIONS = 1;
-    /** Maximum number of strength potions that can be found in the maze. */
-    private static final int MAX_STRENGTH_POTIONS = 1;
+
+    /** MIN_DST_PLAYER_WEAPON : Safe distance from player's spawn to not spawn potions in. */
+    private static final int MIN_DST_PLAYER_POTION = 8;
 
     /**
      * Private constructor for the PotionSpawner class.
@@ -39,33 +31,50 @@ public final class PotionSpawner {
      * @param maze Maze to populate.
      */
     public static void spawnPotion(Maze maze) {
-        ArrayList<Item> potions = new ArrayList<>();
-        int healthPotionCounter = 0;
-        int speedPotionCounter = 0;
-        int strengthPotionCounter = 0;
-        float randomFloat;
+        ArrayList<WorldItem> potions = new ArrayList<>();
         SecureRandom sr = new SecureRandom();
+        float randomValue;
 
-        for (int i = 0; i < maze.getWidth(); i++) {
-            for (int j = 0; j < maze.getHeight(); j++) {
-                if (PotionSpawner.canSpawnPotion(maze, i, j, sr)) {
-                    randomFloat = sr.nextFloat();
-                    if (randomFloat < PotionSpawner.HEALTH_POTION_THRESHOLD
-                            && healthPotionCounter < PotionSpawner.MAX_HEALTH_POTIONS) {
-                        healthPotionCounter += 1;
-                        potions.add(new HealthPotion(new Vector3(i, j, 1)));
-                    } else if (randomFloat < PotionSpawner.SPEED_POTION_THRESHOLD
-                            && speedPotionCounter < PotionSpawner.MAX_SPEED_POTIONS) {
-                        speedPotionCounter += 1;
-                        potions.add(new SpeedPotion(new Vector3(i, j, 1)));
-                    } else if (strengthPotionCounter < PotionSpawner.MAX_STRENGTH_POTIONS) {
-                        strengthPotionCounter += 1;
-                        potions.add(new StrengthPotion(new Vector3(i, j, 1)));
-                    }
+        // We prepare the occurrence Map.
+        Map<ItemProbas, Integer> spawnPotionOccurrences = new HashMap<>();
+        for (PotionProbas pp : PotionProbas.values()) {
+            spawnPotionOccurrences.put(pp, 0);
+        }
+
+        for (int x = 0; x < maze.getWidth(); x++) {
+            for (int y = 0; y < maze.getHeight(); y++) {
+                if (!canSpawnPotion(maze, x, y, sr)) {
+                    continue;
                 }
+
+                randomValue = sr.nextFloat() * (PotionProbas.DUMMY.computeTotal());
+                PotionSpawner.spawnPotion(x, y, randomValue, potions, spawnPotionOccurrences);
             }
         }
-        maze.setItems(potions.toArray(new Item[potions.size()]));
+        maze.addItems(potions.toArray(new WorldItem[potions.size()]));
+    }
+
+    /**
+     * Method that spawns a potion inside the maze when called.
+     *
+     * @param x                      x coordinate of the tile to check.
+     * @param y                      y coordinate of the tile to check.
+     * @param randomFloat            Random number generator.
+     * @param items                  Items array.
+     * @param spawnPotionOccurrences Map to check if a weapon has reach it's maximum occurrence amount.
+     */
+    private static void spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items,
+                                    Map<ItemProbas, Integer> spawnPotionOccurrences) {
+        float counter = 0.F;
+        for (ItemProbas pp : PotionProbas.DUMMY.getItemsProbasArray()) {
+            counter += pp.getValue();
+            if (counter >= randomFloat && spawnPotionOccurrences.get(pp) < pp.getMaxSpawningOccurrences()) {
+                items.add(pp.getNewItem(x, y));
+                // We add 1 to the number of occurrences of the item.
+                spawnPotionOccurrences.put(pp, spawnPotionOccurrences.get(pp) + 1);
+                break;
+            }
+        }
     }
 
     /**
@@ -92,6 +101,7 @@ public final class PotionSpawner {
                 && (int) spawn.y != y
                 && target.getType() != TileType.GROUND_END
                 && target.getType() == TileType.GROUND_ROCK
-                && sr.nextFloat() <= PotionSpawner.POTION_SPAWN_PROBABILITY;
+                && maze.getSpawnPoint().dst(x, y, 1) > MIN_DST_PLAYER_POTION
+                && sr.nextFloat() <= PotionProbas.DUMMY.getBaseSpawnProba();
     }
 }

@@ -5,6 +5,7 @@ import com.engine.Window;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
+import com.game.generators.WeaponSpawner;
 import com.renderer.GameScene;
 
 /**
@@ -126,6 +127,7 @@ public final class Game {
         Window.getInstance().setScene(new GameScene(this.maze));
         MonsterSpawner.spawnMonsters(this.maze);
         PotionSpawner.spawnPotion(this.maze);
+        WeaponSpawner.spawnWeapons(this.maze);
     }
 
     /**
@@ -138,6 +140,17 @@ public final class Game {
         Window.getInstance().setScene(new GameScene(this.maze));
         MonsterSpawner.spawnMonsters(this.maze);
         PotionSpawner.spawnPotion(this.maze);
+        WeaponSpawner.spawnWeapons(this.maze);
+    }
+
+    /**
+     * Load a game from a maze.
+     * @param m The maze to load from.
+     */
+    public void loadFrom(Maze m) {
+        this.maze = m;
+        this.player = new Player(m.getSpawnPoint());
+        score = new Score();
     }
 
     /**

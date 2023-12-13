@@ -28,4 +28,13 @@ Run_*/
 Death_*/
 Resources/Tiles/*
 Resources/Potions/*
+Resources/Bomb/*
+Resources/SwordItem/*
+Resources/BombItem/*
+Resources/Weapons/*
+Resources/Trident/*
+Resources/Bow/*
+Resources/Arrow/*
+Resources/Bear/*
+Resources/Axe/*
 *.blend
