@@ -16,6 +16,10 @@ public final class SoundManager {
     private static final float ZOMBIE_DAMAGE_VOLUME = 0.25f;
     /** Set the zombie's ambient sound volume. */
     private static final float ZOMBIE_AMBIENT_VOLUME = 0.07f;
+    /** Set the ghost's attack sound volume. */
+    private static final float GHOST_ATTACK_VOLUME = 0.25f;
+    /** Set the ghost's damage sound volume. */
+    private static final float GHOST_DAMAGE_VOLUME = 0.2f;
     /** Set the potion sound volume. */
     private static final float POTION_VOLUME = 0.25f;
     /** Set the win sound volume. */
@@ -34,6 +38,10 @@ public final class SoundManager {
     private Sound zombieDamageSound;
     /** Zombie ambient sound. */
     private Sound zombieAmbientSound;
+    /** Ghost attack sound. */
+    private Sound ghostAttackSound;
+    /** Ghost damage sound. */
+    private Sound ghostDamageSound;
     /** Potion sound. */
     private Sound potionSound;
     /** Sound when walking on the floor. */
@@ -61,6 +69,10 @@ public final class SoundManager {
         ZOMBIE_DAMAGE,
         /** Zombie ambient sound. */
         ZOMBIE_AMBIENT,
+        /** Ghost attack sound. */
+        GHOST_ATTACK,
+        /** Ghost damage sound. */
+        GHOST_DAMAGE,
         /** Potion sound. */
         POTION,
         /** Sound when walking on the floor. */
@@ -99,6 +111,8 @@ public final class SoundManager {
         zombieAttackSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/zombieAttack.mp3"));
         zombieDamageSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDamage.mp3"));
         zombieAmbientSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/zombieAmbient.mp3"));
+        ghostAttackSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/ghostAttack.mp3"));
+        ghostDamageSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/ghostDamage.mp3"));
         potionSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/potion.mp3"));
         footStepGround = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/footstepGround.mp3"));
         footStepLava = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/potion.mp3"));
@@ -134,18 +148,26 @@ public final class SoundManager {
                 long zombieAmbient = zombieAmbientSound.loop();
                 zombieAmbientSound.setVolume(zombieAmbient, ZOMBIE_AMBIENT_VOLUME);
                 break;
+            case GHOST_ATTACK:
+                long ghostAttack = ghostAttackSound.play();
+                ghostAttackSound.setVolume(ghostAttack, GHOST_ATTACK_VOLUME);
+                break;
+            case GHOST_DAMAGE:
+                long ghostDamage = ghostDamageSound.play();
+                ghostDamageSound.setVolume(ghostDamage, GHOST_DAMAGE_VOLUME);
+                break;
             case POTION:
                 long potion = potionSound.play();
                 potionSound.setVolume(potion, POTION_VOLUME);
                 break;
             case FOOTSTEP_GROUND:
-                footStepGround.loop();
+                footStepGround.play();
                 break;
             case FOOTSTEP_LAVA:
-                footStepLava.loop();
+                footStepLava.play();
                 break;
             case FOOTSTEP_WATER:
-                footStepWater.loop();
+                footStepWater.play();
                 break;
             case BUTTON_CLICK:
                 buttonClick.play();
