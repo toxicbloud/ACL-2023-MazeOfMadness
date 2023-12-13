@@ -5,6 +5,7 @@ import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
 import com.game.Maze;
+import org.json.JSONObject;
 
 /**
  * Particle class.
@@ -26,5 +27,14 @@ public abstract class Particle extends Entity {
         if (maze != null) {
             maze.removeParticle(this);
         }
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", getPosition().toJSON());
+
+        return json;
     }
 }

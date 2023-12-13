@@ -6,11 +6,10 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 import com.game.tiles.Tile;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONObject;
 
 /***
  * Entity class.

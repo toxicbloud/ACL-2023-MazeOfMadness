@@ -1,14 +1,11 @@
 package com.network;
 
-import com.badlogic.gdx.Net;
 import com.engine.Window;
 import com.game.Entity;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
-import com.game.Score;
 import com.game.controllers.NetworkPlayerController;
-import com.game.monsters.Monster;
 import com.renderer.GameScene;
 import com.ui.EndScene;
 

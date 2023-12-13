@@ -8,6 +8,7 @@ import com.game.Entity;
 import com.game.Living;
 import com.game.Player;
 import com.game.controllers.PlayerController;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -226,5 +227,18 @@ public abstract class Weapon extends Entity {
     @Override
     protected void remove() {
         // SHOULD NOT BE ABLE TO REMOVE WEAPON
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", getPosition().toJSON());
+        json.put("damage", this.damage);
+        json.put("cooldown", this.cooldown);
+        json.put("range", this.range);
+        json.put("hasDoubleDamage", this.hasDoubleDamage);
+
+        return json;
     }
 }
