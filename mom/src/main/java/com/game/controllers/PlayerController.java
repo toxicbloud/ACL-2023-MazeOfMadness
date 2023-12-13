@@ -199,4 +199,13 @@ public class PlayerController extends Controller implements EventVisitor {
     public boolean isAttacking() {
         return attack;
     }
+
+    /**
+     * Get if the player is moving or not.
+     *
+     * @return True if the player is moving, false otherwise.
+     */
+    public boolean isMoving() {
+        return direction.x != 0 || direction.y != 0;
+    }
 }
