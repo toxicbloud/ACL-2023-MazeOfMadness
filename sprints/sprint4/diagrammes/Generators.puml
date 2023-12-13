@@ -2,6 +2,63 @@
 title Generators class diagram
 
 package Generators {
+
+    package Probabilities {
+        interface ItemProbas {
+            getItemsProbasArray(): ItemProbas[]
+            computeTotal(): float
+            getValue(): float
+            getNewItem(int x, int y): WorldItem
+            getBaseSpawnProba(): float
+            getMaxSpawningOccurrences(): int
+        }
+
+        enum PotionProbas {
+            DUMMY
+            STRENGTH
+            SPEED
+            HEALTH
+            ==
+            - {static} final float BASE_SPAWN_PROBA
+            - final float value
+            - final int maxOccurs
+            ==
+            + PotionProbas(float v, int maxOccurrs)
+            + getItemsProbasArray(): ItemProbas[]
+            + computeTotal(): float
+            + getValue(): float
+            + getNewItem(int x, int y): WorldItem
+            + getBaseSpawnProba(): float
+            + getMaxSpawningOccurrences(): int
+        }
+
+        enum WeaponProbas {
+            DUMMY
+            SWORD
+            BOW
+            AXE
+            TRIDENT
+            BOMB
+            TEDDY
+            ==
+            - {static} final float BASE_SPAWN_PROBA
+            - final float value
+            - final int maxOccurs
+            ==
+            + WeaponProbas(float v, int maxOccurrs)
+            + getItemsProbasArray(): ItemProbas[]
+            + computeTotal(): float
+            + getValue(): float
+            + getNewItem(int x, int y): WorldItem
+            + getBaseSpawnProba(): float
+            + getMaxSpawningOccurrences(): int
+        }
+
+        ItemProbas <|.. PotionProbas
+        ItemProbas <|.. WeaponProbas
+    }
+
+
     class MazeFactory {
         + randomInt(int min, int max): int
         + static createMaze(): Maze
@@ -15,15 +72,18 @@ package Generators {
     }
 
     class PotionFactory {
-        + createHealthPotion()
-        + createStrenghPotion()
-        + createSpeedPotion()
+        + createHealthPotion(int x, int y): HealthPotion
+        + createStrenghPotion(int x, int y): StrengthPotion
+        + createSpeedPotion(int x, int y): SpeedPotion
     }
 
     class WeaponFactory {
-        + createSword()
-        + createBow()
-        + createAxe()
+        + createSword(int x, int y): Sword
+        + createBow(int x, int y): Bow
+        + createAxe(int x, int y): Axe
+        + createTrident(int x, int y): Trident
+        + createBomb(int x, int y): Bomb
+        + createTeddy(int x, int y): Teddy
     }
 
     class MonsterSpawner {
@@ -36,11 +96,13 @@ package Generators {
 
     class TrapSpawner {
         + spawnTraps(maze: Maze)
+        - {static} spawnWeapon(int x, int y, float randomFloat, ArrayList<WorldItem> items, Map<ItemProbas, Integer> spawnWeaponOccurrences)
         - canSpawnTrap(maze: Maze, int x, int y) : boolean
     }
 
     class PotionSpawner {
         + spawnPotions(maze: Maze)
+        - {static} spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items, Map<ItemProbas, Integer> spawnPotionOccurrences)
         - canSpawnPotion(maze: Maze, int x, int y, SecureRandom sr) : boolean
     }
 
