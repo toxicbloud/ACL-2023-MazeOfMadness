@@ -23,12 +23,12 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
-import com.game.Item;
 import com.game.Level;
 import com.game.LevelLoader;
 import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
+import com.game.WorldItem;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
@@ -456,15 +456,15 @@ public class EditorScene extends GameScene {
 
         List<Tile> tiles = new ArrayList<Tile>();
         List<Monster> monsters = new ArrayList<Monster>();
-        List<Item> items = new ArrayList<Item>();
+        List<WorldItem> items = new ArrayList<WorldItem>();
 
         for (Entity e : mazeEntities) {
             if (e instanceof Tile) {
                 tiles.add((Tile) e);
             } else if (e instanceof Monster) {
                 monsters.add((Monster) e);
-            } else if (e instanceof Item) {
-                items.add((Item) e);
+            } else if (e instanceof WorldItem) {
+                items.add((WorldItem) e);
             }
 
             Vector3 pos = e.getPosition();
@@ -502,7 +502,7 @@ public class EditorScene extends GameScene {
         }
         Monster[] monstersArray = new Monster[monsters.size()];
         monsters.toArray(monstersArray);
-        Item[] itemsArray = new Item[items.size()];
+        WorldItem[] itemsArray = new WorldItem[items.size()];
         items.toArray(itemsArray);
 
         Maze maze = new Maze(width, height, depth);
@@ -528,7 +528,7 @@ public class EditorScene extends GameScene {
         for (Monster m : maze.getMonsters()) {
             this.mazeEntities.add(m);
         }
-        for (Item i : maze.getItems()) {
+        for (WorldItem i : maze.getItems()) {
             this.mazeEntities.add(i);
         }
 

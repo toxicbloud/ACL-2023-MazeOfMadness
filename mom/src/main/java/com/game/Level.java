@@ -122,7 +122,7 @@ public class Level {
 
         Tile[] tiles;
         Monster[] monsters;
-        Item[] items;
+        WorldItem[] items;
 
         try {
             tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
@@ -212,7 +212,7 @@ public class Level {
         }
     }
 
-    private Item parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
+    private WorldItem parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
         verifyJSON(itemJsonObject, "type");
         verifyJSON(itemJsonObject, "position");
 
@@ -251,9 +251,9 @@ public class Level {
         return monsters;
     }
 
-    private Item[] parseItems(JSONArray itemsJsonArray)
+    private WorldItem[] parseItems(JSONArray itemsJsonArray)
         throws InvalidItemException, InvalidSchemaException {
-        Item[] items = new Item[itemsJsonArray.length()];
+        WorldItem[] items = new WorldItem[itemsJsonArray.length()];
         for (int i = 0; i < itemsJsonArray.length(); i++) {
             items[i] = parseItem(itemsJsonArray.getJSONObject(i));
         }

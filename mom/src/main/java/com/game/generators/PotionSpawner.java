@@ -1,8 +1,8 @@
 package com.game.generators;
 
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.Maze;
+import com.game.WorldItem;
 import com.game.potions.HealthPotion;
 import com.game.potions.SpeedPotion;
 import com.game.potions.StrengthPotion;
@@ -32,14 +32,16 @@ public final class PotionSpawner {
     /**
      * Private constructor for the PotionSpawner class.
      */
-    private PotionSpawner() {}
+    private PotionSpawner() {
+    }
 
     /**
      * This method spawns potions in the maze.
+     *
      * @param maze Maze to populate.
      */
     public static void spawnPotion(Maze maze) {
-        ArrayList<Item> potions = new ArrayList<>();
+        ArrayList<WorldItem> potions = new ArrayList<>();
         int healthPotionCounter = 0;
         int speedPotionCounter = 0;
         int strengthPotionCounter = 0;
@@ -65,7 +67,7 @@ public final class PotionSpawner {
                 }
             }
         }
-        maze.setItems(potions.toArray(new Item[potions.size()]));
+        maze.setItems(potions.toArray(new WorldItem[potions.size()]));
     }
 
     /**

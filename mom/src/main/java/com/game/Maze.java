@@ -31,7 +31,7 @@ public class Maze implements Evolvable {
     /** The monsters of the maze. */
     private Monster[] monsters;
     /** The items of the maze. */
-    private Item[] items;
+    private WorldItem[] items;
     /** The particles of the maze. */
     private Particle[] particles;
     /** Spawnpoint for the player. */
@@ -86,7 +86,7 @@ public class Maze implements Evolvable {
         this.depth = d;
         this.tiles = t;
         this.monsters = new Monster[0];
-        this.items = new Item[0];
+        this.items = new WorldItem[0];
         this.setTilesDefaultPositions();
         this.particles = new Particle[0];
     }
@@ -117,7 +117,7 @@ public class Maze implements Evolvable {
      * @param m The monsters of the maze.
      * @param i The items of the maze.
      */
-    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i) {
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, WorldItem[] i) {
         if (t.length != w * h * d) {
             throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
         }
@@ -143,7 +143,7 @@ public class Maze implements Evolvable {
      * @param i                 The items of the maze.
      * @param setTilesPositions Whether to set the tiles positions or not.
      */
-    public Maze(int w, int h, int d, Tile[] t, Monster[] m, Item[] i, boolean setTilesPositions) {
+    public Maze(int w, int h, int d, Tile[] t, Monster[] m, WorldItem[] i, boolean setTilesPositions) {
         if (t.length != w * h * d) {
             throw new IllegalArgumentException("The number of tiles must be equal to width * height * depth.");
         }
@@ -198,7 +198,7 @@ public class Maze implements Evolvable {
                 t.update();
             }
         }
-        for (Item i : this.items) {
+        for (WorldItem i : this.items) {
             i.update();
         }
         for (Particle p : this.particles) {
@@ -372,7 +372,7 @@ public class Maze implements Evolvable {
      *
      * @return The items of the maze.
      */
-    public Item[] getItems() {
+    public WorldItem[] getItems() {
         return items;
     }
 
@@ -381,7 +381,7 @@ public class Maze implements Evolvable {
      *
      * @param items The items of the maze.
      */
-    public void setItems(Item[] items) {
+    public void setItems(WorldItem[] items) {
         this.items = items;
     }
 
@@ -437,10 +437,10 @@ public class Maze implements Evolvable {
      *
      * @param i item to remove from the maze.
      */
-    public void removeItem(Item i) {
-        List<Item> itemList = new ArrayList<>(Arrays.asList(this.items));
+    public void removeItem(WorldItem i) {
+        List<WorldItem> itemList = new ArrayList<>(Arrays.asList(this.items));
         itemList.remove(i);
-        this.items = itemList.toArray(new Item[0]);
+        this.items = itemList.toArray(new WorldItem[0]);
     }
 
     /**

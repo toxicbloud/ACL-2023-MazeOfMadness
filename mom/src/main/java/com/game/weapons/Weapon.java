@@ -4,10 +4,10 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.ItemType;
 import com.game.Living;
 import com.game.Player;
+import com.game.WorldItem;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * Weapon class.
  * This is the base class for all weapons.
  */
-public abstract class Weapon extends Item {
+public abstract class Weapon extends WorldItem {
     /** Weapon damage amount. */
     private int damage;
     /** Weapon cooldown. */

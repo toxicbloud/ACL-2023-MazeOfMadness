@@ -55,7 +55,7 @@ public class PlayerController extends Controller implements EventVisitor {
         }
 
         if (interact) {
-            Item item = ((Player) getTarget()).findItemInRange();
+            WorldItem item = ((Player) getTarget()).findItemInRange();
             if (item != null) {
                 item.interact((Player) getTarget());
                 Game.getInstance().getMaze().removeItem(item);

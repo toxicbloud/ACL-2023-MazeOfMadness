@@ -3,14 +3,14 @@ package com.game.potions;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.ItemType;
 import com.game.Player;
+import com.game.WorldItem;
 
 /**
  * Potion abstract class.
  */
-public abstract class Potion extends Item {
+public abstract class Potion extends WorldItem {
 
     //FIXME: Bad
     /** Texture for the potions. */
