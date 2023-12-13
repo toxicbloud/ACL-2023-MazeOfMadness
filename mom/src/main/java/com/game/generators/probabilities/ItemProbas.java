@@ -41,4 +41,11 @@ public interface ItemProbas {
      * @return float.
      */
     float getBaseSpawnProba();
+
+    /**
+     * Returns the maximum of spawning occurrences of the item inside the maze.
+     *
+     * @return float.
+     */
+    int getMaxSpawningOccurrences();
 }

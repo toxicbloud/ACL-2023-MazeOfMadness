@@ -10,6 +10,8 @@ import com.game.tiles.TileType;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /** WeaponSpawner class. */
 public final class WeaponSpawner {
@@ -32,13 +34,19 @@ public final class WeaponSpawner {
         ArrayList<WorldItem> items = new ArrayList<>();
         float randomValue;
 
+        // We prepare the occurrence Map.
+        Map<ItemProbas, Integer> spawnWeaponOccurrences = new HashMap<>();
+        for (WeaponProbas wp : WeaponProbas.values()) {
+            spawnWeaponOccurrences.put(wp, 0);
+        }
+
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
                 if (!canSpawnWeapon(maze, x, y, sr)) {
                     continue;
                 }
                 randomValue = sr.nextFloat() * (WeaponProbas.DUMMY.computeTotal());
-                WeaponSpawner.spawnWeapon(x, y, randomValue, items);
+                WeaponSpawner.spawnWeapon(x, y, randomValue, items, spawnWeaponOccurrences);
             }
         }
 
@@ -48,17 +56,21 @@ public final class WeaponSpawner {
     /**
      * Method that spawns a weapon inside the maze when called.
      *
-     * @param x           x coordinate of the tile to check.
-     * @param y           y coordinate of the tile to check.
-     * @param randomFloat Random number generator.
-     * @param items       Items array.
+     * @param x                      x coordinate of the tile to check.
+     * @param y                      y coordinate of the tile to check.
+     * @param randomFloat            Random number generator.
+     * @param items                  Items array.
+     * @param spawnWeaponOccurrences Map to check if a weapon has reach it's maximum occurrence amount.
      */
-    private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
+    private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<WorldItem> items,
+                                          Map<ItemProbas, Integer> spawnWeaponOccurrences) {
         float counter = 0.F;
         for (ItemProbas wp : WeaponProbas.DUMMY.getItemsProbasArray()) {
             counter += wp.getValue();
-            if (counter >= randomFloat) {
+            if (counter >= randomFloat && spawnWeaponOccurrences.get(wp) < wp.getMaxSpawningOccurrences()) {
                 items.add(wp.getNewItem(x, y));
+                // We add 1 to the number of occurrences of the item.
+                spawnWeaponOccurrences.put(wp, spawnWeaponOccurrences.get(wp) + 1);
                 break;
             }
         }

@@ -7,49 +7,49 @@ import com.game.generators.WeaponFactory;
 public enum WeaponProbas implements ItemProbas {
 
     /** Dummy object. Used to call general methods on it. */
-    DUMMY(0.F) {
+    DUMMY(0.F, 0) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return null;
         }
     },
     /** The probability for spawning a sword.*/
-    SWORD(0.05F) {
+    SWORD(0.05F, 1) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createSword(x, y);
         }
     },
     /** The probability for spawning an axe.*/
-    AXE(0.03F) {
+    AXE(0.03F, 1) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createAxe(x, y);
         }
     },
     /** The probability for spawning a bow.*/
-    BOW(0.03F) {
+    BOW(0.03F, 1) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createBow(x, y);
         }
     },
     /** The probability for spawning a trident.*/
-    TRIDENT(0.01F) {
+    TRIDENT(0.01F, 1) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createTrident(x, y);
         }
     },
     /** The probability for spawning a bomb.*/
-    BOMB(0.10F) {
+    BOMB(0.10F, 5) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createBomb(x, y);
         }
     },
     /** The probability for spawning a teddy.*/
-    TEDDY(0.001F) {
+    TEDDY(0.001F, 1) {
         @Override
         public WorldItem getNewItem(int x, int y) {
             return WeaponFactory.createTeddy(x, y);
@@ -62,12 +62,17 @@ public enum WeaponProbas implements ItemProbas {
     /** Value of the element. */
     private final float value;
 
+    /** Maximum number of times that the item can be found in a maze. */
+    private final int maxOccurs;
+
     /**
      * Enum constructor.
      * @param v value for the probability.
+     * @param maxOccurrs Maximum number of times that the item can be found in a maze.
      */
-    WeaponProbas(float v) {
+    WeaponProbas(float v, int maxOccurrs) {
         this.value = v;
+        this.maxOccurs = maxOccurrs;
     }
 
     @Override
@@ -92,5 +97,10 @@ public enum WeaponProbas implements ItemProbas {
     @Override
     public float getBaseSpawnProba() {
         return BASE_SPAWN_PROBA;
+    }
+
+    @Override
+    public int getMaxSpawningOccurrences() {
+        return this.maxOccurs;
     }
 }

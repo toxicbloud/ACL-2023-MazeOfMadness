@@ -10,6 +10,8 @@ import com.game.tiles.TileType;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PotionSpawner class.
@@ -33,6 +35,12 @@ public final class PotionSpawner {
         SecureRandom sr = new SecureRandom();
         float randomValue;
 
+        // We prepare the occurrence Map.
+        Map<ItemProbas, Integer> spawnPotionOccurrences = new HashMap<>();
+        for (PotionProbas pp : PotionProbas.values()) {
+            spawnPotionOccurrences.put(pp, 0);
+        }
+
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
                 if (!canSpawnPotion(maze, x, y, sr)) {
@@ -40,8 +48,7 @@ public final class PotionSpawner {
                 }
 
                 randomValue = sr.nextFloat() * (PotionProbas.DUMMY.computeTotal());
-                PotionSpawner.spawnPotion(x, y, randomValue, potions);
-
+                PotionSpawner.spawnPotion(x, y, randomValue, potions, spawnPotionOccurrences);
             }
         }
         maze.addItems(potions.toArray(new WorldItem[potions.size()]));
@@ -50,17 +57,21 @@ public final class PotionSpawner {
     /**
      * Method that spawns a potion inside the maze when called.
      *
-     * @param x           x coordinate of the tile to check.
-     * @param y           y coordinate of the tile to check.
-     * @param randomFloat Random number generator.
-     * @param items       Items array.
+     * @param x                      x coordinate of the tile to check.
+     * @param y                      y coordinate of the tile to check.
+     * @param randomFloat            Random number generator.
+     * @param items                  Items array.
+     * @param spawnPotionOccurrences Map to check if a weapon has reach it's maximum occurrence amount.
      */
-    private static void spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
+    private static void spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items,
+                                    Map<ItemProbas, Integer> spawnPotionOccurrences) {
         float counter = 0.F;
-        for (ItemProbas wp : PotionProbas.DUMMY.getItemsProbasArray()) {
-            counter += wp.getValue();
-            if (counter >= randomFloat) {
-                items.add(wp.getNewItem(x, y));
+        for (ItemProbas pp : PotionProbas.DUMMY.getItemsProbasArray()) {
+            counter += pp.getValue();
+            if (counter >= randomFloat && spawnPotionOccurrences.get(pp) < pp.getMaxSpawningOccurrences()) {
+                items.add(pp.getNewItem(x, y));
+                // We add 1 to the number of occurrences of the item.
+                spawnPotionOccurrences.put(pp, spawnPotionOccurrences.get(pp) + 1);
                 break;
             }
         }
