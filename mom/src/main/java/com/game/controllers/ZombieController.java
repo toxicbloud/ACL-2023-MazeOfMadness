@@ -1,7 +1,5 @@
 package com.game.controllers;
 
-import com.engine.SoundManager;
-import com.engine.SoundManager.SoundList;
 import com.engine.utils.Movement;
 import com.engine.utils.PathFinder;
 import com.engine.utils.Time;
@@ -52,6 +50,7 @@ public class ZombieController extends Controller {
 
     /**
      * ZombieController constructor.
+     *
      * @param zombie The zombie to control.
      */
     public ZombieController(Zombie zombie) {
@@ -67,19 +66,17 @@ public class ZombieController extends Controller {
     public void update() {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
+        Zombie zombie = (Zombie) target;
 
+        if (zombie == null || player == null) {
+            return;
+        }
 
-        if (((Zombie) target).findPlayer(player)
-            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
-            ((Zombie) target).getWeapon().setPosition(target.getPosition());
-            ((Zombie) target).getWeapon().attack(player);
+        if (zombie.findPlayer(player)
+            && Time.getInstance().getCurrentTime() - lastAttackTime > zombie.getWeapon().getCooldown()) {
+            zombie.getWeapon().setPosition(target.getPosition());
+            zombie.getWeapon().attack(player);
             lastAttackTime = Time.getInstance().getCurrentTime();
-            if (player.distance(target) < ((Zombie) target).getWeapon().getRange()) {
-                SoundManager.getInstance().play(SoundList.ZOMBIE_ATTACK);
-            }
-            if (((Zombie) target).attack(player)) {
-                SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
-            }
         }
 
         if (this.mode == MODE_RANDOM) {
@@ -91,9 +88,8 @@ public class ZombieController extends Controller {
             Vector2 normalized = direction.normalize();
             Vector2 oldPosition = new Vector2(target.getPosition().x, target.getPosition().y);
             target.moveBy(
-                new Vector2(normalized.x, normalized.y)
-                .mul(Time.getInstance().getDeltaTime() * Zombie.ZOMBIE_SPEED)
-            );
+                    new Vector2(normalized.x, normalized.y)
+                            .mul(Time.getInstance().getDeltaTime() * Zombie.ZOMBIE_SPEED));
             Vector2 newPosition = new Vector2(target.getPosition().x, target.getPosition().y);
             timeCounter += Time.getInstance().getDeltaTime();
 
@@ -145,14 +141,12 @@ public class ZombieController extends Controller {
                 }
 
                 Vector3 normalized = new Vector3(
-                    movementPos.x,
-                    movementPos.y,
-                    target.getPosition().z
-                ).sub(target.getPosition()).nor();
+                        movementPos.x,
+                        movementPos.y,
+                        target.getPosition().z).sub(target.getPosition()).nor();
                 target.moveBy(
-                    new Vector2(normalized.x, normalized.y)
-                    .mul(Time.getInstance().getDeltaTime() * Zombie.ZOMBIE_SPEED)
-                );
+                        new Vector2(normalized.x, normalized.y)
+                                .mul(Time.getInstance().getDeltaTime() * Zombie.ZOMBIE_SPEED));
             }
         }
     }

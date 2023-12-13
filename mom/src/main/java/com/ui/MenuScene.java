@@ -148,12 +148,13 @@ public class MenuScene extends Scene {
         });
 
         // bouton editor
-        TextButton editor = new TextButton(
-                "Editor", skin);
-        // table pour mettre le logo dans le bas gauche
+        TextButton editor = new TextButton("Editor", skin);
+        // table pour mettre le bouton dans le bas gauche
+        Table bottomTable = new Table();
         Table editorTable = new Table();
-        editorTable.add(editor).left().bottom().padLeft(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
-        root.add(editorTable).expandY().bottom().left();
+        bottomTable.add(editorTable).left().grow();
+        editorTable.add(editor).left().padLeft(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
+        editorTable.add(new Table()).grow();
         // Editor button listener
         editor.addListener(new ClickListener() {
             @Override
@@ -162,6 +163,22 @@ public class MenuScene extends Scene {
                 music.stop();
                 music.dispose();
                 Window.getInstance().setScene(new EditorScene());
+            }
+        });
+
+        // bouton multi
+        TextButton multi = new TextButton("Multiplayer", skin);
+        // table pour mettre le bouton dans le bas droit
+        bottomTable.add(multi).right().padRight(PADDING_EDITOR_BUTTON).padBottom(PADDING_EDITOR_BUTTON);
+        root.add(bottomTable).grow().bottom();
+        // Multi button listener
+        multi.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClick.play();
+                music.stop();
+                music.dispose();
+                Window.getInstance().setScene(new MultiScene());
             }
         });
 

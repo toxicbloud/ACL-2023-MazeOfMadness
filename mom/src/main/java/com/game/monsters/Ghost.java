@@ -4,8 +4,8 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
-import com.game.controllers.GhostController;
 import com.game.tiles.Tile;
+import com.game.weapons.GhostFist;
 
 /**
  * Ghost class.
@@ -33,7 +33,7 @@ public class Ghost extends Monster {
             MonsterType.MONSTER_GHOST,
             GHOST_HEALTH,
             GHOST_MAX_HEALTH);
-        this.registerController(new GhostController(this));
+        this.setWeapon(new GhostFist());
     }
 
     /**
@@ -44,6 +44,7 @@ public class Ghost extends Monster {
     public Ghost(Vector3 position) {
         this();
         this.setPosition(position);
+        this.setWeapon(new GhostFist());
     }
 
     @Override
