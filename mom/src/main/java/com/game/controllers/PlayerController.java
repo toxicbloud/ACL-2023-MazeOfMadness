@@ -1,7 +1,7 @@
 package com.game.controllers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
@@ -28,10 +28,6 @@ public class PlayerController extends Controller implements EventVisitor {
     private long lastAttackTime;
     /** To know if the player tries to interact with an item or not. */
     private boolean interact;
-    /** Attack sound. */
-    private Sound attackSound;
-    /** Drink sound. */
-    private Sound drinkSound;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -46,8 +42,6 @@ public class PlayerController extends Controller implements EventVisitor {
      */
     public PlayerController(Player player) {
         super(player);
-        attackSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
-        drinkSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/drink.mp3"));
     }
 
     @Override
@@ -65,14 +59,14 @@ public class PlayerController extends Controller implements EventVisitor {
                 ((Player) target).getWeapon().attack(enemy);
             }
             lastAttackTime = Time.getInstance().getCurrentTime();
-            attackSound.play();
+            SoundManager.getInstance().play(SoundList.ATTACK);
         }
         if (interact) {
             Item item = ((Player) getTarget()).findItemInRange();
             if (item != null) {
                 item.interact((Player) getTarget());
                 Game.getInstance().getMaze().removeItem(item);
-                drinkSound.play();
+                SoundManager.getInstance().play(SoundList.POTION);
             }
         }
     }
