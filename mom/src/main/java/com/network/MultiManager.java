@@ -6,9 +6,9 @@ import com.game.Game;
 import com.game.Maze;
 import com.game.WorldItem;
 import com.game.controllers.NetworkEntityController;
-import com.game.generators.factories.MazeFactory;
-import com.game.generators.spawners.MonsterSpawner;
-import com.game.generators.spawners.PotionSpawner;
+import com.game.generators.MazeFactory;
+import com.game.generators.MonsterSpawner;
+import com.game.generators.PotionSpawner;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
 

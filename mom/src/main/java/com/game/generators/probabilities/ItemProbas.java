@@ -10,7 +10,7 @@ public interface ItemProbas {
      *
      * @return An array containing the enum values.
      */
-    ItemProbas[] getAllItemsProbas();
+    ItemProbas[] getItemsProbasArray();
 
     /**
      * Returns the cumulation of the probabilities of the class.

@@ -1,4 +1,4 @@
-package com.game.generators.spawners;
+package com.game.generators;
 
 import com.engine.utils.Vector3;
 import com.game.Maze;
@@ -57,7 +57,7 @@ public final class PotionSpawner {
      */
     private static void spawnPotion(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
         float counter = 0.F;
-        for (ItemProbas wp : PotionProbas.DUMMY.getAllItemsProbas()) {
+        for (ItemProbas wp : PotionProbas.DUMMY.getItemsProbasArray()) {
             counter += wp.getValue();
             if (counter >= randomFloat) {
                 items.add(wp.getNewItem(x, y));

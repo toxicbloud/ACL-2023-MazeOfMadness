@@ -1,4 +1,4 @@
-package com.game.generators.spawners;
+package com.game.generators;
 
 import com.engine.utils.Vector3;
 import com.game.tiles.*;

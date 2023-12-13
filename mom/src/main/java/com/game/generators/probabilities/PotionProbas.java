@@ -1,7 +1,7 @@
 package com.game.generators.probabilities;
 
 import com.game.WorldItem;
-import com.game.generators.factories.PotionFactory;
+import com.game.generators.PotionFactory;
 
 /** Probabilities for spawning potions. */
 public enum PotionProbas implements ItemProbas {
@@ -49,7 +49,7 @@ public enum PotionProbas implements ItemProbas {
     }
 
     @Override
-    public ItemProbas[] getAllItemsProbas() {
+    public ItemProbas[] getItemsProbasArray() {
         return PotionProbas.values();
     }
 

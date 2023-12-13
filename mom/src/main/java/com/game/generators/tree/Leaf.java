@@ -2,7 +2,7 @@ package com.game.generators.tree;
 
 import com.badlogic.gdx.math.Vector2;
 import com.engine.utils.Vector3;
-import com.game.generators.factories.MazeFactory;
+import com.game.generators.MazeFactory;
 import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.WallRock;

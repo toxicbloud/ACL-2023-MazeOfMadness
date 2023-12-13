@@ -1,4 +1,4 @@
-package com.game.generators.spawners;
+package com.game.generators;
 
 import com.engine.utils.Vector3;
 import com.game.Maze;
@@ -10,8 +10,6 @@ import com.game.tiles.TileType;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /** WeaponSpawner class. */
 public final class WeaponSpawner {
@@ -33,7 +31,6 @@ public final class WeaponSpawner {
         SecureRandom sr = new SecureRandom();
         ArrayList<WorldItem> items = new ArrayList<>();
         float randomValue;
-        Map<WeaponProbas, Integer> itemSpawnOccurences = new HashMap<>();
 
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
@@ -58,8 +55,7 @@ public final class WeaponSpawner {
      */
     private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<WorldItem> items) {
         float counter = 0.F;
-
-        for (ItemProbas wp : WeaponProbas.DUMMY.getAllItemsProbas()) {
+        for (ItemProbas wp : WeaponProbas.DUMMY.getItemsProbasArray()) {
             counter += wp.getValue();
             if (counter >= randomFloat) {
                 items.add(wp.getNewItem(x, y));
