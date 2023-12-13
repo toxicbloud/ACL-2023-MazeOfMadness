@@ -57,7 +57,7 @@ public enum WeaponProbas implements ItemProbas {
     };
 
     /** Base spawn probability of the class of item. */
-    private static final float BASE_SPAWN_PROBA = 0.1f;
+    private static final float BASE_SPAWN_PROBA = 0.05f;
 
     /** Value of the element. */
     private final float value;
