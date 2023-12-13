@@ -1,13 +1,10 @@
 package com.game.controllers;
 
-import java.util.List;
-
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.Entity;
 import com.game.Living;
 import com.game.Player;
-import com.game.WorldItem;
 import com.game.weapons.Weapon;
 import com.network.NetworkDialogs;
 import com.network.NetworkManagerTCP;
@@ -61,11 +58,9 @@ public class SyncedPlayerController extends PlayerController {
         }
 
         if (isInteracting()) {
-            WorldItem item = ((Player) getTarget()).findItemInRange();
-            if (item != null) {
-                item.interact((Player) getTarget());
-                item.destroy();
-            }
+            byte[] data = new byte[]{NetworkDialogs.PLR_ITR, 0, 0};
+            NetworkDialogs.encodeIntValue(id, data, 1);
+            network.sendData(data);
         }
     }
 }

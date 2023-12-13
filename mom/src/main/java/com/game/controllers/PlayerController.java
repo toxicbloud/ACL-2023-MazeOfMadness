@@ -4,7 +4,6 @@ import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.*;
-import com.game.Living.Direction;
 import com.game.weapons.Weapon;
 
 import java.util.List;

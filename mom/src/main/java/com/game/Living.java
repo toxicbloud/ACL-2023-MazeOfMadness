@@ -246,7 +246,7 @@ public abstract class Living extends Entity {
      */
     public WorldItem findItemInRange() {
         for (WorldItem i : Game.getInstance().getMaze().getItems()) {
-            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition()) && i.isPickable()) {
+            if (isInRange(i.getPosition(), this.getPosition()) && i.isPickable()) {
                 return i;
             }
         }

@@ -6,6 +6,7 @@ import com.game.Game;
 import com.game.Living;
 import com.game.Maze;
 import com.game.Player;
+import com.game.WorldItem;
 import com.game.controllers.NetworkPlayerController;
 import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
@@ -102,6 +103,22 @@ public class GameSceneServer extends GameScene {
             if (player != null) {
                 List<Living> enemies = player.findEnemies();
                 player.attack(enemies);
+            }
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.PLR_ITR;
+        }, (data, infos) -> {
+            int id = NetworkDialogs.getIntValue(data, 1);
+            Player player = getClientPlayer(id);
+
+            if (player != null) {
+                WorldItem item = player.findItemInRange();
+                if (item != null) {
+                    item.interact(player);
+                    item.destroy();
+                }
             }
             return false;
         });
