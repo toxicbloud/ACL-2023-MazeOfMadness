@@ -3,6 +3,8 @@ package com.game.generators;
 import com.engine.utils.Vector3;
 import com.game.Item;
 import com.game.Maze;
+import com.game.generators.probabilities.ItemProbas;
+import com.game.generators.probabilities.WeaponProbas;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
 
@@ -14,9 +16,6 @@ public final class WeaponSpawner {
 
     /** MIN_DST_PLAYER_WEAPON : Safe distance from player's spawn to not spawn weapons in. */
     private static final int MIN_DST_PLAYER_WEAPON = 8;
-
-    /** SWORD_PROBABILITY : Base spawn probability for a sword. */
-    private static final float SWORD_PROBABILTY = 0.01F;
 
     /**
      * Private constructor for the weapon spawner.
@@ -31,13 +30,15 @@ public final class WeaponSpawner {
     public static void spawnWeapons(Maze maze) {
         SecureRandom sr = new SecureRandom();
         ArrayList<Item> items = new ArrayList<>();
+        float randomValue;
 
         for (int x = 0; x < maze.getWidth(); x++) {
             for (int y = 0; y < maze.getHeight(); y++) {
                 if (!canSpawnWeapon(maze, x, y, sr)) {
                     continue;
                 }
-                WeaponSpawner.spawnWeapon(x, y, sr.nextFloat(), items);
+                randomValue = sr.nextFloat() * (WeaponProbas.DUMMY.computeTotal());
+                WeaponSpawner.spawnWeapon(x, y, randomValue, items);
             }
         }
 
@@ -53,8 +54,13 @@ public final class WeaponSpawner {
      * @param items       Items array.
      */
     private static void spawnWeapon(int x, int y, float randomFloat, ArrayList<Item> items) {
-        if (randomFloat <= WeaponSpawner.SWORD_PROBABILTY) {
-            items.add(WeaponFactory.createSword(x, y));
+        float counter = 0.F;
+        for (ItemProbas wp : WeaponProbas.DUMMY.getItemsProbasArray()) {
+            counter += wp.getValue();
+            if (counter >= randomFloat) {
+                items.add(wp.getNewItem(x, y));
+                break;
+            }
         }
     }
 
@@ -80,6 +86,7 @@ public final class WeaponSpawner {
 
         return (int) spawn.x != x
                 && (int) spawn.y != y
+                && sr.nextFloat() <= WeaponProbas.DUMMY.getBaseSpawnProba()
                 && target.getType() != TileType.GROUND_END
                 && target.getType() == TileType.GROUND_ROCK;
     }
