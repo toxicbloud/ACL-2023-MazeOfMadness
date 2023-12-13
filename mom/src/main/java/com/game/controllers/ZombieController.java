@@ -1,7 +1,7 @@
 package com.game.controllers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.utils.Movement;
 import com.engine.utils.PathFinder;
 import com.engine.utils.Time;
@@ -36,8 +36,6 @@ public class ZombieController extends Controller {
     private static final boolean MODE_PATHFINDING = true;
     /** The last time when the zombie attacks. */
     private long lastAttackTime;
-    /** Attack sound. */
-    private Sound attackSound;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -59,7 +57,6 @@ public class ZombieController extends Controller {
     public ZombieController(Zombie zombie) {
         super(zombie);
         this.mode = MODE_PATHFINDING;
-        attackSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/zombieAttack.mp3"));
 
         if (this.mode == MODE_RANDOM) {
             this.determineDirectionPattern();
@@ -71,14 +68,17 @@ public class ZombieController extends Controller {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
 
+
         if (((Zombie) target).findPlayer(player)
             && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
             ((Zombie) target).getWeapon().setPosition(target.getPosition());
             ((Zombie) target).getWeapon().attack(player);
             lastAttackTime = Time.getInstance().getCurrentTime();
             if (player.distance(target) < ((Zombie) target).getWeapon().getRange()) {
-                long id = attackSound.play();
-                attackSound.setPitch(id, 2);
+                SoundManager.getInstance().play(SoundList.ZOMBIE_ATTACK);
+            }
+            if (((Zombie) target).attack(player)) {
+                SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
             }
         }
 
