@@ -4,6 +4,8 @@ import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Maze;
 import com.game.Player;
+import com.game.controllers.GhostController;
+import com.game.controllers.ZombieController;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
@@ -47,11 +49,15 @@ public final class MonsterSpawner {
                 randomChoice = Math.random();
 
                 if (randomChoice <= PROBA_ZOMBIE) {
-                    monsters.add(new Zombie(new Vector3(x, y, 1)));
+                    Zombie m = new Zombie(new Vector3(x, y, 1));
+                    new ZombieController(m);
+                    monsters.add(m);
                     continue;
                 }
                 if (randomChoice <= PROBA_GHOST + PROBA_ZOMBIE) {
-                    monsters.add(new Ghost(new Vector3(x, y, 1)));
+                    Ghost m = new Ghost(new Vector3(x, y, 1));
+                    new GhostController(m);
+                    monsters.add(m);
                 }
             }
         }

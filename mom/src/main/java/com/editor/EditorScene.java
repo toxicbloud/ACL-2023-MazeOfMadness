@@ -23,27 +23,26 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
-import com.game.Item;
 import com.game.Level;
 import com.game.LevelLoader;
 import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
+import com.game.WorldItem;
+import com.game.items.potions.HealthPotion;
+import com.game.items.potions.SpeedPotion;
+import com.game.items.potions.StrengthPotion;
+import com.game.items.weapons.*;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
-import com.game.potions.HealthPotion;
-import com.game.potions.SpeedPotion;
-import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
 import com.game.tiles.GroundSpikes;
 import com.game.tiles.GroundWater;
-import com.game.tiles.Next;
 import com.game.tiles.Tile;
 import com.game.tiles.TileType;
-import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
 import com.renderer.GameScene;
 import com.ui.MenuScene;
@@ -119,13 +118,18 @@ public class EditorScene extends GameScene {
             new GroundRock(),
             new WallRock(),
             new End(),
-            new Next(),
             new GroundSpikes(),
             new GroundWater(),
             new GroundLava(),
             new HealthPotion(),
             new StrengthPotion(),
             new SpeedPotion(),
+            new Axe(),
+            new Bomb(),
+            new Bow(),
+            new Sword(),
+            new Teddy(),
+            new Trident(),
             new Zombie(),
             new Ghost(),
             new Player()
@@ -447,68 +451,7 @@ public class EditorScene extends GameScene {
     }
 
     private void generateMazeFromList() {
-        int minX = 0;
-        int minY = 0;
-        int minZ = 0;
-        int maxX = 0;
-        int maxY = 0;
-        int maxZ = 0;
-
-        List<Tile> tiles = new ArrayList<Tile>();
-        List<Monster> monsters = new ArrayList<Monster>();
-        List<Item> items = new ArrayList<Item>();
-
-        for (Entity e : mazeEntities) {
-            if (e instanceof Tile) {
-                tiles.add((Tile) e);
-            } else if (e instanceof Monster) {
-                monsters.add((Monster) e);
-            } else if (e instanceof Item) {
-                items.add((Item) e);
-            }
-
-            Vector3 pos = e.getPosition();
-            minX = Math.min(minX, (int) pos.x);
-            minY = Math.min(minY, (int) pos.y);
-            minZ = Math.min(minZ, (int) pos.z);
-            maxX = Math.max(maxX, (int) pos.x);
-            maxY = Math.max(maxY, (int) pos.y);
-            maxZ = Math.max(maxZ, (int) pos.z);
-        }
-
-        int width = maxX - minX + 1;
-        int height = maxY - minY + 1;
-        int depth = maxZ - minZ + 1;
-
-        Tile[] tilesArray = new Tile[width * height * depth];
-        int index = 0;
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    boolean found = false;
-                    for (Tile t : tiles) {
-                        if (t.getPosition().equals(new Vector3(x, y, z))) {
-                            found = true;
-                            tilesArray[index] = t;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        tilesArray[index] = new VoidTile(new Vector3(x, y, z));
-                    }
-                    index++;
-                }
-            }
-        }
-        Monster[] monstersArray = new Monster[monsters.size()];
-        monsters.toArray(monstersArray);
-        Item[] itemsArray = new Item[items.size()];
-        items.toArray(itemsArray);
-
-        Maze maze = new Maze(width, height, depth);
-        maze.setTiles(tilesArray);
-        maze.setItems(itemsArray);
-        maze.setMonsters(monstersArray);
+        Maze maze = Maze.fromList(mazeEntities);
         super.setMaze(maze);
     }
 
@@ -528,7 +471,7 @@ public class EditorScene extends GameScene {
         for (Monster m : maze.getMonsters()) {
             this.mazeEntities.add(m);
         }
-        for (Item i : maze.getItems()) {
+        for (WorldItem i : maze.getItems()) {
             this.mazeEntities.add(i);
         }
 
