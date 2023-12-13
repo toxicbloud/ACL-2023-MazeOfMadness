@@ -1,4 +1,4 @@
-package com.game.potions;
+package com.game.items.potions;
 
 import com.GdxTestRunner;
 import com.game.Player;
