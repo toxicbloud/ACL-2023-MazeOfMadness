@@ -17,6 +17,10 @@ import java.util.Arrays;
  */
 public class Trident extends Particle {
     /**
+     *
+     */
+    private static final int TRIDENT_MAX_FLY_DISTANCE = 4;
+    /**
      * SPRITE_SHIFT.
      */
     private static final int SPRITE_SHIFT = 4;
@@ -46,6 +50,10 @@ public class Trident extends Particle {
      * Distance at which the trident is moved.
      */
     private Vector2 direction;
+    /**
+     * Start position of the trident.
+     */
+    private Vector3 startPos;
 
     /**
      * Trident particle constructor.
@@ -58,6 +66,7 @@ public class Trident extends Particle {
                 direction.ordinal() * SPRITE_SIZE + SPRITE_SHIFT * SPRITE_SIZE),
                 position);
         this.direction = getDirectionVector(direction);
+        this.startPos = position;
     }
 
     @Override
@@ -73,7 +82,8 @@ public class Trident extends Particle {
                 monster.takeDamage(DAMAGE);
             }
         });
-        if (lastPosition.epsilonEquals(this.getPosition(), EPSILON)) {
+        if (lastPosition.epsilonEquals(this.getPosition(), EPSILON)
+                || this.startPos.dst(this.getPosition()) > TRIDENT_MAX_FLY_DISTANCE) {
             Game.getInstance().getMaze().addItem(new com.game.items.weapons.Trident(this.getPosition()));
             this.destroy();
         }
