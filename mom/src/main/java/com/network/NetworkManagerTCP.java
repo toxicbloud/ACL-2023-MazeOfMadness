@@ -88,7 +88,7 @@ public abstract class NetworkManagerTCP {
 
                     while (buffer.length >= 2) {
                         int dataLength = NetworkDialogs.getIntValue(buffer, 0);
-                        if (buffer.length >= dataLength) {
+                        if (buffer.length >= dataLength + 2) {
                             byte[] data = new byte[dataLength];
                             System.arraycopy(buffer, 2, data, 0, dataLength);
                             receivedPackets.add(new DatagramPacket(
