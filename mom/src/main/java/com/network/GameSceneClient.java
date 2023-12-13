@@ -27,14 +27,11 @@ public class GameSceneClient extends GameScene {
             return data[0] == NetworkDialogs.MAZE_ADD && data[1 + 2] == NetworkDialogs.ENTITY_PLR;
         }, (data, infos) -> {
             Player player = NetworkDialogs.getPlayerFromData(data, 2 + 1);
-            System.out.println("Player base pos: " + player.getPosition());
             maze.addEntity(player);
             int clientID = NetworkDialogs.getIntValue(data, 1);
-            System.out.println("Player " + clientID + " added to maze (perso = " + client.getId() + ")");
             if (clientID == client.getId()) {
                 Game.getInstance().setPlayer(player);
                 new PlayerController(player);
-                System.out.println("Player " + clientID + " position set : " + player.getPosition());
             } else {
                 new NetworkPlayerController(player, clientID, client);
             }
