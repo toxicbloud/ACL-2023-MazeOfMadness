@@ -1,6 +1,5 @@
-package com.game.potions;
+package com.game.items.potions;
 
-import com.game.items.potions.StrengthPotion;
 import com.game.weapons.PlayerFist;
 import com.game.weapons.Weapon;
 import org.junit.jupiter.api.Test;

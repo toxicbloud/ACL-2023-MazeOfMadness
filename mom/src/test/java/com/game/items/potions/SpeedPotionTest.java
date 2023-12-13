@@ -1,8 +1,6 @@
-package com.game.potions;
+package com.game.items.potions;
 
 import com.game.Player;
-import com.game.items.potions.SpeedPotion;
-
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,8 +9,10 @@ import org.junit.jupiter.api.Test;
 public class SpeedPotionTest extends PotionTestInitializer {
 
     /**
-     * This method checks if the speed effect is applied to the player when it was not already applied.
-     * This method calls the applyEffect() method 1 time in order to check if the method works and applies the correct
+     * This method checks if the speed effect is applied to the player when it was
+     * not already applied.
+     * This method calls the applyEffect() method 1 time in order to check if the
+     * method works and applies the correct
      * speed to the player.
      */
     @Test
@@ -28,8 +28,10 @@ public class SpeedPotionTest extends PotionTestInitializer {
     }
 
     /**
-     * This method checks if the speed effect is applied to the player when it was already applied.
-     * This method calls the applyEffect() method 2 times in order to check if the method works and doesn't exceed the
+     * This method checks if the speed effect is applied to the player when it was
+     * already applied.
+     * This method calls the applyEffect() method 2 times in order to check if the
+     * method works and doesn't exceed the
      * speed cap.
      */
     @Test
