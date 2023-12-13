@@ -4,6 +4,7 @@ import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.*;
+import com.game.weapons.Weapon;
 
 import java.util.List;
 
@@ -43,22 +44,33 @@ public class PlayerController extends Controller implements EventVisitor {
     @Override
     public void update() {
         Entity target = getTarget();
-        ((Player) target).getWeapon().setPosition(target.getPosition());
+        if (target == null) {
+            return;
+        }
+        Player player = (Player) target;
+        Weapon weapon = player.getWeapon();
+        if (weapon == null) {
+            return;
+        }
+
+        weapon.setPosition(target.getPosition());
         Vector2 normalized = direction.normalize();
         target.moveBy(
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
 
         if (attack) {
-            List<Living> enemies = ((Player) target).findEnemies();
-            ((Player) target).getWeapon().attack(enemies);
+            List<Living> enemies = player.findEnemies();
+            if (weapon != null) {
+                weapon.attack(enemies);
+            }
         }
 
         if (interact) {
-            Item item = ((Player) getTarget()).findItemInRange();
+            WorldItem item = ((Player) getTarget()).findItemInRange();
             if (item != null) {
                 item.interact((Player) getTarget());
-                Game.getInstance().getMaze().removeItem(item);
+                item.destroy();
             }
         }
     }
@@ -177,5 +189,14 @@ public class PlayerController extends Controller implements EventVisitor {
         this.direction = new Vector2(
                 (arrows[KEY_RIGHT_INDEX] ? 1 : 0) - (arrows[KEY_LEFT_INDEX] ? 1 : 0),
                 (arrows[KEY_DOWN_INDEX] ? 1 : 0) - (arrows[KEY_UP_INDEX] ? 1 : 0)).normalize();
+    }
+
+    /**
+     * Get if the player is attacking or not.
+     *
+     * @return True if the player is attacking, false otherwise.
+     */
+    public boolean isAttacking() {
+        return attack;
     }
 }

@@ -242,8 +242,8 @@ public abstract class Living extends Entity {
      *
      * @return The first pickable item in the player's range if there is one, null
      */
-    public Item findItemInRange() {
-        for (Item i : Game.getInstance().getMaze().getItems()) {
+    public WorldItem findItemInRange() {
+        for (WorldItem i : Game.getInstance().getMaze().getItems()) {
             if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition()) && i.isPickable()) {
                 return i;
             }
@@ -412,5 +412,10 @@ public abstract class Living extends Entity {
      */
     protected void setHealthBarColor(Color healthBarColor) {
         this.healthBarColor = healthBarColor;
+    }
+
+    @Override
+    protected void remove() {
+        // SHOULD NO BE ABLE TO REMOVE LIVING IF NOT MONSTER
     }
 }

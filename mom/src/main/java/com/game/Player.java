@@ -8,6 +8,7 @@ import com.game.tiles.Tile;
 import com.game.weapons.Bomb;
 import com.game.weapons.PlayerFist;
 import com.game.weapons.Weapon;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ public class Player extends Living {
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
         this.setWeapon(new Bomb());
         this.defaultWeapon = new PlayerFist();
-        this.getWeapon().interact(this);
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
         this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
@@ -120,11 +120,29 @@ public class Player extends Living {
     @Override
     public void setWeapon(Weapon weapon) {
         super.setWeapon(weapon == null ? defaultWeapon : weapon);
+        if (weapon != null) {
+            weapon.setOwner(this);
+        }
     }
 
     @Override
     public void render() {
         super.render();
-        this.getWeapon().render();
+        if (this.getWeapon() != null) {
+            this.getWeapon().render();
+        }
+    }
+
+    /**
+     * Returns a JSON representation of the player.
+     * @return JSON representation of the player.
+     */
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", this.getPosition().toJSON());
+        json.put("health", this.getHealth());
+
+        return json;
     }
 }

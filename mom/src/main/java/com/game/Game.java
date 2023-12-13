@@ -144,6 +144,16 @@ public final class Game {
     }
 
     /**
+     * Load a game from a maze.
+     * @param m The maze to load from.
+     */
+    public void loadFrom(Maze m) {
+        this.maze = m;
+        this.player = new Player(m.getSpawnPoint());
+        score = new Score();
+    }
+
+    /**
      * Load a game from a file.
      *
      * @param file The file to load from.

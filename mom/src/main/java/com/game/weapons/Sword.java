@@ -1,7 +1,8 @@
 package com.game.weapons;
 
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Vector3;
-import com.game.ItemType;
 
 /**
  * Sword class.
@@ -19,7 +20,7 @@ public class Sword extends Weapon {
      * Sword constructor.
      */
     public Sword() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_SWORD);
+        super(DAMAGE, ATTACK_COOLDOWN, RANGE);
     }
 
     /**
@@ -28,7 +29,8 @@ public class Sword extends Weapon {
      * @param position The position of the sword.
      */
     public Sword(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_SWORD);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/sworditem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -38,7 +40,8 @@ public class Sword extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Sword(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_SWORD);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, new Sprite(new Texture(
+                "images/sworditem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     @Override

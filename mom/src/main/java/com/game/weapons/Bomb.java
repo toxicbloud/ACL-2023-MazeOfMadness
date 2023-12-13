@@ -2,10 +2,11 @@ package com.game.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
 import com.game.Game;
-import com.game.ItemType;
 import com.game.Living;
 import com.game.monsters.Monster;
 import com.game.particles.BombThrown;
@@ -37,14 +38,18 @@ public class Bomb extends Weapon {
     /**
      * Sound played when the bomb is thrown and is waiting to explode.
      */
-    private static final Sound WAITING_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
+    private static final Sound WAITING_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
 
     /**
      * Sound played when the bomb explodes.
      */
-    private static final Sound EXPLOSION_SOUND =
-            (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
+    private static final Sound EXPLOSION_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
+    /**
+     * Bomb sprite.
+     */
+    private static final Sprite SPRITE = new Sprite(new Texture("images/bombitem.png"), SPRITE_SIZE, SPRITE_SIZE,
+            0);
+
     /**
      * If the Bomb is launched.
      */
@@ -56,7 +61,7 @@ public class Bomb extends Weapon {
      * Bomb constructor.
      */
     public Bomb() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_BOMB);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, SPRITE);
     }
 
     /**
@@ -65,17 +70,17 @@ public class Bomb extends Weapon {
      * @param position The position of the Bomb.
      */
     public Bomb(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, SPRITE);
     }
 
     /**
      * Bomb full constructor.
      *
-     * @param position The position of the Bomb.
+     * @param position        The position of the Bomb.
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.WEAPON_BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, SPRITE);
     }
 
     @Override
@@ -102,26 +107,14 @@ public class Bomb extends Weapon {
     private void launch() {
         WAITING_SOUND.play();
         this.isThrown = true;
-        this.setPickable(false);
         this.launchTime = Time.getInstance().getCurrentTime();
         Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
-    }
-
-    @Override
-    public void render() {
-        if (!isThrown) {
-            super.render();
-        }
     }
 
     @Override
     public void update() {
         if (isThrown && Time.getInstance().getCurrentTime() - launchTime > EXPLOSION_DELAY) {
             Living owner = getOwner();
-
-            if (this.getPosition().dst(owner.getPosition()) < 1) {
-                owner.takeDamage(this.getDamage());
-            }
             int bombX = Math.round(this.getPosition().x);
             int bombY = Math.round(this.getPosition().y);
             int bombZ = Math.round(this.getPosition().z);
@@ -129,7 +122,7 @@ public class Bomb extends Weapon {
             Queue<Object[]> queue = new LinkedList<>();
             Set<Tile> visited = new HashSet<>();
             Tile start = Game.getInstance().getMaze().getTile(bombX, bombY, bombZ);
-            queue.add(new Object[] {start, 0});
+            queue.add(new Object[] {start, 0 });
             visited.add(start);
 
             while (!queue.isEmpty()) {
@@ -140,7 +133,7 @@ public class Bomb extends Weapon {
                     Game.getInstance().getMaze().addParticle(new Fire(current.getPosition()));
                     for (Tile tile : current.getNeighbours()) {
                         if (!visited.contains(tile) && !tile.isSolid()) {
-                            queue.add(new Object[] {tile, depth + 1});
+                            queue.add(new Object[] {tile, depth + 1 });
                             visited.add(tile);
                         }
                     }
@@ -153,6 +146,12 @@ public class Bomb extends Weapon {
                 if (visited.contains(tile)) {
                     monster.takeDamage(this.getDamage());
                 }
+            }
+            Tile tile = Game.getInstance().getMaze().getTile(owner.getPosition());
+            if (tile != null && visited.contains(tile)) {
+                float distance = owner.getPosition().dst(this.getPosition());
+                // The closer the player is to the bomb, the more damage he takes.
+                owner.takeDamage((int) (this.getDamage() * (1 - distance / EXPLOSION_DEPTH)));
             }
             owner.setWeapon(null);
             EXPLOSION_SOUND.play();

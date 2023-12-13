@@ -1,4 +1,4 @@
-package com.game.potions;
+package com.game.items.potions;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +8,12 @@ import org.junit.jupiter.api.Test;
 public class HealthPotionTest extends PotionTestInitializer {
 
     /**
-     * This method checks if the health effect is applied to the player when the player was not at full health and the
-     * health amount restored plus the current health of the player does not exceed the health cap.
-     * This method calls the applyEffect() method 1 time in order to check if the method works and applies the correct
+     * This method checks if the health effect is applied to the player when the
+     * player was not at full health and the
+     * health amount restored plus the current health of the player does not exceed
+     * the health cap.
+     * This method calls the applyEffect() method 1 time in order to check if the
+     * method works and applies the correct
      * health amount to the player.
      */
     @Test
@@ -28,8 +31,10 @@ public class HealthPotionTest extends PotionTestInitializer {
     }
 
     /**
-     * This method checks if the health effect is applied to the player when the player was at full health.
-     * This method calls the applyEffect() method 1 time in order to check if the method works and applies the correct
+     * This method checks if the health effect is applied to the player when the
+     * player was at full health.
+     * This method calls the applyEffect() method 1 time in order to check if the
+     * method works and applies the correct
      * health amount to the player.
      */
     @Test
@@ -45,9 +50,12 @@ public class HealthPotionTest extends PotionTestInitializer {
     }
 
     /**
-     * This method checks if the health effect is applied to the player when the player was not at full health and the
-     * health amount restored plus the current health of the player exceeds the health cap.
-     * This method calls the applyEffect() method 1 time in order to check if the method works and applies the correct
+     * This method checks if the health effect is applied to the player when the
+     * player was not at full health and the
+     * health amount restored plus the current health of the player exceeds the
+     * health cap.
+     * This method calls the applyEffect() method 1 time in order to check if the
+     * method works and applies the correct
      * health amount to the player.
      * It assumes that the player's maximum health is strictly higher than 1.
      */
