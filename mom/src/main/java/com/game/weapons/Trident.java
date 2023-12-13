@@ -4,9 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Game;
-import com.game.ItemType;
 import com.game.Living;
-import com.game.Living.Direction;
 
 import java.util.List;
 
@@ -24,21 +22,13 @@ public class Trident extends Weapon {
      * If the trident is launched.
      */
     private boolean isLaunched;
-    /**
-     * The direction of the trident.
-     */
-    private Direction direction;
-    /**
-     * The trident sprite when it is not in player's hand.
-     */
-    private Sprite item;
 
     /**
      * Trident constructor.
      */
     public Trident() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.TRIDENT);
-        this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -47,8 +37,8 @@ public class Trident extends Weapon {
      * @param position The position of the Trident.
      */
     public Trident(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.TRIDENT);
-        this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -58,7 +48,8 @@ public class Trident extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Trident(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.TRIDENT);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     @Override
@@ -82,20 +73,11 @@ public class Trident extends Weapon {
 
     private void launch() {
         this.isLaunched = true;
-        this.direction = getOwner().getDirection();
         this.getOwner().setWeapon(null);
         this.isLaunched = false;
         Game.getInstance().getMaze()
                 .addParticle(new com.game.particles.Trident(getPosition(),
-                        this.getOwner().getDirection(),
-                        this));
-    }
-
-    @Override
-    public void render() {
-        if (!isLaunched) {
-            super.render();
-        }
+                        this.getOwner().getDirection()));
     }
 
     @Override

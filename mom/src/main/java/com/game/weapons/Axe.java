@@ -1,7 +1,8 @@
 package com.game.weapons;
 
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Vector3;
-import com.game.ItemType;
 
 /**
  * Axe class.
@@ -18,7 +19,8 @@ public class Axe extends Weapon {
      * Axe constructor.
      */
     public Axe() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.AXE);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/axeitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -27,7 +29,8 @@ public class Axe extends Weapon {
      * @param position The position of the axe.
      */
     public Axe(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.AXE);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/axeitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -37,7 +40,9 @@ public class Axe extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Axe(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.AXE);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, new Sprite(new Texture(
+                "images/axeitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
+
     }
 
     @Override

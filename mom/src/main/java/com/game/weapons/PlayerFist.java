@@ -1,7 +1,5 @@
 package com.game.weapons;
 
-import com.game.ItemType;
-
 /**
  * PlayerFist class.
  * This is the player fist class.
@@ -16,7 +14,7 @@ public class PlayerFist extends WeaponFist {
      * PlayerFist constructor.
      */
     public PlayerFist() {
-        super(PlayerFist.DAMAGE, PlayerFist.ATTACK_COOLDOWN, ItemType.WEAPON_PLAYER_FIST);
+        super(PlayerFist.DAMAGE, PlayerFist.ATTACK_COOLDOWN);
     }
 
     /**
@@ -26,7 +24,7 @@ public class PlayerFist extends WeaponFist {
      */
     public PlayerFist(boolean hasDoubleDamage) {
         super(hasDoubleDamage ? PlayerFist.DAMAGE * 2 : PlayerFist.DAMAGE, PlayerFist.ATTACK_COOLDOWN,
-                hasDoubleDamage, ItemType.WEAPON_PLAYER_FIST);
+                hasDoubleDamage);
     }
 
     @Override

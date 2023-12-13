@@ -20,7 +20,6 @@ import com.game.tiles.StairRock;
 import com.game.tiles.Tile;
 import com.game.tiles.VoidTile;
 import com.game.tiles.WallRock;
-import com.game.weapons.Sword;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -259,8 +258,18 @@ public class Level {
         }
 
         switch (type) {
-            case "WEAPON_SWORD":
-                return new Sword(position);
+            case "SWORD":
+                return new com.game.items.weapons.Sword(position);
+            case "AXE":
+                return new com.game.items.weapons.Axe(position);
+            case "BOW":
+                return new com.game.items.weapons.Bow(position);
+            case "BOMB":
+                return new com.game.items.weapons.Bomb(position);
+            case "TRIDENT":
+                return new com.game.items.weapons.Trident(position);
+            case "TEDDY":
+                return new com.game.items.weapons.Teddy(position);
             case "ITEM_HEALTH_POTION":
                 return new HealthPotion(position);
             case "ITEM_STRENGTH_POTION":

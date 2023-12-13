@@ -8,16 +8,30 @@ import com.game.Player;
  * Axe item class.
  */
 public class Axe extends Weapon {
+    /**
+     * Sprite shift.
+     */
+    private static final int SPRITE_SHIFT = 4;
 
-    protected Axe(int spriteShift, Vector3 position, ItemType t) {
-        super(spriteShift, position, t);
-        // TODO Auto-generated constructor stub
+    /**
+     * Axe constructor.
+     */
+    public Axe() {
+        super(SPRITE_SHIFT * SPRITE_SIZE, new Vector3(), ItemType.AXE);
+    }
+
+    /**
+     * Axe constructor.
+     *
+     * @param position Position of the item inside the maze.
+     */
+    public Axe(Vector3 position) {
+        super(SPRITE_SHIFT * SPRITE_SIZE, position, ItemType.AXE);
     }
 
     @Override
     protected void equipWeapon(Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equipWeapon'");
+        player.setWeapon(new com.game.weapons.Axe());
     }
 
 }

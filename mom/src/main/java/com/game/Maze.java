@@ -547,6 +547,22 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Add an item to the maze.
+     *
+     * @param i item to add to the maze.
+     */
+    public void addItem(WorldItem i) {
+        Vector3 pos = i.getPosition();
+        Tile t = this.getTile(Math.round(pos.x), Math.round(pos.y), Math.round(pos.z));
+        if (t.isSolid()) {
+            return;
+        }
+        List<WorldItem> itemList = new ArrayList<>(Arrays.asList(this.items));
+        itemList.add(i);
+        this.items = itemList.toArray(new WorldItem[0]);
+    }
+
+    /**
      * Add a particle to the maze.
      *
      * @param p particle to add to the maze.

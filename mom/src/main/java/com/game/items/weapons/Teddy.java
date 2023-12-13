@@ -9,15 +9,30 @@ import com.game.Player;
  */
 public class Teddy extends Weapon {
 
-    protected Teddy(int spriteShift, Vector3 position, ItemType t) {
-        super(spriteShift, position, t);
-        // TODO Auto-generated constructor stub
+    /**
+     * Sprite shift.
+     */
+    private static final int SPRITE_SHIFT = 5;
+
+    /**
+     * Teddy constructor.
+     */
+    public Teddy() {
+        super(SPRITE_SHIFT * SPRITE_SIZE, new Vector3(), ItemType.TEDDY);
+    }
+
+    /**
+     * Teddy constructor.
+     *
+     * @param position Position of the item inside the maze.
+     */
+    public Teddy(Vector3 position) {
+        super(SPRITE_SHIFT * SPRITE_SIZE, position, ItemType.TEDDY);
     }
 
     @Override
     protected void equipWeapon(Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equipWeapon'");
+        player.setWeapon(new com.game.weapons.Teddy());
     }
 
 }

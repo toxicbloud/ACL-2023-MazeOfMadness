@@ -4,10 +4,10 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
-import com.game.ItemType;
+import com.game.Entity;
 import com.game.Living;
 import com.game.Player;
-import com.game.WorldItem;
+import com.game.controllers.PlayerController;
 
 import java.util.List;
 
@@ -15,7 +15,11 @@ import java.util.List;
  * Weapon class.
  * This is the base class for all weapons.
  */
-public abstract class Weapon extends WorldItem {
+public abstract class Weapon extends Entity {
+    /**
+     * number of rows between the second region of the sprite.
+     */
+    private static final int GROUP_ROW_DISTANCE = 4;
     /** Weapon damage amount. */
     private int damage;
     /** Weapon cooldown. */
@@ -35,10 +39,9 @@ public abstract class Weapon extends WorldItem {
      * @param damage   The damage amount.
      * @param cooldown The cooldown between two attacks.
      * @param range    The range.
-     * @param t        The type of the weapon.
      */
-    protected Weapon(int damage, int cooldown, float range, ItemType t) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
+    protected Weapon(int damage, int cooldown, float range) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
@@ -52,10 +55,9 @@ public abstract class Weapon extends WorldItem {
      * @param cooldown        The cooldown between two attacks.
      * @param range           The range.
      * @param hasDoubleDamage If the power of this weapon has been doubled.
-     * @param t               The type of the weapon.
      */
-    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
-        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE), t);
+    protected Weapon(int damage, int cooldown, float range, boolean hasDoubleDamage) {
+        super(new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE));
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
@@ -70,14 +72,30 @@ public abstract class Weapon extends WorldItem {
      * @param cooldown        The cooldown between two attacks.
      * @param range           The range.
      * @param hasDoubleDamage If the power of this weapon has been doubled.
-     * @param t               The type of the weapon.
      */
-    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage, ItemType t) {
+    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage) {
         super(
                 new Sprite(new Texture("images/weapon.png"), SPRITE_SIZE, SPRITE_SIZE),
                 position,
-                new Vector3(1, 1, 1),
-                t);
+                new Vector3(1, 1, 1));
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
+    }
+
+    /**
+     * Weapon constructor.
+     *
+     * @param position        The position of the weapon.
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param sprite          The sprite of the weapon.
+     */
+    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage, Sprite sprite) {
+        super(sprite, position, new Vector3(1, 1, 1));
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
@@ -166,7 +184,13 @@ public abstract class Weapon extends WorldItem {
      * Update the weapon.
      */
     public void update() {
-
+        if (owner == null) {
+            return;
+        }
+        this.getSprite().setShift(SPRITE_SIZE
+                *
+                (owner.getDirection().ordinal())
+                + (((PlayerController) (owner.getController())).isAttacking() ? GROUP_ROW_DISTANCE * SPRITE_SIZE : 0));
     }
 
     /**
@@ -186,14 +210,17 @@ public abstract class Weapon extends WorldItem {
      */
     public abstract Weapon createDoubleDamageWeapon();
 
-    @Override
-    public void interact(Player player) {
-        this.owner = player;
-        player.setWeapon(this);
-    }
-
     protected Living getOwner() {
         return owner;
+    }
+
+    /**
+     * Set the owner of the weapon.
+     *
+     * @param owner The owner of the weapon.
+     */
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
 }

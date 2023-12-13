@@ -2,10 +2,11 @@ package com.game.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Time;
 import com.engine.utils.Vector3;
 import com.game.Game;
-import com.game.ItemType;
 import com.game.Living;
 import com.game.monsters.Monster;
 import com.game.particles.BombThrown;
@@ -44,6 +45,12 @@ public class Bomb extends Weapon {
      */
     private static final Sound EXPLOSION_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
     /**
+     * Bomb sprite.
+     */
+    private static final Sprite SPRITE = new Sprite(new Texture("images/bombitem.png"), SPRITE_SIZE, SPRITE_SIZE,
+            0);
+
+    /**
      * If the Bomb is launched.
      */
     private boolean isThrown;
@@ -54,7 +61,7 @@ public class Bomb extends Weapon {
      * Bomb constructor.
      */
     public Bomb() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.BOMB);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, SPRITE);
     }
 
     /**
@@ -63,7 +70,7 @@ public class Bomb extends Weapon {
      * @param position The position of the Bomb.
      */
     public Bomb(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, SPRITE);
     }
 
     /**
@@ -73,7 +80,7 @@ public class Bomb extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Bomb(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, ItemType.BOMB);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, SPRITE);
     }
 
     @Override
@@ -100,16 +107,8 @@ public class Bomb extends Weapon {
     private void launch() {
         WAITING_SOUND.play();
         this.isThrown = true;
-        this.setPickable(false);
         this.launchTime = Time.getInstance().getCurrentTime();
         Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
-    }
-
-    @Override
-    public void render() {
-        if (!isThrown) {
-            super.render();
-        }
     }
 
     @Override
@@ -123,7 +122,7 @@ public class Bomb extends Weapon {
             Queue<Object[]> queue = new LinkedList<>();
             Set<Tile> visited = new HashSet<>();
             Tile start = Game.getInstance().getMaze().getTile(bombX, bombY, bombZ);
-            queue.add(new Object[] {start, 0});
+            queue.add(new Object[] {start, 0 });
             visited.add(start);
 
             while (!queue.isEmpty()) {
@@ -134,7 +133,7 @@ public class Bomb extends Weapon {
                     Game.getInstance().getMaze().addParticle(new Fire(current.getPosition()));
                     for (Tile tile : current.getNeighbours()) {
                         if (!visited.contains(tile) && !tile.isSolid()) {
-                            queue.add(new Object[] {tile, depth + 1});
+                            queue.add(new Object[] {tile, depth + 1 });
                             visited.add(tile);
                         }
                     }
