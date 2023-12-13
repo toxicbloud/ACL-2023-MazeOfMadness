@@ -65,11 +65,16 @@ public class ZombieController extends Controller {
     public void update() {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
+        Zombie zombie = (Zombie) target;
 
-        if (((Zombie) target).findPlayer(player)
-            && Time.getInstance().getCurrentTime() - lastAttackTime > ((Zombie) target).getWeapon().getCooldown()) {
-            ((Zombie) target).getWeapon().setPosition(target.getPosition());
-            ((Zombie) target).getWeapon().attack(player);
+        if (zombie == null || player == null) {
+            return;
+        }
+
+        if (zombie.findPlayer(player)
+            && Time.getInstance().getCurrentTime() - lastAttackTime > zombie.getWeapon().getCooldown()) {
+            zombie.getWeapon().setPosition(target.getPosition());
+            zombie.getWeapon().attack(player);
             lastAttackTime = Time.getInstance().getCurrentTime();
         }
 
