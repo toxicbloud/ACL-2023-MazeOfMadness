@@ -8,19 +8,15 @@ public class ValidatorStruct {
     private DataValidator validator;
     /** listener. */
     private DataListener listener;
-    /** temporary. */
-    private boolean temporary;
 
     /**
      * Constructor.
      * @param validator Data validator.
      * @param listener Data listener.
-     * @param temporary Should the validator be removed after the first event.
      */
-    public ValidatorStruct(DataValidator validator, DataListener listener, boolean temporary) {
+    public ValidatorStruct(DataValidator validator, DataListener listener) {
         this.validator = validator;
         this.listener = listener;
-        this.temporary = temporary;
     }
 
     /**
@@ -37,13 +33,5 @@ public class ValidatorStruct {
      */
     public DataListener getListener() {
         return listener;
-    }
-
-    /**
-     * Is the validator temporary.
-     * @return true if the validator is temporary, false otherwise.
-     */
-    public boolean isTemporary() {
-        return temporary;
     }
 }

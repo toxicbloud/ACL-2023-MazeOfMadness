@@ -19,8 +19,8 @@ public class NetworkInfos {
     /** Data buffer cache. */
     private byte[] dataBufferCache = new byte[0];
 
-    /** Temp. */
-    private int temp;
+    /** Network manager id. */
+    private int id;
 
     /**
      * Constructor.
@@ -122,18 +122,18 @@ public class NetworkInfos {
     }
 
     /**
-     * Get the temp.
-     * @return Temp.
+     * Get the network id.
+     * @return network id.
      */
-    public int getTemp() {
-        return temp;
+    public int getId() {
+        return id;
     }
 
     /**
-     * Set the temp.
-     * @param temp Temp.
+     * Set the network id.
+     * @param id network id.
      */
-    public void setTemp(int temp) {
-        this.temp = temp;
+    public void setId(int id) {
+        this.id = id;
     }
 }

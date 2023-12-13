@@ -7,11 +7,15 @@ public class NetworkServer extends NetworkManagerTCP {
     /** Port number. */
     public static final int PORT = 5621;
 
+    /** Client ID counter. */
+    private int clientIdCounter = 1;
+
     /**
      * Constructor.
      */
     public NetworkServer() {
         super(PORT);
+        this.setId(0);
     }
 
     /**
@@ -35,5 +39,13 @@ public class NetworkServer extends NetworkManagerTCP {
         for (NetworkInfos client : this.getClients()) {
             this.sendData(data, client);
         }
+    }
+
+    /**
+     * Get the next client id.
+     * @return Next client id.
+     */
+    public int getNextClientId() {
+        return clientIdCounter++;
     }
 }

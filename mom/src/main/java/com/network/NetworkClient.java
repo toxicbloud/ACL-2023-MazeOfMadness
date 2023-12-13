@@ -13,6 +13,7 @@ public class NetworkClient extends NetworkManagerTCP {
      */
     public NetworkClient() {
         this("localhost", NetworkServer.PORT);
+        this.setId(-1);
     }
 
     /**
@@ -31,6 +32,7 @@ public class NetworkClient extends NetworkManagerTCP {
     public NetworkClient(String ip, int port) {
         super(0);
         this.serverInfos = new NetworkInfos(port, ip, true);
+        this.serverInfos.setId(0);
         this.addClient(serverInfos);
     }
 

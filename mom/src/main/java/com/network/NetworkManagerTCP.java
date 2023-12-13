@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +13,6 @@ import java.util.List;
  * (server and client)
  */
 public abstract class NetworkManagerTCP {
-    /** Packet size. */
-    public static final int PACKET_SIZE = 1024;
-
-    /** Max packets per update. */
-    private static final int MAX_PAQUETS_PER_UPDATE = 100;
-
     /** Server socket. */
     private ServerSocket socket;
 
@@ -34,6 +27,9 @@ public abstract class NetworkManagerTCP {
 
     /** Clients list. */
     private List<NetworkInfos> clients = new ArrayList<>();
+
+    /** Network object id. */
+    private int id;
 
     protected NetworkManagerTCP(int port) {
         try {
@@ -121,11 +117,11 @@ public abstract class NetworkManagerTCP {
      * @param paquet Packet.
      * @return Client socket.
      */
-    private Socket getPaquetClient(DatagramPacket paquet) {
+    private NetworkInfos getPaquetClient(DatagramPacket paquet) {
         for (NetworkInfos client : clients) {
             if (client.getSocket().getInetAddress().equals(paquet.getAddress())
                 && client.getSocket().getPort() == paquet.getPort()) {
-                return client.getSocket();
+                return client;
             }
         }
         return null;
@@ -136,7 +132,7 @@ public abstract class NetworkManagerTCP {
      */
     private void processPackets() {
         for (DatagramPacket packet : getReceivedPackets()) {
-            NetworkInfos infos = new NetworkInfos(getPaquetClient(packet));
+            NetworkInfos infos = getPaquetClient(packet);
             byte[] data = packet.getData();
 
             this.onDataReceived(data, infos);
@@ -144,18 +140,23 @@ public abstract class NetworkManagerTCP {
             ValidatorStruct[] validators = dataValidators.toArray(new ValidatorStruct[0]);
             for (ValidatorStruct validator : validators) {
                 if (validator.getValidator().isValid(data, infos)) {
-                    validator.getListener().onDataReceived(data, infos);
-                    if (validator.isTemporary()) {
+                    boolean shouldRemove = validator.getListener().onDataReceived(data, infos);
+                    if (shouldRemove) {
                         toRemove.add(validator);
                     }
                 }
             }
             dataValidators.removeAll(toRemove);
+            List<DataListener> toRemoveListeners = new ArrayList<>();
             for (DataListener listener : getDataListeners()) {
                 if (listener != null) {
-                    listener.onDataReceived(data, infos);
+                    boolean shouldRemove = listener.onDataReceived(data, infos);
+                    if (shouldRemove) {
+                        toRemoveListeners.add(listener);
+                    }
                 }
             }
+            dataListeners.removeAll(toRemoveListeners);
         }
     }
 
@@ -194,7 +195,7 @@ public abstract class NetworkManagerTCP {
      * @param listener Data listener.
      */
     public void when(DataValidator validator, DataListener listener) {
-        this.dataValidators.add(new ValidatorStruct(validator, listener, false));
+        this.dataValidators.add(new ValidatorStruct(validator, listener));
     }
 
     /**
@@ -203,7 +204,7 @@ public abstract class NetworkManagerTCP {
      * @param listener Data listener.
      */
     public void once(DataValidator validator, DataListener listener) {
-        this.dataValidators.add(new ValidatorStruct(validator, listener, true));
+        this.dataValidators.add(new ValidatorStruct(validator, listener));
     }
 
     /**
@@ -255,5 +256,21 @@ public abstract class NetworkManagerTCP {
         } catch (IOException e) {
             System.out.println("Error closing socket: " + e.getMessage());
         }
+    }
+
+    /**
+     * getId.
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * setId.
+     * @param id id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

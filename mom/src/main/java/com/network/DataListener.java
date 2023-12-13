@@ -10,6 +10,7 @@ public interface DataListener extends EventListener {
      * Called when data is received.
      * @param data Data received.
      * @param infos Network infos.
+     * @return True if the listener should be removed.
      */
-    void onDataReceived(byte[] data, NetworkInfos infos);
+    boolean onDataReceived(byte[] data, NetworkInfos infos);
 }

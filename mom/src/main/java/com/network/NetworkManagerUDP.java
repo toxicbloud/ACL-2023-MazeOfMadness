@@ -36,6 +36,9 @@ public abstract class NetworkManagerUDP {
     /** Clients list. */
     private List<NetworkInfos> clients = new ArrayList<>();
 
+    /** Network object id. */
+    private int id;
+
     protected NetworkManagerUDP(int port) {
         try {
             this.socket = new DatagramSocket(port);
@@ -101,18 +104,23 @@ public abstract class NetworkManagerUDP {
             ValidatorStruct[] validators = dataValidators.toArray(new ValidatorStruct[0]);
             for (ValidatorStruct validator : validators) {
                 if (validator.getValidator().isValid(data, infos)) {
-                    validator.getListener().onDataReceived(data, infos);
-                    if (validator.isTemporary()) {
+                    boolean shouldRemove = validator.getListener().onDataReceived(data, infos);
+                    if (shouldRemove) {
                         toRemove.add(validator);
                     }
                 }
             }
             dataValidators.removeAll(toRemove);
+            List<DataListener> toRemoveListeners = new ArrayList<>();
             for (DataListener listener : getDataListeners()) {
                 if (listener != null) {
-                    listener.onDataReceived(data, infos);
+                    boolean shouldRemove = listener.onDataReceived(data, infos);
+                    if (shouldRemove) {
+                        toRemoveListeners.add(listener);
+                    }
                 }
             }
+            dataListeners.removeAll(toRemoveListeners);
         }
     }
 
@@ -165,20 +173,11 @@ public abstract class NetworkManagerUDP {
 
     /**
      * Listen for all events validated by the validator.
-     * @param validator Data validator.
-     * @param listener Data listener.
+     * @param validator Data validator. (should return true if the data should be handled by the listener)
+     * @param listener Data listener. (should return true if the listener should be removed after the event)
      */
     public void when(DataValidator validator, DataListener listener) {
-        this.dataValidators.add(new ValidatorStruct(validator, listener, false));
-    }
-
-    /**
-     * Listen for one event validated by the validator.
-     * @param validator Data validator.
-     * @param listener Data listener.
-     */
-    public void once(DataValidator validator, DataListener listener) {
-        this.dataValidators.add(new ValidatorStruct(validator, listener, true));
+        this.dataValidators.add(new ValidatorStruct(validator, listener));
     }
 
     /**
@@ -226,5 +225,21 @@ public abstract class NetworkManagerUDP {
      */
     public void shutdown() {
         this.socket.close();
+    }
+
+    /**
+     * getId.
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * setId.
+     * @param id id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

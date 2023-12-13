@@ -35,6 +35,8 @@ public class Maze implements Evolvable {
     private Vector3 spawnPoint;
     /** Temporary entities (only drew for the current frame). */
     private List<Entity> temporaryEntities = new ArrayList<>();
+    /** Other entities (other players for example). */
+    private List<Entity> otherEntities = new ArrayList<>();
 
     /**
      * Maze constructor.
@@ -247,6 +249,14 @@ public class Maze implements Evolvable {
         }
     }
 
+    /**
+     * Add an entity to the maze.
+     * @param e The entity to add.
+     */
+    public void addEntity(Entity e) {
+        this.otherEntities.add(e);
+    }
+
     @Override
     public void update() {
         for (Monster m : this.monsters) {
@@ -271,6 +281,7 @@ public class Maze implements Evolvable {
         entities.addAll(List.of(this.monsters));
         entities.addAll(List.of(this.tiles));
         entities.addAll(List.of(this.items));
+        entities.addAll(otherEntities);
         entities.addAll(temporaryEntities);
         if (Game.getInstance().getPlayer() != null) {
             entities.add(0, Game.getInstance().getPlayer());

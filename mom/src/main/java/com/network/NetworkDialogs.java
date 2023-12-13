@@ -3,6 +3,7 @@ package com.network;
 import com.game.Entity;
 import com.game.Item;
 import com.game.Level;
+import com.game.Player;
 import com.game.exceptions.InvalidItemException;
 import com.game.exceptions.InvalidMonsterException;
 import com.game.exceptions.InvalidSchemaException;
@@ -48,9 +49,14 @@ public final class NetworkDialogs {
     public static final byte ENTITY_MST = 32;
     /** ENTITY_ITM code. */
     public static final byte ENTITY_ITM = 33;
+    /** ENTITY_PLR code. */
+    public static final byte ENTITY_PLR = 34;
 
     /** GAME_STR code. */
     public static final byte GAME_STR = 42;
+
+    /** GAME_RDY code. */
+    public static final byte GAME_RDY = 43;
 
     /** Hidden constructor. */
     private NetworkDialogs() {}
@@ -132,6 +138,20 @@ public final class NetworkDialogs {
     }
 
     /**
+     * Get the encoded Player value from the data array.
+     * @param p Player.
+     * @param offset Offset.
+     * @return Encoded Player value.
+     */
+    public static byte[] encodePlayerValue(Player p, int offset) {
+        String json = p.toJSON().toString();
+        byte[] data = new byte[json.length() + 1 + offset];
+        data[offset] = ENTITY_PLR;
+        encodeStringValue(json, data, 1 + offset);
+        return data;
+    }
+
+    /**
      * Get the encoded Tile value from the data array.
      * @param t Tile.
      * @param offset Offset.
@@ -173,6 +193,26 @@ public final class NetworkDialogs {
             return i;
         } catch (InvalidSchemaException | InvalidItemException e) {
             System.out.println("Error parsing item: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Get the encoded Player from the data array.
+     * @param data Data array.
+     * @param offset Offset.
+     * @return Player.
+     */
+    public static Player getPlayerFromData(byte[] data, int offset) {
+        try {
+            JSONObject obj = new JSONObject(getStringValue(data, offset));
+            Level.verifyJSON(obj, "position");
+            Level.verifyJSON(obj, "health");
+            Player p = new Player(Level.parsePosition(obj.getJSONObject("position")));
+            p.setHealth(obj.getInt("health"));
+            return p;
+        } catch (InvalidSchemaException e) {
+            System.out.println("Error parsing player: " + e.getMessage());
             return null;
         }
     }

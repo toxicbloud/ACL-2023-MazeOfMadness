@@ -13,19 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
-import com.game.Entity;
-import com.game.Game;
-import com.game.Item;
-import com.game.Maze;
-import com.game.generators.MazeFactory;
-import com.game.monsters.Monster;
-import com.game.tiles.Tile;
-import com.network.GameSceneClient;
-import com.network.GameSceneServer;
 import com.network.MultiManager;
-import com.network.NetworkClient;
-import com.network.NetworkDialogs;
-import com.network.NetworkMazeBuilder;
 import com.network.NetworkServer;
 
 /**
@@ -233,14 +221,13 @@ public class MultiScene extends Scene {
                 btnTable.clear();
                 btnTable.add(playBtn).right();
 
-                Maze maze = MazeFactory.createMaze();
-                server = createNetworkServer(ip, port, maze);
+                manager.createServer(ip, port);
 
                 playBtn.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         buttonClick.play();
-                        startServerGame(server, maze);
+                        manager.startServerGame();
                     }
                 });
             }
@@ -289,13 +276,14 @@ public class MultiScene extends Scene {
                 buttonClick.play();
                 mainTable.clear();
                 mainTable.setSkin(skin);
-                setTextStatus("Connecting to server...");
+                setTextStatus("Connecting to server...", false);
 
                 try {
                     int portNbr = Integer.parseInt(portField.getText());
-                    listenForServer(ipField.getText(), portNbr);
+                    manager.addLogListener(MultiScene.this::setTextStatus);
+                    manager.createClient(ipField.getText(), portNbr);
                 } catch (NumberFormatException e) {
-                    setTextStatus("Error : Invalid port number !");
+                    setTextStatus("Connecting to server... Error", true);
                 }
             }
         });
@@ -315,155 +303,5 @@ public class MultiScene extends Scene {
         if (text != null) {
             debugText.add(text).center().row();
         }
-    }
-
-    private void setTextStatus(String text) {
-        setTextStatus(text, false);
-    }
-
-    private NetworkServer createNetworkServer(String ip, int port, Maze maze) {
-        NetworkServer serv = new NetworkServer(port);
-        serv.when(
-            (data, infos) -> {
-                return data.length > 0 && data[0] == NetworkDialogs.REGISTER_RQT;
-            },
-            (data, infos) -> {
-                serv.sendData(new byte[]{NetworkDialogs.REGISTER_RSP}, infos);
-            }
-        );
-        serv.when(
-            (data, infos) -> {
-                return data.length > 0 && data[0] == NetworkDialogs.MAZE_RQT;
-            },
-            (data, infos) -> {
-                int mazeDataLength =
-                    maze.getTiles().length
-                    + maze.getMonsters().length
-                    + maze.getItems().length;
-                byte[] mazeDataNbPaquets = new byte[]{NetworkDialogs.MAZE_LGH, 0, 0};
-                NetworkDialogs.encodeIntValue(mazeDataLength, mazeDataNbPaquets, 1);
-                serv.sendData(mazeDataNbPaquets, infos);
-
-                for (Tile t : maze.getTiles()) {
-                    byte[] tileData = NetworkDialogs.encodeTileValue(t, 1);
-                    tileData[0] = NetworkDialogs.MAZE_ADD;
-                    serv.sendData(tileData, infos);
-                }
-                for (Monster m : maze.getMonsters()) {
-                    byte[] monsterData = NetworkDialogs.encodeMonsterValue(m, 1);
-                    monsterData[0] = NetworkDialogs.MAZE_ADD;
-                    serv.sendData(monsterData, infos);
-                }
-                for (Item i : maze.getItems()) {
-                    byte[] itemData = NetworkDialogs.encodeItemValue(i, 1);
-                    itemData[0] = NetworkDialogs.MAZE_ADD;
-                    serv.sendData(itemData, infos);
-                }
-            }
-        );
-        return serv;
-    }
-
-    private void startServerGame(NetworkServer serv, Maze m) {
-        Game.getInstance().loadFrom(m);
-
-        serv.sendData(new byte[]{NetworkDialogs.GAME_STR});
-        Window.getInstance().setScene(new GameSceneServer(
-            Game.getInstance().getMaze(),
-            serv));
-    }
-
-    private void listenForServer(String ip, int port) {
-        System.out.println("Listening for server on " + ip + ":" + port);
-        this.client = new NetworkClient(ip, port);
-
-        setTextStatus("Registering ...");
-        if (!this.client.sendData(new byte[]{NetworkDialogs.REGISTER_RQT})) {
-            setTextStatus("Error : Failed to register !");
-        }
-
-        this.client.once(
-            (data, infos) -> {
-                return data.length > 0 && data[0] == NetworkDialogs.REGISTER_RSP;
-            },
-            (data, infos) -> {
-                setTextStatus("Registering ... OK", true);
-                askForMaze();
-            }
-        );
-    }
-
-    /**
-     * Ask the server for the maze data.
-     */
-    private void askForMaze() {
-        setTextStatus("Getting maze data ...");
-        if (!this.client.sendData(new byte[]{NetworkDialogs.MAZE_RQT})) {
-            setTextStatus("Error : Failed to get maze data !");
-        }
-
-        NetworkMazeBuilder builder = new NetworkMazeBuilder();
-        this.client.once(
-            (data, infos) -> {
-                return data.length > 2 && data[0] == NetworkDialogs.MAZE_LGH;
-            },
-            (data, infos) -> {
-                builder.setDataLength(NetworkDialogs.getIntValue(data, 1));
-                infos.setTemp(0);
-            }
-        );
-        this.client.when(
-            (data, infos) -> {
-                if (data[0] != NetworkDialogs.MAZE_ADD) {
-                    System.out.println("Invalid packet type (" + data[0] + ") | " + new String(data));
-                }
-                return data.length > 2 && data[0] == NetworkDialogs.MAZE_ADD;
-            },
-            (data, infos) -> {
-                Entity e = NetworkDialogs.getEntityFromData(data, 1);
-                if (e == null) {
-                    System.out.println("Error getting entity from data");
-                    return;
-                }
-                builder.addEntity(e);
-                int nbEntities = builder.getEntitiesNumber();
-                int totalNb = builder.getDataLength();
-                int percent = nbEntities * NetworkDialogs.HUNDRED / totalNb;
-                setTextStatus("Getting maze data ... " + percent + "%", true);
-
-                if (nbEntities == totalNb) {
-                    waitForGameStart(builder);
-                }
-            }
-        );
-    }
-
-    /**
-     * Wait for the game to start.
-     * @param builder Maze builder.
-     */
-    private void waitForGameStart(NetworkMazeBuilder builder) {
-        setTextStatus("Getting maze data ... OK", true);
-        setTextStatus("Waiting for game to start ...");
-
-        this.client.once(
-            (data, infos) -> {
-                return data.length > 0 && data[0] == NetworkDialogs.GAME_STR;
-            },
-            (data, infos) -> {
-                setTextStatus("Waiting for game to start ... OK", true);
-                startClientGame(builder);
-            }
-        );
-    }
-
-    private void startClientGame(NetworkMazeBuilder builder) {
-        System.out.println("Starting network game on client");
-
-        Maze maze = builder.build();
-        Game.getInstance().loadFrom(maze);
-        Window.getInstance().setScene(new GameSceneClient(
-            Game.getInstance().getMaze(),
-            this.client));
     }
 }

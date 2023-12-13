@@ -103,4 +103,12 @@ public class Player extends Living {
         }
         return enemiesInFOV;
     }
+
+    /**
+     * Returns a JSON representation of the player.
+     * @return JSON representation of the player.
+     */
+    public String toJSON() {
+        return "{\"position\": " + this.getPosition().toJSON() + ", \"health\": " + this.getHealth() + "}";
+    }
 }
