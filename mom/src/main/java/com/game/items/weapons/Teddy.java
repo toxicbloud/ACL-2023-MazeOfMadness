@@ -16,6 +16,13 @@ public class Teddy extends Weapon {
 
     /**
      * Teddy constructor.
+     */
+    public Teddy() {
+        super(SPRITE_SHIFT * SPRITE_SIZE, new Vector3(), ItemType.TEDDY);
+    }
+
+    /**
+     * Teddy constructor.
      *
      * @param position Position of the item inside the maze.
      */

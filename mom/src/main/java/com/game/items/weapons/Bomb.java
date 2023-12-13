@@ -10,6 +10,13 @@ import com.game.Player;
 public class Bomb extends Weapon {
     /**
      * Bomb constructor.
+     */
+    public Bomb() {
+        super(1 * SPRITE_SIZE, new Vector3(), ItemType.BOMB);
+    }
+
+    /**
+     * Bomb constructor.
      *
      * @param position The position of the bomb in the maze.
      */

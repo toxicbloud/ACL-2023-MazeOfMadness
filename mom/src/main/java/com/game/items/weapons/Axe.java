@@ -15,6 +15,13 @@ public class Axe extends Weapon {
 
     /**
      * Axe constructor.
+     */
+    public Axe() {
+        super(SPRITE_SHIFT * SPRITE_SIZE, new Vector3(), ItemType.AXE);
+    }
+
+    /**
+     * Axe constructor.
      *
      * @param position Position of the item inside the maze.
      */

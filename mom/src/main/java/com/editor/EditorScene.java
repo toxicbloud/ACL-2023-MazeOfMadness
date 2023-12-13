@@ -32,6 +32,7 @@ import com.game.WorldItem;
 import com.game.items.potions.HealthPotion;
 import com.game.items.potions.SpeedPotion;
 import com.game.items.potions.StrengthPotion;
+import com.game.items.weapons.*;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
@@ -118,13 +119,18 @@ public class EditorScene extends GameScene {
             new GroundRock(),
             new WallRock(),
             new End(),
-            new Next(),
             new GroundSpikes(),
             new GroundWater(),
             new GroundLava(),
             new HealthPotion(),
             new StrengthPotion(),
             new SpeedPotion(),
+            new Axe(),
+            new Bomb(),
+            new Bow(),
+            new Sword(),
+            new Teddy(),
+            new Trident(),
             new Zombie(),
             new Ghost(),
             new Player()

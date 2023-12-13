@@ -14,6 +14,13 @@ public class Bow extends Weapon {
     private static final int SPRITE_SHIFT = 3;
 
     /**
+     * Bow constructor.
+     */
+    public Bow() {
+        super(SPRITE_SHIFT * SPRITE_SIZE, new Vector3(), ItemType.BOW);
+    }
+
+    /**
      * @param position The position of the bow in the maze.
      */
     public Bow(Vector3 position) {

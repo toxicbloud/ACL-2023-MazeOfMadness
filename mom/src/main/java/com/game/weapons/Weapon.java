@@ -80,6 +80,24 @@ public abstract class Weapon extends Entity {
     }
 
     /**
+     * Weapon constructor.
+     *
+     * @param position        The position of the weapon.
+     * @param damage          The damage amount.
+     * @param cooldown        The cooldown between two attacks.
+     * @param range           The range.
+     * @param hasDoubleDamage If the power of this weapon has been doubled.
+     * @param sprite          The sprite of the weapon.
+     */
+    protected Weapon(Vector3 position, int damage, int cooldown, float range, boolean hasDoubleDamage, Sprite sprite) {
+        super(sprite, position, new Vector3(1, 1, 1));
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.range = range;
+        this.hasDoubleDamage = hasDoubleDamage;
+    }
+
+    /**
      * Get the damage amount.
      *
      * @return The damage amount.

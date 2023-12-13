@@ -254,6 +254,16 @@ public class Level {
         switch (type) {
             case "SWORD":
                 return new com.game.items.weapons.Sword(position);
+            case "AXE":
+                return new com.game.items.weapons.Axe(position);
+            case "BOW":
+                return new com.game.items.weapons.Bow(position);
+            case "BOMB":
+                return new com.game.items.weapons.Bomb(position);
+            case "TRIDENT":
+                return new com.game.items.weapons.Trident(position);
+            case "TEDDY":
+                return new com.game.items.weapons.Teddy(position);
             case "ITEM_HEALTH_POTION":
                 return new HealthPotion(position);
             case "ITEM_STRENGTH_POTION":

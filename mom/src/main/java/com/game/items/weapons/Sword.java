@@ -10,6 +10,13 @@ import com.game.Player;
 public class Sword extends Weapon {
     /**
      * Sword constructor.
+     */
+    public Sword() {
+        super(0, new Vector3(), ItemType.SWORD);
+    }
+
+    /**
+     * Sword constructor.
      *
      * @param position The position of the sword in the maze.
      */

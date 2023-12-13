@@ -9,6 +9,13 @@ import com.game.Player;
  */
 public class Trident extends Weapon {
     /**
+     * Trident constructor.
+     */
+    public Trident() {
+        super(2 * SPRITE_SIZE, new Vector3(), ItemType.TRIDENT);
+    }
+
+    /**
      * Trident item constructor.
      *
      * @param position Position of the item inside the maze.
