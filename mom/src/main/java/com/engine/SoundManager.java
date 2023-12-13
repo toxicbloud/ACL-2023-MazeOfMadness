@@ -14,6 +14,8 @@ public final class SoundManager {
     private static final float ZOMBIE_ATTACK_VOLUME = 0.3f;
     /** Set the zombie's damage sound volume. */
     private static final float ZOMBIE_DAMAGE_VOLUME = 0.25f;
+    /** Set the zombie's ambient sound volume. */
+    private static final float ZOMBIE_AMBIENT_VOLUME = 0.07f;
     /** Set the potion sound volume. */
     private static final float POTION_VOLUME = 0.25f;
     /** Set the win sound volume. */
@@ -129,7 +131,8 @@ public final class SoundManager {
                 zombieDamageSound.setVolume(zombieDamage, ZOMBIE_DAMAGE_VOLUME);
                 break;
             case ZOMBIE_AMBIENT:
-                zombieAmbientSound.loop();
+                long zombieAmbient = zombieAmbientSound.loop();
+                zombieAmbientSound.setVolume(zombieAmbient, ZOMBIE_AMBIENT_VOLUME);
                 break;
             case POTION:
                 long potion = potionSound.play();
