@@ -1,7 +1,5 @@
 package com.game;
 
-import java.util.List;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -11,6 +9,8 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
 import com.renderer.GameScene;
+
+import java.util.List;
 
 /**
  * Living class.

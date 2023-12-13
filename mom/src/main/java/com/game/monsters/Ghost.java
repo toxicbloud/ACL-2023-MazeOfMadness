@@ -6,7 +6,6 @@ import com.engine.utils.Vector3;
 import com.game.Score;
 import com.game.tiles.Tile;
 import com.game.weapons.GhostFist;
-import com.game.weapons.ZombieFist;
 
 /**
  * Ghost class.
