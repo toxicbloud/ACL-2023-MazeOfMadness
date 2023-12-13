@@ -6,12 +6,12 @@ import com.game.exceptions.InvalidItemException;
 import com.game.exceptions.InvalidMonsterException;
 import com.game.exceptions.InvalidSchemaException;
 import com.game.exceptions.InvalidTileException;
+import com.game.items.potions.HealthPotion;
+import com.game.items.potions.SpeedPotion;
+import com.game.items.potions.StrengthPotion;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
-import com.game.potions.HealthPotion;
-import com.game.potions.SpeedPotion;
-import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundGrass;
 import com.game.tiles.GroundLava;
@@ -122,7 +122,7 @@ public class Level {
 
         Tile[] tiles;
         Monster[] monsters;
-        Item[] items;
+        WorldItem[] items;
 
         try {
             tiles = parseTiles(mazeJsonObject.getJSONArray("tiles"));
@@ -246,7 +246,7 @@ public class Level {
      * @throws InvalidItemException If the item is invalid.
      * @throws InvalidSchemaException If the JSON object is invalid.
      */
-    public static Item parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
+    public static WorldItem parseItem(JSONObject itemJsonObject) throws InvalidItemException, InvalidSchemaException {
         verifyJSON(itemJsonObject, "type");
         verifyJSON(itemJsonObject, "position");
 
@@ -285,9 +285,9 @@ public class Level {
         return monsters;
     }
 
-    private Item[] parseItems(JSONArray itemsJsonArray)
+    private WorldItem[] parseItems(JSONArray itemsJsonArray)
         throws InvalidItemException, InvalidSchemaException {
-        Item[] items = new Item[itemsJsonArray.length()];
+        WorldItem[] items = new WorldItem[itemsJsonArray.length()];
         for (int i = 0; i < itemsJsonArray.length(); i++) {
             items[i] = parseItem(itemsJsonArray.getJSONObject(i));
         }

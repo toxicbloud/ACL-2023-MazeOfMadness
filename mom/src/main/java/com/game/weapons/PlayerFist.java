@@ -21,10 +21,12 @@ public class PlayerFist extends WeaponFist {
 
     /**
      * PlayerFist constructor.
+     *
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public PlayerFist(boolean hasDoubleDamage) {
-        super(PlayerFist.DAMAGE * 2, PlayerFist.ATTACK_COOLDOWN, hasDoubleDamage, ItemType.WEAPON_PLAYER_FIST);
+        super(hasDoubleDamage ? PlayerFist.DAMAGE * 2 : PlayerFist.DAMAGE, PlayerFist.ATTACK_COOLDOWN,
+                hasDoubleDamage, ItemType.WEAPON_PLAYER_FIST);
     }
 
     @Override

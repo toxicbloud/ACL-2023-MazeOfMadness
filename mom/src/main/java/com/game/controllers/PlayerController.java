@@ -22,8 +22,6 @@ public class PlayerController extends Controller implements EventVisitor {
     private static final int KEY_DOWN_INDEX = 3;
     /** To know if the player attacks or no. */
     private boolean attack;
-    /** The last time when the player attacks. */
-    private long lastAttackTime;
     /** To know if the player tries to interact with an item or not. */
     private boolean interact;
 
@@ -45,21 +43,19 @@ public class PlayerController extends Controller implements EventVisitor {
     @Override
     public void update() {
         Entity target = getTarget();
+        ((Player) target).getWeapon().setPosition(target.getPosition());
         Vector2 normalized = direction.normalize();
         target.moveBy(
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
-        if (attack && Time.getInstance().getCurrentTime() - lastAttackTime
-            > ((Player) target).getWeapon().getCooldown()) {
+
+        if (attack) {
             List<Living> enemies = ((Player) target).findEnemies();
-            for (Living enemy : enemies) {
-                ((Player) target).getWeapon().setPosition(target.getPosition());
-                ((Player) target).getWeapon().attack(enemy);
-            }
-            lastAttackTime = Time.getInstance().getCurrentTime();
+            ((Player) target).getWeapon().attack(enemies);
         }
+
         if (interact) {
-            Item item = ((Player) getTarget()).findItemInRange();
+            WorldItem item = ((Player) getTarget()).findItemInRange();
             if (item != null) {
                 item.interact((Player) getTarget());
                 Game.getInstance().getMaze().removeItem(item);

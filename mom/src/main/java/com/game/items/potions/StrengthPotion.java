@@ -1,4 +1,4 @@
-package com.game.potions;
+package com.game.items.potions;
 
 import com.engine.utils.Vector3;
 import com.game.ItemType;

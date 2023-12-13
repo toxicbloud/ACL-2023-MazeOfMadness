@@ -25,7 +25,8 @@ public class ZombieFist extends WeaponFist {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public ZombieFist(boolean hasDoubleDamage) {
-        super(ZombieFist.DAMAGE * 2, ZombieFist.ATTACK_COOLDOWN, hasDoubleDamage, ItemType.WEAPON_ZOMBIE_FIST);
+        super(hasDoubleDamage ? ZombieFist.DAMAGE * 2 : ZombieFist.DAMAGE, ZombieFist.ATTACK_COOLDOWN, hasDoubleDamage,
+                ItemType.WEAPON_ZOMBIE_FIST);
     }
 
     @Override

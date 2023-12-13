@@ -23,18 +23,18 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Game;
-import com.game.Item;
 import com.game.Level;
 import com.game.LevelLoader;
 import com.game.LevelSaver;
 import com.game.Maze;
 import com.game.Player;
+import com.game.WorldItem;
+import com.game.items.potions.HealthPotion;
+import com.game.items.potions.SpeedPotion;
+import com.game.items.potions.StrengthPotion;
 import com.game.monsters.Ghost;
 import com.game.monsters.Monster;
 import com.game.monsters.Zombie;
-import com.game.potions.HealthPotion;
-import com.game.potions.SpeedPotion;
-import com.game.potions.StrengthPotion;
 import com.game.tiles.End;
 import com.game.tiles.GroundLava;
 import com.game.tiles.GroundRock;
@@ -466,7 +466,7 @@ public class EditorScene extends GameScene {
         for (Monster m : maze.getMonsters()) {
             this.mazeEntities.add(m);
         }
-        for (Item i : maze.getItems()) {
+        for (WorldItem i : maze.getItems()) {
             this.mazeEntities.add(i);
         }
 

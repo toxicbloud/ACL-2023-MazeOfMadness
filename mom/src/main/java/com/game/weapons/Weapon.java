@@ -2,25 +2,32 @@ package com.game.weapons;
 
 import com.engine.Sprite;
 import com.engine.Texture;
+import com.engine.utils.Time;
 import com.engine.utils.Vector3;
-import com.game.Item;
 import com.game.ItemType;
 import com.game.Living;
 import com.game.Player;
+import com.game.WorldItem;
+
+import java.util.List;
 
 /**
  * Weapon class.
  * This is the base class for all weapons.
  */
-public abstract class Weapon extends Item {
+public abstract class Weapon extends WorldItem {
     /** Weapon damage amount. */
     private int damage;
     /** Weapon cooldown. */
     private int cooldown;
+    /** Last attack time. */
+    private long lastAttackTime;
     /** Weapon range. */
     private float range;
     /** If the weapon's damage has been multiplied by a potion. */
     private final boolean hasDoubleDamage;
+    /** The player that picked up the weapon. */
+    private Player owner;
 
     /**
      * Weapon constructor.
@@ -105,17 +112,54 @@ public abstract class Weapon extends Item {
     }
 
     /**
+     * handle the cooldown of the weapon.
+     *
+     * @return true if the cooldown is over, false otherwise.
+     */
+    protected boolean handleCooldown() {
+        long currentTime = Time.getInstance().getCurrentTime();
+        if (currentTime - this.lastAttackTime < this.cooldown) {
+            return false;
+        }
+        this.lastAttackTime = currentTime;
+        return true;
+    }
+
+    /**
      * Attack a living entity.
      *
      * @param living The living entity to attack.
      * @return Whether the attack was successful.
      */
     public boolean attack(Living living) {
+        if (!handleCooldown()) {
+            return false;
+        }
         if (this.distance(living) > this.range) {
             return false;
         }
         living.takeDamage(this.damage);
         return true;
+    }
+
+    /**
+     * Attack a list of living entities.
+     *
+     * @param livingList The list of living entities to attack.
+     * @return Whether the attack was successful.
+     */
+    public boolean attack(List<Living> livingList) {
+        if (!handleCooldown()) {
+            return false;
+        }
+        boolean successful = false;
+        for (Living l : livingList) {
+            if (this.distance(l) <= this.range) {
+                l.takeDamage(this.damage);
+                successful = true;
+            }
+        }
+        return successful;
     }
 
     /**
@@ -144,6 +188,12 @@ public abstract class Weapon extends Item {
 
     @Override
     public void interact(Player player) {
+        this.owner = player;
+        player.setWeapon(this);
+    }
+
+    protected Living getOwner() {
+        return owner;
     }
 
 }
