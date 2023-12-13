@@ -202,6 +202,9 @@ public class MultiManager {
                 for (Monster m : maze.getMonsters()) {
                     new NetworkEntityController(m, client);
                 }
+                for (WorldItem i : maze.getItems()) {
+                    new NetworkEntityController(i, client);
+                }
                 Game.getInstance().loadFrom(maze);
                 Window.getInstance().setScene(new GameSceneClient(maze, client));
                 return true;

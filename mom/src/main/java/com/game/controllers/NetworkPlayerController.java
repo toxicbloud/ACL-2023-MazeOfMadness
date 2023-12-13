@@ -3,6 +3,7 @@ package com.game.controllers;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.Level;
+import com.game.Living;
 import com.game.Player;
 import com.network.NetworkDialogs;
 import com.network.NetworkManagerTCP;
@@ -33,6 +34,9 @@ public class NetworkPlayerController extends Controller {
                 Vector3 pos = getTarget().getPosition();
                 Vector3 pos2 = Level.parsePosition(json.getJSONObject("position"));
                 getTarget().moveBy(new Vector2(pos2.x - pos.x, pos2.y - pos.y));
+            }
+            if (Level.verifyJSON(json, "health") && getTarget() instanceof Living) {
+                ((Living) getTarget()).setHealth(json.getInt("health"));
             }
             return false;
         });

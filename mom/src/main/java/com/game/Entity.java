@@ -10,6 +10,8 @@ import com.game.tiles.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 /***
  * Entity class.
  * This is the base class for all entities.
@@ -356,4 +358,10 @@ public abstract class Entity implements Evolvable {
      * Remove the entity from the game.
      */
     protected abstract void remove();
+
+    /**
+     * Returns JSON representation of the entity.
+     * @return JSON representation of the entity.
+     */
+    public abstract JSONObject toJSON();
 }

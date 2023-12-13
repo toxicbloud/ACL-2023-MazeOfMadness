@@ -3,6 +3,7 @@ package com.network;
 import com.game.Entity;
 import com.game.Level;
 import com.game.Player;
+import com.game.Score;
 import com.game.WorldItem;
 import com.game.monsters.Monster;
 import com.game.tiles.Tile;
@@ -53,9 +54,12 @@ public final class NetworkDialogs {
 
     /** GAME_STR code. */
     public static final byte GAME_STR = 42;
-
     /** GAME_RDY code. */
     public static final byte GAME_RDY = 43;
+    /** GAME_SCR code. */
+    public static final byte GAME_SCR = 44;
+    /** GAME_END code. */
+    public static final byte GAME_END = 45;
 
     /** Hidden constructor. */
     private NetworkDialogs() {}
@@ -109,7 +113,31 @@ public final class NetworkDialogs {
     }
 
     /**
-     * Get the encoded Monster value from the data array.
+     * Encode an Entity value into a byte array.
+     * @param e Entity.
+     * @param offset Offset.
+     * @return Encoded Entity value.
+     */
+    public static byte[] encodeEntityValue(Entity e, int offset) {
+        String json = e.toJSON().toString();
+        byte[] data = new byte[json.length() + 1 + offset];
+        if (e instanceof Tile) {
+            data[offset] = ENTITY_TLE;
+        } else if (e instanceof Monster) {
+            data[offset] = ENTITY_MST;
+        } else if (e instanceof WorldItem) {
+            data[offset] = ENTITY_ITM;
+        } else if (e instanceof Player) {
+            data[offset] = ENTITY_PLR;
+        } else {
+            return null;
+        }
+        encodeStringValue(json, data, 1 + offset);
+        return data;
+    }
+
+    /**
+     * Encode a Monster value into a byte array.
      * @param m Monster.
      * @param offset Offset.
      * @return Encoded Monster value.
@@ -123,7 +151,7 @@ public final class NetworkDialogs {
     }
 
     /**
-     * Get the encoded Item value from the data array.
+     * Encode an Item value into a byte array.
      * @param i Item.
      * @param offset Offset.
      * @return Encoded Item value.
@@ -137,7 +165,7 @@ public final class NetworkDialogs {
     }
 
     /**
-     * Get the encoded Player value from the data array.
+     * Encode a Player value into a byte array.
      * @param p Player.
      * @param offset Offset.
      * @return Encoded Player value.
@@ -151,7 +179,7 @@ public final class NetworkDialogs {
     }
 
     /**
-     * Get the encoded Tile value from the data array.
+     * Encode a Tile value into a byte array.
      * @param t Tile.
      * @param offset Offset.
      * @return Encoded Tile value.
@@ -162,6 +190,29 @@ public final class NetworkDialogs {
         data[offset] = ENTITY_TLE;
         encodeStringValue(json, data, 1 + offset);
         return data;
+    }
+
+    /**
+     * Encode a Score value into a byte array.
+     * @param score Score.
+     * @param offset Offset.
+     * @return Encoded Score value.
+     */
+    public static byte[] encodeScoreValue(Score score, int offset) {
+        String json = score.toJSON().toString();
+        byte[] data = new byte[json.length() + offset];
+        encodeStringValue(json, data, offset);
+        return data;
+    }
+
+    /**
+     * Get the encoded Score value from the data array.
+     * @param data
+     * @param offset
+     * @return Encoded Score value.
+     */
+    public static Score getScoreFromData(byte[] data, int offset) {
+        return new Score(new JSONObject(getStringValue(data, offset)));
     }
 
     /**

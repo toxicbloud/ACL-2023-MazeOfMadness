@@ -282,6 +282,7 @@ public abstract class Living extends Entity {
      * @return Whether the living entity died.
      */
     public boolean takeDamage(int damage) {
+        indicateUpdate();
         this.health -= damage;
         if (this.health < 0) {
             this.health = 0;
@@ -384,6 +385,7 @@ public abstract class Living extends Entity {
      * @param health The health of the entity.
      */
     public void setHealth(int health) {
+        indicateUpdate();
         this.health = health;
     }
 
@@ -393,6 +395,7 @@ public abstract class Living extends Entity {
      * @param speed The speed of the entity.
      */
     public void setSpeed(float speed) {
+        indicateUpdate();
         this.speed = speed;
     }
 
@@ -402,6 +405,7 @@ public abstract class Living extends Entity {
      * @param weapon The weapon of the entity.
      */
     public void setWeapon(Weapon weapon) {
+        indicateUpdate();
         this.weapon = weapon;
     }
 

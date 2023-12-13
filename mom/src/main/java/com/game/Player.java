@@ -133,10 +133,7 @@ public class Player extends Living {
         }
     }
 
-    /**
-     * Returns a JSON representation of the player.
-     * @return JSON representation of the player.
-     */
+    @Override
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 

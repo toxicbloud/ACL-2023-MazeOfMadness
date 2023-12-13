@@ -169,6 +169,7 @@ public class GameScene extends Scene {
         Player p = Game.getInstance().getPlayer();
         if (p != null) {
             if (p.isDead()) {
+                onExitCalled();
                 Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
                 return;
             }
@@ -305,6 +306,7 @@ public class GameScene extends Scene {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                onExitCalled();
                 Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
             }
         });
@@ -334,5 +336,13 @@ public class GameScene extends Scene {
      */
     protected Maze getMaze() {
         return maze;
+    }
+
+    /**
+     * Called when the scene is exited.
+     * (used on network)
+     */
+    protected void onExitCalled() {
+
     }
 }
