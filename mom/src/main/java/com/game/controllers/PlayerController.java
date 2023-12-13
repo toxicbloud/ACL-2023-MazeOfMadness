@@ -4,6 +4,7 @@ import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.game.*;
+import com.game.weapons.Weapon;
 
 import java.util.List;
 
@@ -43,15 +44,26 @@ public class PlayerController extends Controller implements EventVisitor {
     @Override
     public void update() {
         Entity target = getTarget();
-        ((Player) target).getWeapon().setPosition(target.getPosition());
+        if (target == null) {
+            return;
+        }
+        Player player = (Player) target;
+        Weapon weapon = player.getWeapon();
+        if (weapon == null) {
+            return;
+        }
+
+        weapon.setPosition(target.getPosition());
         Vector2 normalized = direction.normalize();
         target.moveBy(
-                new Vector2(normalized.x, normalized.y)
-                        .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
+            new Vector2(normalized.x, normalized.y)
+            .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
 
         if (attack) {
-            List<Living> enemies = ((Player) target).findEnemies();
-            ((Player) target).getWeapon().attack(enemies);
+            List<Living> enemies = player.findEnemies();
+            if (weapon != null) {
+                weapon.attack(enemies);
+            }
         }
 
         if (interact) {
