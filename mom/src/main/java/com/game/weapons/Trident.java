@@ -1,9 +1,14 @@
 package com.game.weapons;
 
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Vector3;
+import com.game.Game;
 import com.game.ItemType;
 import com.game.Living;
 import com.game.Living.Direction;
+
+import java.util.List;
 
 /**
  * Trident class.
@@ -23,12 +28,17 @@ public class Trident extends Weapon {
      * The direction of the trident.
      */
     private Direction direction;
+    /**
+     * The trident sprite when it is not in player's hand.
+     */
+    private Sprite item;
 
     /**
      * Trident constructor.
      */
     public Trident() {
         super(DAMAGE, ATTACK_COOLDOWN, RANGE, ItemType.WEAPON_TRIDENT);
+        this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
     }
 
     /**
@@ -38,6 +48,7 @@ public class Trident extends Weapon {
      */
     public Trident(Vector3 position) {
         super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, ItemType.WEAPON_TRIDENT);
+        this.item = new Sprite(new Texture("images/trident.png"), SPRITE_SIZE, SPRITE_SIZE, 0);
     }
 
     /**
@@ -62,14 +73,29 @@ public class Trident extends Weapon {
         return true;
     }
 
+    @Override
+    public boolean attack(List<Living> livingList) {
+        launch();
+        getOwner().setWeapon(null);
+        return true;
+    }
+
     private void launch() {
         this.isLaunched = true;
         this.direction = getOwner().getDirection();
+        this.getOwner().setWeapon(null);
+        this.isLaunched = false;
+        Game.getInstance().getMaze()
+                .addParticle(new com.game.particles.Trident(getPosition(),
+                        this.getOwner().getDirection(),
+                        this));
     }
 
     @Override
     public void render() {
-        super.render();
+        if (!isLaunched) {
+            super.render();
+        }
     }
 
     @Override
