@@ -1,5 +1,7 @@
 package com.game.weapons;
 
+import com.engine.Sprite;
+import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Game;
 import com.game.Living;
@@ -25,7 +27,8 @@ public class Trident extends Weapon {
      * Trident constructor.
      */
     public Trident() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -34,7 +37,8 @@ public class Trident extends Weapon {
      * @param position The position of the Trident.
      */
     public Trident(Vector3 position) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, false, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     /**
@@ -44,7 +48,8 @@ public class Trident extends Weapon {
      * @param hasDoubleDamage If the weapon's damage have been doubled.
      */
     public Trident(Vector3 position, boolean hasDoubleDamage) {
-        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage);
+        super(position, DAMAGE, ATTACK_COOLDOWN, RANGE, hasDoubleDamage, new Sprite(new Texture(
+                "images/tridentitem.png"), SPRITE_SIZE, SPRITE_SIZE, 0));
     }
 
     @Override
@@ -73,13 +78,6 @@ public class Trident extends Weapon {
         Game.getInstance().getMaze()
                 .addParticle(new com.game.particles.Trident(getPosition(),
                         this.getOwner().getDirection()));
-    }
-
-    @Override
-    public void render() {
-        if (!isLaunched) {
-            super.render();
-        }
     }
 
     @Override

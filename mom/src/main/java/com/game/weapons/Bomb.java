@@ -61,7 +61,7 @@ public class Bomb extends Weapon {
      * Bomb constructor.
      */
     public Bomb() {
-        super(DAMAGE, ATTACK_COOLDOWN, RANGE);
+        super(new Vector3(), DAMAGE, ATTACK_COOLDOWN, RANGE, false, SPRITE);
     }
 
     /**
@@ -109,11 +109,6 @@ public class Bomb extends Weapon {
         this.isThrown = true;
         this.launchTime = Time.getInstance().getCurrentTime();
         Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
-    }
-
-    @Override
-    public void render() {
-        super.render();
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Living;
 import com.game.Player;
+import com.game.controllers.PlayerController;
 
 import java.util.List;
 
@@ -15,6 +16,10 @@ import java.util.List;
  * This is the base class for all weapons.
  */
 public abstract class Weapon extends Entity {
+    /**
+     * number of rows between the second region of the sprite.
+     */
+    private static final int GROUP_ROW_DISTANCE = 4;
     /** Weapon damage amount. */
     private int damage;
     /** Weapon cooldown. */
@@ -179,7 +184,13 @@ public abstract class Weapon extends Entity {
      * Update the weapon.
      */
     public void update() {
-
+        if (owner == null) {
+            return;
+        }
+        this.getSprite().setShift(SPRITE_SIZE
+                *
+                (owner.getDirection().ordinal())
+                + (((PlayerController) (owner.getController())).isAttacking() ? GROUP_ROW_DISTANCE * SPRITE_SIZE : 0));
     }
 
     /**

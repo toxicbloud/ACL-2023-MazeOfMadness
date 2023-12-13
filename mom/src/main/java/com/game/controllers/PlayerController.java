@@ -56,8 +56,8 @@ public class PlayerController extends Controller implements EventVisitor {
         weapon.setPosition(target.getPosition());
         Vector2 normalized = direction.normalize();
         target.moveBy(
-            new Vector2(normalized.x, normalized.y)
-            .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
+                new Vector2(normalized.x, normalized.y)
+                        .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
 
         if (attack) {
             List<Living> enemies = player.findEnemies();
@@ -189,5 +189,14 @@ public class PlayerController extends Controller implements EventVisitor {
         this.direction = new Vector2(
                 (arrows[KEY_RIGHT_INDEX] ? 1 : 0) - (arrows[KEY_LEFT_INDEX] ? 1 : 0),
                 (arrows[KEY_DOWN_INDEX] ? 1 : 0) - (arrows[KEY_UP_INDEX] ? 1 : 0)).normalize();
+    }
+
+    /**
+     * Get if the player is attacking or not.
+     *
+     * @return True if the player is attacking, false otherwise.
+     */
+    public boolean isAttacking() {
+        return attack;
     }
 }
