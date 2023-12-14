@@ -1,5 +1,7 @@
 package com.game.monsters;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
@@ -52,6 +54,14 @@ public class Zombie extends Monster {
     @Override
     public void update() {
         super.update();
+    }
+
+    @Override
+    public boolean takeDamage(int damage) {
+        indicateUpdate();
+        boolean isDead = super.takeDamage(damage);
+        SoundManager.getInstance().play(SoundList.ZOMBIE_DAMAGE);
+        return isDead;
     }
 
     @Override
