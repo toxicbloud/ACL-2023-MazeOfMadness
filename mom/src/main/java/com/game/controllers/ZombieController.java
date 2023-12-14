@@ -1,5 +1,7 @@
 package com.game.controllers;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.utils.Movement;
 import com.engine.utils.PathFinder;
 import com.engine.utils.Time;
@@ -75,6 +77,9 @@ public class ZombieController extends Controller {
         if (zombie.findPlayer(player)
             && Time.getInstance().getCurrentTime() - lastAttackTime > zombie.getWeapon().getCooldown()) {
             zombie.getWeapon().setPosition(target.getPosition());
+            if (player.distance(zombie) < (zombie.getWeapon().getRange())) {
+                SoundManager.getInstance().play(SoundList.ZOMBIE_ATTACK);
+            }
             zombie.getWeapon().attack(player);
             lastAttackTime = Time.getInstance().getCurrentTime();
         }
