@@ -181,6 +181,7 @@ package Game {
     package Items {
 
         package Potions {
+
             abstract Potion {
                 - health: int
                 - strength: int
@@ -223,73 +224,220 @@ package Game {
             }
         }
 
-        package Weapons {
-            abstract Weapon {
-                - attack: int
-                - cooldown: int
-                - range: float
-                - lastAttackTime: long
-                - hasDoubleDamage: boolean
-                # Weapon(int attack, int attack, float range)
-                + attack(living: Living): boolean
-                --
-                # createDoubleDamageWeapon(): Weapon
-            }
-            WorldItem <|-- Weapon
-            Weapon <|-- WeaponFist
-            Weapon <|-- WeaponSword
-            Weapon <|-- WeaponAxe
-            Weapon <|-- WeaponBow
+        package Weapon {
 
-            abstract WeaponFist {
-                # WeaponFist(damage: int, cooldown: int)
+            abstract "Weapon" as WeaponItem {
+                # {static} WEAPONS_TEXTURE: Texture
+                # Weapon(spriteShift: int, position: Vector3, t: ItemType)
+                # abstract equipWeapon(player: Player)
+                + interact(player: Player)
             }
 
-            WeaponFist <|-- PlayerFist
-            WeaponFist <|-- ZombieFist
-            WeaponFist <|-- GhostFist
-            WeaponFist <|-- BossFist
-
-            class PlayerFist {
-                ---
-                + PlayerFist()
-                + createDoubleDamageWeapon(): Weapon
+            class "Sword" as SwordItem {
+                + Sword()
+                + Sword(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class ZombieFist {
-                ---
-                + ZombieFist()
-                + createDoubleDamageWeapon(): Weapon
+            class "Trident" as TridentItem {
+                + Trident()
+                + Trident(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class GhostFist {
-                ---
-                + GhostFist()
+            class "Axe" as AxeItem {
+                + Axe()
+                + Axe(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class BossFist {
-                ---
-                + BossFist()
+            class "Bomb" as BombItem {
+                + Bomb()
+                + Bomb(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class WeaponSword {
-                ---
-                + WeaponSword()
+            class "Teddy" as TeddyItem {
+                + Teddy()
+                + Teddy(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class WeaponAxe {
-                ---
-                + WeaponAxe()
+            class "Bow" as BowItem {
+                + Bow()
+                + Bow(position: Vector3)
+                # equipWeapon(player: Player)
             }
 
-            class WeaponBow {
-                ---
-                + WeaponBow()
-            }
+            WeaponItem <|-- SwordItem
+            WeaponItem <|-- AxeItem
+            WeaponItem <|-- BowItem
+            WeaponItem <|-- TridentItem
+            WeaponItem <|-- BombItem
+            WeaponItem <|-- TeddyItem
+
+            WorldItem <|-- WeaponItem
         }
     }
 
+    package Weapons {
+            
+        abstract Weapon {
+            - attack: int
+            - cooldown: int
+            - range: float
+            - lastAttackTime: long
+            - hasDoubleDamage: boolean
+            ---
+            # Weapon(damage: int, cooldown: int, range: float)
+            # Weapon(damage: int, cooldown: int, range: float, hasDoubleDamage: boolean)
+            # Weapon(position: Vector3, damage: int, cooldown: int, range: float, hasDoubleDamage: boolean)
+            # Weapon(position: Vector3, damage: int, cooldown: int, range: float, hasDoubleDamage: boolean, Sprite sprite)
+            # handleCooldown(): boolean
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            + update()
+            + hasDoubleDamage(): boolean
+            + {abstract} createDoubleDamageWeapon(): Weapon
+            # getOwner(): Living
+            + setOwner(owner: Player)
+            # remove()
+        }
+
+        Entity <|-- Weapon
+        Weapon <|-- WeaponFist
+        Weapon <|-- Sword
+        Weapon <|-- Axe
+        Weapon <|-- Bow
+        Weapon <|-- Trident
+        Weapon <|-- Bomb
+        Weapon <|-- Teddy
+
+        abstract WeaponFist {
+            # WeaponFist(damage: int, cooldown: int)
+            # WeaponFist(damage: int, cooldown: int, hasDoubleDamage: boolean)
+        }
+
+        WeaponFist <|-- PlayerFist
+        WeaponFist <|-- ZombieFist
+        WeaponFist <|-- GhostFist
+
+        class PlayerFist {
+            ---
+            + PlayerFist()
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class ZombieFist {
+            ---
+            + ZombieFist()
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class GhostFist {
+            ---
+            + GhostFist()
+        }
+
+        class Sword {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Sword()
+            + Sword(position: Vector3) 
+            + Sword(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class Axe {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Axe()
+            + Axe(position: Vector3) 
+            + Axe(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class Bow {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Bow()
+            + Bow(position: Vector3) 
+            + Bow(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - shoot()
+            + update()
+        }
+                
+        class Trident {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            - isLaunched: boolean
+            ---
+            + Trident()
+            + Trident(position: Vector3) 
+            + Trident(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - launch()
+            + update()
+        }
+
+        class Bomb {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            - {static} EXPLOSION_DEPTH: int
+            - {static} EXPLOSION_DELAY: int
+            - {static} WAITING_SOUND: Sound
+            - {static} EXPLOSION_SOUND: Sound
+            - {static} SPRITE: Sprite
+            - isLaunched: boolean
+            ---
+            + Bomb()
+            + Bomb(position: Vector3) 
+            + Bomb(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - launch()
+            + update()
+            + setPosition(position: Vector3)
+        }
+
+        class Teddy {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Teddy()
+            + Teddy(position: Vector3) 
+            + Teddy(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+    }
     abstract Living {
+        - {static} PICKUP_RANGE: float
+        - {static} NB_DIRECTION: int
+        - {static} POSITION_HEALTHBAR_SCREEN: Vector3
+        - {static} SIZE_HEALTHBAR_SCREEN: Vector3
+        - {static} DEFAULT_LIVING_HEALTH: int;
+        - {static} RIGHT_DEGREES: double;
+        - {static} UP_DEGREES: double;
+        - {static} LEFT_DEGREES: double;
+        - {static} DOWN_DEGREES: double;
+        - {static} DEGREES: double;
+        - {static} FOV_RADIUS: double;
+        - {static} MAX_RANGE_FOV: double;
         - health: int
         - maxHealth: int 
         - speed : float
@@ -324,33 +472,79 @@ package Game {
     Living <|-- Monster
 
     class Player {
+        + {static} PLAYER_SPEED: float
+        + {static} PLAYER_HEALTH: int
+        - {static} PLAYER_WIDTH: float
+        - {static} PLAYER_SIZE: Vector3
+        - {static} PLAYER_MAX_HEALTH: int;
+        - {static} HEALTH_BAR_COLOR: Color
+        - enteredTile: Tile
+        - defaultWeapon: Weapon
+        ---
+        + Player()
+        + Player(position: Vector3)
+        + update()
+        - handleTileCollision()
         + findEnemies(): List<Living>
+        + setWeapon(Weapon weapon)
+        + render()
+        + toJSON(): JSONObject
     }
 
     package Monsters {
+
         abstract Monster {
+            - {static} FRAMES_NUMBER: int
+            - {static} DEFAULT_POINTS: int
             ---
-            + findPlayer(Living player): boolean
-            + affectScore(Score score): void
+            # Monster(sprite: Sprite, t: MonsterType, health: int, maxHealth: int)
+            # Monster(sprite: Sprite, t: MonsterType, position: Vector3, health: int, maxHealth: int)
+            # Monster(sprite: Sprite, t: MonsterType, position: Vector3, size: Vector3, health: int, maxHealth: int)
+            - setRandomAnimationShift()
+            + update()
+            + findPlayer(player: Living): boolean
+            + toJSON(): JSONObject
+            + affectScore(score: Score)
+            # remove()
         }
         Monster <|-- Zombie
         Monster <|-- Ghost
         Monster <|-- Boss
 
+        Monster "1" -- MonsterType: type
+
         class Zombie {
+            + {static} ZOMBIE_SPEED: float
+            + {static} VIEW_DISTANCE: float
+            + {static} LEAVE_DISTANCE: float
+            - {static} ZOMBIE_HEALTH: int
+            - {static} ZOMBIE_MAX_HEALTH: int
+            - {static} ZOMBIE_POINTS: int
+
             ---
             + Zombie()
-            + affectScore(Score score): void
+            + Zombie(position: Vector3)
+            + update()
+            + affectScore(score: Score)
         }
 
         class Ghost {
+            + {static} GHOST_SPEED: float
+            - {static} GHOST_HEALTH: int
+            - {static} GHOST_MAX_HEALTH: int
+            - {static} GHOST_POINTS: int
             ---
             + Ghost()
+            + Ghost(position: Vector3)
+            + update()
+            + affectScore(score: Score)
+
         }
 
-        class Boss {
-            ---
-            + Boss()
+        enum MonsterType {
+            MONSTER_BOSS
+            MONSTER_ZOMBIE
+            MONSTER_GHOST
         }
     }
 

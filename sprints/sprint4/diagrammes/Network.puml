@@ -1,0 +1,232 @@
+@startuml Network class diagram
+title Network class diagram
+skinparam Linetype ortho
+
+package Network {
+
+    interface DataListener {
+        onDataReceived(data byte[], infos: NetworkInfos): boolean
+    }
+
+    interface DataValidator {
+        isValid(data byte[], infos: NetworkInfos): boolean
+    }
+
+    interface LogListener {
+        onLogging(String data, boolean clearLastLine)
+    }
+
+    abstract NetworkManagerTCP {
+        - socket: ServerSocket 
+        - receivedPackets: List<DatagramPacket>
+        - dataListeners: List<DataListener>
+        - dataValidators: List<ValidatorStruct>
+        - clients: List<NetworkInfos>
+        - id: int
+        ---
+        # NetworkManagerTCP(port: int)
+        + update()
+        - seekForClients()
+        - getPackets()
+        - NetworkInfos getPaquetClient(DatagramPacket paquet:)
+        - processPackets()
+        {abstract} onDataReceived(data: byte[], infos: NetworkInfos)
+        + boolean sendData(data: byte[], target: NetworkInfos)
+        + addDataListener(listener: DataListener)
+        + when(validator: DataValidator, listener: DataListener)
+        + once(validator: DataValidator, listener: DataListener)
+        + getClients(): List<NetworkInfos>
+        + addClient(client: NetworkInfos)
+        + getDataListeners(): List<DataListener>
+        + getReceivedPackets(): List<DatagramPacket>
+        + getPort(): int
+        + shutdown()
+        + getId(): int
+        + setId(id: int)
+    }
+
+    abstract NetworkManagerUDP {
+        + {static} PACKET_SIZE: int
+        - {static} MAX_PAQUETS_PER_UPDATE: int
+        - socket: DatagramSocket
+        - receivedPackets: List<DatagramPacket>
+        - dataListeners: List<DataListener>
+        - dataValidators: List<ValidatorStruct>
+        - clients: List<NetworkInfos>
+        - id: int
+        ---
+        # NetworkManagerUDP(port: int)
+        + update()
+        - getPackets()
+        - processPackets()
+        {abstract} onDataReceived(data: byte[], infos: NetworkInfos)
+        + boolean sendData(data: byte[], target: NetworkInfos)
+        + boolean sendData(data: byte[], address: String, port: int)
+        + addDataListener(listener: DataListener)
+        + when(validator: DataValidator, listener: DataListener)
+        + getSocket(): DatagramSocket
+        + getClients(): List<NetworkInfos>
+        + getDataListeners(): List<DataListener>
+        + getReceivedPackets(): List<DatagramPacket>
+        + getPort(): int
+        + shutdown()
+        + getId(): int
+        + setId(id: int)
+    }
+
+    class GameSceneClient {
+        - client: NetworkClient
+        ---
+        + GameSceneClient(maze: Maze, client: NetworkClient)
+        + update()
+    }
+
+    class GameSceneServer {
+        - server: NetworkServer
+        - players: Player[]
+        - maze: Maze
+        ---
+        + GameSceneServer(maze: Maze, server: NetworkServer)
+        - spawnAllPlayers()
+        - setupServerBehaviors()
+        + update()
+    }
+
+    class MultiManager {
+        - {static} REGISTER_RQT_VALIDATOR: DataValidator
+        - {static} MAZE_DATA_RQT_VALIDATOR: DataValidator
+        - {static} REGISTER_RSP_VALIDATOR: DataValidator
+        - {static} MAZE_LGH_RSP_VALIDATOR: DataValidator
+        - {static} MAZE_DATA_RSP_VALIDATOR: DataValidator
+        - {static} GAME_STR_RSP_VALIDATOR: DataValidator
+        - {static} GAME_RDY_RSP_VALIDATOR: DataValidator
+        - server: NetworkServer
+        - client: NetworkClient
+        - maze: Maze
+        - builder: NetworkMazeBuilder
+        - listeningForData: boolean
+        - logListener: LogListener
+        - serverGameStarted: boolean
+        - nbClientsReady: int
+        ---
+        + MultiManager()
+        + update()
+        + createServer(ip: String, port: int)
+        + createClient(ip: String, port: int)
+        + startServerGame()
+        - registerToServer(): boolean
+        - setupClientBehaviours()
+        - setupServerBehaviours()
+        - createAndLaunchGame()
+        - log(msg: String, clearLastLine: boolean)
+        + addLogListener(listener: LogListener)
+    }
+
+    class NetworkClient {
+        - serverInfos: NetworkInfos
+        ---
+        + NetworkClient()
+        + NetworkClient(ip: String)
+        + NetworkClient(ip: String, port: int)
+        onDataReceived(data: byte[], infos: NetworkInfos)
+        + boolean sendData(data: byte[])
+        + getServerInfos(): NetworkInfos
+    }
+
+    class NetworkDialog {
+        - port: int
+        - ipAddress: String
+        - socket: Socket
+        - dataBufferCache: byte[]
+        - id: int
+        ---
+        + NetworkInfos(port: int, ipAddress: String)
+        + NetworkInfos(port: int, ipAddress: String, createSocket: boolean)
+        + NetworkInfos(socket: Socket)
+        + getPort(): int
+        + getIpAddress(): String
+        + getSocket(): Socket
+        + equals(obj: Object): boolean
+        + hashCode(): int
+        + toString(): String
+        + getDataBufferCache(): byte[]
+        + setDataBufferCache(dataBufferCache: byte[])
+        + getId(): int
+        + setId(id: int)
+    }
+
+    class NetworkInfos {
+        + {static} PACKET_SIZE: int
+        - {static} MAX_PAQUETS_PER_UPDATE: int
+        - socket: DatagramSocket
+        - receivedPackets: List<DatagramPacket>
+        - dataListeners: List<DataListener>
+        - dataValidators: List<ValidatorStruct>
+        - clients: List<NetworkInfos>
+        - id: int
+        ---
+        # NetworkManagerUDP(port: int)
+        + update()
+        - processPackets()
+        {abstract} onDataReceived(data: byte[], infos: NetworkInfos)
+        + sendData(data: byte[], target: NetworkInfos): boolean
+        + sendData(data: byte[], address: String, port: int): boolean
+        + addDataListener(DataListener listener)
+        + when(validator: DataValidator, listener: DataListener)
+        + getSocket(): DatagramSocket
+        + getClients(): List<NetworkInfos>
+        + getDataListeners(): List<DataListener>
+        + getReceivedPackets(): List<DatagramPacket>
+        + getPort(): int
+        + shutdown()
+        + getId(): int
+        + setId(id: int)
+    }
+
+    class NetworkMazeBuilder {
+        - dataLength: int
+        - data: List<Entity>
+        - maze: Maze
+        ---
+        + NetworkMazeBuilder()
+        + setDataLength(l: int)
+        + addEntity(entity: Entity)
+        + getEntitiesNumber(): int
+        + getDataLength(): int
+        + build(): Maze
+    }
+
+    class NetworkServer {
+        + {static} PORT: int
+        - clientIdCounter: int
+        ---
+        + NetworkServer()
+        + NetworkServer(port: int)
+        - onDataReceived(data: byte[], infos: NetworkInfos)
+        + sendData(data: byte[])
+        + getNextClientId(): int
+    }
+
+    class ValidatorStruct {
+        - validator: DataValidator
+        - listener: DataListener
+        ---
+        + ValidatorStruct(validator: DataValidator, listener: DataListener)
+    }
+    
+    EventListener <|-- DataListener
+    EventListener <|-- DataValidator
+    EventListener <|-- LogListener
+
+    NetworkManagerTCP <|-- NetworkClient
+    NetworkManagerTCP <|-- NetworkServer
+}
+
+package renderer {
+    class GameScene
+}
+
+GameScene <|-- GameSceneClient
+GameScene <|-- GameSceneServer
+
+@enduml
