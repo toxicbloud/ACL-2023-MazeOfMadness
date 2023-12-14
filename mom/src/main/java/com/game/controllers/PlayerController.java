@@ -1,5 +1,7 @@
 package com.game.controllers;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.events.*;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
@@ -25,6 +27,8 @@ public class PlayerController extends Controller implements EventVisitor {
     private boolean attack;
     /** To know if the player tries to interact with an item or not. */
     private boolean interact;
+    /** The last time when the player attacks. */
+    private long lastAttackTime;
 
     /** Controller's wanted target direction. (not normalized) */
     private Vector2 direction = new Vector2();
@@ -59,10 +63,13 @@ public class PlayerController extends Controller implements EventVisitor {
                 new Vector2(normalized.x, normalized.y)
                         .mul(Time.getInstance().getDeltaTime() * ((Living) target).getSpeed()));
 
-        if (attack) {
+        if (attack
+            && Time.getInstance().getCurrentTime() - lastAttackTime > player.getWeapon().getCooldown()) {
             List<Living> enemies = player.findEnemies();
             if (weapon != null) {
                 weapon.attack(enemies);
+                lastAttackTime = Time.getInstance().getCurrentTime();
+                SoundManager.getInstance().play(SoundList.PLAYER_ATTACK);
             }
         }
 
@@ -71,6 +78,7 @@ public class PlayerController extends Controller implements EventVisitor {
             if (item != null) {
                 item.interact((Player) getTarget());
                 item.destroy();
+                SoundManager.getInstance().play(SoundList.POTION);
             }
         }
     }
