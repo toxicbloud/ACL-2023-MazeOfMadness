@@ -1,6 +1,8 @@
 package com.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
@@ -91,6 +93,14 @@ public class Player extends Living {
             }
             enteredTile = tile;
         }
+    }
+
+    @Override
+    public boolean takeDamage(int damage) {
+        indicateUpdate();
+        boolean isDead = super.takeDamage(damage);
+        SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
+        return isDead;
     }
 
     /**

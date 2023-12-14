@@ -1,7 +1,5 @@
 package com.game.tiles;
 
-import com.engine.SoundManager;
-import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.utils.Vector3;
 import com.game.Player;
@@ -68,7 +66,6 @@ public class GroundSpikes extends Ground {
         if (currentPlayer != null) {
             // TODO switch to Time singleton method
             if (System.currentTimeMillis() - lastDamageTime > DAMAGE_DELAY) {
-                SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
                 currentPlayer.takeDamage(DAMAGE_AMOUNT);
                 lastDamageTime = System.currentTimeMillis();
             }
