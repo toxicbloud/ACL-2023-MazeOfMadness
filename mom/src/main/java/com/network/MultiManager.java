@@ -10,6 +10,7 @@ import com.game.controllers.NetworkEntityController;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
+import com.game.generators.WeaponSpawner;
 import com.game.monsters.Monster;
 import com.game.tiles.Next;
 import com.game.tiles.NextNetwork;
@@ -140,6 +141,7 @@ public class MultiManager {
         maze.setTiles(tiles);
         MonsterSpawner.spawnMonsters(this.maze);
         PotionSpawner.spawnPotion(this.maze);
+        WeaponSpawner.spawnWeapons(this.maze);
         serverGameStarted = false;
         this.setupServerBehaviours(false, null);
     }

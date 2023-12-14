@@ -196,6 +196,7 @@ public abstract class Weapon extends Entity {
                     : (controller.isMoving()
                         ? GROUP_ROW_DISTANCE * SPRITE_SIZE
                         : 0)));
+        this.getSprite().setFrameCounter(owner.getSprite().getFrameCounter());
     }
 
     /**
