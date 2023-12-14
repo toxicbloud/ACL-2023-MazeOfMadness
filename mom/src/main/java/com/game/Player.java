@@ -144,8 +144,8 @@ public class Player extends Living {
     @Override
     public void render() {
         super.render();
-        if (this.getWeapon() != null) {
-            PlayerController controller = (PlayerController) getController();
+        PlayerController controller = (PlayerController) getController();
+        if (this.getWeapon() != null && controller != null) {
             if (!controller.isMoving() || controller.isAttacking()) {
                 this.getWeapon().render();
             }
