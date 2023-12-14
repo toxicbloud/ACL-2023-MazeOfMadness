@@ -56,6 +56,10 @@ public final class SoundManager {
     private Sound failSound;
     /** Win sound. */
     private Sound winSound;
+    /** Arrow hit enemy sound. */
+    private Sound arrowHitEnemySound;
+    /** Arrow hit wall sound. */
+    private Sound arrowHitWallSound;
 
     /** Sound enum. */
     public enum SoundList {
@@ -86,7 +90,11 @@ public final class SoundManager {
         /** The win sound. */
         WIN,
         /** The fail sound. */
-        FAIL
+        FAIL,
+        /** The arrow hit enemy sound. */
+        ARROW_HIT_ENEMY,
+        /** The arrow hit wall sound. */
+        ARROW_HIT_WALL
     }
 
     private SoundManager() {
@@ -120,6 +128,8 @@ public final class SoundManager {
         buttonClick = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
         failSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/fail.mp3"));
         winSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
+        arrowHitEnemySound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/hit.mp3"));
+        arrowHitWallSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
     }
 
     /**
@@ -179,6 +189,12 @@ public final class SoundManager {
             case FAIL:
                 long fail = failSound.play();
                 failSound.setVolume(fail, FAIL_VOLUME);
+                break;
+            case ARROW_HIT_ENEMY:
+                arrowHitEnemySound.play();
+                break;
+            case ARROW_HIT_WALL:
+                arrowHitWallSound.play();
                 break;
             default:
                 break;
