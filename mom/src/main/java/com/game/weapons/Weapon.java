@@ -188,10 +188,14 @@ public abstract class Weapon extends Entity {
         if (owner == null) {
             return;
         }
+        PlayerController controller = (PlayerController) owner.getController();
         this.getSprite().setShift(SPRITE_SIZE
-                *
-                (owner.getDirection().ordinal())
-                + (((PlayerController) (owner.getController())).isAttacking() ? GROUP_ROW_DISTANCE * SPRITE_SIZE : 0));
+                * (owner.getDirection().ordinal())
+                + (controller.isAttacking()
+                    ? GROUP_ROW_DISTANCE * SPRITE_SIZE * 2
+                    : (controller.isMoving()
+                        ? GROUP_ROW_DISTANCE * SPRITE_SIZE
+                        : 0)));
     }
 
     /**
