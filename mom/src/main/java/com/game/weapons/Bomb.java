@@ -1,7 +1,7 @@
 package com.game.weapons;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Time;
@@ -35,15 +35,6 @@ public class Bomb extends Weapon {
     private static final int RANGE = 1;
     /** Bomb explosion delay. */
     private static final long EXPLOSION_DELAY = 5000;
-    /**
-     * Sound played when the bomb is thrown and is waiting to explode.
-     */
-    private static final Sound WAITING_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
-
-    /**
-     * Sound played when the bomb explodes.
-     */
-    private static final Sound EXPLOSION_SOUND = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
     /**
      * Bomb sprite.
      */
@@ -105,7 +96,7 @@ public class Bomb extends Weapon {
     }
 
     private void launch() {
-        WAITING_SOUND.play();
+        SoundManager.getInstance().play(SoundList.BOMB_WAITING);
         this.isThrown = true;
         this.launchTime = Time.getInstance().getCurrentTime();
         Game.getInstance().getMaze().addParticle(new BombThrown(this.getPosition()));
@@ -154,7 +145,7 @@ public class Bomb extends Weapon {
                 owner.takeDamage((int) (this.getDamage() * (1 - distance / EXPLOSION_DEPTH)));
             }
             owner.setWeapon(null);
-            EXPLOSION_SOUND.play();
+            SoundManager.getInstance().play(SoundList.BOMB_EXPLOSION);
         }
     }
 

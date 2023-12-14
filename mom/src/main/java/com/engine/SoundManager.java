@@ -60,6 +60,10 @@ public final class SoundManager {
     private Sound arrowHitEnemySound;
     /** Arrow hit wall sound. */
     private Sound arrowHitWallSound;
+    /** Explosion sound. */
+    private Sound explosionSound;
+    /** Explosion wait time. */
+    private Sound explosionWaitTime;
 
     /** Sound enum. */
     public enum SoundList {
@@ -94,7 +98,11 @@ public final class SoundManager {
         /** The arrow hit enemy sound. */
         ARROW_HIT_ENEMY,
         /** The arrow hit wall sound. */
-        ARROW_HIT_WALL
+        ARROW_HIT_WALL,
+        /** Bomb explosion sound. */
+        BOMB_EXPLOSION,
+        /** Bomb waiting sound. */
+        BOMB_WAITING
     }
 
     private SoundManager() {
@@ -130,6 +138,8 @@ public final class SoundManager {
         winSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
         arrowHitEnemySound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/hit.mp3"));
         arrowHitWallSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/arrowImpact.mp3"));
+        explosionSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/boom.mp3"));
+        explosionWaitTime = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/tictac.mp3"));
     }
 
     /**
@@ -195,6 +205,12 @@ public final class SoundManager {
                 break;
             case ARROW_HIT_WALL:
                 arrowHitWallSound.play();
+                break;
+            case BOMB_EXPLOSION:
+                explosionSound.play();
+                break;
+            case BOMB_WAITING:
+                explosionWaitTime.play();
                 break;
             default:
                 break;
