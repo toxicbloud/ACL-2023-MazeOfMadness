@@ -67,6 +67,29 @@ package Engine {
     }
     Sprite "1" -- "1" Texture : texture
 
+    class SoundManager {
+        -instance: SoundManager
+        -playerAttackSound: Sound
+        -playerDamageSound: Sound
+        -zombieAttackSound: Sound
+        -zombieDamageSound: Sound
+        -zombieAmbientSound: Sound
+        -ghostAttackSound: Sound
+        -ghostDamageSound: Sound
+        -potionSound: Sound
+        -footStepGround: Sound
+        -footStepLava: Sound
+        -footStepWater: Sound
+        -buttonClick: Sound
+        -failSound: Sound
+        -winSound: Sound
+        ---
+        + GetInstance(): SoundManager
+
+        + play(SoundList soundList): void
+        + stop(SoundList soundList): void
+    }
+
     package utils {
         class Time {
             - instance: Time

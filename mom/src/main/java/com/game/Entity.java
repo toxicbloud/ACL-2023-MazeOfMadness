@@ -6,6 +6,7 @@ import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
 import com.game.controllers.Controller;
 import com.game.tiles.Tile;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -356,4 +357,10 @@ public abstract class Entity implements Evolvable {
      * Remove the entity from the game.
      */
     protected abstract void remove();
+
+    /**
+     * Returns JSON representation of the entity.
+     * @return JSON representation of the entity.
+     */
+    public abstract JSONObject toJSON();
 }

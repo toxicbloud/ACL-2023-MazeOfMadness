@@ -1,12 +1,20 @@
 package com.network;
 
+import com.engine.Window;
+import com.game.Entity;
 import com.game.Game;
+import com.game.Living;
 import com.game.Maze;
 import com.game.Player;
+import com.game.WorldItem;
 import com.game.controllers.NetworkPlayerController;
-import com.game.monsters.Monster;
+import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
+import com.ui.EndScene;
+import com.ui.MultiScene;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +47,8 @@ public class GameSceneServer extends GameScene {
     private void spawnAllPlayers() {
         List<NetworkInfos> clients = server.getClients();
         Player player = new Player(maze.getSpawnPoint());
+        new SyncedPlayerController(player, server.getId(), server);
+        Game.getInstance().setPlayer(player);
         byte[] playerData = NetworkDialogs.encodePlayerValue(player, 1 + 2);
         playerData[0] = NetworkDialogs.MAZE_ADD;
         NetworkDialogs.encodeIntValue(0, playerData, 1);
@@ -59,6 +69,16 @@ public class GameSceneServer extends GameScene {
         }
     }
 
+    private Player getClientPlayer(int clientId) {
+        List<NetworkInfos> clients = server.getClients();
+        for (int i = 0; i < clients.size(); i++) {
+            if (clients.get(i).getId() == clientId) {
+                return players[i];
+            }
+        }
+        return null;
+    }
+
     private void setupServerBehaviors() {
         server.when((data, infos) -> {
             return data[0] == NetworkDialogs.PLR_UPD;
@@ -66,26 +86,84 @@ public class GameSceneServer extends GameScene {
             server.sendData(data);
             return false;
         });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.GAME_NXT;
+        }, (data, infos) -> {
+            server.sendData(data);
+            onNextCalled();
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.GAME_END;
+        }, (data, infos) -> {
+            onExitCalled();
+            Window.getInstance().setScene(new EndScene(Game.getInstance().end(), false));
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.PLR_ATK;
+        }, (data, infos) -> {
+            int id = NetworkDialogs.getIntValue(data, 1);
+            Player player = getClientPlayer(id);
+
+            if (player != null) {
+                player.getWeapon().setPosition(player.getPosition());
+                List<Living> enemies = player.findEnemies();
+                player.attack(enemies);
+            }
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.PLR_ITR;
+        }, (data, infos) -> {
+            int id = NetworkDialogs.getIntValue(data, 1);
+            Player player = getClientPlayer(id);
+
+            if (player != null) {
+                player.getWeapon().setPosition(player.getPosition());
+                WorldItem item = player.findItemInRange();
+                if (item != null) {
+                    item.interact(player);
+                    item.destroy();
+                }
+            }
+            return false;
+        });
+
+        Game.getInstance().getScore().addPropertyChangeListener("points", evt -> {
+            byte[] data = NetworkDialogs.encodeScoreValue(Game.getInstance().getScore(), 1);
+            data[0] = NetworkDialogs.GAME_SCR;
+            server.sendData(data);
+        });
     }
 
     @Override
     public void update() {
-        super.update();
+        server.update();
 
-        for (Monster m : maze.getMonsters()) {
-            if (m.hasBeenUpdated()) {
-                byte[] entityData = NetworkDialogs.encodeMonsterValue(m, 1 + 2);
+        List<Entity> updatable = new ArrayList<>();
+        updatable.addAll(Arrays.asList(maze.getMonsters()));
+        updatable.addAll(Arrays.asList(maze.getItems()));
+
+        for (Entity e : updatable) {
+            if (e.hasBeenUpdated()) {
+                byte[] entityData = NetworkDialogs.encodeEntityValue(e, 1 + 2);
                 entityData[0] = NetworkDialogs.MAZE_UPD;
-                NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
+                NetworkDialogs.encodeIntValue(e.getId(), entityData, 1);
                 server.sendData(entityData);
             }
-            if (m.hasBeenDestroyed()) {
+            if (e.hasBeenDestroyed()) {
                 byte[] entityData = new byte[1 + 2];
                 entityData[0] = NetworkDialogs.MAZE_REM;
-                NetworkDialogs.encodeIntValue(m.getId(), entityData, 1);
+                NetworkDialogs.encodeIntValue(e.getId(), entityData, 1);
                 server.sendData(entityData);
             }
         }
+        super.update();
 
         Player player = Game.getInstance().getPlayer();
         if (player != null && player.hasBeenUpdated()) {
@@ -94,7 +172,19 @@ public class GameSceneServer extends GameScene {
             NetworkDialogs.encodeIntValue(server.getId(), data, 1);
             server.sendData(data);
         }
+    }
 
-        server.update();
+    @Override
+    protected void onExitCalled() {
+        server.sendData(new byte[]{NetworkDialogs.GAME_END});
+        server.shutdown();
+    }
+
+    /**
+     * Called when the next maze is asked to be created.
+     */
+    public void onNextCalled() {
+        server.shutdown();
+        Window.getInstance().setScene(new MultiScene(Game.getInstance().getScore()));
     }
 }

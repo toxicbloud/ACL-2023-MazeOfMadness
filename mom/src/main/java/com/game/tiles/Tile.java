@@ -118,11 +118,7 @@ public abstract class Tile extends Entity {
 
     }
 
-    /**
-     * Returns a json version of the tile.
-     *
-     * @return A JSONObject representing the tile.
-     */
+    @Override
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 

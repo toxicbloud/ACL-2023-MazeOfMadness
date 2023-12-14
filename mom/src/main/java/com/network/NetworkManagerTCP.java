@@ -182,6 +182,13 @@ public abstract class NetworkManagerTCP {
     }
 
     /**
+     * Send data to default(s) target(s).
+     * @param data the data
+     * @return true if the data has been sent, false otherwise.
+     */
+    public abstract boolean sendData(byte[] data);
+
+    /**
      * Add data listener.
      * @param listener Data listener.
      */

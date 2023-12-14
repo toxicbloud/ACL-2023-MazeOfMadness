@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
 import com.engine.Window;
 import com.engine.events.Event;
+import com.game.Score;
 import com.network.MultiManager;
 import com.network.NetworkServer;
 
@@ -24,12 +25,20 @@ public class MultiScene extends Scene {
      * Minimum world height used in the viewport.
      */
     private static final int MIN_WORLD_HEIGHT = 800;
+    /** MultiScene started in server mode. */
+    private static final int SCENE_MODE_SERVER = 1;
+    /** MultiScene started in client mode. */
+    private static final int SCENE_MODE_CLIENT = 2;
     /**
      * Minimum world width used in the viewport.
      */
     private static final int MIN_WORLD_WIDTH = 800;
     /** Editor button padding from screen border. */
     private static final float PADDING_BACK_BUTTON = 16f;
+
+    /** Time to wait between game and menu. */
+    private static final int BETWEEN_GAME_WAIT = 1000;
+
     /**
      * Stage used to draw the main menu.
      */
@@ -60,12 +69,47 @@ public class MultiScene extends Scene {
      */
     private Sound buttonClick;
 
+    /** Scene mode. */
+    private int sceneMode;
+
+    /** Client ip if started in client mode. */
+    private String clientIp;
+    /** Client port if started in client mode. */
+    private int clientPort;
+    /** Server score if started in server mode. */
+    private Score serverScore;
+
     /**
      * Default constructor.
      */
     public MultiScene() {
         super();
         this.manager = new MultiManager();
+        this.sceneMode = 0;
+    }
+
+    /**
+     * Client constructor.
+     * @param ip Server ip.
+     * @param port Server port.
+     */
+    public MultiScene(String ip, int port) {
+        super();
+        this.manager = new MultiManager();
+        this.sceneMode = SCENE_MODE_CLIENT;
+        this.clientIp = ip;
+        this.clientPort = port;
+    }
+
+    /**
+     * Server constructor.
+     * @param score Score.
+     */
+    public MultiScene(Score score) {
+        super();
+        this.manager = new MultiManager();
+        this.sceneMode = SCENE_MODE_SERVER;
+        this.serverScore = score;
     }
 
     @Override
@@ -92,7 +136,6 @@ public class MultiScene extends Scene {
         mainMenu = new Stage(new ExtendViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT));
         serverMenu = new Stage(new ExtendViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT));
         clientMenu = new Stage(new ExtendViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT));
-        currentStage = mainMenu;
         skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
         buttonClick = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
         Gdx.input.setInputProcessor(mainMenu);
@@ -100,6 +143,20 @@ public class MultiScene extends Scene {
         createMain();
         createServer();
         createClient();
+
+        switch (sceneMode) {
+            case SCENE_MODE_CLIENT:
+                currentStage = clientMenu;
+                startClient(clientIp, clientPort);
+                break;
+            case SCENE_MODE_SERVER:
+                currentStage = serverMenu;
+                manager.createServer("localhost", NetworkServer.PORT, serverScore);
+                break;
+            default:
+                currentStage = mainMenu;
+                break;
+        }
     }
 
     /**
@@ -274,19 +331,25 @@ public class MultiScene extends Scene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClick.play();
-                mainTable.clear();
-                mainTable.setSkin(skin);
-                setTextStatus("Connecting to server...", false);
-
                 try {
                     int portNbr = Integer.parseInt(portField.getText());
-                    manager.addLogListener(MultiScene.this::setTextStatus);
-                    manager.createClient(ipField.getText(), portNbr);
+                    startClient(ipField.getText(), portNbr);
                 } catch (NumberFormatException e) {
                     setTextStatus("Connecting to server... Error", true);
                 }
             }
         });
+    }
+
+    private void startClient(String ip, int port) {
+        Table root = (Table) clientMenu.getActors().get(0);
+        Table mainTable = (Table) root.getChild(0);
+        mainTable.clear();
+        mainTable.setSkin(skin);
+        setTextStatus("Connecting to server...", false);
+
+        manager.addLogListener(MultiScene.this::setTextStatus);
+        manager.createClient(ip, port);
     }
 
     /**
@@ -296,8 +359,12 @@ public class MultiScene extends Scene {
      */
     private void setTextStatus(String text, boolean shouldClear) {
         Table root = (Table) clientMenu.getActors().get(0);
+        if (root.getChildren().size == 0) {
+            return;
+        }
+
         Table debugText = (Table) root.getChild(0);
-        if (shouldClear) {
+        if (shouldClear && debugText.getChildren().size > 0) {
             debugText.getChild(debugText.getChildren().size - 1).remove();
         }
         if (text != null) {

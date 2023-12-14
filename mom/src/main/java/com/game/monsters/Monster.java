@@ -100,10 +100,7 @@ public abstract class Monster extends Living {
         return type;
     }
 
-    /**
-     * Returns a JSON version of the monster.
-     * @return A JSONObject representing the monster.
-     */
+    @Override
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 
