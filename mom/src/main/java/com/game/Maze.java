@@ -563,6 +563,20 @@ public class Maze implements Evolvable {
     }
 
     /**
+     * Add an item array to the maze.
+     *
+     * @param i items to add to the maze.
+     */
+    public void addItems(WorldItem[] i) {
+        int fal = this.items.length;
+        int sal = i.length;
+        WorldItem[] result = new WorldItem[fal + sal];
+        System.arraycopy(this.items, 0, result, 0, fal);
+        System.arraycopy(i, 0, result, fal, sal);
+        this.items = result;
+    }
+
+    /**
      * Add a particle to the maze.
      *
      * @param p particle to add to the maze.
