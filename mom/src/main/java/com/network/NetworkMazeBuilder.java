@@ -3,6 +3,9 @@ package com.network;
 import com.engine.utils.Vector3;
 import com.game.Entity;
 import com.game.Maze;
+import com.game.tiles.Next;
+import com.game.tiles.NextNetwork;
+import com.game.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +23,16 @@ public class NetworkMazeBuilder {
     /** Maze. */
     private Maze maze;
 
+    /** Network manager. */
+    private NetworkManagerTCP networkManager;
+
     /**
      * Default constructor.
+     * @param networkManager Network manager.
      */
-    public NetworkMazeBuilder() {
+    public NetworkMazeBuilder(NetworkManagerTCP networkManager) {
         this.data = new ArrayList<>();
+        this.networkManager = networkManager;
     }
 
     /**
@@ -73,6 +81,13 @@ public class NetworkMazeBuilder {
         //       quite accurate map loading animation (percents).
         this.maze = Maze.fromList(data);
         this.maze.setSpawnPoint(new Vector3());
+        Tile[] tiles = maze.getTiles();
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] instanceof Next) {
+                tiles[i] = new NextNetwork(tiles[i].getPosition(), this.networkManager);
+            }
+        }
+        maze.setTiles(tiles);
         return this.maze;
     }
 }

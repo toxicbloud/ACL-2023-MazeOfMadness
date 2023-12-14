@@ -9,6 +9,7 @@ import com.game.controllers.NetworkPlayerController;
 import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
 import com.ui.EndScene;
+import com.ui.MultiScene;
 
 /**
  * Game scene for the server.
@@ -49,6 +50,16 @@ public class GameSceneClient extends GameScene {
                 new NetworkPlayerController(player, clientID, client);
             }
             return false;
+        });
+
+        client.when((data, infos) -> {
+            return data[0] == NetworkDialogs.GAME_NXT;
+        }, (data, infos) -> {
+            client.shutdown();
+            Window.getInstance().setScene(new MultiScene(
+                client.getServerInfos().getIpAddress(),
+                client.getServerInfos().getPort()));
+            return true;
         });
 
         client.when((data, infos) -> {

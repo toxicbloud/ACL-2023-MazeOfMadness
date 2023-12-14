@@ -62,8 +62,12 @@ public final class NetworkDialogs {
     public static final byte GAME_RDY = 43;
     /** GAME_SCR code. */
     public static final byte GAME_SCR = 44;
+    /** GAME_NXT code. */
+    public static final byte GAME_NXT = 45;
+    /** GAME_OK code. */
+    public static final byte GAME_OK = 46;
     /** GAME_END code. */
-    public static final byte GAME_END = 45;
+    public static final byte GAME_END = 47;
 
     /** Hidden constructor. */
     private NetworkDialogs() {}

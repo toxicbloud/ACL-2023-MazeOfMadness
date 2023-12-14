@@ -11,6 +11,7 @@ import com.game.controllers.NetworkPlayerController;
 import com.game.controllers.SyncedPlayerController;
 import com.renderer.GameScene;
 import com.ui.EndScene;
+import com.ui.MultiScene;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +84,14 @@ public class GameSceneServer extends GameScene {
             return data[0] == NetworkDialogs.PLR_UPD;
         }, (data, infos) -> {
             server.sendData(data);
+            return false;
+        });
+
+        server.when((data, infos) -> {
+            return data[0] == NetworkDialogs.GAME_NXT;
+        }, (data, infos) -> {
+            server.sendData(data);
+            onNextCalled();
             return false;
         });
 
@@ -169,5 +178,13 @@ public class GameSceneServer extends GameScene {
     protected void onExitCalled() {
         server.sendData(new byte[]{NetworkDialogs.GAME_END});
         server.shutdown();
+    }
+
+    /**
+     * Called when the next maze is asked to be created.
+     */
+    public void onNextCalled() {
+        server.shutdown();
+        Window.getInstance().setScene(new MultiScene(Game.getInstance().getScore()));
     }
 }
