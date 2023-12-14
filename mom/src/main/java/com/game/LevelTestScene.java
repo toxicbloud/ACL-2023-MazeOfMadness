@@ -16,6 +16,7 @@ public class LevelTestScene extends Scene {
 
     /**
      * LevelTestScene constructor.
+     *
      * @param levelPath The path to the level file.
      */
     public LevelTestScene(String levelPath) {
@@ -29,8 +30,8 @@ public class LevelTestScene extends Scene {
         Level level = new Level(json);
         System.out.println("==> Level object : " + level);
 
-        Game.getInstance().setMaze(level.getMaze());
-        Window.getInstance().setScene(new GameScene());
+        Game.getInstance().loadFromLevel(level);
+        Window.getInstance().setScene(new GameScene(level.getMaze()));
     }
 
     @Override

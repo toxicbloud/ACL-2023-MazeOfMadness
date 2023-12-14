@@ -1,7 +1,6 @@
 package com.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.engine.Scene;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Window;
 import com.engine.events.Event;
-import com.game.Game;
 import com.game.Score;
 import com.game.monsters.MonsterType;
 
@@ -61,26 +61,20 @@ public class EndScene extends Scene {
      */
     private boolean win;
     /**
-     * Button click sound.
+     * Score obtained by the player in the last GameScene.
      */
-    private Sound punch;
-    /**
-     * Fail sound.
-     */
-    private Sound failSound;
-    /**
-     * Win sound.
-     */
-    private Sound winSound;
+    private Score score;
 
     /**
      * EndScene constructor.
      *
-     * @param win true if the player won, false otherwise
+     * @param score The score obtained by the player
+     * @param win   true if the player won, false otherwise
      */
-    public EndScene(boolean win) {
+    public EndScene(Score score, boolean win) {
         super();
         this.win = win;
+        this.score = score;
     }
 
     /**
@@ -99,9 +93,6 @@ public class EndScene extends Scene {
         zombie = new Image(new Sprite(new Texture("images/menus/zombieCounter.png")));
         ghost = new Image(new Sprite(new Texture("images/menus/ghostCounter.png")));
 
-        punch = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
-        failSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/fail.mp3"));
-        winSound = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/win.mp3"));
         Gdx.input.setInputProcessor(stage);
 
         Table root = new Table();
@@ -112,16 +103,15 @@ public class EndScene extends Scene {
             Label label = new Label("YOU WIN", skin, "title");
             root.add(label).center().padBottom(FIFTY_CONSTANT);
             root.row();
-            winSound.play();
+            SoundManager.getInstance().play(SoundList.WIN);
         } else {
             // lose in red
             Label label2 = new Label("YOU LOSE", skin, "title");
             label2.setColor(1.0f, 0.0f, 0.0f, 1.0f);
             root.add(label2).center().padBottom(FIFTY_CONSTANT);
             root.row();
-            failSound.play();
+            SoundManager.getInstance().play(SoundList.FAIL);
         }
-        Score score = Game.getInstance().getScore();
         root.row();
         // score label
         Label scoreLabel = new Label("Score: " + score.getPoints(), skin, "subtitle");
@@ -142,7 +132,7 @@ public class EndScene extends Scene {
         button.addListener(new com.badlogic.gdx.scenes.scene2d.utils.ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                punch.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 Window.getInstance().setScene(new MenuScene());
             }
         });

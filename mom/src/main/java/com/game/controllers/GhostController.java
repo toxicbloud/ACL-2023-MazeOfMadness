@@ -1,5 +1,7 @@
 package com.game.controllers;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.utils.Time;
 import com.engine.utils.Vector2;
 import com.engine.utils.Vector3;
@@ -15,6 +17,8 @@ import com.game.monsters.Ghost;
 public class GhostController extends Controller {
     /** Minimum distance to the player to stop chasing. */
     private static final float MIN_PLAYER_DISTANCE = 0.5f;
+    /** The last time when the ghost attacks. */
+    private long lastAttackTime;
 
     /**
      * GhostController constructor.
@@ -28,6 +32,7 @@ public class GhostController extends Controller {
     public void update() {
         Player player = Game.getInstance().getPlayer();
         Entity target = getTarget();
+        Ghost ghost = (Ghost) target;
 
         if (player != null) {
             float distance = player.distance(target);
@@ -46,6 +51,12 @@ public class GhostController extends Controller {
                     .normalize()
                     .mul(Time.getInstance().getDeltaTime() * Ghost.GHOST_SPEED
                 ));
+            } else if (Time.getInstance().getCurrentTime() - lastAttackTime > ghost.getWeapon().getCooldown()) {
+                ghost.getWeapon().setPosition(ghost.getPosition());
+                ghost.attack(player);
+                if (player.distance(ghost) < (ghost.getWeapon().getRange())) {
+                    SoundManager.getInstance().play(SoundList.ZOMBIE_ATTACK);
+                }
             }
         }
     }

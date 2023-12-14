@@ -165,6 +165,14 @@ public class Sprite {
     }
 
     /**
+     * Get the frame animation counter.
+     * @return The animation's frame number.
+     */
+    public int getFrameCounter() {
+        return this.shiftX / this.width;
+    }
+
+    /**
      * Get the shift of the sprite.
      * @return The shift of the sprite.
      */
