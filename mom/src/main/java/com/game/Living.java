@@ -10,6 +10,8 @@ import com.engine.utils.Vector3;
 import com.game.weapons.Weapon;
 import com.renderer.GameScene;
 
+import java.util.List;
+
 /**
  * Living class.
  * This is the base class for all living entities.
@@ -244,7 +246,7 @@ public abstract class Living extends Entity {
      */
     public WorldItem findItemInRange() {
         for (WorldItem i : Game.getInstance().getMaze().getItems()) {
-            if (isInRange(i.getPosition(), Game.getInstance().getPlayer().getPosition()) && i.isPickable()) {
+            if (isInRange(i.getPosition(), this.getPosition()) && i.isPickable()) {
                 return i;
             }
         }
@@ -276,12 +278,26 @@ public abstract class Living extends Entity {
     }
 
     /**
+     * Attack a list of living entities.
+     *
+     * @param livings The list of living entities to attack.
+     * @return Whether the attack was successful.
+     */
+    public boolean attack(List<Living> livings) {
+        if (this.weapon == null) {
+            return false;
+        }
+        return this.weapon.attack(livings);
+    }
+
+    /**
      * Take damage.
      *
      * @param damage The damage amount.
      * @return Whether the living entity died.
      */
     public boolean takeDamage(int damage) {
+        indicateUpdate();
         this.health -= damage;
         if (this.health < 0) {
             this.health = 0;
@@ -297,6 +313,7 @@ public abstract class Living extends Entity {
      * @param h The health amount.
      */
     public void regen(int h) {
+        indicateUpdate();
         if (this.getHealth() + h < this.maxHealth) {
             this.health += h;
         } else {
@@ -384,6 +401,7 @@ public abstract class Living extends Entity {
      * @param health The health of the entity.
      */
     public void setHealth(int health) {
+        indicateUpdate();
         this.health = health;
     }
 
@@ -393,6 +411,7 @@ public abstract class Living extends Entity {
      * @param speed The speed of the entity.
      */
     public void setSpeed(float speed) {
+        indicateUpdate();
         this.speed = speed;
     }
 
@@ -402,6 +421,7 @@ public abstract class Living extends Entity {
      * @param weapon The weapon of the entity.
      */
     public void setWeapon(Weapon weapon) {
+        indicateUpdate();
         this.weapon = weapon;
     }
 

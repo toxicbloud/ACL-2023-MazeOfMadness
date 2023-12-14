@@ -50,11 +50,7 @@ public abstract class WorldItem extends Entity {
         return type;
     }
 
-    /**
-     * Returns a json representation of the item.
-     *
-     * @return A JSONObject representing the item.
-     */
+    @Override
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 

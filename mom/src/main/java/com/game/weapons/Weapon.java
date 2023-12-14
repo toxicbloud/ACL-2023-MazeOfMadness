@@ -8,6 +8,7 @@ import com.game.Entity;
 import com.game.Living;
 import com.game.Player;
 import com.game.controllers.PlayerController;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -187,10 +188,15 @@ public abstract class Weapon extends Entity {
         if (owner == null) {
             return;
         }
+        PlayerController controller = (PlayerController) owner.getController();
         this.getSprite().setShift(SPRITE_SIZE
-                *
-                (owner.getDirection().ordinal())
-                + (((PlayerController) (owner.getController())).isAttacking() ? GROUP_ROW_DISTANCE * SPRITE_SIZE : 0));
+                * (owner.getDirection().ordinal())
+                + (controller.isAttacking()
+                    ? GROUP_ROW_DISTANCE * SPRITE_SIZE * 2
+                    : (controller.isMoving()
+                        ? GROUP_ROW_DISTANCE * SPRITE_SIZE
+                        : 0)));
+        this.getSprite().setFrameCounter(owner.getSprite().getFrameCounter());
     }
 
     /**
@@ -226,5 +232,18 @@ public abstract class Weapon extends Entity {
     @Override
     protected void remove() {
         // SHOULD NOT BE ABLE TO REMOVE WEAPON
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("position", getPosition().toJSON());
+        json.put("damage", this.damage);
+        json.put("cooldown", this.cooldown);
+        json.put("range", this.range);
+        json.put("hasDoubleDamage", this.hasDoubleDamage);
+
+        return json;
     }
 }

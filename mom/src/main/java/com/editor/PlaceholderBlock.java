@@ -4,6 +4,7 @@ import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Entity;
+import org.json.JSONObject;
 
 /**
  * Placeholder block.
@@ -34,5 +35,10 @@ public class PlaceholderBlock extends Entity {
     @Override
     protected void remove() {
         // SHOULD NOT BE REMOVED
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return null; // not needed
     }
 }

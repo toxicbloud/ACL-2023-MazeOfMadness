@@ -103,6 +103,15 @@ public final class Game {
     }
 
     /**
+     * Set the game score.
+     *
+     * @param score The game score.
+     */
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    /**
      * End the game.
      * Free the maze and the player.
      *

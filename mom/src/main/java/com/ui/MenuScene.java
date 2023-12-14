@@ -2,7 +2,6 @@ package com.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Music;
-import com.badlogic.gdx.backends.lwjgl3.audio.Mp3.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.editor.EditorScene;
 import com.engine.Scene;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Window;
 import com.engine.events.Event;
 import com.game.Game;
@@ -66,11 +67,6 @@ public class MenuScene extends Scene {
     private Skin skin;
 
     /**
-     * The button click sound.
-     * punch sound
-     */
-    private Sound buttonClick;
-    /**
      * The music.
      */
     private Music music;
@@ -107,7 +103,6 @@ public class MenuScene extends Scene {
         currenStage = mainMenu;
         skin = new Skin(Gdx.files.internal("skins/pixthulhu-ui.json"));
         logo = new Image(new Sprite(new Texture(Gdx.files.internal("images/menus/logo.png"))));
-        buttonClick = (Sound) Gdx.audio.newSound(Gdx.files.internal("sounds/punch.mp3"));
         Gdx.input.setInputProcessor(mainMenu);
 
         Table root = new Table();
@@ -134,7 +129,7 @@ public class MenuScene extends Scene {
         free.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Game.getInstance().loadNew();
@@ -144,7 +139,7 @@ public class MenuScene extends Scene {
         campaign.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 currenStage = campaignMenu;
@@ -164,7 +159,7 @@ public class MenuScene extends Scene {
         editor.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Window.getInstance().setScene(new EditorScene());
@@ -180,7 +175,7 @@ public class MenuScene extends Scene {
         multi.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Window.getInstance().setScene(new MultiScene());
@@ -196,7 +191,7 @@ public class MenuScene extends Scene {
         back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.play();
                 currenStage = mainMenu;
                 Gdx.input.setInputProcessor(mainMenu);
@@ -215,7 +210,7 @@ public class MenuScene extends Scene {
         level1btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Game.getInstance().loadFromLevel(level1);
@@ -230,7 +225,7 @@ public class MenuScene extends Scene {
         level2btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Game.getInstance().loadFromLevel(level2);

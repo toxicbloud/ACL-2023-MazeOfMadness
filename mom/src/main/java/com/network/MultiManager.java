@@ -4,12 +4,16 @@ import com.engine.Window;
 import com.game.Entity;
 import com.game.Game;
 import com.game.Maze;
+import com.game.Score;
 import com.game.WorldItem;
 import com.game.controllers.NetworkEntityController;
 import com.game.generators.MazeFactory;
 import com.game.generators.MonsterSpawner;
 import com.game.generators.PotionSpawner;
+import com.game.generators.WeaponSpawner;
 import com.game.monsters.Monster;
+import com.game.tiles.Next;
+import com.game.tiles.NextNetwork;
 import com.game.tiles.Tile;
 
 /**
@@ -61,7 +65,7 @@ public class MultiManager {
     private Maze maze;
 
     /** Network maze builder. */
-    private NetworkMazeBuilder builder = new NetworkMazeBuilder();
+    private NetworkMazeBuilder builder;
 
     /** Is the client listening for data. */
     private boolean listeningForData;
@@ -74,6 +78,9 @@ public class MultiManager {
 
     /** Number of clients ready for game. */
     private int nbClientsReady;
+
+    /** Number of clients having all required data. */
+    private int nbClientsOk;
 
     /**
      * Create a new MultiManager.
@@ -99,14 +106,44 @@ public class MultiManager {
      * Create a new server.
      * @param ip Server ip.
      * @param port Server port.
+     * @param score Score.
+     */
+    public void createServer(String ip, int port, Score score) {
+        this.server = new NetworkServer(port);
+        maze = MazeFactory.createMaze();
+        Tile[] tiles = maze.getTiles();
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] instanceof Next) {
+                tiles[i] = new NextNetwork(tiles[i].getPosition(), this.server);
+            }
+        }
+        maze.setTiles(tiles);
+        MonsterSpawner.spawnMonsters(this.maze);
+        PotionSpawner.spawnPotion(this.maze);
+        serverGameStarted = false;
+        this.setupServerBehaviours(true, score);
+    }
+
+    /**
+     * Create a new server.
+     * @param ip Server ip.
+     * @param port Server port.
      */
     public void createServer(String ip, int port) {
         this.server = new NetworkServer(port);
         maze = MazeFactory.createMaze();
+        Tile[] tiles = maze.getTiles();
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] instanceof Next) {
+                tiles[i] = new NextNetwork(tiles[i].getPosition(), this.server);
+            }
+        }
+        maze.setTiles(tiles);
         MonsterSpawner.spawnMonsters(this.maze);
         PotionSpawner.spawnPotion(this.maze);
+        WeaponSpawner.spawnWeapons(this.maze);
         serverGameStarted = false;
-        this.setupServerBehaviours();
+        this.setupServerBehaviours(false, null);
     }
 
     /**
@@ -125,7 +162,16 @@ public class MultiManager {
      */
     public void startServerGame() {
         serverGameStarted = true;
-        this.createAndLaunchGame();
+        this.createAndLaunchGame(new Score());
+    }
+
+    /**
+     * Start the server game.
+     * @param score Score.
+     */
+    public void startServerGame(Score score) {
+        serverGameStarted = true;
+        this.createAndLaunchGame(score);
     }
 
     /**
@@ -145,6 +191,8 @@ public class MultiManager {
      * (add listeners, validators, etc.)
      */
     private void setupClientBehaviours() {
+        builder = new NetworkMazeBuilder(this.client);
+
         this.client.when(
             REGISTER_RSP_VALIDATOR,
             (data, infos) -> {
@@ -189,6 +237,7 @@ public class MultiManager {
                     listeningForData = false;
                     log("Getting maze data ... OK", true);
                     log("Waiting for game to start ...", false);
+                    client.sendData(new byte[]{NetworkDialogs.GAME_OK});
                     return true;
                 }
                 return false;
@@ -202,6 +251,9 @@ public class MultiManager {
                 for (Monster m : maze.getMonsters()) {
                     new NetworkEntityController(m, client);
                 }
+                for (WorldItem i : maze.getItems()) {
+                    new NetworkEntityController(i, client);
+                }
                 Game.getInstance().loadFrom(maze);
                 Window.getInstance().setScene(new GameSceneClient(maze, client));
                 return true;
@@ -212,8 +264,10 @@ public class MultiManager {
     /**
      * Setup the server behaviours.
      * (add listeners, validators, etc.)
+     * @param launchWhenReady Launch the game when all clients are ready.
+     * @param score Score.
      */
-    private void setupServerBehaviours() {
+    private void setupServerBehaviours(boolean launchWhenReady, Score score) {
         if (this.server == null) {
             return;
         }
@@ -268,17 +322,32 @@ public class MultiManager {
                 return false;
             }
         );
+
+        if (launchWhenReady) {
+            nbClientsOk = 0;
+            this.server.when((data, infos) -> {
+                return data[0] == NetworkDialogs.GAME_OK;
+            }, (data, infos) -> {
+                if (++nbClientsOk >= server.getClients().size()) {
+                    this.startServerGame(score);
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     /**
      * Create and start a network game (as server).
+     * @param score Score.
      */
-    private void createAndLaunchGame() {
+    private void createAndLaunchGame(Score score) {
         if (this.server == null) {
             return;
         }
 
         Game.getInstance().loadFrom(maze);
+        Game.getInstance().getScore().apply(score);
         server.sendData(new byte[]{NetworkDialogs.GAME_STR});
 
         nbClientsReady = 0;
@@ -289,6 +358,9 @@ public class MultiManager {
                     return false;
                 }
 
+                byte[] scoreData = NetworkDialogs.encodeScoreValue(Game.getInstance().getScore(), 1);
+                scoreData[0] = NetworkDialogs.GAME_SCR;
+                server.sendData(scoreData);
                 Window.getInstance().setScene(new GameSceneServer(maze, server));
                 return true;
             }

@@ -1,10 +1,13 @@
 package com.game.monsters;
 
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
 import com.game.Score;
 import com.game.tiles.Tile;
+import com.game.weapons.GhostFist;
 
 /**
  * Ghost class.
@@ -32,6 +35,7 @@ public class Ghost extends Monster {
             MonsterType.MONSTER_GHOST,
             GHOST_HEALTH,
             GHOST_MAX_HEALTH);
+        this.setWeapon(new GhostFist());
     }
 
     /**
@@ -42,6 +46,15 @@ public class Ghost extends Monster {
     public Ghost(Vector3 position) {
         this();
         this.setPosition(position);
+        this.setWeapon(new GhostFist());
+    }
+
+    @Override
+    public boolean takeDamage(int damage) {
+        indicateUpdate();
+        boolean isDead = super.takeDamage(damage);
+        SoundManager.getInstance().play(SoundList.GHOST_DAMAGE);
+        return isDead;
     }
 
     @Override

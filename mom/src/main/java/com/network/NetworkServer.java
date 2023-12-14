@@ -35,10 +35,12 @@ public class NetworkServer extends NetworkManagerTCP {
      * Send data to all clients.
      * @param data Data to send.
      */
-    public void sendData(byte[] data) {
+    @Override
+    public boolean sendData(byte[] data) {
         for (NetworkInfos client : this.getClients()) {
             this.sendData(data, client);
         }
+        return true;
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.engine.SoundManager;
+import com.engine.SoundManager.SoundList;
 import com.engine.Sprite;
 import com.engine.Texture;
 import com.engine.utils.Vector3;
@@ -41,8 +43,8 @@ public class Player extends Living {
     public Player() {
         super(new Sprite(new Texture("images/player.png"), SPRITE_SIZE, SPRITE_SIZE), new Vector3(), PLAYER_SIZE,
                 PLAYER_HEALTH, PLAYER_MAX_HEALTH);
-        this.setWeapon(new PlayerFist());
-        this.defaultWeapon = this.getWeapon();
+        this.defaultWeapon = new PlayerFist();
+        this.setWeapon(this.defaultWeapon);
         this.setHealth(PLAYER_HEALTH);
         this.setSpeed(PLAYER_SPEED);
         this.setHealthBarColor(Player.HEALTH_BAR_COLOR);
@@ -93,6 +95,14 @@ public class Player extends Living {
         }
     }
 
+    @Override
+    public boolean takeDamage(int damage) {
+        indicateUpdate();
+        boolean isDead = super.takeDamage(damage);
+        SoundManager.getInstance().play(SoundList.PLAYER_DAMAGE);
+        return isDead;
+    }
+
     /**
      * Detect whether an enemy is in the player's field of vision.
      *
@@ -100,7 +110,12 @@ public class Player extends Living {
      */
     public List<Living> findEnemies() {
         List<Living> enemiesInFOV = new ArrayList<>();
-        Living[] enemies = Game.getInstance().getMaze().getMonsters();
+        Maze maze = Game.getInstance().getMaze();
+        if (maze == null) {
+            return enemiesInFOV;
+        }
+
+        Living[] enemies = maze.getMonsters();
 
         for (Living enemy : enemies) {
             if (enemy != this && enemy.getHealth() > 0) {
@@ -119,6 +134,7 @@ public class Player extends Living {
      */
     @Override
     public void setWeapon(Weapon weapon) {
+        indicateUpdate();
         super.setWeapon(weapon == null ? defaultWeapon : weapon);
         if (weapon != null) {
             weapon.setOwner(this);
@@ -128,19 +144,15 @@ public class Player extends Living {
     @Override
     public void render() {
         super.render();
-        if (this.getWeapon() != null) {
-            PlayerController controller = (PlayerController) getController();
-            if (!controller.isMoving() || controller.isAttacking()) {
+        PlayerController controller = (PlayerController) getController();
+        if (this.getWeapon() != null && controller != null) {
+            if (!controller.isMoving() || !controller.isAttacking()) {
                 this.getWeapon().render();
             }
         }
     }
 
-    /**
-     * Returns a JSON representation of the player.
-     *
-     * @return JSON representation of the player.
-     */
+    @Override
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 
