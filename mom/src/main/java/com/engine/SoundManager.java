@@ -192,6 +192,18 @@ public final class SoundManager {
      */
     public void stop(SoundList soundList) {
         switch (soundList) {
+            case PLAYER_ATTACK:
+                playerAttackSound.stop();
+                break;
+            case PLAYER_DAMAGE:
+                playerDamageSound.stop();
+                break;
+            case ZOMBIE_ATTACK:
+                zombieAttackSound.stop();
+                break;
+            case ZOMBIE_DAMAGE:
+                zombieDamageSound.stop();
+                break;
             case ZOMBIE_AMBIENT:
                 zombieAmbientSound.stop();
                 break;

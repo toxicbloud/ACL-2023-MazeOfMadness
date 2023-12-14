@@ -175,7 +175,7 @@ public class MenuScene extends Scene {
         multi.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClick.play();
+                SoundManager.getInstance().play(SoundList.BUTTON_CLICK);
                 music.stop();
                 music.dispose();
                 Window.getInstance().setScene(new MultiScene());
