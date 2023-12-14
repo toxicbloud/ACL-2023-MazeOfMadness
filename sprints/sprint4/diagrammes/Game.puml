@@ -1,0 +1,644 @@
+@startuml Game models class diagram
+title Game models class diagram
+skinparam Linetype ortho
+
+package Engine {
+    interface Evolvable {
+        update()
+        render()
+    }
+
+    class Scene {
+        - width: int
+        - height: int
+        ---
+        # Scene(width: int, height: int)
+        + {abstract} create()
+        + {abstract} update()
+        + {abstract} render()
+        + {abstract} onEvent(ev: Event)
+    }
+
+    class Vector3
+
+    class Sprite {
+        - {static} ANIMATION_FRAME_DELAY: float
+        - width: int
+        - height: int
+        - shiftX: int
+        - shiftY: int
+        - frameTime: float
+        - frameTimeCounter: float
+        - sprite: com.badlogic.gdx.graphics.g2d.Sprite 
+        ---
+        + Sprite(texture: Texture, width: int, height: int)
+        + Sprite(texture: Texture, width: int, height: int, shift: int)
+        + Sprite(texture: Texture, width: int, height: int, shift: int, frameTime: float)
+        - generateSprite()
+        - updateSpriteAnimation()
+        + render(position: Vector3, size: Vector3)
+        + render(position: Vector2, size: Vector2)
+    }
+    Sprite "1" --  Texture : texture
+
+    class Texture {
+        - path: String;
+        - texture: com.badlogic.gdx.graphics.Texture;
+        ---
+        + Texture(path: String)
+    }
+
+    class Window {
+        - width: int
+        - height: int
+        - title: String
+        - created: boolean
+        - events: EventManager
+        - app: Lwjgl3Application
+        - canvas: SpriteBatch
+        - hud: ShapeRenderer
+        ---
+        + Window()
+        + Window(title: String)
+        + Window(title: String, width: int, height: int)
+        - setInstance()
+        + {static} Window getInstance()
+        + init()
+        + close()
+        + create()
+        + render()
+        + resize(w: int, h: int)
+        + dispose()
+        + run()
+    }
+    Window "1" --  Scene : scene
+    Window "1" --  Window : instance
+
+    Evolvable <|.. Scene
+    Game <|-- Window
+}
+
+package Game {
+
+    class Game {
+        - points: int
+        - baseTime: float
+        ---
+        + Game()
+        + Game(p: Player, m: Maze)
+        + Game(m: Maze)
+        + {static} getInstance(): Game
+        + end(): Score
+        + loadNew()
+        + loadNext()
+        + loadFrom(m: Maze)
+        + loadFromFile(file: FileHandle)
+        + loadFromFile(path: String)
+        + loadFromLevel(level: Level)
+    }
+    Game "1" -- "1..0" Maze : currentMaze
+    Game "1" -- "1..0" Player : player
+    Game "1" -- "1" Score : score
+    Game "1" --  Game : instance
+
+    class Score {
+        - points: int
+        - kills : Map<MonsterType, Integer>
+        - support : PropertyChangeSupport
+        ---
+        + Score()
+        + addPoints(points: int) : void
+        + getPoints() : int
+        + getKillCount(type: MonsterType) : int
+        + addKill(type: MonsterType) : void
+        + addPropertyChangeListener(name: String, listener: PropertyChangeListener) : void
+    }
+    class Maze {
+        - width: int
+        - height: int
+        - spawnpoint: Vector3
+        ---
+        + Maze()
+        + Maze(w: int, h: int, d: int)
+        + Maze(w: int, h: int, d: int, t: Tile[])
+        + Maze(w: int, h: int, d: int, t: Tile[], spawn: Vector3)
+        + Maze(w: int, h: int, d: int, t: Tile[], m: Monster[], i: WorldItem[])
+        + Maze(w: int, h: int, d: int, t: Tile[], m: Monster[], i: WorldItem[], setTilesPositions: boolean)
+        ---
+        + {static} getTileIndex(x: int, y: int, z: int, width: int, height: int): int
+        + getTileIndex(x: int, y: int, z: int): int
+        + {static} fromList(list: List<Entity>): Maze
+        - setTilesDefaultPositions()
+        + addEntity(e: Entity)
+        + update()
+        + render()
+        + addTemporaryEntity(e: Entity)
+        + removeMonster(m: Monster)
+        + removeItem(i: WorldItem)
+        + addItem(i: WorldItem)
+        + addItems(i: WorldItem[])
+    }
+    Maze "1" -- "*" Tile: - tiles: Tile[][]
+    Maze "1" -- "*" Monster: - monsters: Monster[]
+    Maze "1" -- "*" WorldItem: - items: WorldItem[]
+
+    abstract Entity {
+        - position: Vector3
+        - size: Vector3
+        - sprite: Sprite
+        ---
+        # Entity(sprite: Sprite)
+        # Entity(sprite: Sprite, position: Vector3, size: Vector3)
+        + registerController(c: Controller)
+        + update()
+        + render()
+        # indicateUpdate()
+        + hasBeenUpdated(): boolean
+        + hasBeenDestroyed(): boolean
+        + moveBy(delta: Vector2)
+        - getCollideMovement(move: Vector2): Vector2
+        - getCollideMovement(move: Vector2, pos: Vector3): Vector2
+        - getCollideMovementX(moveX: float, origin: Vector3): float
+        - getCollideMovementY(moveY: float, origin: Vector3): float
+        # boolean tileCollides(t: Tile)
+        + distance(Entity entity): float
+        + destroy()
+        # remove()
+    }
+    Evolvable <|-- Entity
+    Entity "1" -- "1" Vector3 : position
+    Entity "1" -- "1" Vector3 : size
+    Entity "1" -- "1" Sprite : sprite
+    Entity <|-- WorldItem
+    Entity <|-- Living
+
+    abstract WorldItem {
+        # WorldItem(sprite: Sprite)
+        # WorldItem(Sprite: sprite, Vector3: position, Vector3: size)
+        # interact(player: Player)
+    }
+
+    package Items {
+
+        package Potions {
+
+            abstract Potion {
+                - health: int
+                - strength: int
+                - speed: int
+                - timeToLive: float
+                ---
+                # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+                # POTION_TEXTURE: Texture
+                # applyEffect(Player player)
+            }
+            WorldItem <|-- Potion
+            Potion <|-- HealthPotion
+            Potion <|-- StrengthPotion
+            Potion <|-- SpeedPotion
+
+            class HealthPotion {
+                - SPRITE_SHIFT: int
+                - HEALTH_AMOUNT: int
+                ---
+                + HealthPotion()
+                + HealthPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
+
+            class StrengthPotion {
+                - SPRITE_SHIFT: int
+                ---
+                + StrengthPotion()
+                + StrengthPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
+
+            class SpeedPotion {
+                - SPRITE_SHIFT: int
+                - SPEED_MULTIPLIER: float
+                ---
+                + SpeedPotion()
+                + SpeedPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
+        }
+
+        package Weapon {
+
+            abstract "Weapon" as WeaponItem {
+                # {static} WEAPONS_TEXTURE: Texture
+                # Weapon(spriteShift: int, position: Vector3, t: ItemType)
+                # abstract equipWeapon(player: Player)
+                + interact(player: Player)
+            }
+
+            class "Sword" as SwordItem {
+                + Sword()
+                + Sword(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            class "Trident" as TridentItem {
+                + Trident()
+                + Trident(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            class "Axe" as AxeItem {
+                + Axe()
+                + Axe(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            class "Bomb" as BombItem {
+                + Bomb()
+                + Bomb(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            class "Teddy" as TeddyItem {
+                + Teddy()
+                + Teddy(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            class "Bow" as BowItem {
+                + Bow()
+                + Bow(position: Vector3)
+                # equipWeapon(player: Player)
+            }
+
+            WeaponItem <|-- SwordItem
+            WeaponItem <|-- AxeItem
+            WeaponItem <|-- BowItem
+            WeaponItem <|-- TridentItem
+            WeaponItem <|-- BombItem
+            WeaponItem <|-- TeddyItem
+
+            WorldItem <|-- WeaponItem
+        }
+    }
+
+    package Weapons {
+            
+        abstract Weapon {
+            - attack: int
+            - cooldown: int
+            - range: float
+            - lastAttackTime: long
+            - hasDoubleDamage: boolean
+            ---
+            # Weapon(damage: int, cooldown: int, range: float)
+            # Weapon(damage: int, cooldown: int, range: float, hasDoubleDamage: boolean)
+            # Weapon(position: Vector3, damage: int, cooldown: int, range: float, hasDoubleDamage: boolean)
+            # Weapon(position: Vector3, damage: int, cooldown: int, range: float, hasDoubleDamage: boolean, Sprite sprite)
+            # handleCooldown(): boolean
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            + update()
+            + hasDoubleDamage(): boolean
+            + {abstract} createDoubleDamageWeapon(): Weapon
+            # getOwner(): Living
+            + setOwner(owner: Player)
+            # remove()
+        }
+
+        Entity <|-- Weapon
+        Weapon <|-- WeaponFist
+        Weapon <|-- Sword
+        Weapon <|-- Axe
+        Weapon <|-- Bow
+        Weapon <|-- Trident
+        Weapon <|-- Bomb
+        Weapon <|-- Teddy
+
+        abstract WeaponFist {
+            # WeaponFist(damage: int, cooldown: int)
+            # WeaponFist(damage: int, cooldown: int, hasDoubleDamage: boolean)
+        }
+
+        WeaponFist <|-- PlayerFist
+        WeaponFist <|-- ZombieFist
+        WeaponFist <|-- GhostFist
+
+        class PlayerFist {
+            ---
+            + PlayerFist()
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class ZombieFist {
+            ---
+            + ZombieFist()
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class GhostFist {
+            ---
+            + GhostFist()
+        }
+
+        class Sword {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Sword()
+            + Sword(position: Vector3) 
+            + Sword(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class Axe {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Axe()
+            + Axe(position: Vector3) 
+            + Axe(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+
+        class Bow {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Bow()
+            + Bow(position: Vector3) 
+            + Bow(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - shoot()
+            + update()
+        }
+                
+        class Trident {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            - isLaunched: boolean
+            ---
+            + Trident()
+            + Trident(position: Vector3) 
+            + Trident(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - launch()
+            + update()
+        }
+
+        class Bomb {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            - {static} EXPLOSION_DEPTH: int
+            - {static} EXPLOSION_DELAY: int
+            - {static} WAITING_SOUND: Sound
+            - {static} EXPLOSION_SOUND: Sound
+            - {static} SPRITE: Sprite
+            - isLaunched: boolean
+            ---
+            + Bomb()
+            + Bomb(position: Vector3) 
+            + Bomb(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+            + attack(living: Living): boolean
+            + attack(livingList: List<Living>): boolean
+            - launch()
+            + update()
+            + setPosition(position: Vector3)
+        }
+
+        class Teddy {
+            - {static} DAMAGE: int
+            - {static} ATTACK_COOLDOWN: int
+            - {static} RANGE: int
+            ---
+            + Teddy()
+            + Teddy(position: Vector3) 
+            + Teddy(position: Vector3, hasDoubleDamage: boolean) 
+            + createDoubleDamageWeapon(): Weapon
+        }
+    }
+    abstract Living {
+        - {static} PICKUP_RANGE: float
+        - {static} NB_DIRECTION: int
+        - {static} POSITION_HEALTHBAR_SCREEN: Vector3
+        - {static} SIZE_HEALTHBAR_SCREEN: Vector3
+        - {static} DEFAULT_LIVING_HEALTH: int;
+        - {static} RIGHT_DEGREES: double;
+        - {static} UP_DEGREES: double;
+        - {static} LEFT_DEGREES: double;
+        - {static} DOWN_DEGREES: double;
+        - {static} DEGREES: double;
+        - {static} FOV_RADIUS: double;
+        - {static} MAX_RANGE_FOV: double;
+        - health: int
+        - maxHealth: int 
+        - speed : float
+        - direction: Direction
+        - weapon: Weapon
+        ---
+        # Living(sprite: Sprite)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3)
+        # Living(sprite: Sprite, position: Vector3, size: Vector3, health: int, maxHealth: int)
+        - updateDirection(delta: Vector2): void
+        - updateSprite(delta: Vector2): void
+        - renderHealthBar(): void
+        - directionToAngle(direction: Direction): double
+        + isInFOV(entity1: Living, entity2: Living): boolean
+        + getDirection(): Direction
+        - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
+        - setDirection(dir: Direction): void
+        - isInRange(itemPosition: Vector3, playerPosition: Vector3): boolean
+        + findItemInRange(): WorldItem
+        + render(): void
+        + moveBy(delta: Vector2)
+        + attack(living: Living): boolean
+        + takeDamage(damage: int) : boolean
+        + findEnemyInVisionField(): Living
+        + regen(health: int) : void
+        + isDead(): boolean
+        + getWeapon(): Weapon
+        + setWeapon(weapon: Weapon)
+    }
+    Living "1" -- "1" Weapon : weapon
+    Living <|-- Player
+    Living <|-- Monster
+
+    class Player {
+        + {static} PLAYER_SPEED: float
+        + {static} PLAYER_HEALTH: int
+        - {static} PLAYER_WIDTH: float
+        - {static} PLAYER_SIZE: Vector3
+        - {static} PLAYER_MAX_HEALTH: int;
+        - {static} HEALTH_BAR_COLOR: Color
+        - enteredTile: Tile
+        - defaultWeapon: Weapon
+        ---
+        + Player()
+        + Player(position: Vector3)
+        + update()
+        - handleTileCollision()
+        + findEnemies(): List<Living>
+        + setWeapon(Weapon weapon)
+        + render()
+        + toJSON(): JSONObject
+    }
+
+    package Monsters {
+
+        abstract Monster {
+            - {static} FRAMES_NUMBER: int
+            - {static} DEFAULT_POINTS: int
+            ---
+            # Monster(sprite: Sprite, t: MonsterType, health: int, maxHealth: int)
+            # Monster(sprite: Sprite, t: MonsterType, position: Vector3, health: int, maxHealth: int)
+            # Monster(sprite: Sprite, t: MonsterType, position: Vector3, size: Vector3, health: int, maxHealth: int)
+            - setRandomAnimationShift()
+            + update()
+            + findPlayer(player: Living): boolean
+            + toJSON(): JSONObject
+            + affectScore(score: Score)
+            # remove()
+        }
+        Monster <|-- Zombie
+        Monster <|-- Ghost
+        Monster <|-- Boss
+
+        Monster "1" -- MonsterType: type
+
+        class Zombie {
+            + {static} ZOMBIE_SPEED: float
+            + {static} VIEW_DISTANCE: float
+            + {static} LEAVE_DISTANCE: float
+            - {static} ZOMBIE_HEALTH: int
+            - {static} ZOMBIE_MAX_HEALTH: int
+            - {static} ZOMBIE_POINTS: int
+
+            ---
+            + Zombie()
+            + Zombie(position: Vector3)
+            + update()
+            + affectScore(score: Score)
+        }
+
+        class Ghost {
+            + {static} GHOST_SPEED: float
+            - {static} GHOST_HEALTH: int
+            - {static} GHOST_MAX_HEALTH: int
+            - {static} GHOST_POINTS: int
+            ---
+            + Ghost()
+            + Ghost(position: Vector3)
+            + update()
+            + affectScore(score: Score)
+
+        }
+
+        enum MonsterType {
+            MONSTER_BOSS
+            MONSTER_ZOMBIE
+            MONSTER_GHOST
+        }
+    }
+
+    package controller {
+        class PlayerController {
+            - player: Player
+            ---
+            + PlayerController(player: Player)
+            + update(): void
+            + visit(EventMouseMoved ev): void
+            + visit(EventMousePressed ev): void
+            + visit(EventMouseReleased ev): void
+            + visit(EventMouseScrolled ev): void
+            + visit(EventKeyPressed ev): void
+            + visit(EventKeyReleased ev): void
+            + visit(EventGamepadMoved ev): void
+            + visit(EventGamepadPressed ev): void
+            + visit(EventGamepadReleased ev): void
+        }
+    }
+
+    package Tiles {
+        abstract Tile {
+            - solid: boolean
+            ---
+            + Tile(sprite: Sprite, solid: boolean)
+            + isSolid(): boolean
+            + onPlayerEnter(player: Player): void
+            + onPlayerExit(player: Player): void
+        }
+        Entity <|-- Tile
+        Tile <|-- Wall
+        Tile <|-- Ground
+        Tile <|-- VoidTile
+        Wall <|-- WallRock
+        Ground <|-- GroundWater
+        Ground <|-- GroundLava
+        Ground <|-- GroundRock
+        Ground <|-- End
+        Ground <|-- Next
+
+        abstract Wall {
+            ---
+            + Wall()
+        }
+
+        abstract Ground {
+            ---
+            + Ground()
+        }
+
+        class GroundRock {
+            ---
+            + GroundRock()
+        }
+
+        class GroundWater {
+            {static} - SPEED_FACTOR : int
+            ---
+            + GroundWater()
+        }
+        class GroundLava {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            {static} - SPEED_FACTOR : int
+            - lastDamageTime : long
+            ---
+            + GroundLava()
+        }
+        class GroundSpikes {
+            {static} - DAMAGE_AMOUNT : int
+            {static} - DAMAGE_DELAY : int 
+            - lastDamageTime : long
+            ---
+            + GroundSpikes()
+        }
+
+        class WallRock {
+            ---
+            + WallRock()
+        }
+        class VoidTile {
+            ---
+            + VoidTile()
+        }
+        class End{
+            ---
+            + End()
+        }
+        class Next{
+            ---
+            + Next()
+        }
+    }
+}
+
+@enduml
