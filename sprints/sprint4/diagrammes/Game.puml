@@ -39,6 +39,7 @@ package Engine {
         + render(position: Vector3, size: Vector3)
         + render(position: Vector2, size: Vector2)
     }
+    Sprite "1" --  Texture : texture
 
     class Texture {
         - path: String;
@@ -70,32 +71,35 @@ package Engine {
         + dispose()
         + run()
     }
-
-    Evolvable <|.. Scene
-    Game <|-- Window
-
     Window "1" --  Scene : scene
     Window "1" --  Window : instance
 
-    Sprite "1" --  Texture : texture
-
+    Evolvable <|.. Scene
+    Game <|-- Window
 }
 
 package Game {
+
     class Game {
         - points: int
         - baseTime: float
         ---
-        + GetCurrentMaze(): Maze
-        + GetPlayer(): Player
-        + GetScore(): int
-        + AddPoints(points: int)
-        + RemPoints(points: int)
-        + ResetScore()
+        + Game()
+        + Game(p: Player, m: Maze)
+        + Game(m: Maze)
+        + {static} getInstance(): Game
+        + end(): Score
+        + loadNew()
+        + loadNext()
+        + loadFrom(m: Maze)
+        + loadFromFile(file: FileHandle)
+        + loadFromFile(path: String)
+        + loadFromLevel(level: Level)
     }
     Game "1" -- "1..0" Maze : currentMaze
     Game "1" -- "1..0" Player : player
     Game "1" -- "1" Score : score
+    Game "1" --  Game : instance
 
     class Score {
         - points: int
@@ -115,21 +119,28 @@ package Game {
         - spawnpoint: Vector3
         ---
         + Maze()
-        + Maze(width: int, height: int)
-        + Maze(tiles: Tile[][])
-        + getWidth(): int
-        + getHeight(): int
-        + getTile(x: int, y: int): Tile
-        + getMonsters(): Monster[]
-        + setMonsters(monsters: Monster[])
-        + getItems(): Item[]
-        + setItems(items: Item[])
-        + getSpawnPoint(): Vector3
-        + setItems(spawnpoint: Vector3)
+        + Maze(w: int, h: int, d: int)
+        + Maze(w: int, h: int, d: int, t: Tile[])
+        + Maze(w: int, h: int, d: int, t: Tile[], spawn: Vector3)
+        + Maze(w: int, h: int, d: int, t: Tile[], m: Monster[], i: WorldItem[])
+        + Maze(w: int, h: int, d: int, t: Tile[], m: Monster[], i: WorldItem[], setTilesPositions: boolean)
+        ---
+        + {static} getTileIndex(x: int, y: int, z: int, width: int, height: int): int
+        + getTileIndex(x: int, y: int, z: int): int
+        + {static} fromList(list: List<Entity>): Maze
+        - setTilesDefaultPositions()
+        + addEntity(e: Entity)
+        + update()
+        + render()
+        + addTemporaryEntity(e: Entity)
+        + removeMonster(m: Monster)
+        + removeItem(i: WorldItem)
+        + addItem(i: WorldItem)
+        + addItems(i: WorldItem[])
     }
     Maze "1" -- "*" Tile: - tiles: Tile[][]
     Maze "1" -- "*" Monster: - monsters: Monster[]
-    Maze "1" -- "*" Item: - items: Item[]
+    Maze "1" -- "*" WorldItem: - items: WorldItem[]
 
     abstract Entity {
         - position: Vector3
@@ -138,141 +149,143 @@ package Game {
         ---
         # Entity(sprite: Sprite)
         # Entity(sprite: Sprite, position: Vector3, size: Vector3)
-        # tileCollides(t: Tile): boolean
-        - getCollisionMovement(move: Vector2): Vector2
+        + registerController(c: Controller)
+        + update()
+        + render()
+        # indicateUpdate()
+        + hasBeenUpdated(): boolean
+        + hasBeenDestroyed(): boolean
+        + moveBy(delta: Vector2)
+        - getCollideMovement(move: Vector2): Vector2
         - getCollideMovement(move: Vector2, pos: Vector3): Vector2
         - getCollideMovementX(moveX: float, origin: Vector3): float
-        - getCollideMovementY(moveY: float, origin Vector3): float
-        + registerController(c: Controller): void
-        + update(): void
-        + render(): void
-        + moveBy(delta: Vector2): void
-        + distance(entity: Entity): float
-        + getPosition(): Vector3
-        + getSize(): Vector3
-        + getSprite(): Sprite
-        + setPosition(position: Vector3)
-        + setSize(size: Vector3)
-        + setSprite(sprite: Sprite)
+        - getCollideMovementY(moveY: float, origin: Vector3): float
+        # boolean tileCollides(t: Tile)
+        + distance(Entity entity): float
+        + destroy()
+        # remove()
     }
     Evolvable <|-- Entity
     Entity "1" -- "1" Vector3 : position
     Entity "1" -- "1" Vector3 : size
     Entity "1" -- "1" Sprite : sprite
-    Entity <|-- Item
+    Entity <|-- WorldItem
     Entity <|-- Living
 
-    abstract Item {
-        # Item(sprite: Sprite)
-        # Item(Sprite: sprite, Vector3: position, Vector3: size)
+    abstract WorldItem {
+        # WorldItem(sprite: Sprite)
+        # WorldItem(Sprite: sprite, Vector3: position, Vector3: size)
         # interact(player: Player)
     }
 
-    package Potions {
-        abstract Potion {
-            - health: int
-            - strength: int
-            - speed: int
-            - timeToLive: float
-            ---
-            # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
-            # POTION_TEXTURE: Texture
-            # applyEffect(Player player)
-        }
-        Item <|-- Potion
-        Potion <|-- HealthPotion
-        Potion <|-- StrengthPotion
-        Potion <|-- SpeedPotion
+    package Items {
 
-        class HealthPotion {
-            - SPRITE_SHIFT: int
-            - HEALTH_AMOUNT: int
-            ---
-            + HealthPotion()
-            + HealthPotion(position: Vector3)
-            # applyEffect(Player player)
-        }
+        package Potions {
+            abstract Potion {
+                - health: int
+                - strength: int
+                - speed: int
+                - timeToLive: float
+                ---
+                # Potion(sprite: Sprite, health: int, strength: int, speed: int, timeToLive: float)
+                # POTION_TEXTURE: Texture
+                # applyEffect(Player player)
+            }
+            WorldItem <|-- Potion
+            Potion <|-- HealthPotion
+            Potion <|-- StrengthPotion
+            Potion <|-- SpeedPotion
 
-        class StrengthPotion {
-            - SPRITE_SHIFT: int
-            ---
-            + StrengthPotion()
-            + StrengthPotion(position: Vector3)
-            # applyEffect(Player player)
-        }
+            class HealthPotion {
+                - SPRITE_SHIFT: int
+                - HEALTH_AMOUNT: int
+                ---
+                + HealthPotion()
+                + HealthPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
 
-        class SpeedPotion {
-            - SPRITE_SHIFT: int
-            - SPEED_MULTIPLIER: float
-            ---
-            + SpeedPotion()
-            + SpeedPotion(position: Vector3)
-            # applyEffect(Player player)
-        }
-    }
+            class StrengthPotion {
+                - SPRITE_SHIFT: int
+                ---
+                + StrengthPotion()
+                + StrengthPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
 
-    package Weapons {
-        abstract Weapon {
-            - attack: int
-            - cooldown: int
-            - range: float
-            - lastAttackTime: long
-            - hasDoubleDamage: boolean
-            # Weapon(int attack, int attack, float range)
-            + attack(living: Living): boolean
-            --
-            # createDoubleDamageWeapon(): Weapon
-        }
-        Item <|-- Weapon
-        Weapon <|-- WeaponFist
-        Weapon <|-- WeaponSword
-        Weapon <|-- WeaponAxe
-        Weapon <|-- WeaponBow
-
-        abstract WeaponFist {
-            # WeaponFist(damage: int, cooldown: int)
+            class SpeedPotion {
+                - SPRITE_SHIFT: int
+                - SPEED_MULTIPLIER: float
+                ---
+                + SpeedPotion()
+                + SpeedPotion(position: Vector3)
+                # applyEffect(Player player)
+            }
         }
 
-        WeaponFist <|-- PlayerFist
-        WeaponFist <|-- ZombieFist
-        WeaponFist <|-- GhostFist
-        WeaponFist <|-- BossFist
+        package Weapons {
+            abstract Weapon {
+                - attack: int
+                - cooldown: int
+                - range: float
+                - lastAttackTime: long
+                - hasDoubleDamage: boolean
+                # Weapon(int attack, int attack, float range)
+                + attack(living: Living): boolean
+                --
+                # createDoubleDamageWeapon(): Weapon
+            }
+            WorldItem <|-- Weapon
+            Weapon <|-- WeaponFist
+            Weapon <|-- WeaponSword
+            Weapon <|-- WeaponAxe
+            Weapon <|-- WeaponBow
 
-        class PlayerFist {
-            ---
-            + PlayerFist()
-            + createDoubleDamageWeapon(): Weapon
-        }
+            abstract WeaponFist {
+                # WeaponFist(damage: int, cooldown: int)
+            }
 
-        class ZombieFist {
-            ---
-            + ZombieFist()
-            + createDoubleDamageWeapon(): Weapon
-        }
+            WeaponFist <|-- PlayerFist
+            WeaponFist <|-- ZombieFist
+            WeaponFist <|-- GhostFist
+            WeaponFist <|-- BossFist
 
-        class GhostFist {
-            ---
-            + GhostFist()
-        }
+            class PlayerFist {
+                ---
+                + PlayerFist()
+                + createDoubleDamageWeapon(): Weapon
+            }
 
-        class BossFist {
-            ---
-            + BossFist()
-        }
+            class ZombieFist {
+                ---
+                + ZombieFist()
+                + createDoubleDamageWeapon(): Weapon
+            }
 
-        class WeaponSword {
-            ---
-            + WeaponSword()
-        }
+            class GhostFist {
+                ---
+                + GhostFist()
+            }
 
-        class WeaponAxe {
-            ---
-            + WeaponAxe()
-        }
+            class BossFist {
+                ---
+                + BossFist()
+            }
 
-        class WeaponBow {
-            ---
-            + WeaponBow()
+            class WeaponSword {
+                ---
+                + WeaponSword()
+            }
+
+            class WeaponAxe {
+                ---
+                + WeaponAxe()
+            }
+
+            class WeaponBow {
+                ---
+                + WeaponBow()
+            }
         }
     }
 
@@ -295,7 +308,7 @@ package Game {
         - isInVisionField(playerPos: Vector3, enemyPos: Vector3): boolean
         - setDirection(dir: Direction): void
         - isInRange(itemPosition: Vector3, playerPosition: Vector3): boolean
-        + findItemInRange(): Item
+        + findItemInRange(): WorldItem
         + render(): void
         + moveBy(delta: Vector2)
         + attack(living: Living): boolean
