@@ -3,9 +3,82 @@ title Game models class diagram
 skinparam Linetype ortho
 
 package Engine {
-    interface Evolvable
+    interface Evolvable {
+        update()
+        render()
+    }
+
+    class Scene {
+        - width: int
+        - height: int
+        ---
+        # Scene(width: int, height: int)
+        + {abstract} create()
+        + {abstract} update()
+        + {abstract} render()
+        + {abstract} onEvent(ev: Event)
+    }
+
     class Vector3
-    class Sprite
+
+    class Sprite {
+        - {static} ANIMATION_FRAME_DELAY: float
+        - width: int
+        - height: int
+        - shiftX: int
+        - shiftY: int
+        - frameTime: float
+        - frameTimeCounter: float
+        - sprite: com.badlogic.gdx.graphics.g2d.Sprite 
+        ---
+        + Sprite(texture: Texture, width: int, height: int)
+        + Sprite(texture: Texture, width: int, height: int, shift: int)
+        + Sprite(texture: Texture, width: int, height: int, shift: int, frameTime: float)
+        - generateSprite()
+        - updateSpriteAnimation()
+        + render(position: Vector3, size: Vector3)
+        + render(position: Vector2, size: Vector2)
+    }
+
+    class Texture {
+        - path: String;
+        - texture: com.badlogic.gdx.graphics.Texture;
+        ---
+        + Texture(path: String)
+    }
+
+    class Window {
+        - width: int
+        - height: int
+        - title: String
+        - created: boolean
+        - events: EventManager
+        - app: Lwjgl3Application
+        - canvas: SpriteBatch
+        - hud: ShapeRenderer
+        ---
+        + Window()
+        + Window(title: String)
+        + Window(title: String, width: int, height: int)
+        - setInstance()
+        + {static} Window getInstance()
+        + init()
+        + close()
+        + create()
+        + render()
+        + resize(w: int, h: int)
+        + dispose()
+        + run()
+    }
+
+    Evolvable <|.. Scene
+    Game <|-- Window
+
+    Window "1" --  Scene : scene
+    Window "1" --  Window : instance
+
+    Sprite "1" --  Texture : texture
+
 }
 
 package Game {
