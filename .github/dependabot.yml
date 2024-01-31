@@ -4,7 +4,3 @@ updates:
     directory: "/mom"
     schedule:
       interval: "monthly"
-    allow:
-      - dependency-name: "*"
-        dependency-type: "direct:production"
-        update-types: ["version-update:semver-patch", "security-advisory"]

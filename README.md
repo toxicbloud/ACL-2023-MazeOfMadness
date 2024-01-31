@@ -1,8 +1,21 @@
-# Maze Of Madness
+<div align="center">
+
+![Maze Of Madness](./mom/src/main/resources/images/menus/logo.png)
+
+</div>
+
+## 
 <!-- image du jeu en mode editeur -->
 <div align="center">
+
 ![Maze Of Madness](./Resources/editor.png)
+
+
 </div>
+
+[![YouTube Demo Video](https://img.shields.io/badge/YouTube-Video-red?logo=youtube)](https://youtu.be/_lqwWWd5G5U)
+[![Maven Build](https://github.com/toxicbloud/ACL-2023-MazeOfMadness/actions/workflows/maven.yml/badge.svg)](https://github.com/toxicbloud/ACL-2023-MazeOfMadness/actions)
+
 ## Sommaire
 - [Elevator Speech](#elevator-speech)
 - [Présentation détaillée du Jeu](#description-du-jeu)
