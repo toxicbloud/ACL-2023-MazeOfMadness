@@ -1,5 +1,8 @@
 # Maze Of Madness
-
+<!-- image du jeu en mode editeur -->
+<div align="center">
+![Maze Of Madness](./Resources/editor.png)
+</div>
 ## Sommaire
 - [Elevator Speech](#elevator-speech)
 - [Présentation détaillée du Jeu](#description-du-jeu)
